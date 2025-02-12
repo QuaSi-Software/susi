@@ -4,7 +4,7 @@ The streamlit implementation of SUSI (Simple UI for Simulation Input).
 Run this with
 `python -m streamlit run main.py`
 after having installed dependencies with
-`pip install streamlit streamlitflow`
+`pip install streamlit streamlit-flow-component`
 """
 import streamlit as st
 from streamlit_flow import streamlit_flow
@@ -57,6 +57,41 @@ def lpad(to_pad, to_len, pad_char="0"):
     """
     return (str(pad_char) * int(to_len - len(to_pad))) + to_pad
 
+def create_node(prefix, segment):
+    """Create a node of the given type.
+
+    Currently implemented types, identified by their segment:
+    BUS: Bus
+    SRC: Generic source
+    DEM: Demand
+
+    # Args:
+    -`prefix:str`: Prefix for the UAC
+    -`segment:str`: The segment for the component type.
+    # Returns:
+    -`StreamlitFlowNode`: The created node
+    """
+    uac = prefix + f"_{segment}_" + lpad(
+        str(nr_of_nodes(f"_{segment}_", st.session_state.current_state.nodes) + 1), 2, "0"
+    )
+    node_type = "default"
+    if segment.upper() in {"BUS"}:
+        node_type = "default"
+    elif segment.upper() in {"SRC"}:
+        node_type = "input"
+    elif segment.upper() in {"DEM"}:
+        node_type = "output"
+
+    return StreamlitFlowNode(
+        uac,
+        (0, 0),
+        {
+            'content': uac,
+        },
+        node_type, 'right', 'left',
+        deletable=True
+    )
+
 def main():
     """Entry point to the streamlit process."""
     check_state()
@@ -69,21 +104,18 @@ def main():
 
         st.markdown("Special")
 
-        if st.button("Add bus"):
-            uac = prefix + "_BUS_" + lpad(
-                str(nr_of_nodes("_BUS_", st.session_state.current_state.nodes) + 1), 2, "0"
-            )
-            new_node = StreamlitFlowNode(
-                uac,
-                (0, 0),
-                {
-                    'content': uac,
-                    "foo": "bar"
-                },
-                'default', 'right', 'left',
-                deletable=True
-            )
-            add_node(new_node)
+        if st.button("Bus"):
+            add_node(create_node(prefix, "BUS"))
+            st.rerun()
+
+        st.markdown("General")
+
+        if st.button("Source"):
+            add_node(create_node(prefix, "SRC"))
+            st.rerun()
+
+        if st.button("Demand"):
+            add_node(create_node(prefix, "DEM"))
             st.rerun()
 
     st.session_state.current_state = streamlit_flow(
