@@ -22,6 +22,8 @@ def check_state():
             [StreamlitFlowNode("dummy", (0,0), {"content": ""}, hidden=True)],
             []
         )
+    if "exported" not in st.session_state:
+        st.session_state.exported = ""
 
 def add_node(new_node):
     """Add the given node to the node list.
@@ -92,6 +94,15 @@ def create_node(prefix, segment):
         deletable=True
     )
 
+def export(flow):
+    """Export the given energy system"""
+    exported = ""
+    for node in flow.nodes:
+        if node.id == "dummy":
+            continue
+        exported += node.id + "\n"
+    return exported
+
 def main():
     """Entry point to the streamlit process."""
     check_state()
@@ -118,6 +129,12 @@ def main():
             add_node(create_node(prefix, "DEM"))
             st.rerun()
 
+        st.markdown("Actions")
+
+        if st.button("Export"):
+            st.session_state.exported = export(st.session_state.current_state)
+            st.rerun()
+
     st.session_state.current_state = streamlit_flow(
         'energy_system', 
         st.session_state.current_state,
@@ -133,5 +150,7 @@ def main():
         allow_new_edges=True,
         min_zoom=0.1
     )
+
+    st.text_area("Exported", st.session_state.exported)
 
 main()
