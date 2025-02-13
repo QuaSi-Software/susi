@@ -6,6 +6,7 @@ Run this with
 after having installed dependencies with
 `pip install streamlit streamlit-flow-component`
 """
+from random import randint
 import streamlit as st
 from streamlit_flow import streamlit_flow
 from streamlit_flow.elements import StreamlitFlowNode
@@ -77,7 +78,7 @@ def create_node(prefix, component_type):
 
     return StreamlitFlowNode(
         uac,
-        (0, 0),
+        (randint(-20, 20), randint(-20, 20)),
         {
             'content': uac,
         },
