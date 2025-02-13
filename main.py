@@ -90,9 +90,7 @@ def create_node(prefix, component_type):
 def main():
     """Entry point to the streamlit process."""
     check_state()
-    st.set_page_config(layout="wide")
-
-    st.title('Simple UI for Simulation Input')
+    st.set_page_config("SUSI - Simple UI for Simulation Input", layout="wide")
 
     with st.sidebar:
         st.markdown("## Settings")
