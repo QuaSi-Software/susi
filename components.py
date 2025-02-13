@@ -38,3 +38,52 @@ def categories():
             ("Demand", "Fixed Demand"),
         ],
     }
+
+def component_config(component_type):
+    """Parameters and settings for the given component type.
+
+    # Args:
+    -`component_type:str`: The component type
+    # Returns:
+    -`dict`: The parameters/settings for the given type
+    """
+    base = {
+        "type": component_type,
+        "output_refs": [],
+    }
+    name = component_type.lower()
+
+    if name == "bus":
+        return {
+            "type": "Bus",
+            "medium": "FILL_IN",
+            "connections": {
+                "input_order": [],
+                "output_order": [],
+                "energy_flow": [],
+            },
+        }
+    elif name == "boundedsupply":
+        return base | {
+            "medium": "FILL_IN",
+            "_OPTION_1": "",
+            "constant_power": -9999,
+            "constant_temperature": -9999,
+            "_OPTION_2": "",
+            "max_power_profile_file_path": "FILL_IN",
+            "temperature_profile_file_path": "FILL_IN",
+            "scale": -9999
+        }
+    elif name == "demand":
+        return base | {
+            "medium": "FILL_IN",
+            "_OPTION_1": "",
+            "constant_demand": -9999,
+            "constant_temperature": -9999,
+            "_OPTION_2": "",
+            "energy_profile_file_path": "FILL_IN",
+            "temperature_profile_file_path": "FILL_IN",
+            "scale": -9999
+        }
+    else:
+        raise NotImplementedError(f"Unknown component type {component_type}")

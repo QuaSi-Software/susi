@@ -81,6 +81,7 @@ def create_node(prefix, component_type):
         (randint(-20, 20), randint(-20, 20)),
         {
             'content': uac,
+            'component_type': component_type,
         },
         node_type, 'right', 'left',
         deletable=True
