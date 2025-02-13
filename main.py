@@ -11,6 +11,7 @@ from streamlit_flow import streamlit_flow
 from streamlit_flow.elements import StreamlitFlowNode
 from streamlit_flow.state import StreamlitFlowState
 from streamlit_flow.layouts import ManualLayout
+from export import export_flow
 
 def check_state():
     """Ensures the current state is attached to the simulation state and creates it if not."""
@@ -94,15 +95,6 @@ def create_node(prefix, segment):
         deletable=True
     )
 
-def export(flow):
-    """Export the given energy system"""
-    exported = ""
-    for node in flow.nodes:
-        if node.id == "dummy":
-            continue
-        exported += node.id + "\n"
-    return exported
-
 def main():
     """Entry point to the streamlit process."""
     check_state()
@@ -132,7 +124,7 @@ def main():
         st.markdown("Actions")
 
         if st.button("Export"):
-            st.session_state.exported = export(st.session_state.current_state)
+            st.session_state.exported = export_flow(st.session_state.current_state)
             st.rerun()
 
     st.session_state.current_state = streamlit_flow(
