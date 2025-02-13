@@ -28,6 +28,21 @@ def base_dict():
         "components": {}
     }
 
+def get_outputs(node, flow):
+    """Outputs of the given node as list of node IDs (=UAC).
+
+    # Args:
+    -`node:StreamlitFlowNode`: The node
+    -`flow:StreamlitFlow`: The flow (contains edges)
+    # Returns:
+    -`list<str>`: A list of node IDs that are the outputs of the given node
+    """
+    outgoing = []
+    for edge in flow.edges:
+        if edge.source == node.id:
+            outgoing.append(edge.target)
+    return outgoing
+
 def export_flow(flow):
     """Export the given flow as ReSiE input file.
 
@@ -41,6 +56,7 @@ def export_flow(flow):
         if node.id == "dummy":
             continue
         as_dict["components"][node.id] = {
-            "uac": node.id
+            "uac": node.id,
+            "output_refs": get_outputs(node, flow)
         }
     return dumps(as_dict, indent=4)
