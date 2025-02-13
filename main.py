@@ -12,7 +12,7 @@ from streamlit_flow.elements import StreamlitFlowNode
 from streamlit_flow.state import StreamlitFlowState
 from streamlit_flow.layouts import ManualLayout
 from export import export_flow
-from components import node_info
+from components import node_info, categories
 
 def check_state():
     """Ensures the current state is attached to the simulation state and creates it if not."""
@@ -93,25 +93,20 @@ def main():
     st.title('Simple UI for Simulation Input')
 
     with st.sidebar:
+        st.markdown("## Settings")
         prefix = st.text_input("UAC prefix", "TST")
 
-        st.markdown("Special")
+        st.markdown("## Components")
+        cats = categories()
+        for cat_name in cats["_order"]:
+            st.markdown(f"### {cat_name}")
 
-        if st.button("Bus"):
-            add_node(create_node(prefix, "Bus"))
-            st.rerun()
+            for entry in cats[cat_name]:
+                if st.button(entry[1]):
+                    add_node(create_node(prefix, entry[0]))
+                    st.rerun()
 
-        st.markdown("General")
-
-        if st.button("BoundedSupply"):
-            add_node(create_node(prefix, "BoundedSupply"))
-            st.rerun()
-
-        if st.button("Demand"):
-            add_node(create_node(prefix, "Demand"))
-            st.rerun()
-
-        st.markdown("Actions")
+        st.markdown("## Actions")
 
         if st.button("Export"):
             st.session_state.exported = export_flow(st.session_state.current_state)
