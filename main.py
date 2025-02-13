@@ -12,6 +12,7 @@ from streamlit_flow.elements import StreamlitFlowNode
 from streamlit_flow.state import StreamlitFlowState
 from streamlit_flow.layouts import ManualLayout
 from export import export_flow
+from components import node_info
 
 def check_state():
     """Ensures the current state is attached to the simulation state and creates it if not."""
@@ -60,30 +61,19 @@ def lpad(to_pad, to_len, pad_char="0"):
     """
     return (str(pad_char) * int(to_len - len(to_pad))) + to_pad
 
-def create_node(prefix, segment):
+def create_node(prefix, component_type):
     """Create a node of the given type.
-
-    Currently implemented types, identified by their segment:
-    BUS: Bus
-    SRC: Generic source
-    DEM: Demand
 
     # Args:
     -`prefix:str`: Prefix for the UAC
-    -`segment:str`: The segment for the component type.
+    -`component_type:str`: The component type
     # Returns:
     -`StreamlitFlowNode`: The created node
     """
+    node_type, segment = node_info(component_type)
     uac = prefix + f"_{segment}_" + lpad(
         str(nr_of_nodes(f"_{segment}_", st.session_state.current_state.nodes) + 1), 2, "0"
     )
-    node_type = "default"
-    if segment.upper() in {"BUS"}:
-        node_type = "default"
-    elif segment.upper() in {"SRC"}:
-        node_type = "input"
-    elif segment.upper() in {"DEM"}:
-        node_type = "output"
 
     return StreamlitFlowNode(
         uac,
@@ -108,17 +98,17 @@ def main():
         st.markdown("Special")
 
         if st.button("Bus"):
-            add_node(create_node(prefix, "BUS"))
+            add_node(create_node(prefix, "Bus"))
             st.rerun()
 
         st.markdown("General")
 
-        if st.button("Source"):
-            add_node(create_node(prefix, "SRC"))
+        if st.button("BoundedSupply"):
+            add_node(create_node(prefix, "BoundedSupply"))
             st.rerun()
 
         if st.button("Demand"):
-            add_node(create_node(prefix, "DEM"))
+            add_node(create_node(prefix, "Demand"))
             st.rerun()
 
         st.markdown("Actions")
