@@ -37,6 +37,14 @@ def node_info(component_type):
         return ("default", "GTP")
     elif name == ("geothermalheatcollector"):
         return ("default", "GHC")
+    elif name == ("chpp"):
+        return ("default", "CHPP")
+    elif name == ("pvplant"):
+        return ("input", "PV")
+    elif name == ("battery"):
+        return ("default", "BAT")
+    elif name == ("electrolyser"):
+        return ("default", "ELY")
     else:
         raise NotImplementedError(f"Unknown component type {component_type}")
 
@@ -49,7 +57,7 @@ def categories():
         name for that type.
     """
     return {
-        "_order": ["Special", "General", "Heat"],
+        "_order": ["Special", "General", "Heat", "Electricity", "Other"],
         "Special": [
             ("Bus", "Bus"),
             ("GridInput", "Grid Input"),
@@ -69,6 +77,14 @@ def categories():
             ("GeothermalProbes", "Geothermal Probes"),
             ("GeothermalHeatCollector", "Geothermal Heat Collector"),
         ],
+        "Electricity": [
+            ("CHPP", "Combined-Heat-Power Plant"),
+            ("PVPlant", "Photovoltaic Plant"),
+            ("Battery", "Battery"),
+        ],
+        "Other": [
+            ("Electrolyser", "Electrolyser"),
+        ]
     }
 
 def component_config(component_type):
@@ -282,6 +298,65 @@ def component_config(component_type):
             "fluid_density": 1025,
             "fluid_kinematic_viscosity": 3.6e-6,
             "fluid_prantl_number": 30
+        }
+    elif name == "chpp":
+        return base | {
+            "power_el": -9999,
+            "__OPTIONAL_MEDIA__": "",
+            "m_fuel_in": "m_c_g_natgas",
+            "m_el_out": "m_e_ac_230v",
+            "m_heat_out": "m_h_w_ht1",
+            "__OPTIONAL_EFFICIENICES__": "",
+            "linear_interface": "fuel_in",
+            "efficiency_fuel_in": "const:1.0",
+            "efficiency_el_out": "pwlin:0.01,0.17,0.25,0.31,0.35,0.37,0.38,0.38,0.38",
+            "efficiency_heat_out": "pwlin:0.8,0.69,0.63,0.58,0.55,0.52,0.5,0.49,0.49",
+            "nr_discretization_steps": 8,
+            "__OPTIONAL__": "",
+            "min_power_fraction": 0.1,
+            "output_temperature": -9999,
+        }
+    elif name == "pvplant":
+        return base | {
+            "power_el": -9999,
+            "energy_profile_file_path": "FILL_IN",
+            "scale": -9999,
+            "m_el_out": "m_e_ac_230v",
+        }
+    elif name == "battery":
+        return base | {
+            "medium": "FILL_IN",
+            "capacity": -9999,
+            "initial_charge": -9999,
+        }
+    elif name == "electrolyser":
+        return base | {
+            "power_el": -9999,
+            "__OPTIONAL_MEDIA__": "",
+            "m_el_in": "m_e_ac_230v",
+            "m_heat_lt_out": "m_h_w_lt1",
+            "m_heat_ht_out": "m_h_w_ht1",
+            "m_h2_out": "m_c_g_h2",
+            "m_o2_out": "m_c_g_o2",
+            "__OPTIONAL_TEMPERATURES__": "",
+            "heat_lt_is_usable": True,
+            "output_temperature_ht": -9999,
+            "output_temperature_lt": -9999,
+            "__OPTIONAL_UNITS__": "",
+            "nr_switchable_units": 2,
+            "dispatch_strategy": "equal_with_mpf",
+            "min_power_fraction": 0.4,
+            "min_power_fraction_total": 0.2,
+            "optimal_unit_plr": 0.5,
+            "__OPTIONAL_EFFICIENCIES__": "",
+            "linear_interface": "el_in",
+            "efficiency_el_in": "const:1.0",
+            "efficiency_h2_out": "const:0.57",
+            "efficiency_h2_out_lossless": "const:0.6",
+            "efficiency_o2_out": "const:0.6",
+            "efficiency_heat_ht_out": "const:0.15",
+            "efficiency_heat_lt_out": "const:0.07",
+            "nr_discretization_steps": 8,
         }
     else:
         raise NotImplementedError(f"Unknown component type {component_type}")
