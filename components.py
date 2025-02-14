@@ -45,6 +45,10 @@ def node_info(component_type):
         return ("default", "BAT")
     elif name == ("electrolyser"):
         return ("default", "ELY")
+    elif name == ("buffertank"):
+        return ("default", "BFT")
+    elif name == ("seasonalthermalstorage"):
+        return ("default", "STS")
     else:
         raise NotImplementedError(f"Unknown component type {component_type}")
 
@@ -76,6 +80,8 @@ def categories():
             ("HeatPump", "Heat Pump"),
             ("GeothermalProbes", "Geothermal Probes"),
             ("GeothermalHeatCollector", "Geothermal Heat Collector"),
+            ("BufferTank", "Buffer Tank"),
+            ("SeasonalThermalStorage", "Seasonal Thermal Storage"),
         ],
         "Electricity": [
             ("CHPP", "Combined-Heat-Power Plant"),
@@ -169,7 +175,7 @@ def component_config(component_type):
         return base | {
             "medium": "FILL_IN",
             "capacity": -9999,
-            "initial_charge": -9999,
+            "load": -9999,
         }
     elif name == "genericheatsource":
         return base | {
@@ -357,6 +363,43 @@ def component_config(component_type):
             "efficiency_heat_ht_out": "const:0.15",
             "efficiency_heat_lt_out": "const:0.07",
             "nr_discretization_steps": 8,
+        }
+    elif name == "buffertank":
+        return base | {
+            "medium": "m_h_w_ht1",
+            "___GENERAL PARAMETER___": "",
+            "model_type": "ideally_stratified",
+            "capacity": 300000,
+            "rho_medium": 1000,
+            "cp_medium": 4.18,
+            "high_temperature": 80.0,
+            "low_temperature": 15.0,
+            "initial_load": 0.5,
+            "max_load_rate": 1.0,
+            "max_unload_rate": 1.5,
+            "___BALANCED MODEL ONLY___": "",
+            "switch_point": 0.25,
+            "___LOSSES___": "",
+            "consider_losses": True,
+            "h_to_r": 2,
+            "constant_ambient_temperature": 18,
+            "ground_temperature": 12,
+            "thermal_transmission_lid": 1.0,
+            "thermal_transmission_barrel": 1.0,
+            "thermal_transmission_bottom": 1.0
+        }
+    elif name == "seasonalthermalstorage":
+        return base | {
+            "capacity": -9999,
+            "load": -9999,
+            "__OPTIONAL_MEDIA__": "",
+            "m_heat_in": "m_h_w_ht1",
+            "m_heat_out": "m_h_w_lt1",
+            "__OPTIONAL_SWITCH_POINT__": "",
+            "use_adaptive_temperature": True,
+            "switch_point": 0.25,
+            "high_temperature": 90.0,
+            "low_temperature": 15.0,
         }
     else:
         raise NotImplementedError(f"Unknown component type {component_type}")
