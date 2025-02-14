@@ -1,5 +1,12 @@
 # Changelog
 
+Current SUSI version: 0.2.0
+Implemented for ReSie version: 0.10.4
+
+## v0.2.0
+* Add all remaining ReSiE components of the current version 0.10.4
+    * With the exception of HeatPump, which is designed around an unreleased version, that will likely be released in the near future
+
 ## v0.1.0
 * Initial release, containing functionality from the prototyping phase:
     * Running SUSI as a streamlit app using the streamlit-flow component
