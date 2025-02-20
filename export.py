@@ -32,34 +32,38 @@ def base_dict():
         "components": {}
     }
 
-def get_outputs(node, flow):
-    """Outputs of the given node as list of node IDs (=UAC).
+def get_outputs(node, nodes, edges):
+    """Outputs of the given node as list of UACs.
 
     # Args:
     -`node:StreamlitFlowNode`: The node
-    -`flow:StreamlitFlow`: The flow (contains edges)
+    -`nodes:dict<int,StreamlitFlowNode>`: All nodes in a dict by their ID
+    -`edges:list<StreamlitFlowEdge>`: All edges in a list
     # Returns:
-    -`list<str>`: A list of node IDs that are the outputs of the given node
+    -`list<str>`: A list of UACs that are the outputs of the given node
     """
     outgoing = []
-    for edge in flow.edges:
+    for edge in edges:
         if edge.source == node.id:
-            outgoing.append(edge.target)
+            target = nodes[edge.target]
+            outgoing.append(target.data["content"])
     return outgoing
 
-def get_inputs(node, flow):
-    """Inputs of the given node as list of node IDs (=UAC).
+def get_inputs(node, nodes, edges):
+    """Inputs of the given node as list of UACs.
 
     # Args:
     -`node:StreamlitFlowNode`: The node
-    -`flow:StreamlitFlow`: The flow (contains edges)
+    -`nodes:dict<int,StreamlitFlowNode>`: All nodes in a dict by their ID
+    -`edges:list<StreamlitFlowEdge>`: All edges in a list
     # Returns:
-    -`list<str>`: A list of node IDs that are the inputs of the given node
+    -`list<str>`: A list of UACs that are the inputs of the given node
     """
     incoming = []
-    for edge in flow.edges:
+    for edge in edges:
         if edge.target == node.id:
-            incoming.append(edge.source)
+            source = nodes[edge.source]
+            incoming.append(source.data["content"])
     return incoming
 
 def energy_matrix(nr_rows, nr_columns):
@@ -88,6 +92,8 @@ def export_flow(flow):
     -`str`: The content of the input file
     """
     as_dict = base_dict()
+    nodes = {node.id: node for node in flow.nodes}
+    edges = flow.edges
 
     for node in flow.nodes:
         if node.id == "dummy":
@@ -95,15 +101,15 @@ def export_flow(flow):
 
         comp_dict = component_config(node.data["component_type"])
         if node.data["component_type"].lower() == "bus":
-            comp_dict["connections"]["input_order"] = get_inputs(node, flow)
-            comp_dict["connections"]["output_order"] = get_outputs(node, flow)
+            comp_dict["connections"]["input_order"] = get_inputs(node, nodes, edges)
+            comp_dict["connections"]["output_order"] = get_outputs(node, nodes, edges)
             comp_dict["connections"]["energy_flow"] = energy_matrix(
                 len(comp_dict["connections"]["input_order"]),
                 len(comp_dict["connections"]["output_order"])
             )
         else:
-            comp_dict["output_refs"] = get_outputs(node, flow)
+            comp_dict["output_refs"] = get_outputs(node, nodes, edges)
 
-        as_dict["components"][node.id] = comp_dict
+        as_dict["components"][node.data["content"]] = comp_dict
 
     return dumps(as_dict, indent=4)
