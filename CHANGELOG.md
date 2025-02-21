@@ -1,7 +1,11 @@
 # Changelog
 
-Current SUSI version: 0.2.0
+Current SUSI version: 0.2.1
 Implemented for ReSie version: 0.10.4
+
+## v0.2.1
+* Adjust parameters of components FuelBoiler and PVPlant
+* Fix that exporting does not respect custom UACs set by editing the nodes
 
 ## v0.2.0
 * Add all remaining ReSiE components of the current version 0.10.4
