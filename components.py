@@ -190,11 +190,13 @@ def component_config(component_type):
         }
     elif name == "fuelboiler":
         return base | {
-            "medium": "FILL_IN",
+            "m_fuel_in": "FILL_IN",
+            "m_heat_out": "m_h_w_ht1",
             "power_th": -9999,
             "__OPTIONAL__": "",
             "efficiency_fuel_in": "const:1.1",
             "efficiency_heat_out": "const:1.0",
+            "linear_interface": "heat_out",
             "min_power_fraction": 0.1,
             "output_temperature": -9999,
         }
@@ -324,7 +326,6 @@ def component_config(component_type):
         }
     elif name == "pvplant":
         return base | {
-            "power_el": -9999,
             "energy_profile_file_path": "FILL_IN",
             "scale": -9999,
             "m_el_out": "m_e_ac_230v",
