@@ -1,2 +1,5 @@
 # python files
 __pycache__
+
+# virtual environments (default name)
+venv
