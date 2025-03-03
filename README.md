@@ -25,11 +25,11 @@ To run SUSI locally, follow these steps:
     ```
 4. Run the Streamlit app:
     ```sh
-    streamlit run main.py
+    streamlit run src/main.py
     ```
     Note that sometimes this might not work due to streamlit not being installed as executable correctly. In that try the following:
     ```sh
-    python -m streamlit run main.py
+    python -m streamlit run src/main.py
     ```
 
 ## Usage
