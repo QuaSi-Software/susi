@@ -104,13 +104,11 @@ def main():
             for entry in cats[cat_name]:
                 if st.button(entry[1]):
                     add_node(create_node(prefix, entry[0]))
-                    st.rerun()
 
         st.markdown("## Actions")
 
         if st.button("Export"):
             st.session_state.exported = export_flow(st.session_state.current_state)
-            st.rerun()
 
     st.session_state.current_state = streamlit_flow(
         'energy_system', 
