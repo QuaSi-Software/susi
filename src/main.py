@@ -22,7 +22,7 @@ def check_state():
         # recognize when nodes are added. as a workaround we initialise with a hidden
         # dummy node and ignore it in the output
         st.session_state.current_state = StreamlitFlowState(
-            [StreamlitFlowNode("dummy", (0,0), {"content": ""}, hidden=True)],
+            [StreamlitFlowNode(id="dummy", pos=(0,0), data={"content": ""}, hidden=True)],
             []
         )
     if "exported" not in st.session_state:
@@ -77,13 +77,15 @@ def create_node(prefix, component_type):
     )
 
     return StreamlitFlowNode(
-        uac,
-        (randint(-20, 20), randint(-20, 20)),
-        {
+        id=uac,
+        pos=(randint(-20, 20), randint(-20, 20)),
+        data={
             'content': uac,
             'component_type': component_type,
         },
-        node_type, 'right', 'left',
+        node_type=node_type,
+        source_position='right',
+        target_position='left',
         deletable=True
     )
 
