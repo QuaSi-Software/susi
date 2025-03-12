@@ -7,48 +7,49 @@ def node_info(component_type):
     # Args:
     -`component_type:str`: The component type
     # Returns:
-    -`node_type:str`: The node type, determines incoming/outgoing edge connections
+    -`nr_inputs:int`: The number of inputs for the node
+    -`nr_outputs:int`: The number of outputs for the node
     -`segment:str`: The segment for the UAC
     """
     name = component_type.lower()
     if name == "bus":
-        return ("default", "BUS")
+        return (1, 1, "BUS")
     elif name == "boundedsupply":
-        return ("input", "SRC")
+        return (0, 1, "SRC")
     elif name == "fixedsupply":
-        return ("input", "SRC")
+        return (0, 1, "SRC")
     elif name == "demand":
-        return ("output", "DEM")
+        return (1, 0, "DEM")
     elif name == "boundedsink":
-        return ("output", "DEM")
+        return (1, 0, "DEM")
     elif name == "gridinput":
-        return ("input", "GRI")
+        return (0, 1, "GRI")
     elif name == "gridoutput":
-        return ("output", "GRO")
+        return (1, 0, "GRO")
     elif name == "storage":
-        return ("default", "STO")
+        return (1, 1, "STO")
     elif name == ("genericheatsource"):
-        return ("input", "GHS")
+        return (0, 1, "GHS")
     elif name == ("fuelboiler"):
-        return ("default", "FBO")
+        return (1, 1, "FBO")
     elif name == ("heatpump"):
-        return ("default", "HP")
+        return (2, 1, "HP")
     elif name == ("geothermalprobes"):
-        return ("default", "GTP")
+        return (1, 1, "GTP")
     elif name == ("geothermalheatcollector"):
-        return ("default", "GHC")
+        return (1, 1, "GHC")
     elif name == ("chpp"):
-        return ("default", "CHPP")
+        return (1, 2, "CHPP")
     elif name == ("pvplant"):
-        return ("input", "PV")
+        return (0, 1, "PV")
     elif name == ("battery"):
-        return ("default", "BAT")
+        return (1, 1, "BAT")
     elif name == ("electrolyser"):
-        return ("default", "ELY")
+        return (1, 4, "ELY")
     elif name == ("buffertank"):
-        return ("default", "BFT")
+        return (1, 1, "BFT")
     elif name == ("seasonalthermalstorage"):
-        return ("default", "STS")
+        return (1, 1, "STS")
     else:
         raise NotImplementedError(f"Unknown component type {component_type}")
 

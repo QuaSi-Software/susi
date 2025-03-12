@@ -71,7 +71,7 @@ def create_node(prefix, component_type):
     # Returns:
     -`StreamlitFlowNode`: The created node
     """
-    node_type, segment = node_info(component_type)
+    src_handles, trg_handles, segment = node_info(component_type)
     uac = prefix + f"_{segment}_" + lpad(
         str(nr_of_nodes(f"_{segment}_", st.session_state.current_state.nodes) + 1), 2, "0"
     )
@@ -83,9 +83,11 @@ def create_node(prefix, component_type):
             'content': uac,
             'component_type': component_type,
         },
-        node_type=node_type,
+        node_type='default',
         source_position='right',
-        target_position='left',
+        source_handles=trg_handles, # the definition of input/output is reversed for
+        target_position='left',     # Streamlit Flow, as they reference the edges and not
+        target_handles=src_handles, # the nodes, so we switch it here
         deletable=True
     )
 
