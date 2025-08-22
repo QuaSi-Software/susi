@@ -1,7 +1,11 @@
 # Changelog
 
-Current SUSI version: 0.2.1
-Implemented for ReSie version: 0.10.4
+Current SUSI version: 0.2.2
+Implemented for ReSie version: 0.11.3
+
+## v0.2.2
+* Update and restructure parameters of components HeatPump, GeothermalProbe, GeothermalCollector and BufferTank
+* Update parameters of STES to new detailed model
 
 ## v0.2.1
 * Adjust parameters of components FuelBoiler and PVPlant
