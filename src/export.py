@@ -26,8 +26,6 @@ def base_dict():
             "time_step": 900,
             "time_step_unit": "seconds",
             "weather_file_path": "./path/to/dat/or/epw/weather_file.epw",
-            "latitude": 0.0,
-            "longitude": 0.0,
         },
         "components": {}
     }
