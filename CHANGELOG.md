@@ -1,7 +1,11 @@
 # Changelog
 
-Current SUSI version: 0.2.2
-Implemented for ReSie version: 0.11.3
+Current SUSI version: 0.2.3
+Implemented for ReSie version: 0.12.0
+
+# v0.2.3
+* change default for CSV and plot output to new syntax
+* remove coordinates in sim_params as the default should be to get them from a weather file
 
 ## v0.2.2
 * Update and restructure parameters of components HeatPump, GeothermalProbe, GeothermalCollector and BufferTank
