@@ -1,7 +1,7 @@
 # Changelog
 
 Current SUSI version: 0.2.4
-Implemented for ReSie version: 0.12.0
+Implemented for ReSie version: 0.12.4
 
 # v0.2.4
 * Add component SolarthermalCollector 
