@@ -50,6 +50,8 @@ def node_info(component_type):
         return (1, 1, "BFT")
     elif name == ("seasonalthermalstorage"):
         return (1, 1, "STS")
+    elif name == ("solarthermalcollector"):
+        return (1, 1, "STC")
     else:
         raise NotImplementedError(f"Unknown component type {component_type}")
 
@@ -83,6 +85,7 @@ def categories():
             ("GeothermalHeatCollector", "Geothermal Heat Collector"),
             ("BufferTank", "Buffer Tank"),
             ("SeasonalThermalStorage", "Seasonal Thermal Storage"),
+            ("SolarthermalCollector", "Solarthermal Collector")
         ],
         "Electricity": [
             ("CHPP", "Combined-Heat-Power Plant"),
@@ -316,6 +319,38 @@ def component_config(component_type):
             "fluid_density": 1025,
             "fluid_kinematic_viscosity": 3.6e-6,
             "fluid_prantl_number": 30
+        }
+    elif name == "solarthermalcollector":
+        return base | {
+            "__OPTIONAL_MEDIA__": "",
+            "m_heat_out": "m_h_w_lt1",
+            "__WEATHER_DATA__": "",
+            "ambient_temperature_from_global_file": "temp_ambient_air",
+            "beam_solar_radiation_from_global_file": "beamHorIrr",
+            "diffuse_solar_radiation_from_global_file": "difHorIrr",
+            "infrared_sky_radiation_from_global_file": "longWaveIrr",
+            "wind_speed_from_global_file": "wind_speed",
+            "__SIZING__": "",
+            "collector_gross_area": -9999,
+            "tilt_angle": -9999,
+            "azimuth_angle": -9999,
+            "__OPERATION_CONDITIONS__": "",
+            "delta_T": -9999,
+            "___or___": "",
+            "spec_flow_rate": -9999,                   
+            "__MODEL_PARAMETERS__": "",
+            "eta_0_b": -9999,
+            "K_b_t_array":[-9999, -9999, -9999, -9999, -9999, -9999, -9999, -9999, -9999],
+            "K_b_l_array":[-9999, -9999, -9999, -9999, -9999, -9999, -9999, -9999, -9999],
+            "K_d": -9999,
+            "a_params": [-9999, -9999, -9999, -9999, -9999, -9999, -9999, -9999],
+            "vol_heat_capacity": 4.2e6,
+            "ground_reflectance":0.2,
+            "wind_speed_reduction": 1.0,
+            "__OPTIONAL_"
+            "spec_flow_rate_min": 2.0e-6,   
+            "__or__": "",
+            "delta_T_min": 2.0
         }
     elif name == "chpp":
         return base | {

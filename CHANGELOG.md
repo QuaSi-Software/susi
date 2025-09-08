@@ -1,7 +1,10 @@
 # Changelog
 
-Current SUSI version: 0.2.3
+Current SUSI version: 0.2.4
 Implemented for ReSie version: 0.12.0
+
+# v0.2.4
+* Add component SolarthermalCollector 
 
 # v0.2.3
 * change default for CSV and plot output to new syntax
