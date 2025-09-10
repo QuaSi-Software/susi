@@ -51,7 +51,7 @@ def node_info(component_type):
     elif name == ("seasonalthermalstorage"):
         return (1, 1, "STS")
     elif name == ("solarthermalcollector"):
-        return (1, 1, "STC")
+        return (0, 1, "STC")
     else:
         raise NotImplementedError(f"Unknown component type {component_type}")
 
