@@ -1,0 +1,3 @@
+[submodule "streamlit-flow"]
+	path = streamlit-flow
+	url = git@github.com:siz-energieplus/streamlit-flow.git
