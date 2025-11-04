@@ -5,36 +5,45 @@ SUSI is a Streamlit application for creating input files used in the simulation 
 ## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
-- You have installed Python 3.9 or later.
+- You have installed Docker Desktop
 
 ## Running the App
 
 To run SUSI locally, follow these steps:
 
-1. Clone the repository:
+1. Get a copy of the source files
+    * The recommended way is to use `git clone --recurse-submodules git@github.com:QuaSi-Software/susi.git`
+    * If you use clone without `--recurse-submodules` you will need to `cd` into the directory and run `git submodule update --init --recursive` afterwards
+    * If you do not wish to use git to get the source files, you will need to fetch the repository in submodule `streamlit-flow` separately and place its files in there
+1. Navigate to the project directory and then the `streamlit-flow` submodule if not already:
     ```sh
-    git clone https://github.com/QuaSi-Software/susi.git
+    cd susi/streamlit-flow
     ```
-2. Navigate to the project directory:
+1. Construct the docker image for the submodule:
+    **Note: While it would seem that the port number is customizable, there is currently a bug preventing using any port other than 3001.**
     ```sh
-    cd susi
+    docker build --build-arg PORT=3001 -t streamlit-flow .
     ```
-3. Install the required dependencies:
+1. Run a container from the created image in detached mode:
     ```sh
-    pip install -r requirements.txt
+    docker run -d -p 3001:3001 --env PORT=3001 streamlit-flow
     ```
-4. Run the Streamlit app:
+1. Navigate to the SUSI main directory:
     ```sh
-    streamlit run src/main.py
+    cd ..
     ```
-    Note that sometimes this might not work due to streamlit not being installed as executable correctly. In that try the following:
+1. Construct the docker image for the SUSI app:
     ```sh
-    python -m streamlit run src/main.py
+    docker build --build-arg PORT=8505 -t susi .
     ```
+1. Run a container from the created image in detached mode:
+    ```sh
+    docker run -d -p 8505:8505 --env PORT=8505 streamlit-flow
+1. Now that both containers are running you can use SUSI by opening `http://localhost:8505` in a web browser. The first time it might take a little while until the drawing surface is available. After the first run, you can stop and start the containers via Docker Desktop instead of using the console commands.
 
 ## Usage
 
-Once the app is running, open your web browser and go to `http://localhost:8501` to view the app. You might be directed there automatically by streamlit upon running the app.
+Once the app is running, open your web browser and go to `http://localhost:8505` to view the app.
 
 ### Creating an energy system
 Using the buttons in the sidebar on the left, you can create component nodes of various types. Connecting the nodes using the little connector widgets will link the components, where the left widget (if any) is an input to the component and the widget on the right (if any) is an output of the component.
