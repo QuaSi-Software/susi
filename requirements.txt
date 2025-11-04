@@ -1,2 +1,1 @@
 streamlit>=1.42.0
-streamlit-flow-component>=1.5.0
