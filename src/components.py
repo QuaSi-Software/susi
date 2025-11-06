@@ -1,5 +1,16 @@
 """Contains ReSiE-component-specific data and how they relate to components of streamlit flow.
 """
+from dataclasses import dataclass
+
+@dataclass
+class Node_Type:
+    nr_inputs : int
+    nr_outputs : int
+    segment : str
+    node_color : str = "#000000"
+
+hot_color = "#bc1b1b"
+electricity_color = "#eeb014"
 
 def node_info(component_type):
     """Info required for creating a node of the given component type.
@@ -13,45 +24,45 @@ def node_info(component_type):
     """
     name = component_type.lower()
     if name == "bus":
-        return (1, 1, "BUS")
+        return Node_Type(1,1,"BUS")
     elif name == "boundedsupply":
-        return (0, 1, "SRC")
+        return Node_Type(0, 1, "SRC")
     elif name == "fixedsupply":
-        return (0, 1, "SRC")
+        return Node_Type(0, 1, "SRC")
     elif name == "demand":
-        return (1, 0, "DEM")
+        return Node_Type(1, 0, "DEM")
     elif name == "boundedsink":
-        return (1, 0, "DEM")
+        return Node_Type(1, 0, "DEM")
     elif name == "gridinput":
-        return (0, 1, "GRI")
+        return Node_Type(0, 1, "GRI")
     elif name == "gridoutput":
-        return (1, 0, "GRO")
+        return Node_Type(1, 0, "GRO")
     elif name == "storage":
-        return (1, 1, "STO")
+        return Node_Type(1, 1, "STO")
     elif name == ("genericheatsource"):
-        return (0, 1, "GHS")
+        return Node_Type(0, 1, "GHS", hot_color)
     elif name == ("fuelboiler"):
-        return (1, 1, "FBO")
+        return Node_Type(1, 1, "FBO", hot_color)
     elif name == ("heatpump"):
-        return (2, 1, "HP")
+        return Node_Type(2, 1, "HP", hot_color)
     elif name == ("geothermalprobes"):
-        return (1, 1, "GTP")
+        return Node_Type(1, 1, "GTP", hot_color)
     elif name == ("geothermalheatcollector"):
-        return (1, 1, "GHC")
+        return Node_Type(1, 1, "GHC", hot_color)
     elif name == ("chpp"):
-        return (1, 2, "CHPP")
+        return Node_Type(1, 2, "CHPP", electricity_color)
     elif name == ("pvplant"):
-        return (0, 1, "PV")
+        return Node_Type(0, 1, "PV", electricity_color)
     elif name == ("battery"):
-        return (1, 1, "BAT")
+        return Node_Type(1, 1, "BAT", electricity_color)
     elif name == ("electrolyser"):
-        return (1, 4, "ELY")
+        return Node_Type(1, 4, "ELY", electricity_color)
     elif name == ("buffertank"):
-        return (1, 1, "BFT")
+        return Node_Type(1, 1, "BFT")
     elif name == ("seasonalthermalstorage"):
-        return (1, 1, "STS")
+        return Node_Type(1, 1, "STS", hot_color)
     elif name == ("solarthermalcollector"):
-        return (0, 1, "STC")
+        return Node_Type(0, 1, "STC", hot_color)
     else:
         raise NotImplementedError(f"Unknown component type {component_type}")
 

@@ -12,9 +12,9 @@ import streamlit_flow
 from streamlit_flow import streamlit_flow as streamlit_flow_component
 from streamlit_flow.elements import StreamlitFlowNode
 from streamlit_flow.state import StreamlitFlowState
-from streamlit_flow.layouts import ManualLayout
+from streamlit_flow.layouts import ManualLayout, TreeLayout
 from export import export_flow
-from components import node_info, categories
+from components import node_info, categories, Node_Type
 import importlib
 
 def check_state():
@@ -73,7 +73,8 @@ def create_node(prefix, component_type):
     # Returns:
     -`StreamlitFlowNode`: The created node
     """
-    src_handles, trg_handles, segment = node_info(component_type)
+    node : Node_Type = node_info(component_type)
+    src_handles, trg_handles, segment = node.nr_inputs, node.nr_outputs, node.segment
     uac = prefix + f"_{segment}_" + lpad(
         str(nr_of_nodes(f"_{segment}_", st.session_state.current_state.nodes) + 1), 2, "0"
     )
@@ -90,7 +91,8 @@ def create_node(prefix, component_type):
         source_handles=trg_handles, # the definition of input/output is reversed for
         target_position='left',     # Streamlit Flow, as they reference the edges and not
         target_handles=src_handles, # the nodes, so we switch it here
-        deletable=True
+        deletable=True,
+        style={'color': 'white', 'backgroundColor': node.node_color, 'border': '1px solid white'}
     )
 
 def main():
@@ -109,7 +111,7 @@ def main():
             st.markdown(f"### {cat_name}")
 
             for entry in cats[cat_name]:
-                if st.button(entry[1]):
+                if st.button(entry[1], use_container_width=True):
                     add_node(create_node(prefix, entry[0]))
 
         st.markdown("## Actions")
@@ -120,7 +122,7 @@ def main():
     st.session_state.current_state = streamlit_flow_component(
         'energy_system', 
         st.session_state.current_state,
-        layout=ManualLayout(),
+        layout=TreeLayout(direction="right"),
         fit_view=True,
         enable_node_menu=True,
         enable_edge_menu=True,
@@ -130,9 +132,11 @@ def main():
         show_minimap=True,
         hide_watermark=True,
         allow_new_edges=True,
-        min_zoom=0.1
+        min_zoom=0.1,
+        default_edge_options={"deletable":True}
     )
 
+    st.text("Hey")
     st.text_area("Exported", st.session_state.exported)
 
 main()
