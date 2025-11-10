@@ -1,0 +1,22 @@
+name: Susi
+services:
+  streamlit-flow:
+    container_name: streamlit_flow_container
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+    image: streamlit-flow
+  
+  susi:
+    container_name: susi_container
+    volumes: 
+      - ./:/app
+    ports:
+      - "8505:8505"
+    environment:
+      - PORT=8505
+    image: susi
+
+# To run susi, so you can run the debugger, run 
+# docker compose
