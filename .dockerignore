@@ -1,0 +1,10 @@
+# Files and directories not needed to run the Susi app
+# Human readable files
+README.md
+LICENSE
+CHANGELOG.md
+
+# git
+.gitignore
+.gitmodules
+

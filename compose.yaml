@@ -1,22 +1,54 @@
 name: Susi
 services:
-  streamlit-flow:
+  streamlit-flow: &streamlit-flow
     container_name: streamlit_flow_container
+    build: 
+      context: ./streamlit-flow
+      args: 
+        - PORT:3001
+      tags:
+        - "streamlit_flow_image"
+    volumes:
+      - ./streamlit-flow:/app/
+      - /app/streamlit_flow/frontend/node_modules
     ports:
       - "3001:3001"
     environment:
       - PORT=3001
-    image: streamlit-flow
+    image: streamlit_flow_image
+    profiles: [default]
   
-  susi:
+  susi: &susi
     container_name: susi_container
+    build: 
+      context: .
+      args: 
+        - PORT:8505
+      tags:
+        - "susi_image"
     volumes: 
       - ./:/app
     ports:
       - "8505:8505"
     environment:
       - PORT=8505
-    image: susi
+    image: susi_image
+    depends_on:
+      - streamlit-flow
+    profiles: [default]
 
-# To run susi, so you can run the debugger, run 
-# docker compose
+  susi-debug:
+    <<: *susi
+    container_name: susi_container_debug
+    tty: true
+    command: bash
+    profiles: [debug] 
+  
+  # streamlit-flow-debug:
+  #   <<: *streamlit-flow
+  #   container_name: streamlit_flow_container_debug
+  #   tty: true
+  #   command: bash
+  #   profiles: [debug] 
+
+# To run susi: COMPOSE_PROFILES=default docker compose up
