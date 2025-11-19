@@ -19,6 +19,13 @@ To run SUSI locally, follow these steps:
 1. Navigate to the project directory and run `COMPOSE_PROFILES=default docker compose up`. This will likely take a few minutes.
 1. Now that both containers are running you can use SUSI by opening `http://localhost:8505` in a web browser. The first time it might take a little while until the drawing surface is available. After the first run, you can stop and start the containers via Docker Desktop instead of using the console commands.
 
+### VSC Development
+To edit susi and streamlit flow code in VSCode, you can attach use the `Attach to running container` function. 
+
+You'll notice that streamlit-flow is visible in the susi container, but you shouldn't be able to save edits. This is to avoid you accidentally overwriting changes to the streamlit-flow container, as the changes will propagate over after a few seconds. 
+
+Thus, to avoid confusion go to the Container settings in vscode in your susi container, search for exclude and add the following glob pattern to Files:Exclude: `**/streamlit-flow`
+
 ## Usage
 
 Once the app is running, open your web browser and go to `http://localhost:8505` to view the app.
