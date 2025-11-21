@@ -22,9 +22,9 @@ To run SUSI locally, follow these steps:
 ### VSC Development
 To edit susi and streamlit flow code in VSCode, you can attach use the `Attach to running container` function. 
 
-You'll notice that streamlit-flow is visible in the susi container, but you shouldn't be able to save edits. This is to avoid you accidentally overwriting changes to the streamlit-flow container, as the changes will propagate over after a few seconds. 
+The react code in the streamlit-flow component will run on the nodejs container, but its python code will run on the susi container. Code changes on either container should propagate over via their volumes, but be aware, there may be a slight delay. 
 
-Thus, to avoid confusion go to the Container settings in vscode in your susi container, search for exclude and add the following glob pattern to Files:Exclude: `**/streamlit-flow`
+If you want to add guardrails to prevent you from editing react code on the susi container, you can add a glob pattern to VSC's `Files:Exclude`.
 
 ## Usage
 
