@@ -28,7 +28,6 @@ services:
         - "susi_image"
     volumes: 
       - ./:/app
-      - ./streamlit-flow:/app/streamlit-flow:ro #read_only: true
     ports:
       - "8505:8505"
     environment:
