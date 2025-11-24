@@ -14,7 +14,7 @@ from streamlit_flow.elements import StreamlitFlowNode
 from streamlit_flow.state import StreamlitFlowState
 from streamlit_flow.layouts import ManualLayout
 from export import export_flow
-from components import node_info, categories, Node_Type
+from components import node_info, categories
 import importlib
 
 def check_state():
