@@ -1,12 +1,17 @@
 # Changelog
 
-Current SUSI version: 0.2.4
+Current SUSI version: 0.3.0
 Implemented for ReSie version: 0.12.4
 
-# v0.2.4
+## v0.3.0
+* Refactor deployment / operation of SUSI so it works with Docker containers
+    * The repository now includes the required custom implementation of the streamlit-flow component as submodule, so it is no longer necessary to have a separate installation as it will be started in a second container alongside SUSI
+    * **Note: This is a breaking change and users running SUSI are required to follow the new installation instructions using Docker.**
+
+## v0.2.4
 * Add component SolarthermalCollector 
 
-# v0.2.3
+## v0.2.3
 * change default for CSV and plot output to new syntax
 * remove coordinates in sim_params as the default should be to get them from a weather file
 
