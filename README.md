@@ -5,36 +5,38 @@ SUSI is a Streamlit application for creating input files used in the simulation 
 ## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
-- You have installed Python 3.9 or later.
+- You have installed Docker Desktop
 
 ## Running the App
 
 To run SUSI locally, follow these steps:
 
-1. Clone the repository:
-    ```sh
-    git clone https://github.com/QuaSi-Software/susi.git
+1. Get a copy of the source files
+    * The recommended way is to use `git clone --recurse-submodules git@github.com:QuaSi-Software/susi.git`
+    * If you use clone without `--recurse-submodules` you will need to `cd` into the directory and run `git submodule update --init --recursive` afterwards
+    * If you do not wish to use git to get the source files, you will need to fetch [the repository](https://github.com/siz-energieplus/streamlit-flow) in submodule `streamlit-flow` separately and place its files in there
+1. Navigate to the project directory: `cd susi`
+1. Change the line endings in file `streamlit-flow/start.sh` to LF if they were CRLF
+1. Create file `.env` with the following content:
     ```
-2. Navigate to the project directory:
-    ```sh
-    cd susi
+    COMPOSE_PROFILES="default"
+    SUSI_PORT=8505
+    STREAMLIT_FLOW_PORT=3001
     ```
-3. Install the required dependencies:
-    ```sh
-    pip install -r requirements.txt
-    ```
-4. Run the Streamlit app:
-    ```sh
-    streamlit run src/main.py
-    ```
-    Note that sometimes this might not work due to streamlit not being installed as executable correctly. In that try the following:
-    ```sh
-    python -m streamlit run src/main.py
-    ```
+    You can customize the port that SUSI runs on. **Note: At the moment it is not possible to change the port that the streamlit-flow component runs on and the value 3001 must be used.**
+1. Start the containers, which will likely take a few minutes the first time: `docker compose up`
+1. Now that both containers are running you can use SUSI by opening `http://localhost:8505` in a web browser. After the first run, you can stop and start the containers via Docker Desktop instead of using the console commands.
+
+### VSC Development
+To edit SUSI and streamlit-flow code in VS Code, you can attach use the `Attach to running container` function. 
+
+The react code in the streamlit-flow component will run on the nodejs container, but its python code will run on the SUSI container. Code changes on either container should propagate over via their volumes, but be aware, there may be a slight delay. 
+
+If you want to add guardrails to prevent you from editing react code on the SUSI container, you can add a glob pattern to VSC's `Files:Exclude`.
 
 ## Usage
 
-Once the app is running, open your web browser and go to `http://localhost:8501` to view the app. You might be directed there automatically by streamlit upon running the app.
+Once the app is running, open your web browser and go to `http://localhost:8505` to view the app.
 
 ### Creating an energy system
 Using the buttons in the sidebar on the left, you can create component nodes of various types. Connecting the nodes using the little connector widgets will link the components, where the left widget (if any) is an input to the component and the widget on the right (if any) is an output of the component.

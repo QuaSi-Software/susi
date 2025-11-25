@@ -8,12 +8,14 @@ after having installed dependencies with
 """
 from random import randint
 import streamlit as st
-from streamlit_flow import streamlit_flow
+import streamlit_flow
+from streamlit_flow import streamlit_flow as streamlit_flow_component
 from streamlit_flow.elements import StreamlitFlowNode
 from streamlit_flow.state import StreamlitFlowState
 from streamlit_flow.layouts import ManualLayout
 from export import export_flow
 from components import node_info, categories
+import importlib
 
 def check_state():
     """Ensures the current state is attached to the simulation state and creates it if not."""
@@ -93,6 +95,7 @@ def create_node(prefix, component_type):
 
 def main():
     """Entry point to the streamlit process."""
+    importlib.reload(streamlit_flow)
     check_state()
     st.set_page_config("SUSI - Simple UI for Simulation Input", layout="wide")
 
@@ -114,7 +117,7 @@ def main():
         if st.button("Export"):
             st.session_state.exported = export_flow(st.session_state.current_state)
 
-    st.session_state.current_state = streamlit_flow(
+    st.session_state.current_state = streamlit_flow_component(
         'energy_system', 
         st.session_state.current_state,
         layout=ManualLayout(),

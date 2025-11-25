@@ -1,0 +1,52 @@
+name: SUSI
+services:
+  streamlit-flow: &streamlit-flow
+    container_name: streamlit_flow_container
+    build:
+      context: ./streamlit-flow
+      args:
+        STREAMLIT_FLOW_PORT: ${STREAMLIT_FLOW_PORT:-3001}
+      tags:
+        - "streamlit_flow_image"
+    volumes:
+      - ./streamlit-flow:/app/
+      - /app/streamlit_flow/frontend/node_modules
+    ports:
+      - "${STREAMLIT_FLOW_PORT:-3001}:${STREAMLIT_FLOW_PORT:-3001}"
+    environment:
+      - STREAMLIT_FLOW_PORT=${STREAMLIT_FLOW_PORT:-3001}
+    image: streamlit_flow_image
+    profiles: [default]
+  
+  susi: &susi
+    container_name: susi_container
+    build: 
+      context: .
+      args: 
+        PORT_SUSI: ${SUSI_PORT:-8505}
+      tags:
+        - "susi_image"
+    volumes: 
+      - ./:/app
+    ports:
+      - "${SUSI_PORT:-8505}:${SUSI_PORT:-8505}"
+    environment:
+      - PORT_SUSI=${SUSI_PORT:-8505}
+    image: susi_image
+    depends_on:
+      - streamlit-flow
+    profiles: [default]
+
+  susi-debug:
+    <<: *susi
+    container_name: susi_container_debug
+    tty: true
+    command: bash
+    profiles: [debug] 
+  
+  # streamlit-flow-debug:
+  #   <<: *streamlit-flow
+  #   container_name: streamlit_flow_container_debug
+  #   tty: true
+  #   command: bash
+  #   profiles: [debug] 
