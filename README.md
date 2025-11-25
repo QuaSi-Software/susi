@@ -14,17 +14,25 @@ To run SUSI locally, follow these steps:
 1. Get a copy of the source files
     * The recommended way is to use `git clone --recurse-submodules git@github.com:QuaSi-Software/susi.git`
     * If you use clone without `--recurse-submodules` you will need to `cd` into the directory and run `git submodule update --init --recursive` afterwards
-    * If you do not wish to use git to get the source files, you will need to fetch the repository in submodule `streamlit-flow` separately and place its files in there
-1. Change the line endings in `streamlit-flow/start.sh` to CRLF
-1. Navigate to the project directory and run `COMPOSE_PROFILES=default docker compose up`. This will likely take a few minutes.
-1. Now that both containers are running you can use SUSI by opening `http://localhost:8505` in a web browser. The first time it might take a little while until the drawing surface is available. After the first run, you can stop and start the containers via Docker Desktop instead of using the console commands.
+    * If you do not wish to use git to get the source files, you will need to fetch [the repository](https://github.com/siz-energieplus/streamlit-flow) in submodule `streamlit-flow` separately and place its files in there
+1. Navigate to the project directory: `cd susi`
+1. Change the line endings in file `streamlit-flow/start.sh` to LF if they were CRLF
+1. Create file `.env` with the following content:
+    ```
+    COMPOSE_PROFILES="default"
+    SUSI_PORT=8505
+    STREAMLIT_FLOW_PORT=3001
+    ```
+    You can customize the port that SUSI runs on. **Note: At the moment it is not possible to change the port that the streamlit-flow component runs on and the value 3001 must be used.**
+1. Start the containers, which will likely take a few minutes the first time: `docker compose up`
+1. Now that both containers are running you can use SUSI by opening `http://localhost:8505` in a web browser. After the first run, you can stop and start the containers via Docker Desktop instead of using the console commands.
 
 ### VSC Development
-To edit susi and streamlit flow code in VSCode, you can attach use the `Attach to running container` function. 
+To edit SUSI and streamlit-flow code in VS Code, you can attach use the `Attach to running container` function. 
 
-The react code in the streamlit-flow component will run on the nodejs container, but its python code will run on the susi container. Code changes on either container should propagate over via their volumes, but be aware, there may be a slight delay. 
+The react code in the streamlit-flow component will run on the nodejs container, but its python code will run on the SUSI container. Code changes on either container should propagate over via their volumes, but be aware, there may be a slight delay. 
 
-If you want to add guardrails to prevent you from editing react code on the susi container, you can add a glob pattern to VSC's `Files:Exclude`.
+If you want to add guardrails to prevent you from editing react code on the SUSI container, you can add a glob pattern to VSC's `Files:Exclude`.
 
 ## Usage
 

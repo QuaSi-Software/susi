@@ -1,20 +1,20 @@
-name: Susi
+name: SUSI
 services:
   streamlit-flow: &streamlit-flow
     container_name: streamlit_flow_container
-    build: 
+    build:
       context: ./streamlit-flow
-      args: 
-        - PORT:3001
+      args:
+        STREAMLIT_FLOW_PORT: ${STREAMLIT_FLOW_PORT:-3001}
       tags:
         - "streamlit_flow_image"
     volumes:
       - ./streamlit-flow:/app/
       - /app/streamlit_flow/frontend/node_modules
     ports:
-      - "3001:3001"
+      - "${STREAMLIT_FLOW_PORT:-3001}:${STREAMLIT_FLOW_PORT:-3001}"
     environment:
-      - PORT=3001
+      - STREAMLIT_FLOW_PORT=${STREAMLIT_FLOW_PORT:-3001}
     image: streamlit_flow_image
     profiles: [default]
   
@@ -23,15 +23,15 @@ services:
     build: 
       context: .
       args: 
-        - PORT:8505
+        PORT_SUSI: ${SUSI_PORT:-8505}
       tags:
         - "susi_image"
     volumes: 
       - ./:/app
     ports:
-      - "8505:8505"
+      - "${SUSI_PORT:-8505}:${SUSI_PORT:-8505}"
     environment:
-      - PORT=8505
+      - PORT_SUSI=${SUSI_PORT:-8505}
     image: susi_image
     depends_on:
       - streamlit-flow
@@ -50,5 +50,3 @@ services:
   #   tty: true
   #   command: bash
   #   profiles: [debug] 
-
-# To run susi: COMPOSE_PROFILES=default docker compose up

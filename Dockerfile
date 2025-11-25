@@ -3,9 +3,9 @@
 FROM python:3.11.14-bookworm
 
 # add build argument for the port with default value
-ARG PORT=8505
-ENV PORT=$PORT
-ENV STREAMLIT_SERVER_PORT=$PORT
+ARG PORT_SUSI=8505
+ENV PORT_SUSI=${PORT_SUSI}
+ENV STREAMLIT_SERVER_PORT=${PORT_SUSI}
 
 WORKDIR /app
 COPY . ./
@@ -16,6 +16,6 @@ RUN pip install -r ./requirements.txt
 # note: make sure you have followed the installation step for the git submodule
 RUN pip install -e ./streamlit-flow
 
-EXPOSE ${PORT}
+EXPOSE ${PORT_SUSI}
 
 CMD ["streamlit", "run", "./src/main.py"]
