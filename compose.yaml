@@ -12,11 +12,12 @@ services:
       - ./streamlit-flow:/app/
       - /app/streamlit_flow/frontend/node_modules
     ports:
+      - 46836:46836
       - "${STREAMLIT_FLOW_PORT:-3001}:${STREAMLIT_FLOW_PORT:-3001}"
     environment:
       - STREAMLIT_FLOW_PORT=${STREAMLIT_FLOW_PORT:-3001}
     image: streamlit_flow_image
-    profiles: [default]
+    profiles: [default, debug]
   
   susi: &susi
     container_name: susi_container
@@ -43,10 +44,3 @@ services:
     tty: true
     command: bash
     profiles: [debug] 
-  
-  # streamlit-flow-debug:
-  #   <<: *streamlit-flow
-  #   container_name: streamlit_flow_container_debug
-  #   tty: true
-  #   command: bash
-  #   profiles: [debug] 
