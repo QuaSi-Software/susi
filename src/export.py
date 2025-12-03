@@ -98,6 +98,7 @@ def export_flow(flow):
             continue
 
         comp_dict = component_config(node.data["component_type"])
+        comp_dict["node_position"] = node.position
         if node.data["component_type"].lower() == "bus":
             comp_dict["connections"]["input_order"] = get_inputs(node, nodes, edges)
             comp_dict["connections"]["output_order"] = get_outputs(node, nodes, edges)

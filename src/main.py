@@ -15,11 +15,13 @@ from streamlit_flow.state import StreamlitFlowState
 from streamlit_flow.layouts import ManualLayout, TreeLayout
 from export import export_flow
 from components import node_info, categories, Node_Type
+from import_flow_state import generate_state_from_import
 import importlib
+from nodeTypes import Node_Category, get_node_types_in_category, create_new_node
 
 def check_state():
     """Ensures the current state is attached to the simulation state and creates it if not."""
-    if 'current_state' not in st.session_state:
+    if "current_state" not in st.session_state:
         # for some reason initialising with an empty node list causes the state to not
         # recognize when nodes are added. as a workaround we initialise with a hidden
         # dummy node and ignore it in the output
@@ -64,7 +66,7 @@ def lpad(to_pad, to_len, pad_char="0"):
     """
     return (str(pad_char) * int(to_len - len(to_pad))) + to_pad
 
-def create_node(prefix, component_type):
+def create_node(prefix, node : Node_Type):
     """Create a node of the given type.
 
     # Args:
@@ -73,27 +75,10 @@ def create_node(prefix, component_type):
     # Returns:
     -`StreamlitFlowNode`: The created node
     """
-    node : Node_Type = node_info(component_type)
-    src_handles, trg_handles, segment = node.nr_inputs, node.nr_outputs, node.segment
-    uac = prefix + f"_{segment}_" + lpad(
-        str(nr_of_nodes(f"_{segment}_", st.session_state.current_state.nodes) + 1), 2, "0"
+    uac = prefix + f"_{node.segment}_" + lpad(
+        str(nr_of_nodes(f"_{node.segment}_", st.session_state.current_state.nodes) + 1), 2, "0"
     )
-
-    return StreamlitFlowNode(
-        id=uac,
-        pos=(randint(-20, 20), randint(-20, 20)),
-        data={
-            'content': uac,
-            'component_type': component_type,
-        },
-        node_type='default',
-        source_position='right',
-        source_handles=trg_handles, # the definition of input/output is reversed for
-        target_position='left',     # Streamlit Flow, as they reference the edges and not
-        target_handles=src_handles, # the nodes, so we switch it here
-        deletable=True,
-        style={'color': 'white', 'backgroundColor': node.node_color, 'border': '1px solid white'}
-    )
+    return create_new_node(name=uac, position=(randint(-20, 20), randint(-20, 20)), node_type=node)
 
 def main():
     """Entry point to the streamlit process."""
@@ -106,18 +91,25 @@ def main():
         prefix = st.text_input("UAC prefix", "TST")
 
         st.markdown("## Components")
-        cats = categories()
-        for cat_name in cats["_order"]:
-            st.markdown(f"### {cat_name}")
+        for category in Node_Category:
+            st.markdown(f"### {category.name}")
 
-            for entry in cats[cat_name]:
-                if st.button(entry[1], use_container_width=True):
-                    add_node(create_node(prefix, entry[0]))
+            nodes_in_category = get_node_types_in_category(category)
+            for node in nodes_in_category:
+                if st.button(node.button_name, use_container_width=True):
+                    add_node(create_node(prefix, node))
 
         st.markdown("## Actions")
 
         if st.button("Export"):
             st.session_state.exported = export_flow(st.session_state.current_state)
+
+    import_file = st.text_area("Import JSON", st.session_state.exported)
+    if st.button("Import"):
+        new_state = generate_state_from_import(import_file)
+        if new_state != None:
+            st.session_state.current_state = new_state
+            st.text("breakpoint")
 
     st.session_state.current_state = streamlit_flow_component(
         'energy_system', 
@@ -136,7 +128,6 @@ def main():
         default_edge_options={"deletable":True}
     )
 
-    st.text("Hey")
     st.text_area("Exported", st.session_state.exported)
 
 main()
