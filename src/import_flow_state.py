@@ -1,10 +1,11 @@
 import streamlit as st
 from streamlit_flow import streamlit_flow as streamlit_flow_component
-from streamlit_flow.elements import StreamlitFlowNode
+from streamlit_flow.elements import StreamlitFlowNode, StreamlitFlowEdge
 from streamlit_flow.state import StreamlitFlowState
 from nodeTypes import get_node_with_name, create_new_node
 # from components import node_info, categories, Node_Type
 import json
+from typing import Dict
 
 def generate_state_from_import(import_data:str):
     try:
@@ -16,14 +17,35 @@ def generate_state_from_import(import_data:str):
     #First pass: create all the nodes
     node_array = []
     node_array.append(StreamlitFlowNode(id="dummy", pos=(0,0), data={"content": ""}, hidden=True))
-    for node_id, obj in import_dict["components"].items():
-        node_type = get_node_with_name(obj["type"])
+    for source_node_id, obj in import_dict["components"].items():
+        node_type = get_node_with_name(obj["node_type"])
         pos=(obj["node_position"]["x"], obj["node_position"]["y"])
-        node_array.append(create_new_node(name=node_id, position=pos, node_type=node_type))
+        new_node = create_new_node(name=source_node_id, position=pos, node_type=node_type)
+        node_array.append(new_node)
     
     # Second Pass: create all the edges
+    edge_array = []
+    num_source_edges:Dict[str, int]= {} # key: node id, value: how many edges it has as input
+    for source_node_id, obj in import_dict["components"].items():
+        output_refs = obj["output_refs"]
+        for i, target_node_id in enumerate(output_refs):
+            target_num_source_edges = num_source_edges.get(target_node_id, 0)
+            sourceHandle = "source-"+str(i)
+            targetHandle = "target-"+str(target_num_source_edges)
+            num_source_edges[target_node_id] = target_num_source_edges + 1
+            new_edge = StreamlitFlowEdge(
+                id=f"{source_node_id}-{target_node_id}",
+                source=source_node_id, 
+                target=target_node_id, 
+                sourceHandle=sourceHandle, 
+                targetHandle=targetHandle
+            )
+            edge_array.append(new_edge)
+
+
+
     new_state:StreamlitFlowState = StreamlitFlowState(
         node_array,
-        []
+        edge_array
     )
     return new_state

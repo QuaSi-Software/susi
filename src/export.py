@@ -98,7 +98,10 @@ def export_flow(flow):
             continue
 
         comp_dict = component_config(node.data["component_type"])
+        #for importing only
         comp_dict["node_position"] = node.position
+        comp_dict["node_type"] = node.data["component_type"]
+
         if node.data["component_type"].lower() == "bus":
             comp_dict["connections"]["input_order"] = get_inputs(node, nodes, edges)
             comp_dict["connections"]["output_order"] = get_outputs(node, nodes, edges)

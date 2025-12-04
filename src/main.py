@@ -109,7 +109,6 @@ def main():
         new_state = generate_state_from_import(import_file)
         if new_state != None:
             st.session_state.current_state = new_state
-            st.text("breakpoint")
 
     st.session_state.current_state = streamlit_flow_component(
         'energy_system', 
