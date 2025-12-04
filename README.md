@@ -24,7 +24,7 @@ To run SUSI locally, follow these steps:
     STREAMLIT_FLOW_PORT=3001
     ```
     You can customize the port that SUSI runs on. **Note: At the moment it is not possible to change the port that the streamlit-flow component runs on and the value 3001 must be used.**
-1. Start the containers, which will likely take a few minutes the first time: `COMPOSE_PROFILES=default docker compose up`
+1. Start the containers, which will likely take a few minutes the first time: `docker compose up`
 1. Now that both containers are running you can use SUSI by opening `http://localhost:8505` in a web browser. After the first run, you can stop and start the containers via Docker Desktop instead of using the console commands.
 
 ### VSC Development
@@ -35,16 +35,17 @@ The react code in the streamlit-flow component will run on the nodejs container,
 If you want to add guardrails to prevent you from editing react code on the SUSI container, you can add a glob pattern to VSC's `Files:Exclude`.
 
 ##### Debugging
-To attach debuggers, run instead `COMPOSE_PROFILES=default docker compose up`. In the susi container, you can now debug with F5 as you usually would. For streamlit-flow, you must also set up firefox to support react debugging:
+To attach debuggers, run instead `COMPOSE_PROFILES=debug docker compose up`. In the susi container, you can now debug with F5 as you usually would. For streamlit-flow, you must also set up firefox to support react debugging:
 
 1. install the "Debugger for Firefox" extension in VSC
+    * You may have to set the debugging port in the extension to 6000. You can also change the debugging port in your `.env`
 1. Install the Firefox extension "React Developer Tools"
 1. start Firefox with flag -start-debugger-server. On Windows Powershell this would be `& 'C:\Program Files\Mozilla Firefox\firefox.exe' --start-debugger-server`
 1. Set Firefox `config:about` Settings:
 
-    * `devtools.tebugger.remote-enabled = true`
+    * `devtools.debugger.remote-enabled = true`
     * `devtools.chrome.enabled = true`
-    * `tevtools.debugger.prompt-connection = false`
+    * `devtools.debugger.prompt-connection = false`
 
 ## Usage
 

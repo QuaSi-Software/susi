@@ -3,6 +3,17 @@
 Current SUSI version: 0.3.0
 Implemented for ReSie version: 0.12.4
 
+## v0.3.1
+* Change node colors of electricity and heat related nodes
+* Add custom color scheme
+* Make edges deletable by default
+* Add Python debugging support in VSC
+* Changes in Streamlit Flow Fork
+    * Remove PaneMenu option to create Node
+    * Remove many options from NodeContextMenu
+    * Fix edges jumping to first handle on node on refresh
+    * Add support for hot reloading and debugging react code
+
 ## v0.3.0
 * Refactor deployment / operation of SUSI so it works with Docker containers
     * The repository now includes the required custom implementation of the streamlit-flow component as submodule, so it is no longer necessary to have a separate installation as it will be started in a second container alongside SUSI
