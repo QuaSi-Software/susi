@@ -6,7 +6,8 @@ from streamlit_flow.state import StreamlitFlowState
 
 from dataclasses import dataclass
 from enum import Enum
-from random import randint
+from typing import Dict
+from components import component_config
 
 class Node_Category(Enum):
     Special = 0
@@ -198,13 +199,17 @@ def get_node_with_name(type_name):
             return node
     return None
 
-def create_new_node(name, position, node_type):
+def create_new_node(name : str, position : tuple, node_type : Node_Type, resie_data:Dict[str, any]=None):
+    if resie_data is None:
+        resie_data = component_config(node_type.type_name)
+
     return StreamlitFlowNode(
         id=name,
         pos=position,
         data={
             'content': name,
             'component_type': node_type.type_name,
+            'resie_data' : resie_data,
         },
         node_type='default',
         source_position='right',

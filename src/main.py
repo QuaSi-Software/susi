@@ -14,10 +14,9 @@ from streamlit_flow.elements import StreamlitFlowNode
 from streamlit_flow.state import StreamlitFlowState
 from streamlit_flow.layouts import ManualLayout
 from export import export_flow
-from components import node_info, categories, Node_Type
 from import_flow_state import generate_state_from_import
 import importlib
-from nodeTypes import Node_Category, get_node_types_in_category, create_new_node
+from nodeTypes import Node_Type, Node_Category, get_node_types_in_category, create_new_node
 
 def check_state():
     """Ensures the current state is attached to the simulation state and creates it if not."""

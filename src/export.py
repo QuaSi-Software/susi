@@ -1,7 +1,8 @@
 """Functionality for exporting the flow as energy system input file for ReSiE.
 """
 from json import dumps
-from components import component_config
+from streamlit_flow.elements import StreamlitFlowNode
+from typing import Dict
 
 def base_dict():
     """Dictionary with basic settings/parameters for the input file.
@@ -90,17 +91,23 @@ def export_flow(flow):
     -`str`: The content of the input file
     """
     as_dict = base_dict()
-    nodes = {node.id: node for node in flow.nodes}
+    nodes:Dict[str, StreamlitFlowNode] = {node.id: node for node in flow.nodes}
     edges = flow.edges
 
+    node : StreamlitFlowNode
     for node in flow.nodes:
         if node.id == "dummy":
             continue
 
-        comp_dict = component_config(node.data["component_type"])
+        comp_dict = {}
         #for importing only
-        comp_dict["node_position"] = node.position
-        comp_dict["node_type"] = node.data["component_type"]
+        comp_dict["import_data"] = {
+            'node_position' : node.position,
+            'node_type' : node.data["component_type"],
+            'resie_data' : node.data["resie_data"]
+        }
+        # comp_dict["node_position"] = node.position
+        # comp_dict["node_type"] = node.data["component_type"]
 
         if node.data["component_type"].lower() == "bus":
             comp_dict["connections"]["input_order"] = get_inputs(node, nodes, edges)

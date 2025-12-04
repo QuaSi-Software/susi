@@ -18,9 +18,11 @@ def generate_state_from_import(import_data:str):
     node_array = []
     node_array.append(StreamlitFlowNode(id="dummy", pos=(0,0), data={"content": ""}, hidden=True))
     for source_node_id, obj in import_dict["components"].items():
-        node_type = get_node_with_name(obj["node_type"])
-        pos=(obj["node_position"]["x"], obj["node_position"]["y"])
-        new_node = create_new_node(name=source_node_id, position=pos, node_type=node_type)
+        node_import_data = obj["import_data"]
+        node_type = get_node_with_name(node_import_data["node_type"])
+        pos=(node_import_data["node_position"]["x"], node_import_data["node_position"]["y"])
+        resie_data = node_import_data["resie_data"]
+        new_node = create_new_node(name=source_node_id, position=pos, node_type=node_type, resie_data=resie_data)
         node_array.append(new_node)
     
     # Second Pass: create all the edges
@@ -28,7 +30,7 @@ def generate_state_from_import(import_data:str):
     num_source_edges:Dict[str, int]= {} # key: node id, value: how many edges it has as input
     for source_node_id, obj in import_dict["components"].items():
         # get outgoing edges of node
-        if obj["node_type"].lower()=="bus":
+        if obj["import_data"]["node_type"].lower()=="bus":
             output_refs = obj["connections"]["output_order"]
         else:
             output_refs = obj["output_refs"]
