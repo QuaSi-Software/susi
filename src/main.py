@@ -12,7 +12,7 @@ import streamlit_flow
 from streamlit_flow import streamlit_flow as streamlit_flow_component
 from streamlit_flow.elements import StreamlitFlowNode
 from streamlit_flow.state import StreamlitFlowState
-from streamlit_flow.layouts import ManualLayout, TreeLayout
+from streamlit_flow.layouts import ManualLayout
 from export import export_flow
 from components import node_info, categories, Node_Type
 import importlib
@@ -122,7 +122,7 @@ def main():
     st.session_state.current_state = streamlit_flow_component(
         'energy_system', 
         st.session_state.current_state,
-        layout=TreeLayout(direction="right"),
+        layout=ManualLayout(),
         fit_view=True,
         enable_node_menu=True,
         enable_edge_menu=True,

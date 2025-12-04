@@ -58,7 +58,7 @@ def node_info(component_type):
     elif name == ("electrolyser"):
         return Node_Type(1, 4, "ELY", electricity_color)
     elif name == ("buffertank"):
-        return Node_Type(1, 1, "BFT")
+        return Node_Type(1, 1, "BFT", hot_color)
     elif name == ("seasonalthermalstorage"):
         return Node_Type(1, 1, "STS", hot_color)
     elif name == ("solarthermalcollector"):
