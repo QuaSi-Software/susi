@@ -113,7 +113,8 @@ def main():
     st.session_state.current_state = streamlit_flow_component(
         'energy_system', 
         st.session_state.current_state,
-        layout=TreeLayout(direction="right"),
+        # layout=TreeLayout(direction="right"),
+        layout=ManualLayout(),
         fit_view=True,
         enable_node_menu=True,
         enable_edge_menu=True,

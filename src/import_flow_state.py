@@ -27,7 +27,13 @@ def generate_state_from_import(import_data:str):
     edge_array = []
     num_source_edges:Dict[str, int]= {} # key: node id, value: how many edges it has as input
     for source_node_id, obj in import_dict["components"].items():
-        output_refs = obj["output_refs"]
+        # get outgoing edges of node
+        if obj["node_type"].lower()=="bus":
+            output_refs = obj["connections"]["output_order"]
+        else:
+            output_refs = obj["output_refs"]
+
+        #add StreamlitFlowEdge to every node connection
         for i, target_node_id in enumerate(output_refs):
             target_num_source_edges = num_source_edges.get(target_node_id, 0)
             sourceHandle = "source-"+str(i)
@@ -38,7 +44,8 @@ def generate_state_from_import(import_data:str):
                 source=source_node_id, 
                 target=target_node_id, 
                 sourceHandle=sourceHandle, 
-                targetHandle=targetHandle
+                targetHandle=targetHandle,
+                deletable=True
             )
             edge_array.append(new_edge)
 
