@@ -136,7 +136,6 @@ def main():
         default_edge_options={"deletable":True}
     )
 
-    st.text("Hey")
     st.text_area("Exported", st.session_state.exported)
 
 main()
