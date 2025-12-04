@@ -38,6 +38,7 @@ If you want to add guardrails to prevent you from editing react code on the SUSI
 To attach debuggers, run instead `COMPOSE_PROFILES=debug docker compose up`. In the susi container, you can now debug with F5 as you usually would. For streamlit-flow, you must also set up firefox to support react debugging:
 
 1. install the "Debugger for Firefox" extension in VSC
+    * You may have to set the debugging port in the extension to 6000. You can also change the debugging port in your `.env`
 1. Install the Firefox extension "React Developer Tools"
 1. start Firefox with flag -start-debugger-server. On Windows Powershell this would be `& 'C:\Program Files\Mozilla Firefox\firefox.exe' --start-debugger-server`
 1. Set Firefox `config:about` Settings:

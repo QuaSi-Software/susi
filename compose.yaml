@@ -12,7 +12,7 @@ services:
       - ./streamlit-flow:/app/
       - /app/streamlit_flow/frontend/node_modules
     ports:
-      - 46836:46836
+      - ${REACT_DEBUGGING_PORT:-6000}:${REACT_DEBUGGING_PORT:-6000}
       - "${STREAMLIT_FLOW_PORT:-3001}:${STREAMLIT_FLOW_PORT:-3001}"
     environment:
       - STREAMLIT_FLOW_PORT=${STREAMLIT_FLOW_PORT:-3001}
