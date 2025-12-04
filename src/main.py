@@ -10,7 +10,7 @@ from random import randint
 import streamlit as st
 import streamlit_flow
 from streamlit_flow import streamlit_flow as streamlit_flow_component
-from streamlit_flow.elements import StreamlitFlowNode
+from streamlit_flow.elements import StreamlitFlowNode, StreamlitFlowEdge
 from streamlit_flow.state import StreamlitFlowState
 from streamlit_flow.layouts import ManualLayout
 from export import export_flow
@@ -88,6 +88,11 @@ def main():
     with st.sidebar:
         st.markdown("## Settings")
         prefix = st.text_input("UAC prefix", "TST")
+        edge_type = st.selectbox(label="Edge Type", options=["default","simplebezier","smoothstep", "step", "straight"], index=2)
+        if st.button("Change All Edges"):
+            edge : StreamlitFlowEdge
+            for edge in st.session_state.current_state.edges:
+                edge.type = edge_type
 
         st.markdown("## Components")
         for category in Node_Category:
@@ -123,7 +128,7 @@ def main():
         hide_watermark=True,
         allow_new_edges=True,
         min_zoom=0.1,
-        default_edge_options={"deletable":True}
+        default_edge_options={"deletable":True, "type":edge_type}
     )
 
     st.text_area("Exported", st.session_state.exported)
