@@ -79,6 +79,11 @@ def create_node(prefix, node : Node_Type):
     )
     return create_new_node(name=uac, position=(randint(-20, 20), randint(-20, 20)), node_type=node)
 
+def change_all_edges(edge_type : str):
+    edge : StreamlitFlowEdge
+    for edge in st.session_state.current_state.edges:
+        edge.type = edge_type
+
 def main():
     """Entry point to the streamlit process."""
     importlib.reload(streamlit_flow)
@@ -90,9 +95,7 @@ def main():
         prefix = st.text_input("UAC prefix", "TST")
         edge_type = st.selectbox(label="Edge Type", options=["default","simplebezier","smoothstep", "step", "straight"], index=2)
         if st.button("Change All Edges"):
-            edge : StreamlitFlowEdge
-            for edge in st.session_state.current_state.edges:
-                edge.type = edge_type
+            change_all_edges(edge_type)
 
         st.markdown("## Components")
         for category in Node_Category:
@@ -105,14 +108,17 @@ def main():
 
         st.markdown("## Actions")
 
-        if st.button("Export"):
-            st.session_state.exported = export_flow(st.session_state.current_state)
-
-    import_file = st.text_area("Import JSON", st.session_state.exported)
-    if st.button("Import"):
-        new_state = generate_state_from_import(import_file)
-        if new_state != None:
-            st.session_state.current_state = new_state
+        import_text = st.text_area("Imported", st.session_state.exported, height= 50)
+        c1,c2 = st.columns(2)
+        with c1:
+            if st.button("Export", use_container_width=True):
+                st.session_state.exported = export_flow(st.session_state.current_state)
+        with c2:
+            if st.button("Import", use_container_width=True):
+                new_state = generate_state_from_import(import_text)
+                if new_state != None:
+                    st.session_state.current_state = new_state
+                    change_all_edges(edge_type=edge_type)
 
     st.session_state.current_state = streamlit_flow_component(
         'energy_system', 
@@ -131,6 +137,6 @@ def main():
         default_edge_options={"deletable":True, "type":edge_type}
     )
 
-    st.text_area("Exported", st.session_state.exported)
+    st.text_area("Exported", st.session_state.exported, height= 400)
 
 main()

@@ -5,7 +5,9 @@ from streamlit_flow.state import StreamlitFlowState
 from nodeTypes import get_node_with_name, create_new_node
 # from components import node_info, categories, Node_Type
 import json
-from typing import Dict
+from typing import Dict, List
+from nodeTypes import Node_Type
+from nodeInput import NodeInput
 
 def generate_state_from_import(import_data:str):
     try:
@@ -18,11 +20,21 @@ def generate_state_from_import(import_data:str):
     node_array = []
     node_array.append(StreamlitFlowNode(id="dummy", pos=(0,0), data={"content": ""}, hidden=True))
     for source_node_id, obj in import_dict["components"].items():
+        # import data
         node_import_data = obj["import_data"]
-        node_type = get_node_with_name(node_import_data["node_type"])
+        node_type : Node_Type = get_node_with_name(node_import_data["node_type"])
         pos=(node_import_data["node_position"]["x"], node_import_data["node_position"]["y"])
-        resie_data = node_import_data["resie_data"]
-        new_node = create_new_node(name=source_node_id, position=pos, node_type=node_type, resie_data=resie_data)
+        # create a node 
+        new_node = create_new_node(name=source_node_id, position=pos, node_type=node_type)
+
+        #fill in with node info from import
+        resie_data = new_node.data["resie_data"]
+        node_input : NodeInput
+        for node_input in resie_data:
+            value = obj.get(node_input.resie_name, None)
+            if value is not None:
+                node_input.value = value
+            
         node_array.append(new_node)
     
     # Second Pass: create all the edges
@@ -47,7 +59,7 @@ def generate_state_from_import(import_data:str):
                 target=target_node_id, 
                 sourceHandle=sourceHandle, 
                 targetHandle=targetHandle,
-                deletable=True
+                deletable=True,
             )
             edge_array.append(new_edge)
 

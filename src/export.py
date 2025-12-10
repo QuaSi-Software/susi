@@ -3,6 +3,7 @@
 from json import dumps
 from streamlit_flow.elements import StreamlitFlowNode
 from typing import Dict
+from nodeInput import NodeInput
 
 def base_dict():
     """Dictionary with basic settings/parameters for the input file.
@@ -100,14 +101,14 @@ def export_flow(flow):
             continue
 
         comp_dict = {}
+        node_input : NodeInput
+        for node_input in node.data["resie_data"]:
+            comp_dict[node_input.resie_name] = node_input.value
         #for importing only
         comp_dict["import_data"] = {
             'node_position' : node.position,
             'node_type' : node.data["component_type"],
-            'resie_data' : node.data["resie_data"]
         }
-        # comp_dict["node_position"] = node.position
-        # comp_dict["node_type"] = node.data["component_type"]
 
         if node.data["component_type"].lower() == "bus":
             comp_dict["connections"]["input_order"] = get_inputs(node, nodes, edges)
