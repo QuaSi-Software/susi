@@ -3,7 +3,7 @@ from typing import Dict
 from components import component_config
 
 class NodeInput:
-    type : str = "string"
+    js_type : str = "string"
     resie_name : str = "UNKNOWN"
     editable : bool = True
     display_name : str = "UNKNOWN"
@@ -12,18 +12,18 @@ class NodeInput:
     def add_to_dict(self, dict:Dict[str,any]):
         dict[self.resie_name] = self.value
 
-    def __init__(self,  resie_name, display_name, value, type=None, editable=True, ):
-        self.type = type
+    def __init__(self,  resie_name, display_name, value, js_type=None, editable=True, ):
+        self.js_type = js_type
         self.resie_name = resie_name
         self.editable = editable
         self.display_name = display_name
         self.value = value
 
-        if self.type is None:
-            self.type = self.get_type(self.value)
+        if self.js_type is None:
+            self.js_type = self.get_type(self.value)
     
     def get_type(self, var):
-        match(type(var)):
+        match(type(var).__name__):
             case "int": return "number"
             case "float": return "number"
             case "str": return "string"
@@ -31,7 +31,7 @@ class NodeInput:
     
     def asdict(self):
         input_dict = {
-            "type" : self.type,
+            "js_type" : self.js_type,
             "resie_name" : self.resie_name,
             "editable" : self.editable,
             "display_name" : self.display_name,
@@ -41,7 +41,7 @@ class NodeInput:
     
     def from_dict(node_input_dict : Dict[str, any]):
         return NodeInput(
-            type=node_input_dict.get('type', 'default'),
+            js_type=node_input_dict.get('js_type', 'default'),
             resie_name=node_input_dict.get('resie_name', 'default'),
             editable=node_input_dict.get('editable', 'default'),
             display_name=node_input_dict.get('display_name', 'default'),
