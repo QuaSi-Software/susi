@@ -20,6 +20,7 @@ class Node_Category(Enum):
 class Node_Type:
     type_name : str
     button_name : str
+    # inputs and outputs are the RESIE input and outputs, not how it should be displayed in the graph
     nr_inputs : int
     nr_outputs : int
     segment : str
@@ -211,9 +212,9 @@ def create_new_node(name : str, position : tuple, node_type : Node_Type):
         },
         node_type='default',
         source_position='right',
-        source_handles=node_type.nr_inputs, # the definition of input/output is reversed for
+        source_handles=node_type.nr_outputs, # the definition of input/output is reversed for
         target_position='left',     # Streamlit Flow, as they reference the edges and not
-        target_handles=node_type.nr_outputs, # the nodes, so we switch it here
+        target_handles=node_type.nr_inputs, # the nodes, so we switch it here
         deletable=True,
         style={'color': 'white', 'backgroundColor': node_type.node_color, 'border': '1px solid white'}
     )

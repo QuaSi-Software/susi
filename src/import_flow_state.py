@@ -8,6 +8,23 @@ import json
 from typing import Dict, List
 from nodeTypes import Node_Type
 from nodeInput import NodeInput
+import math
+
+
+def generate_node_import_data(obj:Dict[str, any]):
+    type_name = obj["type"]
+    if type_name == "GridConnection":
+        if obj["is_source"]:
+            type_name = "gridinput"
+        else:
+            type_name = "gridoutput"
+    return {
+            'node_position' : {
+                "x" : -0,
+                "y" : -0
+            },
+            'node_type' : type_name,
+        }
 
 def generate_state_from_import(import_data:str):
     try:
@@ -19,9 +36,16 @@ def generate_state_from_import(import_data:str):
     #First pass: create all the nodes
     node_array = []
     node_array.append(StreamlitFlowNode(id="dummy", pos=(0,0), data={"content": ""}, hidden=True))
-    for source_node_id, obj in import_dict["components"].items():
+    components = import_dict["components"].items()
+    has_import_data = True
+    for source_node_id, obj in components:
         # import data
-        node_import_data = obj["import_data"]
+        node_import_data = obj.get("import_data", None)
+        if node_import_data == None:
+            #this file was created before import support was added
+            node_import_data = generate_node_import_data(obj)
+            obj["import_data"] = node_import_data
+
         node_type : Node_Type = get_node_with_name(node_import_data["node_type"])
         pos=(node_import_data["node_position"]["x"], node_import_data["node_position"]["y"])
         # create a node 
@@ -40,7 +64,7 @@ def generate_state_from_import(import_data:str):
     # Second Pass: create all the edges
     edge_array = []
     num_source_edges:Dict[str, int]= {} # key: node id, value: how many edges it has as input
-    for source_node_id, obj in import_dict["components"].items():
+    for source_node_id, obj in components:
         # get outgoing edges of node
         if obj["import_data"]["node_type"].lower()=="bus":
             output_refs = obj["connections"]["output_order"]
@@ -49,16 +73,19 @@ def generate_state_from_import(import_data:str):
 
         #add StreamlitFlowEdge to every node connection
         for i, target_node_id in enumerate(output_refs):
-            target_num_source_edges = num_source_edges.get(target_node_id, 0)
-            sourceHandle = "source-"+str(i)
-            targetHandle = "target-"+str(target_num_source_edges)
-            num_source_edges[target_node_id] = target_num_source_edges + 1
+            source_num_source_edges = num_source_edges.get(source_node_id, 0)
+            #source and target are swapped in resie vs. streamlit
+            # sourceHandle = "source-"+str(target_num_source_edges) 
+            # targetHandle = "target-"+str(i)
+            sourceHandle = "target-"+str(i) 
+            targetHandle = "source-"+str(source_num_source_edges) 
+            num_source_edges[source_node_id] = source_num_source_edges + 1
             new_edge = StreamlitFlowEdge(
                 id=f"{source_node_id}-{target_node_id}",
                 source=source_node_id, 
                 target=target_node_id, 
-                sourceHandle=sourceHandle, 
-                targetHandle=targetHandle,
+                sourceHandle=targetHandle, 
+                targetHandle=sourceHandle,
                 deletable=True,
             )
             edge_array.append(new_edge)
