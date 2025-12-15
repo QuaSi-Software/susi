@@ -36,8 +36,8 @@ def generate_state_from_import(import_data:str):
     #First pass: create all the nodes
     node_array = []
     node_array.append(StreamlitFlowNode(id="dummy", pos=(0,0), data={"content": ""}, hidden=True))
+    node_dict :Dict[str, StreamlitFlowNode] = {}
     components = import_dict["components"].items()
-    has_import_data = True
     for source_node_id, obj in components:
         # import data
         node_import_data = obj.get("import_data", None)
@@ -60,6 +60,7 @@ def generate_state_from_import(import_data:str):
                 node_input.value = value
             
         node_array.append(new_node)
+        node_dict[source_node_id] = new_node
     
     # Second Pass: create all the edges
     edge_array = []
@@ -72,13 +73,17 @@ def generate_state_from_import(import_data:str):
             output_refs = obj["output_refs"]
 
         #add StreamlitFlowEdge to every node connection
+        if type(output_refs) == type({}):
+            output_refs =[value for key, value in output_refs.items()]
+
         for i, target_node_id in enumerate(output_refs):
+            if target_node_id not in node_dict:
+                print("Node "+target_node_id+" is not defined in components.")
+                continue
             source_num_source_edges = num_source_edges.get(source_node_id, 0)
-            #source and target are swapped in resie vs. streamlit
-            # sourceHandle = "source-"+str(target_num_source_edges) 
-            # targetHandle = "target-"+str(i)
-            sourceHandle = "target-"+str(i) 
-            targetHandle = "source-"+str(source_num_source_edges) 
+            # source and target are swapped in resie vs. streamlit
+            sourceHandle = "target-"+str(min(i, node_dict[target_node_id].source_handles)) 
+            targetHandle = "source-"+str(min(source_num_source_edges, node_dict[source_node_id].target_handles)) 
             num_source_edges[source_node_id] = source_num_source_edges + 1
             new_edge = StreamlitFlowEdge(
                 id=f"{source_node_id}-{target_node_id}",
