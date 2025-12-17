@@ -56,7 +56,9 @@ def generate_state_from_import(import_data:str):
         node_input : NodeInput
         for node_input in resie_data:
             value = node_data.get(node_input.resie_name, None)
-            if value is not None:
+            if value is None:
+                node_input.isIncluded = False
+            else:
                 node_input.value = value
             
         node_array.append(new_node)

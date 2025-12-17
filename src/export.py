@@ -103,6 +103,7 @@ def export_flow(flow):
         comp_dict = {}
         node_input : NodeInput
         for node_input in node.data["resie_data"]:
+            if not node_input.isIncluded and not node_input.required: continue
             comp_dict[node_input.resie_name] = node_input.value
         #for importing only
         comp_dict["import_data"] = {
