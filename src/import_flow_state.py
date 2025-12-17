@@ -26,11 +26,12 @@ def generate_node_import_data(obj:Dict[str, any]):
         }
 
 def generate_state_from_import(import_data:str):
+    warning_messages = []
     try:
         import_dict:dict = json.loads(import_data)
     except ValueError as e:
-        st.text("Input is not a valid JSON")
-        return None
+        warning_messages.append("Input is not a valid JSON.")
+        return warning_messages, None
 
     #First pass: create all the nodes
     node_array = []
@@ -77,7 +78,7 @@ def generate_state_from_import(import_data:str):
         
         for input_node_outgoing_edge_index, output_node_id in enumerate(output_refs):
             if output_node_id not in node_dict:
-                print("Node "+output_node_id+" is not defined in components.")
+                warning_messages.append("Node "+output_node_id+" is not defined in components.")
                 continue
             # get StreamlitFlowNode references
             input_node = node_dict[input_node_id]
@@ -94,4 +95,5 @@ def generate_state_from_import(import_data:str):
         node_array,
         edge_array
     )
-    return new_state
+    print(warning_messages)
+    return warning_messages, new_state

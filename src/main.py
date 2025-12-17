@@ -16,6 +16,7 @@ from streamlit_flow.layouts import ManualLayout, LayeredLayout
 from export import export_flow
 from import_flow_state import generate_state_from_import
 import importlib
+from typing import List
 from nodeTypes import Node_Type, Node_Category, get_node_types_in_category
 from createElements import create_new_node
 
@@ -31,6 +32,8 @@ def check_state():
         )
     if "exported" not in st.session_state:
         st.session_state.exported = ""
+    if "warning_messages" not in st.session_state:
+        st.session_state.warning_messages = []
 
 def add_node(new_node):
     """Add the given node to the node list.
@@ -94,7 +97,7 @@ def main():
     with st.sidebar:
         st.markdown("## Settings")
         prefix = st.text_input("UAC prefix", "TST")
-        edge_type = st.selectbox(label="Edge Type", options=["default","simplebezier","smoothstep", "step", "straight"], index=2)
+        edge_type = st.selectbox(label="Edge Type", options=["default","simplebezier","smoothstep", "step", "straight"], index=1)
         if st.button("Change All Edges"):
             change_all_edges(edge_type)
 
@@ -116,10 +119,13 @@ def main():
                 st.session_state.exported = export_flow(st.session_state.current_state)
         with c2:
             if st.button("Import", use_container_width=True):
-                new_state = generate_state_from_import(import_text)
+                st.session_state.warning_messages, new_state = generate_state_from_import(import_text)
                 if new_state != None:
                     st.session_state.current_state = new_state
                     change_all_edges(edge_type=edge_type)
+        if st.session_state.warning_messages != "":
+            for message in st.session_state.warning_messages:
+                st.markdown(body=":red["+message+"]")
 
     st.session_state.current_state = streamlit_flow_component(
         'energy_system', 
