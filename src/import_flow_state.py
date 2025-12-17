@@ -2,13 +2,12 @@ import streamlit as st
 from streamlit_flow import streamlit_flow as streamlit_flow_component
 from streamlit_flow.elements import StreamlitFlowNode, StreamlitFlowEdge
 from streamlit_flow.state import StreamlitFlowState
-from nodeTypes import get_node_with_name, create_new_node
-# from components import node_info, categories, Node_Type
+from nodeTypes import get_node_with_name
+from createElements import create_new_node, create_new_edge
 import json
 from typing import Dict, List
 from nodeTypes import Node_Type
 from nodeInput import NodeInput
-import math
 
 
 def generate_node_import_data(obj:Dict[str, any]):
@@ -38,61 +37,55 @@ def generate_state_from_import(import_data:str):
     node_array.append(StreamlitFlowNode(id="dummy", pos=(0,0), data={"content": ""}, hidden=True))
     node_dict :Dict[str, StreamlitFlowNode] = {}
     components = import_dict["components"].items()
-    for source_node_id, obj in components:
+    for node_id, node_data in components:
         # import data
-        node_import_data = obj.get("import_data", None)
+        node_import_data = node_data.get("import_data", None)
         if node_import_data == None:
             #this file was created before import support was added
-            node_import_data = generate_node_import_data(obj)
-            obj["import_data"] = node_import_data
+            node_import_data = generate_node_import_data(node_data)
+            node_data["import_data"] = node_import_data
 
         node_type : Node_Type = get_node_with_name(node_import_data["node_type"])
         pos=(node_import_data["node_position"]["x"], node_import_data["node_position"]["y"])
         # create a node 
-        new_node = create_new_node(name=source_node_id, position=pos, node_type=node_type)
+        new_node = create_new_node(name=node_id, position=pos, node_type=node_type)
 
         #fill in with node info from import
         resie_data = new_node.data["resie_data"]
         node_input : NodeInput
         for node_input in resie_data:
-            value = obj.get(node_input.resie_name, None)
+            value = node_data.get(node_input.resie_name, None)
             if value is not None:
                 node_input.value = value
             
         node_array.append(new_node)
-        node_dict[source_node_id] = new_node
+        node_dict[node_id] = new_node
     
     # Second Pass: create all the edges
     edge_array = []
-    num_source_edges:Dict[str, int]= {} # key: node id, value: how many edges it has as input
-    for source_node_id, obj in components:
+    num_incoming_edges_per_node:Dict[str, int]= {} # key: node id, value: how many edges it has as input
+    for input_node_id, input_node_data in components:
         # get outgoing edges of node
-        if obj["import_data"]["node_type"].lower()=="bus":
-            output_refs = obj["connections"]["output_order"]
+        if input_node_data["import_data"]["node_type"].lower()=="bus":
+            output_refs = input_node_data["connections"]["output_order"]
         else:
-            output_refs = obj["output_refs"]
+            output_refs = input_node_data["output_refs"]
 
         #add StreamlitFlowEdge to every node connection
         if type(output_refs) == type({}):
             output_refs =[value for key, value in output_refs.items()]
-
-        for i, target_node_id in enumerate(output_refs):
-            if target_node_id not in node_dict:
-                print("Node "+target_node_id+" is not defined in components.")
+        
+        for input_node_outgoing_edge_index, output_node_id in enumerate(output_refs):
+            if output_node_id not in node_dict:
+                print("Node "+output_node_id+" is not defined in components.")
                 continue
-            source_num_source_edges = num_source_edges.get(source_node_id, 0)
-            # source and target are swapped in resie vs. streamlit
-            sourceHandle = "target-"+str(min(i, node_dict[target_node_id].source_handles)) 
-            targetHandle = "source-"+str(min(source_num_source_edges, node_dict[source_node_id].target_handles)) 
-            num_source_edges[source_node_id] = source_num_source_edges + 1
-            new_edge = StreamlitFlowEdge(
-                id=f"{source_node_id}-{target_node_id}",
-                source=source_node_id, 
-                target=target_node_id, 
-                sourceHandle=targetHandle, 
-                targetHandle=sourceHandle,
-                deletable=True,
-            )
+            # get StreamlitFlowNode references
+            input_node = node_dict[input_node_id]
+            output_node = node_dict[output_node_id]
+            # get number of edges already connected to output node and increment it
+            output_node_incoming_edges = num_incoming_edges_per_node.get(output_node_id, 0)
+            num_incoming_edges_per_node[output_node_id] = output_node_incoming_edges + 1
+            new_edge = create_new_edge(input_node,output_node, input_node_outgoing_edge_index, output_node_incoming_edges, )
             edge_array.append(new_edge)
 
 

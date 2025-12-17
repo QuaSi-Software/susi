@@ -12,11 +12,12 @@ import streamlit_flow
 from streamlit_flow import streamlit_flow as streamlit_flow_component
 from streamlit_flow.elements import StreamlitFlowNode, StreamlitFlowEdge
 from streamlit_flow.state import StreamlitFlowState
-from streamlit_flow.layouts import ManualLayout
+from streamlit_flow.layouts import ManualLayout, LayeredLayout
 from export import export_flow
 from import_flow_state import generate_state_from_import
 import importlib
-from nodeTypes import Node_Type, Node_Category, get_node_types_in_category, create_new_node
+from nodeTypes import Node_Type, Node_Category, get_node_types_in_category
+from createElements import create_new_node
 
 def check_state():
     """Ensures the current state is attached to the simulation state and creates it if not."""
@@ -124,6 +125,7 @@ def main():
         'energy_system', 
         st.session_state.current_state,
         layout=ManualLayout(),
+        reset_layout=LayeredLayout(direction='right'),
         fit_view=True,
         enable_node_menu=True,
         enable_edge_menu=True,

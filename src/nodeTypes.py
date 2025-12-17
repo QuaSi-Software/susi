@@ -1,13 +1,7 @@
 """Contains ReSiE-component-specific data and how they relate to components of streamlit flow.
 """
-import streamlit as st
-from streamlit_flow.elements import StreamlitFlowNode
-from streamlit_flow.state import StreamlitFlowState
-
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict, List
-from nodeInput import get_node_inputs, NodeInput
 
 class Node_Category(Enum):
     Special = 0
@@ -186,7 +180,6 @@ all_node_types = [
         category=Node_Category.Other),
 ]
 
-
 def get_node_types_in_category(category_name):
     arr = []
     for node in all_node_types:
@@ -199,22 +192,3 @@ def get_node_with_name(type_name):
         if node.type_name.lower() == type_name.lower():
             return node
     return None
-
-def create_new_node(name : str, position : tuple, node_type : Node_Type):
-    resie_data = get_node_inputs(node_type.type_name)
-    return StreamlitFlowNode(
-        id=name,
-        pos=position,
-        data={
-            'content': name,
-            'component_type': node_type.type_name,
-            'resie_data' : resie_data,
-        },
-        node_type='default',
-        source_position='right',
-        source_handles=node_type.nr_outputs, # the definition of input/output is reversed for
-        target_position='left',     # Streamlit Flow, as they reference the edges and not
-        target_handles=node_type.nr_inputs, # the nodes, so we switch it here
-        deletable=True,
-        style={'color': 'white', 'backgroundColor': node_type.node_color, 'border': '1px solid white'}
-    )
