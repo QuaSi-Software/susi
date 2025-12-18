@@ -6,19 +6,23 @@ Run this with
 after having installed dependencies with
 `pip install streamlit streamlit-flow-component`
 """
-from random import randint
+# streamlit flow imports
 import streamlit as st
 import streamlit_flow
 from streamlit_flow import streamlit_flow as streamlit_flow_component
 from streamlit_flow.elements import StreamlitFlowNode, StreamlitFlowEdge
 from streamlit_flow.state import StreamlitFlowState
 from streamlit_flow.layouts import ManualLayout, LayeredLayout
+
+# project imports
+from create_elements import create_new_node
 from export import export_flow
 from import_flow_state import generate_state_from_import
+from node_types import NodeType, NodeCategory, get_node_types_in_category
+
+# Other
 import importlib
-from typing import List
-from nodeTypes import Node_Type, Node_Category, get_node_types_in_category
-from createElements import create_new_node
+from random import randint
 
 def check_state():
     """Ensures the current state is attached to the simulation state and creates it if not."""
@@ -69,7 +73,7 @@ def lpad(to_pad, to_len, pad_char="0"):
     """
     return (str(pad_char) * int(to_len - len(to_pad))) + to_pad
 
-def create_node(prefix, node : Node_Type):
+def create_node(prefix, node : NodeType):
     """Create a node of the given type.
 
     # Args:
@@ -102,7 +106,7 @@ def main():
             change_all_edges(edge_type)
 
         st.markdown("## Components")
-        for category in Node_Category:
+        for category in NodeCategory:
             st.markdown(f"### {category.name}")
 
             nodes_in_category = get_node_types_in_category(category)
@@ -126,6 +130,10 @@ def main():
         if st.session_state.warning_messages != "":
             for message in st.session_state.warning_messages:
                 st.markdown(body=":red["+message+"]")
+
+    if st.button(label="Clear Graph"):
+        st.session_state.current_state.nodes = []
+        st.session_state.current_state.edges = []
 
     st.session_state.current_state = streamlit_flow_component(
         'energy_system', 

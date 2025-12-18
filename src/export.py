@@ -3,7 +3,7 @@
 from json import dumps
 from streamlit_flow.elements import StreamlitFlowNode
 from typing import Dict
-from nodeInput import NodeInput
+from node_input import NodeInput
 
 def base_dict():
     """Dictionary with basic settings/parameters for the input file.

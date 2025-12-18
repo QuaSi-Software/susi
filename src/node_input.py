@@ -1,6 +1,5 @@
-import json
+from node_input_data import component_config
 from typing import Dict
-from components import component_config
 
 class NodeInput:
     js_type : str = "string"

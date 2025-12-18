@@ -1,8 +1,8 @@
 from streamlit_flow.elements import StreamlitFlowNode, StreamlitFlowEdge
-from nodeTypes import Node_Type
-from nodeInput import get_node_inputs
+from node_types import NodeType
+from node_input import get_node_inputs
 
-def create_new_node(name : str, position : tuple, node_type : Node_Type):
+def create_new_node(name : str, position : tuple, node_type : NodeType):
     resie_data = get_node_inputs(node_type.type_name)
     return StreamlitFlowNode(
         id=name,

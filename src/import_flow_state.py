@@ -1,14 +1,16 @@
-import streamlit as st
+# streamlit flow imports
 from streamlit_flow import streamlit_flow as streamlit_flow_component
-from streamlit_flow.elements import StreamlitFlowNode, StreamlitFlowEdge
+from streamlit_flow.elements import StreamlitFlowNode
 from streamlit_flow.state import StreamlitFlowState
-from nodeTypes import get_node_with_name
-from createElements import create_new_node, create_new_edge
-import json
-from typing import Dict, List
-from nodeTypes import Node_Type
-from nodeInput import NodeInput
 
+# project imports
+from node_types import get_node_type_with_name, NodeType
+from create_elements import create_new_node, create_new_edge
+from node_input import NodeInput
+
+#Other imports
+import json
+from typing import Dict
 
 def generate_node_import_data(obj:Dict[str, any]):
     type_name = obj["type"]
@@ -46,7 +48,7 @@ def generate_state_from_import(import_data:str):
             node_import_data = generate_node_import_data(node_data)
             node_data["import_data"] = node_import_data
 
-        node_type : Node_Type = get_node_with_name(node_import_data["node_type"])
+        node_type : NodeType = get_node_type_with_name(node_import_data["node_type"])
         pos=(node_import_data["node_position"]["x"], node_import_data["node_position"]["y"])
         # create a node 
         new_node = create_new_node(name=node_id, position=pos, node_type=node_type)
@@ -97,5 +99,5 @@ def generate_state_from_import(import_data:str):
         node_array,
         edge_array
     )
-    print(warning_messages)
+    # print(warning_messages)
     return warning_messages, new_state
