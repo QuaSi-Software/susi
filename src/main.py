@@ -87,6 +87,14 @@ def create_node(prefix, node : NodeType):
     )
     return create_new_node(name=uac, position=(randint(-20, 20), randint(-20, 20)), node_type=node)
 
+def import_data(import_data, edge_type):
+    st.session_state.warning_messages, new_state = generate_state_from_import(import_data)
+    if new_state != None:
+        # st.session_state.current_state = new_state
+        st.session_state.current_state.nodes = new_state.nodes
+        st.session_state.current_state.edges = new_state.edges
+        change_all_edges(edge_type=edge_type)
+
 def change_all_edges(edge_type : str):
     edge : StreamlitFlowEdge
     for edge in st.session_state.current_state.edges:
@@ -122,11 +130,8 @@ def main():
             if st.button("Export", use_container_width=True):
                 st.session_state.exported = export_flow(st.session_state.current_state)
         with c2:
-            if st.button("Import", use_container_width=True):
-                st.session_state.warning_messages, new_state = generate_state_from_import(import_text)
-                if new_state != None:
-                    st.session_state.current_state = new_state
-                    change_all_edges(edge_type=edge_type)
+            st.button("Import", on_click=import_data, args=[import_text, edge_type], use_container_width=True)
+                
         if st.session_state.warning_messages != "":
             for message in st.session_state.warning_messages:
                 st.markdown(body=":red["+message+"]")
