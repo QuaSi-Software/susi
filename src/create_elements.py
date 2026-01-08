@@ -31,10 +31,10 @@ def create_new_node(name : str, position : tuple, node_type : NodeType):
     """
 def create_new_edge(input_node : StreamlitFlowNode, output_node : StreamlitFlowNode, 
                     input_node_handle_index : int, output_node_handle_index : int):
-    handle_on_source_node = "source-"+str(min(input_node_handle_index, input_node.source_handles))
-    handle_on_target_node = "target-"+str(min(output_node_handle_index, output_node.target_handles)) 
+    handle_on_source_node = "source-"+str(min(input_node_handle_index, input_node.source_handles-1))
+    handle_on_target_node = "target-"+str(min(output_node_handle_index, output_node.target_handles-1)) 
     return StreamlitFlowEdge(
-        id=f"{input_node.id}-{output_node.id}",
+        id=f"{input_node.id}-{output_node.id}_{input_node_handle_index}",
         source=input_node.id,
         target=output_node.id, 
         sourceHandle=handle_on_source_node, 
