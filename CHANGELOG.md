@@ -3,6 +3,15 @@
 Current SUSI version: 0.3.0
 Implemented for ReSie version: 0.12.4
 
+## v0.3.2
+* Support for importing Resie Export files to create a graph from them
+* Support for non-required node inputs that stay deleted if not present in the import file. However, no node inputs are marked as non-required as of yet.
+* Addition of Clear Graph Button
+* Changes in streamlit-flow fork
+    * Reset Layout Button resets layout to a TreeLayout, but the default layout can still be Manual
+    * Support for serializing and deserializing Node data
+    * Ensure all edge IDs are unique
+
 ## v0.3.1
 * Change node colors of electricity and heat related nodes
 * Add custom color scheme
