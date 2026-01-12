@@ -92,7 +92,7 @@ def generate_state_from_import(import_data_text:str):
             num_incoming_edges_per_node[output_node_id] = output_node_incoming_edges + 1
             #check if import data sets the source and target handles
             handles = [input_node_outgoing_edge_index, output_node_incoming_edges]
-            if "import_data" in input_node_data:
+            if "import_data" in input_node_data and "connection_handles" in input_node_data["import_data"]:
                 handles = input_node_data["import_data"]["connection_handles"][input_node_outgoing_edge_index]
             # create edge
             new_edge = create_new_edge(input_node,output_node, handles[0], handles[1])
