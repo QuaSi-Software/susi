@@ -43,11 +43,15 @@ def get_outputs(node, nodes, edges):
     -`list<str>`: A list of UACs that are the outputs of the given node
     """
     outgoing = []
+    handles = []
     for edge in edges:
         if edge.source == node.id:
             target = nodes[edge.target]
             outgoing.append(target.data["content"])
-    return outgoing
+            if node.data["component_type"].lower() != "bus":
+                handleTuple = (int(edge.sourceHandle[-1]), int(edge.targetHandle[-1]))
+                handles.append(handleTuple)
+    return handles, outgoing
 
 def get_inputs(node, nodes, edges):
     """Inputs of the given node as list of UACs.
@@ -111,15 +115,18 @@ def export_flow(flow):
             'node_type' : node.data["component_type"],
         }
 
+        # set output_refs/connections
         if node.data["component_type"].lower() == "bus":
             comp_dict["connections"]["input_order"] = get_inputs(node, nodes, edges)
-            comp_dict["connections"]["output_order"] = get_outputs(node, nodes, edges)
+            _,comp_dict["connections"]["output_order"] = get_outputs(node, nodes, edges)
             comp_dict["connections"]["energy_flow"] = energy_matrix(
                 len(comp_dict["connections"]["input_order"]),
                 len(comp_dict["connections"]["output_order"])
             )
         else:
-            comp_dict["output_refs"] = get_outputs(node, nodes, edges)
+            handles, outputs = get_outputs(node, nodes, edges)
+            comp_dict["output_refs"] = outputs
+            comp_dict["import_data"]["connection_handles"] = handles
 
         as_dict["components"][node.data["content"]] = comp_dict
 

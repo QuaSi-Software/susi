@@ -10,7 +10,7 @@ from node_input import NodeInput
 
 #Other imports
 import json
-from typing import Dict
+from typing import Dict, Tuple
 
 def generate_node_import_data(obj:Dict[str, any]):
     type_name = obj["type"]
@@ -27,10 +27,10 @@ def generate_node_import_data(obj:Dict[str, any]):
             'node_type' : type_name,
         }
 
-def generate_state_from_import(import_data:str):
+def generate_state_from_import(import_data_text:str):
     warning_messages = []
     try:
-        import_dict:dict = json.loads(import_data)
+        import_dict:dict = json.loads(import_data_text)
     except ValueError as e:
         warning_messages.append("Input is not a valid JSON.")
         return warning_messages, None
@@ -76,9 +76,9 @@ def generate_state_from_import(import_data:str):
         else:
             output_refs = input_node_data["output_refs"]
 
-        #add StreamlitFlowEdge to every node connection
+        # if output_refs is an object, for now ignore the keys and just turn it into an array
         if type(output_refs) == type({}):
-            output_refs =[value for key, value in output_refs.items()]
+            output_refs =[value for _, value in output_refs.items()]
         
         for input_node_outgoing_edge_index, output_node_id in enumerate(output_refs):
             if output_node_id not in node_dict:
@@ -90,7 +90,12 @@ def generate_state_from_import(import_data:str):
             # get number of edges already connected to output node and increment it
             output_node_incoming_edges = num_incoming_edges_per_node.get(output_node_id, 0)
             num_incoming_edges_per_node[output_node_id] = output_node_incoming_edges + 1
-            new_edge = create_new_edge(input_node,output_node, input_node_outgoing_edge_index, output_node_incoming_edges, )
+            #check if import data sets the source and target handles
+            handles = [input_node_outgoing_edge_index, output_node_incoming_edges]
+            if "import_data" in input_node_data:
+                handles = input_node_data["import_data"]["connection_handles"][input_node_outgoing_edge_index]
+            # create edge
+            new_edge = create_new_edge(input_node,output_node, handles[0], handles[1])
             edge_array.append(new_edge)
 
 
@@ -99,5 +104,4 @@ def generate_state_from_import(import_data:str):
         node_array,
         edge_array
     )
-    # print(warning_messages)
     return warning_messages, new_state

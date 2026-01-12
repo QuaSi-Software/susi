@@ -131,10 +131,6 @@ def main():
                 st.session_state.exported = export_flow(st.session_state.current_state)
         with c2:
             st.button("Import", on_click=import_data, args=[import_text, edge_type], use_container_width=True)
-                
-        if st.session_state.warning_messages != "":
-            for message in st.session_state.warning_messages:
-                st.markdown(body=":red["+message+"]")
 
     if st.button(label="Clear Graph"):
         st.session_state.current_state.nodes = []
@@ -157,7 +153,10 @@ def main():
         min_zoom=0.1,
         default_edge_options={"deletable":True, "type":edge_type}
     )
-
+    if st.session_state.warning_messages != "":
+            for message in st.session_state.warning_messages:
+                st.markdown(body=":red["+message+"]")
+                
     st.text_area("Exported", st.session_state.exported, height= 400)
 
 main()
