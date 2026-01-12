@@ -153,9 +153,14 @@ def main():
         min_zoom=0.1,
         default_edge_options={"deletable":True, "type":edge_type}
     )
-    if st.session_state.warning_messages != "":
-            for message in st.session_state.warning_messages:
-                st.markdown(body=":red["+message+"]")
+    c1,c2 = st.columns([80, 500])
+    with c1:
+        if st.button(label="Clear Warnings"):
+            st.session_state.warning_messages = ""
+    with c2:
+        if st.session_state.warning_messages != "":
+                for message in st.session_state.warning_messages:
+                    st.markdown(body=":red["+message+"]")
                 
     st.text_area("Exported", st.session_state.exported, height= 400)
 
