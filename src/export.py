@@ -1,9 +1,10 @@
-"""Functionality for exporting the flow as energy system input file for ReSiE.
-"""
+"""Functionality for exporting the flow as energy system input file for ReSiE."""
+
 from json import dumps
 from streamlit_flow.elements import StreamlitFlowNode
 from typing import Dict
 from node_input import NodeInput
+
 
 def base_dict():
     """Dictionary with basic settings/parameters for the input file.
@@ -29,8 +30,9 @@ def base_dict():
             "time_step_unit": "seconds",
             "weather_file_path": "./path/to/dat/or/epw/weather_file.epw",
         },
-        "components": {}
+        "components": {},
     }
+
 
 def get_outputs(node, nodes, edges):
     """Outputs of the given node as list of UACs.
@@ -53,6 +55,7 @@ def get_outputs(node, nodes, edges):
                 handles.append(handleTuple)
     return handles, outgoing
 
+
 def get_inputs(node, nodes, edges):
     """Inputs of the given node as list of UACs.
 
@@ -69,6 +72,7 @@ def get_inputs(node, nodes, edges):
             source = nodes[edge.source]
             incoming.append(source.data["content"])
     return incoming
+
 
 def energy_matrix(nr_rows, nr_columns):
     """Construct the energy matrix config with the given number of rows and columns.
@@ -87,6 +91,7 @@ def energy_matrix(nr_rows, nr_columns):
         rows.append(row)
     return rows
 
+
 def export_flow(flow):
     """Export the given flow as ReSiE input file.
 
@@ -96,32 +101,35 @@ def export_flow(flow):
     -`str`: The content of the input file
     """
     as_dict = base_dict()
-    nodes:Dict[str, StreamlitFlowNode] = {node.id: node for node in flow.nodes}
+    nodes: Dict[str, StreamlitFlowNode] = {node.id: node for node in flow.nodes}
     edges = flow.edges
 
-    node : StreamlitFlowNode
+    node: StreamlitFlowNode
     for node in flow.nodes:
         if node.id == "dummy":
             continue
 
         comp_dict = {}
-        node_input : NodeInput
+        node_input: NodeInput
         for node_input in node.data["resie_data"]:
-            if not node_input.isIncluded and not node_input.required: continue
+            if not node_input.isIncluded and not node_input.required:
+                continue
             comp_dict[node_input.resie_name] = node_input.value
-        #for importing only
+        # for importing only
         comp_dict["import_data"] = {
-            'node_position' : node.position,
-            'node_type' : node.data["component_type"],
+            "node_position": node.position,
+            "node_type": node.data["component_type"],
         }
 
         # set output_refs/connections
         if node.data["component_type"].lower() == "bus":
             comp_dict["connections"]["input_order"] = get_inputs(node, nodes, edges)
-            _,comp_dict["connections"]["output_order"] = get_outputs(node, nodes, edges)
+            _, comp_dict["connections"]["output_order"] = get_outputs(
+                node, nodes, edges
+            )
             comp_dict["connections"]["energy_flow"] = energy_matrix(
                 len(comp_dict["connections"]["input_order"]),
-                len(comp_dict["connections"]["output_order"])
+                len(comp_dict["connections"]["output_order"]),
             )
         else:
             handles, outputs = get_outputs(node, nodes, edges)

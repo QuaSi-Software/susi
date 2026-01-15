@@ -1,5 +1,5 @@
-"""Contains ReSiE-component-specific data and how they relate to components of streamlit flow.
-"""
+"""Contains ReSiE-component-specific data and how they relate to components of streamlit flow."""
+
 
 def component_config(component_type):
     """Parameters and settings for the given component type.
@@ -44,7 +44,7 @@ def component_config(component_type):
             "__OPTION_2": "",
             "max_power_profile_file_path": "FILL_IN",
             "temperature_profile_file_path": "FILL_IN",
-            "scale": -9999
+            "scale": -9999,
         }
     elif name == "boundedsink":
         return base | {
@@ -55,7 +55,7 @@ def component_config(component_type):
             "__OPTION_2": "",
             "max_power_profile_file_path": "FILL_IN",
             "temperature_profile_file_path": "FILL_IN",
-            "scale": -9999
+            "scale": -9999,
         }
     elif name == "fixedsupply":
         return base | {
@@ -66,7 +66,7 @@ def component_config(component_type):
             "__OPTION_2": "",
             "energy_profile_file_path": "FILL_IN",
             "temperature_profile_file_path": "FILL_IN",
-            "scale": -9999
+            "scale": -9999,
         }
     elif name == "demand":
         return base | {
@@ -77,7 +77,7 @@ def component_config(component_type):
             "__OPTION_2": "",
             "energy_profile_file_path": "FILL_IN",
             "temperature_profile_file_path": "FILL_IN",
-            "scale": -9999
+            "scale": -9999,
         }
     elif name == "storage":
         return base | {
@@ -94,7 +94,7 @@ def component_config(component_type):
             "__OPTION_2": "",
             "max_power_profile_file_path": "FILL_IN",
             "temperature_profile_file_path": "FILL_IN",
-            "scale": -9999
+            "scale": -9999,
         }
     elif name == "fuelboiler":
         return base | {
@@ -174,8 +174,8 @@ def component_config(component_type):
             "fluid_kinematic_viscosity": 3.9e-6,
             "fluid_heat_conductivity": 0.48,
             "fluid_prandtl_number": 31.3,
-            "grout_heat_conductivity": 2
-    }
+            "grout_heat_conductivity": 2,
+        }
     elif name == "geothermalheatcollector":
         return base | {
             "__OPTIONAL_MEDIA__": "",
@@ -222,7 +222,7 @@ def component_config(component_type):
             "fluid_heat_conductivity": 0.499,
             "fluid_density": 1025,
             "fluid_kinematic_viscosity": 3.6e-6,
-            "fluid_prantl_number": 30
+            "fluid_prantl_number": 30,
         }
     elif name == "solarthermalcollector":
         return base | {
@@ -241,20 +241,39 @@ def component_config(component_type):
             "__OPERATION_CONDITIONS__": "",
             "delta_T": -9999,
             "___or___": "",
-            "spec_flow_rate": -9999,                   
+            "spec_flow_rate": -9999,
             "__MODEL_PARAMETERS__": "",
             "eta_0_b": -9999,
-            "K_b_t_array":[-9999, -9999, -9999, -9999, -9999, -9999, -9999, -9999, -9999],
-            "K_b_l_array":[-9999, -9999, -9999, -9999, -9999, -9999, -9999, -9999, -9999],
+            "K_b_t_array": [
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+            ],
+            "K_b_l_array": [
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+            ],
             "K_d": -9999,
             "a_params": [-9999, -9999, -9999, -9999, -9999, -9999, -9999, -9999],
             "vol_heat_capacity": 4.2e6,
-            "ground_reflectance":0.2,
+            "ground_reflectance": 0.2,
             "wind_speed_reduction": 1.0,
-            "__OPTIONAL_"
-            "spec_flow_rate_min": 2.0e-6,   
+            "__OPTIONAL_" "spec_flow_rate_min": 2.0e-6,
             "__or__": "",
-            "delta_T_min": 2.0
+            "delta_T_min": 2.0,
         }
     elif name == "chpp":
         return base | {
@@ -341,7 +360,7 @@ def component_config(component_type):
             "ground_temperature": 12,
             "thermal_transmission_lid": 1.0,
             "thermal_transmission_barrel": 1.0,
-            "thermal_transmission_bottom": 1.0
+            "thermal_transmission_bottom": 1.0,
         }
     elif name == "seasonalthermalstorage":
         return base | {
