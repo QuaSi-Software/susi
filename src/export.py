@@ -42,6 +42,7 @@ def get_outputs(node, nodes, edges):
     -`nodes:dict<int,StreamlitFlowNode>`: All nodes in a dict by their ID
     -`edges:list<StreamlitFlowEdge>`: All edges in a list
     # Returns:
+    -`list<tuple<int, int>>`: A list of tuples with the index of the source and target handle of each connection
     -`list<str>`: A list of UACs that are the outputs of the given node
     """
     outgoing = []
