@@ -1,112 +1,5 @@
-"""Contains ReSiE-component-specific data and how they relate to components of streamlit flow.
-"""
-from dataclasses import dataclass
+"""Contains ReSiE-component-specific data and how they relate to components of streamlit flow."""
 
-@dataclass
-class Node_Type:
-    nr_inputs : int
-    nr_outputs : int
-    segment : str
-    node_color : str = "#000000"
-
-hot_color = "#bc1b1b"
-electricity_color = "#eeb014"
-
-def node_info(component_type):
-    """Info required for creating a node of the given component type.
-
-    # Args:
-    -`component_type:str`: The component type
-    # Returns:
-    -`nr_inputs:int`: The number of inputs for the node
-    -`nr_outputs:int`: The number of outputs for the node
-    -`segment:str`: The segment for the UAC
-    """
-    name = component_type.lower()
-    if name == "bus":
-        return Node_Type(1,1,"BUS")
-    elif name == "boundedsupply":
-        return Node_Type(0, 1, "SRC")
-    elif name == "fixedsupply":
-        return Node_Type(0, 1, "SRC")
-    elif name == "demand":
-        return Node_Type(1, 0, "DEM")
-    elif name == "boundedsink":
-        return Node_Type(1, 0, "DEM")
-    elif name == "gridinput":
-        return Node_Type(0, 1, "GRI")
-    elif name == "gridoutput":
-        return Node_Type(1, 0, "GRO")
-    elif name == "storage":
-        return Node_Type(1, 1, "STO")
-    elif name == ("genericheatsource"):
-        return Node_Type(0, 1, "GHS", hot_color)
-    elif name == ("fuelboiler"):
-        return Node_Type(1, 1, "FBO", hot_color)
-    elif name == ("heatpump"):
-        return Node_Type(2, 1, "HP", hot_color)
-    elif name == ("geothermalprobes"):
-        return Node_Type(1, 1, "GTP", hot_color)
-    elif name == ("geothermalheatcollector"):
-        return Node_Type(1, 1, "GHC", hot_color)
-    elif name == ("chpp"):
-        return Node_Type(1, 2, "CHPP", electricity_color)
-    elif name == ("pvplant"):
-        return Node_Type(0, 1, "PV", electricity_color)
-    elif name == ("battery"):
-        return Node_Type(1, 1, "BAT", electricity_color)
-    elif name == ("electrolyser"):
-        return Node_Type(1, 4, "ELY", electricity_color)
-    elif name == ("buffertank"):
-        return Node_Type(1, 1, "BFT", hot_color)
-    elif name == ("seasonalthermalstorage"):
-        return Node_Type(1, 1, "STS", hot_color)
-    elif name == ("solarthermalcollector"):
-        return Node_Type(0, 1, "STC", hot_color)
-    else:
-        raise NotImplementedError(f"Unknown component type {component_type}")
-
-def categories():
-    """Categories of component types for navigation/display purposes.
-
-    # Returns:
-    -`dict<list>`: A dict of categories, with each entry of a category corresponding to a
-        component type and each tuple of a type containing the component_type and display
-        name for that type.
-    """
-    return {
-        "_order": ["Special", "General", "Heat", "Electricity", "Other"],
-        "Special": [
-            ("Bus", "Bus"),
-            ("GridInput", "Grid Input"),
-            ("GridOutput", "Grid Output"),
-        ],
-        "General": [
-            ("FixedSupply", "Fixed Supply"),
-            ("BoundedSupply", "Flexible Supply"),
-            ("Demand", "Fixed Demand"),
-            ("BoundedSink", "Flexible Demand"),
-            ("Storage", "Storage"),
-        ],
-        "Heat": [
-            ("GenericHeatSource", "Generic Heat Source"),
-            ("FuelBoiler", "Fuel Boiler"),
-            ("HeatPump", "Heat Pump"),
-            ("GeothermalProbes", "Geothermal Probes"),
-            ("GeothermalHeatCollector", "Geothermal Heat Collector"),
-            ("BufferTank", "Buffer Tank"),
-            ("SeasonalThermalStorage", "Seasonal Thermal Storage"),
-            ("SolarthermalCollector", "Solarthermal Collector")
-        ],
-        "Electricity": [
-            ("CHPP", "Combined-Heat-Power Plant"),
-            ("PVPlant", "Photovoltaic Plant"),
-            ("Battery", "Battery"),
-        ],
-        "Other": [
-            ("Electrolyser", "Electrolyser"),
-        ]
-    }
 
 def component_config(component_type):
     """Parameters and settings for the given component type.
@@ -151,7 +44,7 @@ def component_config(component_type):
             "__OPTION_2": "",
             "max_power_profile_file_path": "FILL_IN",
             "temperature_profile_file_path": "FILL_IN",
-            "scale": -9999
+            "scale": -9999,
         }
     elif name == "boundedsink":
         return base | {
@@ -162,7 +55,7 @@ def component_config(component_type):
             "__OPTION_2": "",
             "max_power_profile_file_path": "FILL_IN",
             "temperature_profile_file_path": "FILL_IN",
-            "scale": -9999
+            "scale": -9999,
         }
     elif name == "fixedsupply":
         return base | {
@@ -173,7 +66,7 @@ def component_config(component_type):
             "__OPTION_2": "",
             "energy_profile_file_path": "FILL_IN",
             "temperature_profile_file_path": "FILL_IN",
-            "scale": -9999
+            "scale": -9999,
         }
     elif name == "demand":
         return base | {
@@ -184,7 +77,7 @@ def component_config(component_type):
             "__OPTION_2": "",
             "energy_profile_file_path": "FILL_IN",
             "temperature_profile_file_path": "FILL_IN",
-            "scale": -9999
+            "scale": -9999,
         }
     elif name == "storage":
         return base | {
@@ -201,7 +94,7 @@ def component_config(component_type):
             "__OPTION_2": "",
             "max_power_profile_file_path": "FILL_IN",
             "temperature_profile_file_path": "FILL_IN",
-            "scale": -9999
+            "scale": -9999,
         }
     elif name == "fuelboiler":
         return base | {
@@ -281,8 +174,8 @@ def component_config(component_type):
             "fluid_kinematic_viscosity": 3.9e-6,
             "fluid_heat_conductivity": 0.48,
             "fluid_prandtl_number": 31.3,
-            "grout_heat_conductivity": 2
-    }
+            "grout_heat_conductivity": 2,
+        }
     elif name == "geothermalheatcollector":
         return base | {
             "__OPTIONAL_MEDIA__": "",
@@ -329,7 +222,7 @@ def component_config(component_type):
             "fluid_heat_conductivity": 0.499,
             "fluid_density": 1025,
             "fluid_kinematic_viscosity": 3.6e-6,
-            "fluid_prantl_number": 30
+            "fluid_prantl_number": 30,
         }
     elif name == "solarthermalcollector":
         return base | {
@@ -348,20 +241,39 @@ def component_config(component_type):
             "__OPERATION_CONDITIONS__": "",
             "delta_T": -9999,
             "___or___": "",
-            "spec_flow_rate": -9999,                   
+            "spec_flow_rate": -9999,
             "__MODEL_PARAMETERS__": "",
             "eta_0_b": -9999,
-            "K_b_t_array":[-9999, -9999, -9999, -9999, -9999, -9999, -9999, -9999, -9999],
-            "K_b_l_array":[-9999, -9999, -9999, -9999, -9999, -9999, -9999, -9999, -9999],
+            "K_b_t_array": [
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+            ],
+            "K_b_l_array": [
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+                -9999,
+            ],
             "K_d": -9999,
             "a_params": [-9999, -9999, -9999, -9999, -9999, -9999, -9999, -9999],
             "vol_heat_capacity": 4.2e6,
-            "ground_reflectance":0.2,
+            "ground_reflectance": 0.2,
             "wind_speed_reduction": 1.0,
-            "__OPTIONAL_"
-            "spec_flow_rate_min": 2.0e-6,   
+            "__OPTIONAL_" "spec_flow_rate_min": 2.0e-6,
             "__or__": "",
-            "delta_T_min": 2.0
+            "delta_T_min": 2.0,
         }
     elif name == "chpp":
         return base | {
@@ -448,7 +360,7 @@ def component_config(component_type):
             "ground_temperature": 12,
             "thermal_transmission_lid": 1.0,
             "thermal_transmission_barrel": 1.0,
-            "thermal_transmission_bottom": 1.0
+            "thermal_transmission_bottom": 1.0,
         }
     elif name == "seasonalthermalstorage":
         return base | {

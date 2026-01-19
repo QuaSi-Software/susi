@@ -6,29 +6,45 @@ Run this with
 after having installed dependencies with
 `pip install streamlit streamlit-flow-component`
 """
-from random import randint
+
+# streamlit flow imports
 import streamlit as st
 import streamlit_flow
 from streamlit_flow import streamlit_flow as streamlit_flow_component
-from streamlit_flow.elements import StreamlitFlowNode
+from streamlit_flow.elements import StreamlitFlowNode, StreamlitFlowEdge
 from streamlit_flow.state import StreamlitFlowState
-from streamlit_flow.layouts import ManualLayout
+from streamlit_flow.layouts import ManualLayout, LayeredLayout
+
+# project imports
+from create_elements import create_new_node
 from export import export_flow
-from components import node_info, categories, Node_Type
+from import_flow_state import generate_state_from_import
+from node_types import NodeType, NodeCategory, get_node_types_in_category
+
+# Other
 import importlib
+from random import randint
+
 
 def check_state():
     """Ensures the current state is attached to the simulation state and creates it if not."""
-    if 'current_state' not in st.session_state:
+    if "current_state" not in st.session_state:
         # for some reason initialising with an empty node list causes the state to not
         # recognize when nodes are added. as a workaround we initialise with a hidden
         # dummy node and ignore it in the output
         st.session_state.current_state = StreamlitFlowState(
-            [StreamlitFlowNode(id="dummy", pos=(0,0), data={"content": ""}, hidden=True)],
-            []
+            [
+                StreamlitFlowNode(
+                    id="dummy", pos=(0, 0), data={"content": ""}, hidden=True
+                )
+            ],
+            [],
         )
     if "exported" not in st.session_state:
         st.session_state.exported = ""
+    if "warning_messages" not in st.session_state:
+        st.session_state.warning_messages = []
+
 
 def add_node(new_node):
     """Add the given node to the node list.
@@ -39,9 +55,10 @@ def add_node(new_node):
     check_state()
     st.session_state.current_state.nodes.append(new_node)
 
+
 def nr_of_nodes(segment, nodes):
     """The number of nodes with the given segment occuring in the UAC.
-    
+
     # Args:
     -`segment:str`: The segment to look for
     -`nodes:List<StreamlitFlowNode>`: The nodes to search through
@@ -49,6 +66,7 @@ def nr_of_nodes(segment, nodes):
     -`int`: The number of nodes with the given segment in their UA
     """
     return len([n for n in nodes if segment in n.id])
+
 
 def lpad(to_pad, to_len, pad_char="0"):
     """Left-pads the given string.
@@ -64,7 +82,8 @@ def lpad(to_pad, to_len, pad_char="0"):
     """
     return (str(pad_char) * int(to_len - len(to_pad))) + to_pad
 
-def create_node(prefix, component_type):
+
+def create_node(prefix, node: NodeType):
     """Create a node of the given type.
 
     # Args:
@@ -73,27 +92,39 @@ def create_node(prefix, component_type):
     # Returns:
     -`StreamlitFlowNode`: The created node
     """
-    node : Node_Type = node_info(component_type)
-    src_handles, trg_handles, segment = node.nr_inputs, node.nr_outputs, node.segment
-    uac = prefix + f"_{segment}_" + lpad(
-        str(nr_of_nodes(f"_{segment}_", st.session_state.current_state.nodes) + 1), 2, "0"
+    uac = (
+        prefix
+        + f"_{node.segment}_"
+        + lpad(
+            str(
+                nr_of_nodes(f"_{node.segment}_", st.session_state.current_state.nodes)
+                + 1
+            ),
+            2,
+            "0",
+        )
+    )
+    return create_new_node(
+        name=uac, position=(randint(-20, 20), randint(-20, 20)), node_type=node
     )
 
-    return StreamlitFlowNode(
-        id=uac,
-        pos=(randint(-20, 20), randint(-20, 20)),
-        data={
-            'content': uac,
-            'component_type': component_type,
-        },
-        node_type='default',
-        source_position='right',
-        source_handles=trg_handles, # the definition of input/output is reversed for
-        target_position='left',     # Streamlit Flow, as they reference the edges and not
-        target_handles=src_handles, # the nodes, so we switch it here
-        deletable=True,
-        style={'color': 'white', 'backgroundColor': node.node_color, 'border': '1px solid white'}
+
+def import_data(import_data, edge_type):
+    st.session_state.warning_messages, new_state = generate_state_from_import(
+        import_data
     )
+    if new_state != None:
+        # st.session_state.current_state = new_state
+        st.session_state.current_state.nodes = new_state.nodes
+        st.session_state.current_state.edges = new_state.edges
+        change_all_edges(edge_type=edge_type)
+
+
+def change_all_edges(edge_type: str):
+    edge: StreamlitFlowEdge
+    for edge in st.session_state.current_state.edges:
+        edge.type = edge_type
+
 
 def main():
     """Entry point to the streamlit process."""
@@ -104,25 +135,47 @@ def main():
     with st.sidebar:
         st.markdown("## Settings")
         prefix = st.text_input("UAC prefix", "TST")
+        edge_type = st.selectbox(
+            label="Edge Type",
+            options=["default", "simplebezier", "smoothstep", "step", "straight"],
+            index=1,
+        )
+        if st.button("Change All Edges"):
+            change_all_edges(edge_type)
 
         st.markdown("## Components")
-        cats = categories()
-        for cat_name in cats["_order"]:
-            st.markdown(f"### {cat_name}")
+        for category in NodeCategory:
+            st.markdown(f"### {category.name}")
 
-            for entry in cats[cat_name]:
-                if st.button(entry[1], use_container_width=True):
-                    add_node(create_node(prefix, entry[0]))
+            nodes_in_category = get_node_types_in_category(category)
+            for node in nodes_in_category:
+                if st.button(node.button_name, use_container_width=True):
+                    add_node(create_node(prefix, node))
 
         st.markdown("## Actions")
 
-        if st.button("Export"):
-            st.session_state.exported = export_flow(st.session_state.current_state)
+        import_text = st.text_area("Imported", st.session_state.exported, height=50)
+        c1, c2 = st.columns(2)
+        with c1:
+            if st.button("Export", use_container_width=True):
+                st.session_state.exported = export_flow(st.session_state.current_state)
+        with c2:
+            st.button(
+                "Import",
+                on_click=import_data,
+                args=[import_text, edge_type],
+                use_container_width=True,
+            )
+
+    if st.button(label="Clear Graph"):
+        st.session_state.current_state.nodes = []
+        st.session_state.current_state.edges = []
 
     st.session_state.current_state = streamlit_flow_component(
-        'energy_system', 
+        "energy_system",
         st.session_state.current_state,
         layout=ManualLayout(),
+        reset_layout=LayeredLayout(direction="right"),
         fit_view=True,
         enable_node_menu=True,
         enable_edge_menu=True,
@@ -133,9 +186,18 @@ def main():
         hide_watermark=True,
         allow_new_edges=True,
         min_zoom=0.1,
-        default_edge_options={"deletable":True}
+        default_edge_options={"deletable": True, "type": edge_type},
     )
+    c1, c2 = st.columns([80, 500])
+    with c1:
+        if st.button(label="Clear Warnings"):
+            st.session_state.warning_messages = ""
+    with c2:
+        if st.session_state.warning_messages != "":
+            for message in st.session_state.warning_messages:
+                st.markdown(body=":red[" + message + "]")
 
-    st.text_area("Exported", st.session_state.exported)
+    st.text_area("Exported", st.session_state.exported, height=400)
+
 
 main()
