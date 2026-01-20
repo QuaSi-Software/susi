@@ -9,6 +9,7 @@ class NodeInput:
     display_name: str = "UNKNOWN"
     value: any = "UNKNOWN"
     dropdown_options: List = []
+    tooltip = ""
 
     def add_to_dict(self, dict: Dict[str, any]):
         dict[self.resie_name] = self.value
@@ -23,6 +24,7 @@ class NodeInput:
         required=True,
         isIncluded=True,
         dropdown_options=[],
+        tooltip="",
     ):
         self.js_type = js_type
         self.resie_name = resie_name
@@ -30,6 +32,7 @@ class NodeInput:
         self.display_name = display_name
         self.value = value
         self.required = required
+        self.tooltip = tooltip
         self.isIncluded = (
             isIncluded or required
         )  # if it's required, it has to be included
@@ -75,6 +78,7 @@ class NodeInput:
             "required": self.required,
             "isIncluded": self.isIncluded,
             "dropdown_options": self.dropdown_options,
+            "tooltip": self.tooltip,
         }
         return input_dict
 
@@ -88,6 +92,7 @@ class NodeInput:
             required=node_input_dict.get("required"),
             isIncluded=node_input_dict.get("isIncluded"),
             dropdown_options=node_input_dict.get("dropdown_options"),
+            tooltip=node_input_dict.get("tooltip"),
         )
 
     def list_from_dict(objects):
@@ -147,6 +152,7 @@ def get_node_inputs(component_type):
                 display_name="Testing Dropdown",
                 value="heat",
                 dropdown_options=["electricity", "heat", "water"],
+                tooltip="This is a testing medium",
             ),
             NodeInput(resie_name="scale", display_name="scale", value=-9999),
         ]
