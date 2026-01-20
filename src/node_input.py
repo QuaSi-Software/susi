@@ -147,13 +147,13 @@ def get_node_inputs(component_type):
                 display_name="temperature profile file path",
                 value="FILL_IN",
             ),
-            NodeInput(
-                resie_name="testing",
-                display_name="Testing Dropdown",
-                value="heat",
-                dropdown_options=["electricity", "heat", "water"],
-                tooltip="This is a testing medium",
-            ),
+            # NodeInput(
+            #     resie_name="testing",
+            #     display_name="Testing Dropdown",
+            #     value="heat",
+            #     dropdown_options=["electricity", "heat", "water"],
+            #     tooltip="This is a testing medium",
+            # ),
             NodeInput(resie_name="scale", display_name="scale", value=-9999),
         ]
     obj = component_config(component_type=component_type)
