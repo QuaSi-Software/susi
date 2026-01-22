@@ -20,6 +20,7 @@ from create_elements import create_new_node
 from export import export_flow
 from import_flow_state import generate_state_from_import
 from node_types import NodeType, NodeCategory, get_node_types_in_category
+from medium_menu import initialize_medium_list, medium_menu
 
 # Other
 import importlib
@@ -44,6 +45,7 @@ def check_state():
         st.session_state.exported = ""
     if "warning_messages" not in st.session_state:
         st.session_state.warning_messages = []
+    initialize_medium_list()
 
 
 def add_node(new_node):
@@ -197,6 +199,7 @@ def main():
             for message in st.session_state.warning_messages:
                 st.markdown(body=":red[" + message + "]")
 
+    medium_menu()
     st.text_area("Exported", st.session_state.exported, height=400)
 
 
