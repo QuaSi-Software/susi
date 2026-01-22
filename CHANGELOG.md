@@ -3,6 +3,15 @@
 Current SUSI version: 0.3.0
 Implemented for ReSie version: 0.12.4
 
+## v0.3.3
+* Node Parameters are editable in 'Edit Node' Window. Supported Input Types are
+    * Strings
+    * Booleans
+    * Numbers
+    * Dropdown menus with a list of options provided
+* Each node input can have a tooltip defined, which is displayed when hovering over the field with the cursor
+* Non-required inputs can be disabled, so they will be omitted from the export file
+
 ## v0.3.2
 * Support for importing Resie Export files to create a graph from them
 * Support for non-required node inputs that stay deleted if not present in the import file. However, no node inputs are marked as non-required as of yet.

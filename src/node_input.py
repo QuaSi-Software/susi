@@ -1,5 +1,5 @@
 from node_input_data import component_config
-from typing import Dict
+from typing import Dict, List
 
 
 class NodeInput:
@@ -8,6 +8,8 @@ class NodeInput:
     editable: bool = True
     display_name: str = "UNKNOWN"
     value: any = "UNKNOWN"
+    dropdown_options: List = []
+    tooltip = ""
 
     def add_to_dict(self, dict: Dict[str, any]):
         dict[self.resie_name] = self.value
@@ -21,6 +23,8 @@ class NodeInput:
         editable=True,
         required=True,
         isIncluded=True,
+        dropdown_options=[],
+        tooltip="",
     ):
         self.js_type = js_type
         self.resie_name = resie_name
@@ -28,9 +32,24 @@ class NodeInput:
         self.display_name = display_name
         self.value = value
         self.required = required
+        self.tooltip = tooltip
         self.isIncluded = (
             isIncluded or required
         )  # if it's required, it has to be included
+
+        # if the dropdown options list isn't empty, this is a dropdown field.
+        self.dropdown_options = dropdown_options
+        if len(self.dropdown_options) > 0:
+            self.js_type = "dropdown"
+            # verify that the start value is in the list of options
+            if self.value not in self.dropdown_options:
+                print(
+                    "Warning: start value '"
+                    + str(value)
+                    + "' is not in dropdown options "
+                    + str(dropdown_options)
+                )
+                self.value = self.dropdown_options[0]
 
         if self.js_type is None:
             self.js_type = self.get_type(self.value)
@@ -47,6 +66,7 @@ class NodeInput:
                 return "string"
             case "bool":
                 return "boolean"
+        return "unknown"
 
     def asdict(self):
         input_dict = {
@@ -57,6 +77,8 @@ class NodeInput:
             "value": self.value,
             "required": self.required,
             "isIncluded": self.isIncluded,
+            "dropdown_options": self.dropdown_options,
+            "tooltip": self.tooltip,
         }
         return input_dict
 
@@ -69,6 +91,8 @@ class NodeInput:
             value=node_input_dict.get("value", "default"),
             required=node_input_dict.get("required"),
             isIncluded=node_input_dict.get("isIncluded"),
+            dropdown_options=node_input_dict.get("dropdown_options"),
+            tooltip=node_input_dict.get("tooltip"),
         )
 
     def list_from_dict(objects):
@@ -97,13 +121,13 @@ def get_node_inputs(component_type):
             ),
             NodeInput(
                 resie_name="constant_supply",
-                display_name="constant_supply",
+                display_name="Constant Supply",
                 value=-9999,
                 required=False,
             ),
             NodeInput(
                 resie_name="constant_temperature",
-                display_name="constant_temperature",
+                display_name="Constant Temperature",
                 value=-9999,
                 required=False,
             ),
@@ -115,14 +139,21 @@ def get_node_inputs(component_type):
             ),
             NodeInput(
                 resie_name="energy_profile_file_path",
-                display_name="energy_profile_file_path",
+                display_name="energy profile file path",
                 value="FILL_IN",
             ),
             NodeInput(
                 resie_name="temperature_profile_file_path",
-                display_name="temperature_profile_file_path",
+                display_name="temperature profile file path",
                 value="FILL_IN",
             ),
+            # NodeInput(
+            #     resie_name="testing",
+            #     display_name="Testing Dropdown",
+            #     value="heat",
+            #     dropdown_options=["electricity", "heat", "water"],
+            #     tooltip="This is a testing medium",
+            # ),
             NodeInput(resie_name="scale", display_name="scale", value=-9999),
         ]
     obj = component_config(component_type=component_type)
