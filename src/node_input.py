@@ -1,5 +1,6 @@
 from node_input_data import component_config
 from typing import Dict, List
+from medium_menu import serialize_mediums_list
 
 
 class NodeInput:
@@ -9,6 +10,8 @@ class NodeInput:
     display_name: str = "UNKNOWN"
     value: any = "UNKNOWN"
     dropdown_options: List = []
+    dropdown_option_display_names = []
+    is_medium: bool = False
     tooltip = ""
 
     def add_to_dict(self, dict: Dict[str, any]):
@@ -24,7 +27,9 @@ class NodeInput:
         required=True,
         isIncluded=True,
         dropdown_options=[],
+        dropdown_options_display_names=None,
         tooltip="",
+        is_medium=False,
     ):
         self.js_type = js_type
         self.resie_name = resie_name
@@ -33,9 +38,17 @@ class NodeInput:
         self.value = value
         self.required = required
         self.tooltip = tooltip
-        self.isIncluded = (
-            isIncluded or required
-        )  # if it's required, it has to be included
+        self.dropdown_options_display_names = dropdown_options_display_names
+        # if it's required, it has to be included
+        self.isIncluded = (isIncluded or required)  
+        # if this is a medium, its value should be the key of the medium in the list
+        self.is_medium = is_medium
+        if is_medium:
+            mediums : List[Dict[str,str]] = serialize_mediums_list()
+            input_medium : Dict[str,str] = next((m for m in mediums if m["name"] == value), mediums[0])
+            self.value = input_medium["key"] 
+
+
 
         # if the dropdown options list isn't empty, this is a dropdown field.
         self.dropdown_options = dropdown_options
@@ -78,7 +91,9 @@ class NodeInput:
             "required": self.required,
             "isIncluded": self.isIncluded,
             "dropdown_options": self.dropdown_options,
+            "dropdown_options_display_names": self.dropdown_options_display_names,
             "tooltip": self.tooltip,
+            "is_medium": self.is_medium,
         }
         return input_dict
 
@@ -92,7 +107,11 @@ class NodeInput:
             required=node_input_dict.get("required"),
             isIncluded=node_input_dict.get("isIncluded"),
             dropdown_options=node_input_dict.get("dropdown_options"),
+            dropdown_options_display_names=node_input_dict.get(
+                "dropdown_options_display_names"
+            ),
             tooltip=node_input_dict.get("tooltip"),
+            is_medium=node_input_dict.get("is_medium"),
         )
 
     def list_from_dict(objects):
@@ -112,7 +131,12 @@ class NodeInput:
 def get_node_inputs(component_type):
     if component_type.lower() == "fixedsupply":
         return [
-            NodeInput(resie_name="medium", display_name="medium", value="FILL_IN"),
+            NodeInput(
+                resie_name="medium",
+                display_name="medium",
+                value="FILL_IN",
+                is_medium=True,
+            ),
             NodeInput(
                 resie_name="__OPTION_1",
                 display_name="__OPTION_1",
@@ -147,13 +171,21 @@ def get_node_inputs(component_type):
                 display_name="temperature profile file path",
                 value="FILL_IN",
             ),
-            # NodeInput(
-            #     resie_name="testing",
-            #     display_name="Testing Dropdown",
-            #     value="heat",
-            #     dropdown_options=["electricity", "heat", "water"],
-            #     tooltip="This is a testing medium",
-            # ),
+            NodeInput(
+                resie_name="testing",
+                display_name="Testing Dropdown",
+                value="heat",
+                dropdown_options=["electricity", "heat", "water"],
+                tooltip="This is a testing medium",
+            ),
+            NodeInput(
+                resie_name="testing2",
+                display_name="Testing Dropdown with Display Names",
+                value="heat",
+                dropdown_options=["electricity", "heat", "water"],
+                dropdown_options_display_names=["ELECTRICITY", "HEAT", "WATER"],
+                tooltip="This is a testing medium",
+            ),
             NodeInput(resie_name="scale", display_name="scale", value=-9999),
         ]
     obj = component_config(component_type=component_type)

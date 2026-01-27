@@ -20,7 +20,7 @@ from create_elements import create_new_node
 from export import export_flow
 from import_flow_state import generate_state_from_import
 from node_types import NodeType, NodeCategory, get_node_types_in_category
-from medium_menu import initialize_medium_list, medium_menu
+from medium_menu import initialize_medium_list, medium_menu, serialize_mediums_list
 
 # Other
 import importlib
@@ -189,6 +189,7 @@ def main():
         allow_new_edges=True,
         min_zoom=0.1,
         default_edge_options={"deletable": True, "type": edge_type},
+        additional_data={"mediums": serialize_mediums_list()},
     )
     c1, c2 = st.columns([80, 500])
     with c1:

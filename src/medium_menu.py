@@ -11,6 +11,8 @@ class medium_input:
 
     def __init__(self, name=None, color=None, inputted_name_valid=True):
         self.key = "m_" + str(time.time())
+        if name is not None:
+            self.key = self.key + name
         self.name = name if name is not None else self.key
         if color is not None:
             self.color = color
@@ -18,10 +20,12 @@ class medium_input:
 
 
 def serialize_mediums_list():
-    serialized_list = []
-    for _, medium in st.session_state.mediums:
+    serialized_list = [{"name":"Not Set", "key":"UNDEFINED"}]
+    for _, medium in enumerate(st.session_state.mediums):
         if medium.inputted_name_valid:
-            serialized_list.append([medium.name, medium.color])
+            serialized_list.append(
+                {"name": medium.name, "color": medium.color, "key": medium.key}
+            )
     return serialized_list
 
 
@@ -95,6 +99,7 @@ def medium_menu():
         medium: medium_input
         index: int
         for index, medium in enumerate(st.session_state.medium_list_input):
+            if medium.key == "UNDEFINED": continue
             single_medium_input_field(medium=medium, medium_index=index)
         # Button: when clicked, add another medium to the list
         if st.button(label="Add New Medium", icon=":material/add_circle:"):
