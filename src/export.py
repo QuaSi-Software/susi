@@ -4,6 +4,7 @@ from json import dumps
 from streamlit_flow.elements import StreamlitFlowNode
 from typing import Dict
 from node_input import NodeInput
+from mediums import medium_input
 
 
 def base_dict():
