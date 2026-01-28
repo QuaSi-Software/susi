@@ -1,6 +1,7 @@
 import streamlit as st
 import copy
 from mediums import medium_input, set_default_mediums
+from typing import List
 
 
 def initialize_medium_list():
@@ -21,6 +22,17 @@ def check_duplicate_names():
         count = name_dict.get(medium.name)
         medium.inputted_name_valid = count == 1
 
+def input_has_changes():
+    mediums : List[medium_input] = st.session_state.mediums
+    mediums_in_menu : List[medium_input] = st.session_state.medium_list_input
+    if len(mediums) is not len(mediums_in_menu): return True
+    for i in range(len(mediums)):
+        m1 : medium_input = mediums[i]
+        m2 : medium_input = mediums_in_menu[i]
+        are_equal : bool = m1.key is m2.key and m1.name == m2.name and m1.color == m2.color
+        if not are_equal:
+            return True
+    return False
 
 def single_medium_input_field(medium: medium_input, medium_index: int):
     c1, c2, c3 = st.columns([40, 200, 50], vertical_alignment="bottom")
@@ -70,19 +82,21 @@ def medium_menu():
         st.space("small")
 
         # show submit button only if all changes are valid
-        all_inputs_valid: bool = all(
-            medium.inputted_name_valid for medium in st.session_state.medium_list_input
-        )
+        has_changes : bool = input_has_changes()
         c1, c2, c3 = st.columns(3, width=600)
         with c1:
+            all_inputs_valid: bool = all(
+                medium.inputted_name_valid for medium in st.session_state.medium_list_input
+            )
+            can_submit : bool = has_changes and all_inputs_valid
             if st.button(
-                "Submit Changes", disabled=not all_inputs_valid, icon=":material/check:"
+                "Submit Changes", disabled=not can_submit, icon=":material/check:"
             ):
                 st.session_state.mediums = copy.deepcopy(
                     st.session_state.medium_list_input
                 )
         with c2:
-            if st.button("Undo Changes", icon=":material/replay:"):
+            if st.button("Undo Changes", icon=":material/replay:", disabled=not has_changes):
                 st.session_state.medium_list_input = copy.deepcopy(
                     st.session_state.mediums
                 )
