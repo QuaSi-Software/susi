@@ -17,11 +17,8 @@ class medium_input:
         if color is not None:
             self.color = color
         else:
-            # Generating a random number in between 0 and 2^24
-                color = random.randrange(0, 2**24)
-                # Converting that number from base-10 (decimal) to base-16 (hexadecimal)
-                hex_color = hex(color)
-                self.color = "#" + hex_color[2:]
+            # Generate a random color
+            self.color = f"#{random.randint(0, 0xFFFFFF):06x}"
         self.inputted_name_valid = inputted_name_valid
 
 def serialize_mediums_list():
