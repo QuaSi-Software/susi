@@ -1,16 +1,6 @@
 import streamlit as st
 import copy
-from mediums import medium_input, check_duplicate_names
-
-def set_default_mediums():
-    st.session_state.mediums = [
-        medium_input(name="m_e_ac_230v", color="#ffee00"),
-        medium_input(name="m_h_w_lt1", color="#ff6c6c"),
-        medium_input(name="m_h_w_ht1", color="#940000"),
-        medium_input(name="m_c_g_h2", color="#00d346"),
-        medium_input(name="m_c_g_o2", color="#ff0000"),
-        medium_input(name="m_c_g_natgas", color="#6e00d4"),
-    ]
+from mediums import medium_input, set_default_mediums
 
 
 def initialize_medium_list():
@@ -20,6 +10,16 @@ def initialize_medium_list():
         st.session_state.medium_list_input = copy.deepcopy(st.session_state.mediums)
     if "reset_counter" not in st.session_state:
         st.session_state.reset_counter = 0
+
+def check_duplicate_names():
+    name_dict = {}
+    medium: medium_input
+    for _, medium in enumerate(st.session_state.medium_list_input):
+        count = name_dict.get(medium.name, 0) + 1
+        name_dict[medium.name] = count
+    for _, medium in enumerate(st.session_state.medium_list_input):
+        count = name_dict.get(medium.name)
+        medium.inputted_name_valid = count == 1
 
 
 def single_medium_input_field(medium: medium_input, medium_index: int):

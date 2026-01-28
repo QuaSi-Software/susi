@@ -35,7 +35,6 @@ class NodeInput:
         self.resie_name = resie_name
         self.editable = editable
         self.display_name = display_name
-        self.value = value
         self.required = required
         self.tooltip = tooltip
         self.dropdown_options_display_names = dropdown_options_display_names
@@ -43,11 +42,7 @@ class NodeInput:
         self.isIncluded = (isIncluded or required)  
         # if this is a medium, its value should be the key of the medium in the list
         self.is_medium = is_medium
-        if is_medium:
-            mediums : List[Dict[str,str]] = serialize_mediums_list()
-            input_medium : Dict[str,str] = next((m for m in mediums if m["name"] == value), mediums[0])
-            self.value = input_medium["key"] 
-
+        self.set_value(value)
 
 
         # if the dropdown options list isn't empty, this is a dropdown field.
@@ -80,6 +75,14 @@ class NodeInput:
             case "bool":
                 return "boolean"
         return "unknown"
+
+    def set_value(self, value):
+        if self.is_medium:
+            mediums : List[Dict[str,str]] = serialize_mediums_list()
+            input_medium : Dict[str,str] = next((m for m in mediums if m["key"] == value or m["name"]==value), mediums[0])
+            self.value = input_medium["key"] 
+        else:
+            self.value = value
 
     def asdict(self):
         input_dict = {
