@@ -3,8 +3,30 @@ from streamlit_flow.elements import (
     StreamlitFlowEdge,
 )
 from node_types import NodeType
-from node_input import get_node_inputs
+from node_input import get_node_inputs, NodeInput
+from typing import List
 
+def get_handle_color_dict(node_inputs : List[NodeInput], num_src_handles : int, num_target_handles):
+    medium_variables : List[NodeInput] = [x for x in node_inputs if x.is_medium]
+    if len(medium_variables) == 1:
+        # all handles are mapped to that variable name
+        medium_variable_name = medium_variables[0].resie_name
+        src_list = [medium_variable_name] * num_src_handles
+        trgt_list = [medium_variable_name] * num_target_handles
+    else:
+        # each medium defines one handle
+        src_list, trgt_list = [],[]
+        for m in medium_variables:
+            medium_variable_name= m.resie_name
+            suffix = medium_variable_name.split("_")[-1]
+            if suffix == "out": trgt_list.append(medium_variable_name)
+            else: src_list.append(medium_variable_name)
+        trgt_list.sort()
+        src_list.sort()
+    return {
+        "source" : src_list,
+        "target" : trgt_list,
+    }
 
 def create_new_node(
     name: str,
@@ -12,6 +34,9 @@ def create_new_node(
     node_type: NodeType,
 ):
     resie_data = get_node_inputs(node_type.type_name)
+    # generate dictionary that maps handle names to the medium variable that controls it
+    handle_color_dict = get_handle_color_dict(resie_data, node_type.nr_outputs, node_type.nr_inputs)
+    print(str(handle_color_dict))
     return StreamlitFlowNode(
         id=name,
         pos=position,
@@ -19,6 +44,7 @@ def create_new_node(
             "content": name,
             "component_type": node_type.type_name,
             "resie_data": resie_data,
+            "handle_color_dict" : handle_color_dict,
         },
         node_type="default",
         source_position="right",
@@ -69,4 +95,7 @@ def create_new_edge(
         sourceHandle=handle_on_source_node,
         targetHandle=handle_on_target_node,
         deletable=True,
+        style={
+            "stroke": "#ff0000",
+        },
     )

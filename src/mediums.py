@@ -22,7 +22,7 @@ class medium_input:
         self.inputted_name_valid = inputted_name_valid
 
 def serialize_mediums_list():
-    serialized_list = [{"name":"Not Set", "key":"UNDEFINED"}]
+    serialized_list = [{"name":"Not Set", "key":"UNDEFINED", "color": "#ffffff"}]
     for _, medium in enumerate(st.session_state.mediums):
         if medium.inputted_name_valid:
             serialized_list.append(
