@@ -39,7 +39,7 @@ def get_medium_list_from_components(components : List):
         # find out which of these variables is a medium
         node_type: NodeType = get_node_type_with_name(node_import_data["node_type"])
         node_type_inputs = get_node_inputs(node_type.type_name) # resie data for this node type
-        mediums_in_current_node : List[NodeInput] = (x for x in node_type_inputs if x.is_medium)
+        mediums_in_current_node : List[NodeInput] = [x for x in node_type_inputs if x.is_medium]
 
         node_input: NodeInput
         for node_input in mediums_in_current_node:

@@ -46,3 +46,9 @@ def set_default_mediums():
         medium_input(name="m_c_g_o2", color="#ff0000"),
         medium_input(name="m_c_g_natgas", color="#6e00d4"),
     ]
+
+def input_is_medium(parameter_name : str):
+    if parameter_name == "medium": return True
+    split_name : List[str] = parameter_name.split("_")
+    if len(split_name) < 3: return False
+    return split_name[0] == "m" and (split_name[-1] == "in" or split_name[-1]=="out")

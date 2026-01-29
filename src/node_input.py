@@ -1,6 +1,6 @@
 from node_input_data import component_config
 from typing import Dict, List
-from mediums import serialize_mediums_list
+from mediums import serialize_mediums_list, input_is_medium
 
 
 class NodeInput:
@@ -41,7 +41,8 @@ class NodeInput:
         # if it's required, it has to be included
         self.isIncluded = (isIncluded or required)  
         # if this is a medium, its value should be the key of the medium in the list
-        self.is_medium = is_medium
+
+        self.is_medium = is_medium or input_is_medium(self.resie_name)
         self.set_value(value)
 
 
