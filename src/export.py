@@ -9,6 +9,7 @@ from mediums import medium_input, get_medium_list_for_export
 from json import dumps
 from typing import Dict, List
 
+
 def base_dict():
     """Dictionary with basic settings/parameters for the input file.
 
@@ -107,7 +108,7 @@ def export_flow(flow):
     as_dict = base_dict()
     nodes: Dict[str, StreamlitFlowNode] = {node.id: node for node in flow.nodes}
     edges = flow.edges
-    mediums : List[medium_input] = st.session_state.mediums
+    mediums: List[medium_input] = st.session_state.mediums
     as_dict["mediums"] = get_medium_list_for_export()
 
     node: StreamlitFlowNode
@@ -123,7 +124,10 @@ def export_flow(flow):
             # for mediums, the value that is stored is the key not the name of the medium
             # for the export, we want the name though
             if node_input.is_medium:
-                medium = next((m for m in mediums if m.key == node_input.value), medium_input(name="Not Set"))
+                medium = next(
+                    (m for m in mediums if m.key == node_input.value),
+                    medium_input(name="Not Set"),
+                )
                 comp_dict[node_input.resie_name] = medium.name
                 continue
             comp_dict[node_input.resie_name] = node_input.value

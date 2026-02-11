@@ -28,18 +28,23 @@ def generate_node_import_data(obj: Dict[str, any]):
         "node_type": type_name,
     }
 
-# if the import files was not exported with a list of mediums, 
-# We have to go through the nodes, get all medium variables and 
+
+# if the import files was not exported with a list of mediums,
+# We have to go through the nodes, get all medium variables and
 # add all medium names to a list
-def get_medium_list_from_components(components : List):
+def get_medium_list_from_components(components: List):
     mediums = []
     for _, node_data in components:
         # import data
         node_import_data = node_data.get("import_data", None)
         # find out which of these variables is a medium
         node_type: NodeType = get_node_type_with_name(node_import_data["node_type"])
-        node_type_inputs = get_node_inputs(node_type.type_name) # resie data for this node type
-        mediums_in_current_node : List[NodeInput] = [x for x in node_type_inputs if x.is_medium]
+        node_type_inputs = get_node_inputs(
+            node_type.type_name
+        )  # resie data for this node type
+        mediums_in_current_node: List[NodeInput] = [
+            x for x in node_type_inputs if x.is_medium
+        ]
 
         node_input: NodeInput
         for node_input in mediums_in_current_node:
@@ -48,12 +53,14 @@ def get_medium_list_from_components(components : List):
                 mediums.append([medium_name, None])
         return mediums
 
-def set_mediums_from_import_list(imported_mediums : List[List[str]]):
+
+def set_mediums_from_import_list(imported_mediums: List[List[str]]):
     mediums = []
     for name, color in imported_mediums:
         mediums.append(medium_input(name=name, color=color))
     st.session_state.mediums = mediums
     st.session_state.medium_list_input = copy.deepcopy(st.session_state.mediums)
+
 
 def generate_state_from_import(import_data_text: str):
     warning_messages = []
@@ -70,9 +77,10 @@ def generate_state_from_import(import_data_text: str):
     )
     node_dict: Dict[str, StreamlitFlowNode] = {}
     components = import_dict["components"].items()
-    #get mediums
+    # get mediums
     mediums = import_dict.get("mediums", None)
-    if mediums is None: mediums = get_medium_list_from_components(components)
+    if mediums is None:
+        mediums = get_medium_list_from_components(components)
     set_mediums_from_import_list(mediums)
     for node_id, node_data in components:
         # import data

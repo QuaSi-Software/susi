@@ -202,7 +202,6 @@ def main():
             for message in st.session_state.warning_messages:
                 st.markdown(body=":red[" + message + "]")
 
-    
     st.text_area("Exported", st.session_state.exported, height=400)
 
 

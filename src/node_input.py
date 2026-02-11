@@ -39,12 +39,11 @@ class NodeInput:
         self.tooltip = tooltip
         self.dropdown_options_display_names = dropdown_options_display_names
         # if it's required, it has to be included
-        self.isIncluded = (isIncluded or required)  
+        self.isIncluded = isIncluded or required
         # if this is a medium, its value should be the key of the medium in the list
 
         self.is_medium = is_medium or input_is_medium(self.resie_name)
         self.set_value(value)
-
 
         # if the dropdown options list isn't empty, this is a dropdown field.
         self.dropdown_options = dropdown_options
@@ -79,9 +78,12 @@ class NodeInput:
 
     def set_value(self, value):
         if self.is_medium:
-            mediums : List[Dict[str,str]] = serialize_mediums_list()
-            input_medium : Dict[str,str] = next((m for m in mediums if m["key"] == value or m["name"]==value), mediums[0])
-            self.value = input_medium["key"] 
+            mediums: List[Dict[str, str]] = serialize_mediums_list()
+            input_medium: Dict[str, str] = next(
+                (m for m in mediums if m["key"] == value or m["name"] == value),
+                mediums[0],
+            )
+            self.value = input_medium["key"]
         else:
             self.value = value
 
