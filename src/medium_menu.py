@@ -1,6 +1,6 @@
 import streamlit as st
 import copy
-from mediums import medium_input, set_default_mediums
+from mediums import medium_input, set_default_mediums, update_edge_colors
 from typing import List
 
 
@@ -92,6 +92,7 @@ def medium_menu():
             if st.button(
                 "Submit Changes", disabled=not can_submit, icon=":material/check:"
             ):
+                update_edge_colors(st.session_state.mediums, st.session_state.medium_list_input)
                 st.session_state.mediums = copy.deepcopy(
                     st.session_state.medium_list_input
                 )

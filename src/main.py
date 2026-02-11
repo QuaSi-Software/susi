@@ -174,6 +174,7 @@ def main():
         st.session_state.current_state.nodes = []
         st.session_state.current_state.edges = []
 
+    medium_menu()
     st.session_state.current_state = streamlit_flow_component(
         "energy_system",
         st.session_state.current_state,
@@ -201,7 +202,7 @@ def main():
             for message in st.session_state.warning_messages:
                 st.markdown(body=":red[" + message + "]")
 
-    medium_menu()
+    
     st.text_area("Exported", st.session_state.exported, height=400)
 
 

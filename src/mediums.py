@@ -52,3 +52,14 @@ def input_is_medium(parameter_name : str):
     split_name : List[str] = parameter_name.split("_")
     if len(split_name) < 3: return False
     return split_name[0] == "m" and (split_name[-1] == "in" or split_name[-1]=="out")
+
+def update_edge_colors(old_medium_list : List[medium_input], new_medium_list : List[medium_input]):
+    edges = st.session_state.current_state.edges
+    for medium in new_medium_list:
+        old_medium : medium_input = [x for x in old_medium_list if x.key == medium.key]
+        if len(old_medium) == 0: continue
+        if medium.color == old_medium[0].color: continue
+        edges_with_medium = [x for x in edges if x.medium_key == medium.key]
+        for e in edges_with_medium:
+            e.style = {"stroke": medium.color}
+    st.session_state.current_state.edges = edges
