@@ -4,7 +4,8 @@ from streamlit_flow.elements import (
 )
 from node_types import NodeType
 from node_input import get_node_inputs, NodeInput
-from typing import List
+from typing import List, Dict
+from mediums import serialize_mediums_list
 
 def get_handle_medium_dict(node_inputs : List[NodeInput], num_src_handles : int, num_target_handles):
     medium_variables : List[NodeInput] = [x for x in node_inputs if x.is_medium]
@@ -27,6 +28,16 @@ def get_handle_medium_dict(node_inputs : List[NodeInput], num_src_handles : int,
         "source" : src_list,
         "target" : trgt_list,
     }
+
+def get_handle_medium(input_node : StreamlitFlowNode, input_node_handle_index: int):
+    medium_dict : Dict = input_node.data["handle_medium_dict"]
+    medium_var_name : str = medium_dict["source"][input_node_handle_index]
+    medium_key = next((x.value for x in input_node.data["resie_data"] if x.resie_name == medium_var_name), "UNDEFINED")
+    print("medium_key: "+str(medium_key))
+    mediums = serialize_mediums_list()
+    medium = next((x for x in mediums if x["key"] == medium_key), None)
+    return medium 
+
 
 def create_new_node(
     name: str,
@@ -67,8 +78,6 @@ def create_new_node(
     - **input_node_handle_index** : the index of the handle the edge should attach to on the input node
     - **output_node_handle_index** : the index of the handle the edge should attach to on the output node
     """
-
-
 def create_new_edge(
     input_node: StreamlitFlowNode,
     output_node: StreamlitFlowNode,
@@ -87,6 +96,7 @@ def create_new_edge(
             output_node.target_handles - 1,
         )
     )
+    medium = get_handle_medium(input_node, input_node_handle_index)
     return StreamlitFlowEdge(
         id=f"{input_node.id}-{output_node.id}_{input_node_handle_index}",
         source=input_node.id,
@@ -95,6 +105,7 @@ def create_new_edge(
         targetHandle=handle_on_target_node,
         deletable=True,
         style={
-            "stroke": "#ff0000",
+            "stroke": medium["color"],
         },
+        medium_key=medium["key"],
     )
