@@ -1,6 +1,6 @@
 import streamlit as st
 import copy
-from mediums import medium_input, set_default_mediums, update_edge_colors
+from mediums import medium_input, set_default_mediums, update_edges_on_medium_change
 from typing import List
 
 
@@ -106,7 +106,7 @@ def medium_menu():
             if st.button(
                 "Submit Changes", disabled=not can_submit, icon=":material/check:"
             ):
-                update_edge_colors(
+                update_edges_on_medium_change(
                     old_medium_list=st.session_state.mediums,
                     new_medium_list=st.session_state.medium_list_input,
                 )
@@ -121,7 +121,7 @@ def medium_menu():
         with c3:
             if st.button("Reset Mediums", icon=":material/reset_settings:"):
                 set_default_mediums()
-                update_edge_colors(
+                update_edges_on_medium_change(
                     old_medium_list=st.session_state.medium_list_input,
                     new_medium_list=st.session_state.mediums,
                 )
