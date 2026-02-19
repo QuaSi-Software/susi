@@ -72,6 +72,7 @@ def single_medium_input_field(medium: medium_input, medium_index: int):
             label="", key=medium.key + "_delete_button", icon=":material/close:"
         ):
             st.session_state.medium_list_input.pop(medium_index)
+            check_duplicate_names()
             st.rerun()
     if not medium.inputted_name_valid:
         st.markdown(body=":red[Please input a unique name for your medium]")
@@ -91,6 +92,7 @@ def medium_menu():
         # Button: when clicked, add another medium to the list
         if st.button(label="Add New Medium", icon=":material/add_circle:"):
             st.session_state.medium_list_input.append(medium_input())
+            check_duplicate_names()
             st.rerun()
         st.space("small")
 

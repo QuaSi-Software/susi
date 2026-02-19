@@ -11,11 +11,11 @@ class medium_input:
     inputted_name_valid: bool = True
 
     def __init__(self, name=None, color=None, inputted_name_valid=True, key=None):
+        self.name = name if name is not None else "m_untitled"
+        self.inputted_name_valid = inputted_name_valid
         # set or generate key
         if key is not None:
             self.key = key
-        elif name is not None:
-            self.key = self.key + name
         else:
             self.key = "m_" + str(time.time())
         # set or generate color
@@ -24,9 +24,6 @@ class medium_input:
         else:
             # Generate a random color
             self.color = f"#{random.randint(0, 0xFFFFFF):06x}"
-        # set name and inputted_name_valid
-        self.name = name if name is not None else self.key
-        self.inputted_name_valid = inputted_name_valid
 
 
 def serialize_mediums_list():
