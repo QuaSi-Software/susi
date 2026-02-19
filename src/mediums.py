@@ -10,16 +10,22 @@ class medium_input:
     color: str = "#ffffff"
     inputted_name_valid: bool = True
 
-    def __init__(self, name=None, color=None, inputted_name_valid=True):
-        self.key = "m_" + str(time.time())
-        if name is not None:
+    def __init__(self, name=None, color=None, inputted_name_valid=True, key=None):
+        # set or generate key
+        if key is not None:
+            self.key = key
+        elif name is not None:
             self.key = self.key + name
-        self.name = name if name is not None else self.key
+        else:
+            self.key = "m_" + str(time.time())
+        # set or generate color
         if color is not None:
             self.color = color
         else:
             # Generate a random color
             self.color = f"#{random.randint(0, 0xFFFFFF):06x}"
+        # set name and inputted_name_valid
+        self.name = name if name is not None else self.key
         self.inputted_name_valid = inputted_name_valid
 
 
@@ -41,13 +47,19 @@ def get_medium_list_for_export():
 
 
 def set_default_mediums():
+    # the default mediums are given their own keys, so the reset button can reset the mediums to these each time
+    # otherwise resetting the unchanged the mediums, all nodes would forget their mediums, since the keys would change
     st.session_state.mediums = [
-        medium_input(name="m_e_ac_230v", color="#ffee00"),
-        medium_input(name="m_h_w_lt1", color="#ff6c6c"),
-        medium_input(name="m_h_w_ht1", color="#940000"),
-        medium_input(name="m_c_g_h2", color="#00d346"),
-        medium_input(name="m_c_g_o2", color="#ff0000"),
-        medium_input(name="m_c_g_natgas", color="#6e00d4"),
+        medium_input(
+            name="m_e_ac_230v", color="#ffee00", key="m_e_ac_230v_DEFAULT_KEY"
+        ),
+        medium_input(name="m_h_w_lt1", color="#ff6c6c", key="m_h_w_lt1_DEFAULT_KEY"),
+        medium_input(name="m_h_w_ht1", color="#940000", key="m_h_w_ht1_DEFAULT_KEY"),
+        medium_input(name="m_c_g_h2", color="#00d346", key="m_c_g_h2_DEFAULT_KEY"),
+        medium_input(name="m_c_g_o2", color="#ff0000", key="m_c_g_o2_DEFAULT_KEY"),
+        medium_input(
+            name="m_c_g_natgas", color="#6e00d4", key="m_c_g_natgas_DEFAULT_KEY"
+        ),
     ]
 
 

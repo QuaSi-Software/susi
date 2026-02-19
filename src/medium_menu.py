@@ -40,6 +40,12 @@ def input_has_changes():
     return False
 
 
+def undo_menu_changes():
+    st.session_state.medium_list_input = copy.deepcopy(st.session_state.mediums)
+    st.session_state.reset_counter += 1
+    st.rerun()
+
+
 def single_medium_input_field(medium: medium_input, medium_index: int):
     c1, c2, c3 = st.columns([40, 200, 50], vertical_alignment="bottom")
     with c1:
@@ -101,7 +107,8 @@ def medium_menu():
                 "Submit Changes", disabled=not can_submit, icon=":material/check:"
             ):
                 update_edge_colors(
-                    st.session_state.mediums, st.session_state.medium_list_input
+                    old_medium_list=st.session_state.mediums,
+                    new_medium_list=st.session_state.medium_list_input,
                 )
                 st.session_state.mediums = copy.deepcopy(
                     st.session_state.medium_list_input
@@ -110,14 +117,12 @@ def medium_menu():
             if st.button(
                 "Undo Changes", icon=":material/replay:", disabled=not has_changes
             ):
-                st.session_state.medium_list_input = copy.deepcopy(
-                    st.session_state.mediums
-                )
-                st.session_state.reset_counter += 1
-                st.rerun()
+                undo_menu_changes()
         with c3:
             if st.button("Reset Mediums", icon=":material/reset_settings:"):
                 set_default_mediums()
-                st.session_state.medium_list_input = copy.deepcopy(
-                    st.session_state.mediums
+                update_edge_colors(
+                    old_medium_list=st.session_state.medium_list_input,
+                    new_medium_list=st.session_state.mediums,
                 )
+                undo_menu_changes()
