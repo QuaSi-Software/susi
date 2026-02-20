@@ -3,6 +3,27 @@
 Current SUSI version: 0.3.0
 Implemented for ReSie version: 0.12.4
 
+## v0.3.4
+Mediums have been added to Susi
+* Medium Menu
+    * There is an expander in the Streamlit UI that allows the user to edit a list of mediums
+    * Each medium consists of a key, name and color. The key allows the user to change the name of the medium without the nodes having to update their variables
+    * The menu automatically checks for and disallows duplicate names
+    * The user can reset all unsubmitted changes to the mediums or completely reset them to the default values
+* Colors
+    * Handle and edges have the color of their medium
+    * Nodes now have a data structure that tracks which node input variable controls which handle
+    * Edges track their associated medium
+        * Edges change color, when their medium color changes
+        * Edges are deleted, if their medium is deleted
+* Medium Option Dropdown
+    * Node input variables are marked as medium variables
+    * In the NodeContextMenu in Streamlit-Flow, medium variables input is taken via dropdown menu with list of mediums
+* The user cannot create an edge if the handles it would connect do not share a medium
+* Export/Import
+    * The export now includes a list of the mediums and their colors, so the graph can be recreated on import
+    * When importing graphs with no medium list included, the import script creates a list of all the mediums found in the nodes' inputs and assigns them random colors
+
 ## v0.3.3
 * Node Parameters are editable in 'Edit Node' Window. Supported Input Types are
     * Strings
