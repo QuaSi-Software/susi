@@ -20,6 +20,8 @@ from create_elements import create_new_node
 from export import export_flow
 from import_flow_state import generate_state_from_import
 from node_types import NodeType, NodeCategory, get_node_types_in_category
+from medium_menu import initialize_medium_list, medium_menu
+from mediums import serialize_mediums_list
 
 # Other
 import importlib
@@ -44,6 +46,7 @@ def check_state():
         st.session_state.exported = ""
     if "warning_messages" not in st.session_state:
         st.session_state.warning_messages = []
+    initialize_medium_list()
 
 
 def add_node(new_node):
@@ -92,9 +95,11 @@ def create_node(prefix, node: NodeType):
     # Returns:
     -`StreamlitFlowNode`: The created node
     """
+    if prefix != "":
+        prefix += "_"
     uac = (
         prefix
-        + f"_{node.segment}_"
+        + f"{node.segment}_"
         + lpad(
             str(
                 nr_of_nodes(f"_{node.segment}_", st.session_state.current_state.nodes)
@@ -171,6 +176,7 @@ def main():
         st.session_state.current_state.nodes = []
         st.session_state.current_state.edges = []
 
+    medium_menu()
     st.session_state.current_state = streamlit_flow_component(
         "energy_system",
         st.session_state.current_state,
@@ -187,6 +193,7 @@ def main():
         allow_new_edges=True,
         min_zoom=0.1,
         default_edge_options={"deletable": True, "type": edge_type},
+        additional_data={"mediums": serialize_mediums_list()},
     )
     c1, c2 = st.columns([80, 500])
     with c1:

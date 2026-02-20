@@ -1,9 +1,13 @@
 """Functionality for exporting the flow as energy system input file for ReSiE."""
 
-from json import dumps
+import streamlit as st
 from streamlit_flow.elements import StreamlitFlowNode
-from typing import Dict
+
 from node_input import NodeInput
+from mediums import medium_input, get_medium_list_for_export
+
+from json import dumps
+from typing import Dict, List
 
 
 def base_dict():
@@ -104,6 +108,8 @@ def export_flow(flow):
     as_dict = base_dict()
     nodes: Dict[str, StreamlitFlowNode] = {node.id: node for node in flow.nodes}
     edges = flow.edges
+    mediums: List[medium_input] = st.session_state.mediums
+    as_dict["mediums"] = get_medium_list_for_export()
 
     node: StreamlitFlowNode
     for node in flow.nodes:
@@ -114,6 +120,15 @@ def export_flow(flow):
         node_input: NodeInput
         for node_input in node.data["resie_data"]:
             if not node_input.isIncluded and not node_input.required:
+                continue
+            # for mediums, the value that is stored is the key not the name of the medium
+            # for the export, we want the name though
+            if node_input.is_medium:
+                medium = next(
+                    (m for m in mediums if m.key == node_input.value),
+                    medium_input(name="Not Set"),
+                )
+                comp_dict[node_input.resie_name] = medium.name
                 continue
             comp_dict[node_input.resie_name] = node_input.value
         # for importing only

@@ -1,5 +1,6 @@
 from node_input_data import component_config
 from typing import Dict, List
+from mediums import serialize_mediums_list, input_is_medium
 
 
 class NodeInput:
@@ -9,6 +10,8 @@ class NodeInput:
     display_name: str = "UNKNOWN"
     value: any = "UNKNOWN"
     dropdown_options: List = []
+    dropdown_option_display_names = []
+    is_medium: bool = False
     tooltip = ""
 
     def add_to_dict(self, dict: Dict[str, any]):
@@ -24,18 +27,23 @@ class NodeInput:
         required=True,
         isIncluded=True,
         dropdown_options=[],
+        dropdown_options_display_names=None,
         tooltip="",
+        is_medium=False,
     ):
         self.js_type = js_type
         self.resie_name = resie_name
         self.editable = editable
         self.display_name = display_name
-        self.value = value
         self.required = required
         self.tooltip = tooltip
-        self.isIncluded = (
-            isIncluded or required
-        )  # if it's required, it has to be included
+        self.dropdown_options_display_names = dropdown_options_display_names
+        # if it's required, it has to be included
+        self.isIncluded = isIncluded or required
+        # if this is a medium, its value should be the key of the medium in the list
+
+        self.is_medium = is_medium or input_is_medium(self.resie_name)
+        self.set_value(value)
 
         # if the dropdown options list isn't empty, this is a dropdown field.
         self.dropdown_options = dropdown_options
@@ -57,6 +65,7 @@ class NodeInput:
             self.editable = False
 
     def get_type(self, var):
+        """Get the Javascript type of the value passed, so Streamlit-Flow can generate an appropriate input field."""
         match (type(var).__name__):
             case "int":
                 return "number"
@@ -68,7 +77,25 @@ class NodeInput:
                 return "boolean"
         return "unknown"
 
+    def set_value(self, value):
+        """
+        Set the value of the NodeInput. If the variable is a medium,
+        this requires checking if the value we're assigning is the name or key of the medium.
+        The saved value should be the key of the medium, so if the name of the medium changes,
+        the nodes don't have to change the value of their medium variables.
+        """
+        if self.is_medium:
+            mediums: List[Dict[str, str]] = serialize_mediums_list()
+            input_medium: Dict[str, str] = next(
+                (m for m in mediums if m["key"] == value or m["name"] == value),
+                mediums[0],
+            )
+            self.value = input_medium["key"]
+        else:
+            self.value = value
+
     def asdict(self):
+        """turn a NodeInput object into a dictionary to send to Streamlit-Flow"""
         input_dict = {
             "js_type": self.js_type,
             "resie_name": self.resie_name,
@@ -78,11 +105,14 @@ class NodeInput:
             "required": self.required,
             "isIncluded": self.isIncluded,
             "dropdown_options": self.dropdown_options,
+            "dropdown_options_display_names": self.dropdown_options_display_names,
             "tooltip": self.tooltip,
+            "is_medium": self.is_medium,
         }
         return input_dict
 
     def from_dict(node_input_dict: Dict[str, any]):
+        """Turn a dictionary of a node input from Streamlit-flow into a NodeInput Object"""
         return NodeInput(
             js_type=node_input_dict.get("js_type", "default"),
             resie_name=node_input_dict.get("resie_name", "default"),
@@ -92,13 +122,19 @@ class NodeInput:
             required=node_input_dict.get("required"),
             isIncluded=node_input_dict.get("isIncluded"),
             dropdown_options=node_input_dict.get("dropdown_options"),
+            dropdown_options_display_names=node_input_dict.get(
+                "dropdown_options_display_names"
+            ),
             tooltip=node_input_dict.get("tooltip"),
+            is_medium=node_input_dict.get("is_medium"),
         )
 
     def list_from_dict(objects):
+        """Turn a list of Dictionaries from Streamlit-Flow into a list of NodeInputs"""
         return [NodeInput.from_dict(node_input_object) for node_input_object in objects]
 
     def list_asdict(node_inputs):
+        """Turn a list of NodeInput objects into a list of Dictionaries to send to Streamlit-Flow"""
         try:
             return [node_input.asdict() for node_input in node_inputs]
         except AttributeError as e:
@@ -110,9 +146,17 @@ class NodeInput:
 
 
 def get_node_inputs(component_type):
+    """
+    Get the component config for this component_type. From the list of Node Inputs, generate a list of NodeInputs.
+    """
     if component_type.lower() == "fixedsupply":
         return [
-            NodeInput(resie_name="medium", display_name="medium", value="FILL_IN"),
+            NodeInput(
+                resie_name="medium",
+                display_name="medium",
+                value="FILL_IN",
+                is_medium=True,
+            ),
             NodeInput(
                 resie_name="__OPTION_1",
                 display_name="__OPTION_1",
@@ -147,13 +191,21 @@ def get_node_inputs(component_type):
                 display_name="temperature profile file path",
                 value="FILL_IN",
             ),
-            # NodeInput(
-            #     resie_name="testing",
-            #     display_name="Testing Dropdown",
-            #     value="heat",
-            #     dropdown_options=["electricity", "heat", "water"],
-            #     tooltip="This is a testing medium",
-            # ),
+            NodeInput(
+                resie_name="testing",
+                display_name="Testing Dropdown",
+                value="heat",
+                dropdown_options=["electricity", "heat", "water"],
+                tooltip="This is a testing medium",
+            ),
+            NodeInput(
+                resie_name="testing2",
+                display_name="Testing Dropdown with Display Names",
+                value="heat",
+                dropdown_options=["electricity", "heat", "water"],
+                dropdown_options_display_names=["ELECTRICITY", "HEAT", "WATER"],
+                tooltip="This is a testing medium",
+            ),
             NodeInput(resie_name="scale", display_name="scale", value=-9999),
         ]
     obj = component_config(component_type=component_type)

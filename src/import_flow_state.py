@@ -1,4 +1,5 @@
 # streamlit flow imports
+import streamlit as st
 from streamlit_flow import streamlit_flow as streamlit_flow_component
 from streamlit_flow.elements import StreamlitFlowNode
 from streamlit_flow.state import StreamlitFlowState
@@ -6,14 +7,20 @@ from streamlit_flow.state import StreamlitFlowState
 # project imports
 from node_types import get_node_type_with_name, NodeType
 from create_elements import create_new_node, create_new_edge
-from node_input import NodeInput
+from node_input import NodeInput, get_node_inputs
+from mediums import medium_input
 
 # Other imports
 import json
-from typing import Dict, Tuple
+from typing import Dict, List
+import copy
 
 
 def generate_node_import_data(obj: Dict[str, any]):
+    """
+    Generate data used in the import. This data is typically exported,
+    but files created by hand or by previous versions of Susi may not contain it.
+    """
     type_name = obj["type"]
     if type_name == "GridConnection":
         if obj["is_source"]:
@@ -26,7 +33,49 @@ def generate_node_import_data(obj: Dict[str, any]):
     }
 
 
+def get_medium_list_from_components(components: List):
+    """
+    If the import file was not exported with a list of mediums,
+    we have to go through the nodes, get all medium variables and
+    add all medium names to a list. The colors and keys are generated.
+    """
+    mediums = []
+    for _, node_data in components:
+        # import data
+        node_import_data = node_data.get("import_data", None)
+        # find out which of these variables is a medium
+        node_type: NodeType = get_node_type_with_name(node_import_data["node_type"])
+        node_type_inputs = get_node_inputs(
+            node_type.type_name
+        )  # resie data for this node type
+        mediums_in_current_node: List[NodeInput] = [
+            x for x in node_type_inputs if x.is_medium
+        ]
+
+        node_input: NodeInput
+        for node_input in mediums_in_current_node:
+            medium_name = node_data.get(node_input.resie_name, None)
+            if medium_name is not None and medium_name not in mediums:
+                mediums.append([medium_name, None])
+        return mediums
+
+
+def set_mediums_from_import_list(imported_mediums: List[List[str]]):
+    """Set the medium list in session state from the list of the imported mediums."""
+    mediums = []
+    for name, color in imported_mediums:
+        mediums.append(medium_input(name=name, color=color))
+    st.session_state.mediums = mediums
+    st.session_state.medium_list_input = copy.deepcopy(st.session_state.mediums)
+
+
 def generate_state_from_import(import_data_text: str):
+    """
+    From the Resie input file as a JSON, generate a Streamlit Flow state
+    or if there's an issue, generate a warning message.
+    This function returns a list of warning messages and a StreamlitFlowState.
+
+    """
     warning_messages = []
     try:
         import_dict: dict = json.loads(import_data_text)
@@ -41,6 +90,11 @@ def generate_state_from_import(import_data_text: str):
     )
     node_dict: Dict[str, StreamlitFlowNode] = {}
     components = import_dict["components"].items()
+    # get mediums
+    mediums = import_dict.get("mediums", None)
+    if mediums is None:
+        mediums = get_medium_list_from_components(components)
+    set_mediums_from_import_list(mediums)
     for node_id, node_data in components:
         # import data
         node_import_data = node_data.get("import_data", None)
@@ -65,7 +119,7 @@ def generate_state_from_import(import_data_text: str):
             if value is None:
                 node_input.isIncluded = False
             else:
-                node_input.value = value
+                node_input.set_value(value)
 
         node_array.append(new_node)
         node_dict[node_id] = new_node
