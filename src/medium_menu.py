@@ -5,15 +5,24 @@ from typing import List
 
 
 def initialize_medium_list():
+    # the list of mediums sent to streamlit-flow that the nodes' medium variables can take
     if "mediums" not in st.session_state:
         set_default_mediums()
+    # The list of mediums in the menu, which may not yet be applied to the actual mediums sent to streamlit-flow
     if "medium_list_input" not in st.session_state:
         st.session_state.medium_list_input = copy.deepcopy(st.session_state.mediums)
+    # reset_counter is incremented to give color picker and text input, so the state
+    # of the menu can be reset from code. Otherwise, the widget state persists even
+    # when the medium list has been changed
     if "reset_counter" not in st.session_state:
         st.session_state.reset_counter = 0
 
 
 def check_duplicate_names():
+    """
+    Go through the list of mediums in the menu and check if any have the same
+    names. If so, mark them as inputted_name_valid = false.
+    """
     name_dict = {}
     medium: medium_input
     for _, medium in enumerate(st.session_state.medium_list_input):
@@ -25,6 +34,9 @@ def check_duplicate_names():
 
 
 def input_has_changes():
+    """
+    Iterate through the mediums and the mediums in the menu and check if these lists are the same by value.
+    """
     mediums: List[medium_input] = st.session_state.mediums
     mediums_in_menu: List[medium_input] = st.session_state.medium_list_input
     if len(mediums) is not len(mediums_in_menu):
@@ -41,12 +53,17 @@ def input_has_changes():
 
 
 def undo_menu_changes():
+    """Reset the medium menu, reset the widget states and rerun the page to refresh the visuals"""
     st.session_state.medium_list_input = copy.deepcopy(st.session_state.mediums)
     st.session_state.reset_counter += 1
     st.rerun()
 
 
 def single_medium_input_field(medium: medium_input, medium_index: int):
+    """
+    For one medium, display the color widget, text input widget and a button to delete itself in one row.
+    If this medium has the same name as another medium in the list, mark it with an error
+    """
     c1, c2, c3 = st.columns([40, 200, 50], vertical_alignment="bottom")
     with c1:
         color = st.color_picker(
@@ -81,6 +98,10 @@ def single_medium_input_field(medium: medium_input, medium_index: int):
 
 
 def medium_menu():
+    """
+    Iterate through the mediums in the menu and display them.
+    Display buttons for Applying changes, Undoing changes, and reset the mediums to the default values.
+    """
     with st.expander("List of Mediums"):
         # for every medium in the list, display the name and color
         medium: medium_input

@@ -27,6 +27,8 @@ class medium_input:
 
 
 def serialize_mediums_list():
+    """Turn the mediums in the session state from a list of medium_inputs
+    to a list of dictionaries with keys: name, key, color"""
     serialized_list = [{"name": "Not Set", "key": "UNDEFINED", "color": "#ffffff"}]
     for _, medium in enumerate(st.session_state.mediums):
         if medium.inputted_name_valid:
@@ -37,6 +39,7 @@ def serialize_mediums_list():
 
 
 def get_medium_list_for_export():
+    """return a list of mediums as lists [name, color]"""
     mediums = []
     for m in st.session_state.mediums:
         mediums.append([m.name, m.color])
@@ -44,8 +47,11 @@ def get_medium_list_for_export():
 
 
 def set_default_mediums():
-    # the default mediums are given their own keys, so the reset button can reset the mediums to these each time
-    # otherwise resetting the unchanged the mediums, all nodes would forget their mediums, since the keys would change
+    """
+    Set the list of mediums in session_state to the default list of mediums.
+    The default mediums are given their own keys, so the reset button can reset the mediums to these each time.
+    Otherwise, when resetting the unchanged the mediums, all nodes would forget their mediums, since the keys would change
+    """
     st.session_state.mediums = [
         medium_input(
             name="m_e_ac_230v", color="#ffee00", key="m_e_ac_230v_DEFAULT_KEY"
@@ -61,6 +67,7 @@ def set_default_mediums():
 
 
 def input_is_medium(parameter_name: str):
+    """Parse the variable name to check if this variable is for setting a node's medium."""
     if parameter_name == "medium":
         return True
     split_name: List[str] = parameter_name.split("_")
@@ -72,6 +79,11 @@ def input_is_medium(parameter_name: str):
 def update_edges_on_medium_change(
     old_medium_list: List[medium_input], new_medium_list: List[medium_input]
 ):
+    """
+    If a medium has been deleted, delete edges with this medium.
+    Iterate through the mediums and if their color has changed, find all edges with this medium
+    and update their stroke colors.
+    """
     edges = st.session_state.current_state.edges
     # delete edges if their medium was deleted
     new_medium_keys = [m.key for m in new_medium_list]

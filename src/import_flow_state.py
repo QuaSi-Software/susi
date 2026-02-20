@@ -12,11 +12,15 @@ from mediums import medium_input
 
 # Other imports
 import json
-from typing import Dict, Tuple, List
+from typing import Dict, List
 import copy
 
 
 def generate_node_import_data(obj: Dict[str, any]):
+    """
+    Generate data used in the import. This data is typically exported,
+    but files created by hand or by previous versions of Susi may not contain it.
+    """
     type_name = obj["type"]
     if type_name == "GridConnection":
         if obj["is_source"]:
@@ -29,10 +33,12 @@ def generate_node_import_data(obj: Dict[str, any]):
     }
 
 
-# if the import files was not exported with a list of mediums,
-# We have to go through the nodes, get all medium variables and
-# add all medium names to a list
 def get_medium_list_from_components(components: List):
+    """
+    If the import file was not exported with a list of mediums,
+    we have to go through the nodes, get all medium variables and
+    add all medium names to a list. The colors and keys are generated.
+    """
     mediums = []
     for _, node_data in components:
         # import data
@@ -55,6 +61,7 @@ def get_medium_list_from_components(components: List):
 
 
 def set_mediums_from_import_list(imported_mediums: List[List[str]]):
+    """Set the medium list in session state from the list of the imported mediums."""
     mediums = []
     for name, color in imported_mediums:
         mediums.append(medium_input(name=name, color=color))
@@ -63,6 +70,12 @@ def set_mediums_from_import_list(imported_mediums: List[List[str]]):
 
 
 def generate_state_from_import(import_data_text: str):
+    """
+    From the Resie input file as a JSON, generate a Streamlit Flow state
+    or if there's an issue, generate a warning message.
+    This function returns a list of warning messages and a StreamlitFlowState.
+
+    """
     warning_messages = []
     try:
         import_dict: dict = json.loads(import_data_text)

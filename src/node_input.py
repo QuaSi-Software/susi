@@ -65,6 +65,7 @@ class NodeInput:
             self.editable = False
 
     def get_type(self, var):
+        """Get the Javascript type of the value passed, so Streamlit-Flow can generate an appropriate input field."""
         match (type(var).__name__):
             case "int":
                 return "number"
@@ -77,6 +78,12 @@ class NodeInput:
         return "unknown"
 
     def set_value(self, value):
+        """
+        Set the value of the NodeInput. If the variable is a medium,
+        this requires checking if the value we're assigning is the name or key of the medium.
+        The saved value should be the key of the medium, so if the name of the medium changes,
+        the nodes don't have to change the value of their medium variables.
+        """
         if self.is_medium:
             mediums: List[Dict[str, str]] = serialize_mediums_list()
             input_medium: Dict[str, str] = next(
@@ -88,6 +95,7 @@ class NodeInput:
             self.value = value
 
     def asdict(self):
+        """turn a NodeInput object into a dictionary to send to Streamlit-Flow"""
         input_dict = {
             "js_type": self.js_type,
             "resie_name": self.resie_name,
@@ -104,6 +112,7 @@ class NodeInput:
         return input_dict
 
     def from_dict(node_input_dict: Dict[str, any]):
+        """Turn a dictionary of a node input from Streamlit-flow into a NodeInput Object"""
         return NodeInput(
             js_type=node_input_dict.get("js_type", "default"),
             resie_name=node_input_dict.get("resie_name", "default"),
@@ -121,9 +130,11 @@ class NodeInput:
         )
 
     def list_from_dict(objects):
+        """Turn a list of Dictionaries from Streamlit-Flow into a list of NodeInputs"""
         return [NodeInput.from_dict(node_input_object) for node_input_object in objects]
 
     def list_asdict(node_inputs):
+        """Turn a list of NodeInput objects into a list of Dictionaries to send to Streamlit-Flow"""
         try:
             return [node_input.asdict() for node_input in node_inputs]
         except AttributeError as e:
@@ -135,6 +146,9 @@ class NodeInput:
 
 
 def get_node_inputs(component_type):
+    """
+    Get the component config for this component_type. From the list of Node Inputs, generate a list of NodeInputs.
+    """
     if component_type.lower() == "fixedsupply":
         return [
             NodeInput(
