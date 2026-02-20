@@ -46,7 +46,6 @@ def get_handle_medium(input_node: StreamlitFlowNode, input_node_handle_index: in
         ),
         "UNDEFINED",
     )
-    print("medium_key: " + str(medium_key))
     mediums = serialize_mediums_list()
     medium = next((x for x in mediums if x["key"] == medium_key), None)
     return medium
