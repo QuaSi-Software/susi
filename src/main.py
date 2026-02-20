@@ -95,9 +95,11 @@ def create_node(prefix, node: NodeType):
     # Returns:
     -`StreamlitFlowNode`: The created node
     """
+    if prefix != "":
+        prefix += "_"
     uac = (
         prefix
-        + f"_{node.segment}_"
+        + f"{node.segment}_"
         + lpad(
             str(
                 nr_of_nodes(f"_{node.segment}_", st.session_state.current_state.nodes)
