@@ -1,6 +1,6 @@
 import streamlit as st
 import copy
-from mediums import medium_input, set_default_mediums, update_edges_on_medium_change
+from mediums import MediumInput, set_default_mediums, update_edges_on_medium_change
 from typing import List
 
 
@@ -24,7 +24,7 @@ def check_duplicate_names():
     names. If so, mark them as inputted_name_valid = false.
     """
     name_dict = {}
-    medium: medium_input
+    medium: MediumInput
     for _, medium in enumerate(st.session_state.medium_list_input):
         count = name_dict.get(medium.name, 0) + 1
         name_dict[medium.name] = count
@@ -37,13 +37,13 @@ def input_has_changes():
     """
     Iterate through the mediums and the mediums in the menu and check if these lists are the same by value.
     """
-    mediums: List[medium_input] = st.session_state.mediums
-    mediums_in_menu: List[medium_input] = st.session_state.medium_list_input
+    mediums: List[MediumInput] = st.session_state.mediums
+    mediums_in_menu: List[MediumInput] = st.session_state.medium_list_input
     if len(mediums) is not len(mediums_in_menu):
         return True
     for i in range(len(mediums)):
-        m1: medium_input = mediums[i]
-        m2: medium_input = mediums_in_menu[i]
+        m1: MediumInput = mediums[i]
+        m2: MediumInput = mediums_in_menu[i]
         are_equal: bool = (
             m1.key is m2.key and m1.name == m2.name and m1.color == m2.color
         )
@@ -59,7 +59,7 @@ def undo_menu_changes():
     st.rerun()
 
 
-def single_medium_input_field(medium: medium_input, medium_index: int):
+def single_medium_input_field(medium: MediumInput, medium_index: int):
     """
     For one medium, display the color widget, text input widget and a button to delete itself in one row.
     If this medium has the same name as another medium in the list, mark it with an error
@@ -104,7 +104,7 @@ def medium_menu():
     """
     with st.expander("List of Mediums"):
         # for every medium in the list, display the name and color
-        medium: medium_input
+        medium: MediumInput
         index: int
         for index, medium in enumerate(st.session_state.medium_list_input):
             if medium.key == "UNDEFINED":
@@ -112,7 +112,7 @@ def medium_menu():
             single_medium_input_field(medium=medium, medium_index=index)
         # Button: when clicked, add another medium to the list
         if st.button(label="Add New Medium", icon=":material/add_circle:"):
-            st.session_state.medium_list_input.append(medium_input())
+            st.session_state.medium_list_input.append(MediumInput())
             check_duplicate_names()
             st.rerun()
         st.space("small")

@@ -4,7 +4,7 @@ from typing import List
 import random
 
 
-class medium_input:
+class MediumInput:
     name: str
     key: str  # unique key to identify the medium
     color: str = "#ffffff"
@@ -53,14 +53,14 @@ def set_default_mediums():
     Otherwise, when resetting the unchanged the mediums, all nodes would forget their mediums, since the keys would change
     """
     st.session_state.mediums = [
-        medium_input(
+        MediumInput(
             name="m_e_ac_230v", color="#ffee00", key="m_e_ac_230v_DEFAULT_KEY"
         ),
-        medium_input(name="m_h_w_lt1", color="#ff6c6c", key="m_h_w_lt1_DEFAULT_KEY"),
-        medium_input(name="m_h_w_ht1", color="#940000", key="m_h_w_ht1_DEFAULT_KEY"),
-        medium_input(name="m_c_g_h2", color="#00d346", key="m_c_g_h2_DEFAULT_KEY"),
-        medium_input(name="m_c_g_o2", color="#ff0000", key="m_c_g_o2_DEFAULT_KEY"),
-        medium_input(
+        MediumInput(name="m_h_w_lt1", color="#ff6c6c", key="m_h_w_lt1_DEFAULT_KEY"),
+        MediumInput(name="m_h_w_ht1", color="#940000", key="m_h_w_ht1_DEFAULT_KEY"),
+        MediumInput(name="m_c_g_h2", color="#00d346", key="m_c_g_h2_DEFAULT_KEY"),
+        MediumInput(name="m_c_g_o2", color="#ff0000", key="m_c_g_o2_DEFAULT_KEY"),
+        MediumInput(
             name="m_c_g_natgas", color="#6e00d4", key="m_c_g_natgas_DEFAULT_KEY"
         ),
     ]
@@ -77,7 +77,7 @@ def input_is_medium(parameter_name: str):
 
 
 def update_edges_on_medium_change(
-    old_medium_list: List[medium_input], new_medium_list: List[medium_input]
+    old_medium_list: List[MediumInput], new_medium_list: List[MediumInput]
 ):
     """
     If a medium has been deleted, delete edges with this medium.
@@ -90,7 +90,7 @@ def update_edges_on_medium_change(
     edges = [e for e in edges if e.medium_key in new_medium_keys]
     # update the color of the edges if the medium color changed
     for medium in new_medium_list:
-        old_medium: medium_input = [x for x in old_medium_list if x.key == medium.key]
+        old_medium: MediumInput = [x for x in old_medium_list if x.key == medium.key]
         if len(old_medium) == 0:
             continue
         if medium.color == old_medium[0].color:

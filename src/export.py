@@ -4,7 +4,7 @@ import streamlit as st
 from streamlit_flow.elements import StreamlitFlowNode
 
 from node_input import NodeInput
-from mediums import medium_input, get_medium_list_for_export
+from mediums import MediumInput, get_medium_list_for_export
 
 from json import dumps
 from typing import Dict, List
@@ -108,7 +108,7 @@ def export_flow(flow):
     as_dict = base_dict()
     nodes: Dict[str, StreamlitFlowNode] = {node.id: node for node in flow.nodes}
     edges = flow.edges
-    mediums: List[medium_input] = st.session_state.mediums
+    mediums: List[MediumInput] = st.session_state.mediums
     as_dict["mediums"] = get_medium_list_for_export()
 
     node: StreamlitFlowNode
@@ -126,7 +126,7 @@ def export_flow(flow):
             if node_input.is_medium:
                 medium = next(
                     (m for m in mediums if m.key == node_input.value),
-                    medium_input(name="Not Set"),
+                    MediumInput(name="Not Set"),
                 )
                 comp_dict[node_input.resie_name] = medium.name
                 continue
