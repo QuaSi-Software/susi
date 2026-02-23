@@ -100,18 +100,19 @@ def create_new_edge(
     input_node_handle_index: int,
     output_node_handle_index: int,
 ):
-    handle_on_source_node = "source-" + str(
-        min(
-            input_node_handle_index,
-            input_node.source_handles - 1,
-        )
+    # set the actual index of this edge and the handle names
+    input_node_handle_index = min(
+        input_node_handle_index,
+        input_node.source_handles - 1,
     )
-    handle_on_target_node = "target-" + str(
-        min(
-            output_node_handle_index,
-            output_node.target_handles - 1,
-        )
+    handle_on_source_node = "source-" + str(input_node_handle_index)
+    output_node_handle_index = min(
+        output_node_handle_index,
+        output_node.target_handles - 1,
     )
+    handle_on_target_node = "target-" + str(output_node_handle_index)
+
+    # get medium for this edge
     medium = get_handle_medium(input_node, input_node_handle_index)
     return StreamlitFlowEdge(
         id=f"{input_node.id}-{output_node.id}_{input_node_handle_index}",
