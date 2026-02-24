@@ -26,6 +26,15 @@ class MediumInput:
             self.color = f"#{random.randint(0, 0xFFFFFF):06x}"
 
 
+def get_imported_medium(name: str, color: str):
+    """Check if the name is one of the default medium names. If not, generate a new MediumInput"""
+    default_mediums = get_default_mediums()
+    m = next((m for m in default_mediums if m.name == name), MediumInput(name=name))
+    if color is not None:
+        m.color = color
+    return m
+
+
 def serialize_mediums_list():
     """Turn the mediums in the session state from a list of medium_inputs
     to a list of dictionaries with keys: name, key, color"""
@@ -46,13 +55,17 @@ def get_medium_list_for_export():
     return mediums
 
 
-def set_default_mediums():
+def get_default_mediums():
     """
-    Set the list of mediums in session_state to the default list of mediums.
+    Return a list of the default mediums.
+
     The default mediums are given their own keys, so the reset button can reset the mediums to these each time.
     Otherwise, when resetting the unchanged the mediums, all nodes would forget their mediums, since the keys would change
+
+    The assignment to session_state.mediums is in a seperate function, because just the list is needed
+    when importing to check if an imported medium is a default medium
     """
-    st.session_state.mediums = [
+    return [
         MediumInput(name="m_e_ac_230v", color="#ffee00", key="m_e_ac_230v_DEFAULT_KEY"),
         MediumInput(name="m_h_w_lt1", color="#ff6c6c", key="m_h_w_lt1_DEFAULT_KEY"),
         MediumInput(name="m_h_w_ht1", color="#940000", key="m_h_w_ht1_DEFAULT_KEY"),
@@ -62,6 +75,13 @@ def set_default_mediums():
             name="m_c_g_natgas", color="#6e00d4", key="m_c_g_natgas_DEFAULT_KEY"
         ),
     ]
+
+
+def set_default_mediums():
+    """
+    Set the list of mediums in session_state to the default list of mediums.
+    """
+    st.session_state.mediums = get_default_mediums()
 
 
 def input_is_medium(parameter_name: str):

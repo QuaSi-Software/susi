@@ -8,7 +8,7 @@ from streamlit_flow.state import StreamlitFlowState
 from node_types import get_node_type_with_name, NodeType
 from create_elements import create_new_node, create_new_edge
 from node_input import NodeInput, get_node_inputs
-from mediums import MediumInput
+from mediums import MediumInput, get_imported_medium
 
 # Other imports
 import json
@@ -114,7 +114,7 @@ def set_mediums_from_import_list(imported_mediums: List[List[str]]):
     """Set the medium list in session state from the list of the imported mediums."""
     mediums = []
     for name, color in imported_mediums:
-        mediums.append(MediumInput(name=name, color=color))
+        mediums.append(get_imported_medium(name=name, color=color))
     st.session_state.mediums = mediums
     st.session_state.medium_list_input = copy.deepcopy(st.session_state.mediums)
 
