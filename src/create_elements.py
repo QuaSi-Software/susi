@@ -5,7 +5,7 @@ from streamlit_flow.elements import (
 from node_types import NodeType
 from node_input import get_node_inputs, NodeInput
 from typing import List, Dict
-from mediums import serialize_mediums_list
+from mediums import serialize_mediums_list, medium_is_source
 
 
 def get_handle_medium_dict(
@@ -22,8 +22,7 @@ def get_handle_medium_dict(
         src_list, trgt_list = [], []
         for m in medium_variables:
             medium_variable_name = m.resie_name
-            suffix = medium_variable_name.split("_")[-1]
-            if suffix == "out":
+            if medium_is_source(medium_variable_name):
                 src_list.append(medium_variable_name)
             else:
                 trgt_list.append(medium_variable_name)
@@ -84,22 +83,20 @@ def create_new_node(
     )
 
 
-"""
- Source and target are as defined by resie. This function converts them into the right direction for resie to handle
- Arguments
-    - **input_node** : the node that acts as an input in the resie configuration
-    - **output_node** : the node that acts as an output in the resie configuration
-    - **input_node_handle_index** : the index of the handle the edge should attach to on the input node
-    - **output_node_handle_index** : the index of the handle the edge should attach to on the output node
-    """
-
-
 def create_new_edge(
     input_node: StreamlitFlowNode,
     output_node: StreamlitFlowNode,
     input_node_handle_index: int,
     output_node_handle_index: int,
 ):
+    """
+    Source and target are as defined by resie. This function converts them into the right direction for resie to handle
+    Arguments
+        - **input_node** : the node that acts as an input in the resie configuration
+        - **output_node** : the node that acts as an output in the resie configuration
+        - **input_node_handle_index** : the index of the handle the edge should attach to on the input node
+        - **output_node_handle_index** : the index of the handle the edge should attach to on the output node
+    """
     # set the actual index of this edge and the handle names
     input_node_handle_index = min(
         input_node_handle_index,

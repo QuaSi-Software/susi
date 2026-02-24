@@ -21,12 +21,14 @@ def generate_node_import_data(obj: Dict[str, any]):
     Generate data used in the import. This data is typically exported,
     but files created by hand or by previous versions of Susi may not contain it.
     """
+    # Add Type name (Special case: Grid Input and Output)
     type_name = obj["type"]
     if type_name == "GridConnection":
         if obj["is_source"]:
             type_name = "gridinput"
         else:
             type_name = "gridoutput"
+
     return {
         "node_position": {"x": -0, "y": -0},
         "node_type": type_name,

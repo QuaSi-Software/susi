@@ -53,9 +53,7 @@ def set_default_mediums():
     Otherwise, when resetting the unchanged the mediums, all nodes would forget their mediums, since the keys would change
     """
     st.session_state.mediums = [
-        MediumInput(
-            name="m_e_ac_230v", color="#ffee00", key="m_e_ac_230v_DEFAULT_KEY"
-        ),
+        MediumInput(name="m_e_ac_230v", color="#ffee00", key="m_e_ac_230v_DEFAULT_KEY"),
         MediumInput(name="m_h_w_lt1", color="#ff6c6c", key="m_h_w_lt1_DEFAULT_KEY"),
         MediumInput(name="m_h_w_ht1", color="#940000", key="m_h_w_ht1_DEFAULT_KEY"),
         MediumInput(name="m_c_g_h2", color="#00d346", key="m_c_g_h2_DEFAULT_KEY"),
@@ -74,6 +72,12 @@ def input_is_medium(parameter_name: str):
     if len(split_name) < 3:
         return False
     return split_name[0] == "m" and (split_name[-1] == "in" or split_name[-1] == "out")
+
+
+def medium_is_source(parameter_name: str):
+    """returns True if the suffix is 'out'. That means that the medium controls a handle on the right side of the node."""
+    split_name: List[str] = parameter_name.split("_")
+    return split_name[-1] == "out"
 
 
 def update_edges_on_medium_change(
