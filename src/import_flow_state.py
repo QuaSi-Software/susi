@@ -67,8 +67,6 @@ def get_output_refs(
     node: StreamlitFlowNode = node_dict[input_node_id]
     output_mediums = node.data["handle_medium_dict"]["source"]
 
-    if input_node_id == "TST_ELY_01":
-        print("This the one")
     # if there's only 1 medium, the order of the edges doesn't matter
     # if there are multiple, we create a Dictionary { node_id : handle_index}
     if len(output_mediums) > 1:

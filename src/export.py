@@ -49,34 +49,21 @@ def get_outputs(node, nodes, edges):
     -`list<tuple<int, int>>`: A list of tuples with the index of the source and target handle of each connection
     -`list<str>`: A list of UACs that are the outputs of the given node
     """
-    outgoing = []
+    outgoing = {}
     handles = []
     for edge in edges:
         if edge.source == node.id:
+            # set handles
+            source_handle_index = int(edge.sourceHandle[-1])
+            handleTuple = (source_handle_index, int(edge.targetHandle[-1]))
+            handles.append(handleTuple)
+            # find medium associated with source handle
+            source_mediums = node.data["handle_medium_dict"]["source"]
+            medium_var_name = source_mediums[source_handle_index]
+            # save connection
             target = nodes[edge.target]
-            outgoing.append(target.data["content"])
-            if node.data["component_type"].lower() != "bus":
-                handleTuple = (int(edge.sourceHandle[-1]), int(edge.targetHandle[-1]))
-                handles.append(handleTuple)
+            outgoing[medium_var_name] = target.data["content"]
     return handles, outgoing
-
-
-def get_inputs(node, nodes, edges):
-    """Inputs of the given node as list of UACs.
-
-    # Args:
-    -`node:StreamlitFlowNode`: The node
-    -`nodes:dict<int,StreamlitFlowNode>`: All nodes in a dict by their ID
-    -`edges:list<StreamlitFlowEdge>`: All edges in a list
-    # Returns:
-    -`list<str>`: A list of UACs that are the inputs of the given node
-    """
-    incoming = []
-    for edge in edges:
-        if edge.target == node.id:
-            source = nodes[edge.source]
-            incoming.append(source.data["content"])
-    return incoming
 
 
 def energy_matrix(nr_rows, nr_columns):
@@ -95,6 +82,42 @@ def energy_matrix(nr_rows, nr_columns):
             row.append(1)
         rows.append(row)
     return rows
+
+
+def get_bus_connections(node, nodes, edges):
+    """
+    Create the connections dictionary  for a bus with:
+    * input_order
+    * output_order
+    * energy_flow
+
+    This function exists for busses only, because all other nodes export their connections as dictionaries
+
+    # Args:
+    -`node:StreamlitFlowNode`: The node
+    -`nodes:dict<int,StreamlitFlowNode>`: All nodes in a dict by their ID
+    -`edges:list<StreamlitFlowEdge>`: All edges in a list
+    # Returns:
+    -`list<str>`: A list of UACs that are the inputs of the given node
+    """
+    incoming_connections = []
+    outgoing_connections = []
+    for edge in edges:
+        if edge.target == node.id:
+            source = nodes[edge.source]
+            incoming_connections.append(source.data["content"])
+        if edge.source == node.id:
+            target = nodes[edge.target]
+            outgoing_connections.append(target.data["content"])
+
+    return {
+        "input_order": incoming_connections,
+        "output_order": outgoing_connections,
+        "energy_flow": energy_matrix(
+            len(incoming_connections),
+            len(outgoing_connections),
+        ),
+    }
 
 
 def export_flow(flow):
@@ -139,14 +162,7 @@ def export_flow(flow):
 
         # set output_refs/connections
         if node.data["component_type"].lower() == "bus":
-            comp_dict["connections"]["input_order"] = get_inputs(node, nodes, edges)
-            _, comp_dict["connections"]["output_order"] = get_outputs(
-                node, nodes, edges
-            )
-            comp_dict["connections"]["energy_flow"] = energy_matrix(
-                len(comp_dict["connections"]["input_order"]),
-                len(comp_dict["connections"]["output_order"]),
-            )
+            comp_dict["connections"] = get_bus_connections(node, nodes, edges)
         else:
             handles, outputs = get_outputs(node, nodes, edges)
             comp_dict["output_refs"] = outputs
