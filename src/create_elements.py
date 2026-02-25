@@ -1,11 +1,13 @@
+import streamlit as st
 from streamlit_flow.elements import (
     StreamlitFlowNode,
     StreamlitFlowEdge,
 )
 from node_types import NodeType
 from node_input import get_node_inputs, NodeInput
-from typing import List, Dict
 from mediums import serialize_mediums_list, medium_is_source
+
+from typing import List, Dict
 
 
 def get_handle_medium_dict(
@@ -34,9 +36,11 @@ def get_handle_medium_dict(
     }
 
 
-def get_handle_medium(input_node: StreamlitFlowNode, input_node_handle_index: int):
+def get_handle_medium(
+    input_node: StreamlitFlowNode, sourceOrTarget: str, input_node_handle_index: int
+):
     medium_dict: Dict = input_node.data["handle_medium_dict"]
-    medium_var_name: str = medium_dict["source"][input_node_handle_index]
+    medium_var_name: str = medium_dict[sourceOrTarget][input_node_handle_index]
     medium_key = next(
         (
             x.value
@@ -88,6 +92,7 @@ def create_new_edge(
     output_node: StreamlitFlowNode,
     input_node_handle_index: int,
     output_node_handle_index: int,
+    warning_messages: List[str],
 ):
     """
     Source and target are as defined by resie. This function converts them into the right direction for resie to handle
@@ -110,7 +115,17 @@ def create_new_edge(
     handle_on_target_node = "target-" + str(output_node_handle_index)
 
     # get medium for this edge
-    medium = get_handle_medium(input_node, input_node_handle_index)
+    input_medium = get_handle_medium(input_node, "source", input_node_handle_index)
+    output_medium = get_handle_medium(output_node, "target", output_node_handle_index)
+    if input_medium["key"] != output_medium["key"]:
+        warning_messages.append(
+            "The nodes "
+            + str(input_node.data["content"])
+            + " and "
+            + str(output_node.data["content"])
+            + " could not be connected, because their mediums don't match."
+        )
+        return None
     return StreamlitFlowEdge(
         id=f"{input_node.id}-{output_node.id}_{input_node_handle_index}",
         source=input_node.id,
@@ -119,7 +134,7 @@ def create_new_edge(
         targetHandle=handle_on_target_node,
         deletable=True,
         style={
-            "stroke": medium["color"],
+            "stroke": input_medium["color"],
         },
-        medium_key=medium["key"],
+        medium_key=input_medium["key"],
     )

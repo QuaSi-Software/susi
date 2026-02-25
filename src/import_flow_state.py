@@ -202,8 +202,11 @@ def generate_state_from_import(import_data_text: str):
                     handles[0] = import_data["source_handles"][output_node_id]
 
             # create edge
-            new_edge = create_new_edge(input_node, output_node, handles[0], handles[1])
-            edge_array.append(new_edge)
+            new_edge = create_new_edge(
+                input_node, output_node, handles[0], handles[1], warning_messages
+            )
+            if new_edge is not None:
+                edge_array.append(new_edge)
 
     new_state: StreamlitFlowState = StreamlitFlowState(node_array, edge_array)
     return warning_messages, new_state
