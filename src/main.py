@@ -26,6 +26,7 @@ from mediums import serialize_mediums_list
 # Other
 import importlib
 from random import randint
+from pathlib import Path
 
 
 def check_state():
@@ -138,6 +139,14 @@ def main():
     st.set_page_config("SUSI - Simple UI for Simulation Input", layout="wide")
 
     with st.sidebar:
+        st.markdown("# SUSI")
+        st.markdown("Input creator for:")
+        logo_path = Path(__file__).parent.parent / "assets" / "logo_resie.jpg"
+        st.image(
+            str(logo_path), use_container_width=True,
+            caption="[Simulation tool ReSiE](https://github.com/QuaSi-Software/resie)"
+        )
+
         st.markdown("## Settings")
         prefix = st.text_input("UAC prefix", "TST")
         edge_type = st.selectbox(
