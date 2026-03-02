@@ -36,6 +36,8 @@ def get_node_color(node: NodeType):
             return "#bc1b1b"
         case NodeCategory.Special:
             return "#1D1446"
+        case NodeCategory.Other:
+            return "#32c8bc"
     return "#000000"
 
 

@@ -1,0 +1,125 @@
+import time
+import streamlit as st
+from typing import List
+import random
+
+
+class MediumInput:
+    name: str
+    key: str  # unique key to identify the medium
+    color: str = "#ffffff"
+    inputted_name_valid: bool = True
+
+    def __init__(self, name=None, color=None, inputted_name_valid=True, key=None):
+        self.name = name if name is not None else "m_untitled"
+        self.inputted_name_valid = inputted_name_valid
+        # set or generate key
+        if key is not None:
+            self.key = key
+        else:
+            self.key = "m_" + str(time.time())
+        # set or generate color
+        if color is not None:
+            self.color = color
+        else:
+            # Generate a random color
+            self.color = f"#{random.randint(0, 0xFFFFFF):06x}"
+
+
+def get_imported_medium(name: str, color: str):
+    """Check if the name is one of the default medium names. If not, generate a new MediumInput"""
+    default_mediums = get_default_mediums()
+    m = next((m for m in default_mediums if m.name == name), MediumInput(name=name))
+    if color is not None:
+        m.color = color
+    return m
+
+
+def serialize_mediums_list():
+    """Turn the mediums in the session state from a list of medium_inputs
+    to a list of dictionaries with keys: name, key, color"""
+    serialized_list = [{"name": "Not Set", "key": "UNDEFINED", "color": "#ffffff"}]
+    for _, medium in enumerate(st.session_state.mediums):
+        if medium.inputted_name_valid:
+            serialized_list.append(
+                {"name": medium.name, "color": medium.color, "key": medium.key}
+            )
+    return serialized_list
+
+
+def get_medium_list_for_export():
+    """return a list of mediums as lists [name, color]"""
+    mediums = []
+    for m in st.session_state.mediums:
+        mediums.append([m.name, m.color])
+    return mediums
+
+
+def get_default_mediums():
+    """
+    Return a list of the default mediums.
+
+    The default mediums are given their own keys, so the reset button can reset the mediums to these each time.
+    Otherwise, when resetting the unchanged the mediums, all nodes would forget their mediums, since the keys would change
+
+    The assignment to session_state.mediums is in a seperate function, because just the list is needed
+    when importing to check if an imported medium is a default medium
+    """
+    return [
+        MediumInput(name="m_e_ac_230v", color="#ffee00", key="m_e_ac_230v_DEFAULT_KEY"),
+        MediumInput(name="m_h_w_lt1", color="#ff6c6c", key="m_h_w_lt1_DEFAULT_KEY"),
+        MediumInput(name="m_h_w_ht1", color="#940000", key="m_h_w_ht1_DEFAULT_KEY"),
+        MediumInput(name="m_c_g_h2", color="#00d346", key="m_c_g_h2_DEFAULT_KEY"),
+        MediumInput(name="m_c_g_o2", color="#ff0000", key="m_c_g_o2_DEFAULT_KEY"),
+        MediumInput(
+            name="m_c_g_natgas", color="#6e00d4", key="m_c_g_natgas_DEFAULT_KEY"
+        ),
+    ]
+
+
+def set_default_mediums():
+    """
+    Set the list of mediums in session_state to the default list of mediums.
+    """
+    st.session_state.mediums = get_default_mediums()
+
+
+def input_is_medium(parameter_name: str):
+    """Parse the variable name to check if this variable is for setting a node's medium."""
+    if parameter_name == "medium":
+        return True
+    split_name: List[str] = parameter_name.split("_")
+    if len(split_name) < 3:
+        return False
+    return split_name[0] == "m" and (split_name[-1] == "in" or split_name[-1] == "out")
+
+
+def medium_is_source(parameter_name: str):
+    """returns True if the suffix is 'out'. That means that the medium controls a handle on the right side of the node."""
+    split_name: List[str] = parameter_name.split("_")
+    return split_name[-1] == "out"
+
+
+def update_edges_on_medium_change(
+    old_medium_list: List[MediumInput], new_medium_list: List[MediumInput]
+):
+    """
+    If a medium has been deleted, delete edges with this medium.
+    Iterate through the mediums and if their color has changed, find all edges with this medium
+    and update their stroke colors.
+    """
+    edges = st.session_state.current_state.edges
+    # delete edges if their medium was deleted
+    new_medium_keys = [m.key for m in new_medium_list]
+    edges = [e for e in edges if e.medium_key in new_medium_keys]
+    # update the color of the edges if the medium color changed
+    for medium in new_medium_list:
+        old_medium: MediumInput = [x for x in old_medium_list if x.key == medium.key]
+        if len(old_medium) == 0:
+            continue
+        if medium.color == old_medium[0].color:
+            continue
+        edges_with_medium = [x for x in edges if x.medium_key == medium.key]
+        for e in edges_with_medium:
+            e.style = {"stroke": medium.color}
+    st.session_state.current_state.edges = edges
