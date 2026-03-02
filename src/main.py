@@ -144,8 +144,9 @@ def main():
         st.markdown("Input creator for:")
         logo_path = Path(__file__).parent.parent / "assets" / "logo_resie.jpg"
         st.image(
-            str(logo_path), use_container_width=True,
-            caption="[Simulation tool ReSiE](https://github.com/QuaSi-Software/resie)"
+            str(logo_path),
+            width="stretch",
+            caption="[Simulation tool ReSiE](https://github.com/QuaSi-Software/resie)",
         )
 
         st.markdown("## Settings")
@@ -164,7 +165,7 @@ def main():
 
             nodes_in_category = get_node_types_in_category(category)
             for node in nodes_in_category:
-                if st.button(node.button_name, use_container_width=True):
+                if st.button(node.button_name, width="stretch"):
                     add_node(create_node(prefix, node))
 
         st.markdown("## Actions")
@@ -172,14 +173,14 @@ def main():
         import_text = st.text_area("Imported", st.session_state.exported, height=50)
         c1, c2 = st.columns(2)
         with c1:
-            if st.button("Export", use_container_width=True):
+            if st.button("Export", width="stretch"):
                 st.session_state.exported = export_flow(st.session_state.current_state)
         with c2:
             st.button(
                 "Import",
                 on_click=import_data,
                 args=[import_text, edge_type],
-                use_container_width=True,
+                width="stretch",
             )
 
     if st.button(label="Clear Graph"):
