@@ -1,6 +1,6 @@
-from node_input_data import component_config
+from Components.node_input_data import component_config
 from typing import Dict, List
-from mediums import serialize_mediums_list, input_is_medium
+from Mediums.mediums import serialize_mediums_list, input_is_medium
 
 
 class NodeInput:

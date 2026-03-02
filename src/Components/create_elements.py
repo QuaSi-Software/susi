@@ -3,9 +3,9 @@ from streamlit_flow.elements import (
     StreamlitFlowNode,
     StreamlitFlowEdge,
 )
-from node_types import NodeType
-from node_input import get_node_inputs, NodeInput
-from mediums import serialize_mediums_list, medium_is_source
+from Components.node_types import NodeType
+from Components.node_input import get_node_inputs, NodeInput
+from Mediums.mediums import serialize_mediums_list, medium_is_source
 
 from typing import List, Dict
 

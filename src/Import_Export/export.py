@@ -3,9 +3,9 @@
 import streamlit as st
 from streamlit_flow.elements import StreamlitFlowNode
 
-from node_input import NodeInput
-from mediums import MediumInput, get_medium_list_for_export
-from export_settings_menu import export_settings_dict
+from Components.node_input import NodeInput
+from Mediums.mediums import MediumInput, get_medium_list_for_export
+from Susi_Variables.susi_variable_util import export_susi_variables
 
 from json import dumps
 from typing import Dict, List
@@ -17,7 +17,7 @@ def base_dict():
     # Returns:
     -`dict`: The base dictionary
     """
-    export_dict = export_settings_dict()
+    export_dict = export_susi_variables()
     export_dict["components"] = {}
     return export_dict
 

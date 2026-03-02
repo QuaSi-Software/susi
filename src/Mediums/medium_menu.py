@@ -1,7 +1,12 @@
 import streamlit as st
 import copy
-from mediums import MediumInput, set_default_mediums, update_edges_on_medium_change
 from typing import List
+
+from Mediums.mediums import (
+    MediumInput,
+    set_default_mediums,
+    update_edges_on_medium_change,
+)
 
 
 def initialize_medium_list():

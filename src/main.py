@@ -16,13 +16,17 @@ from streamlit_flow.state import StreamlitFlowState
 from streamlit_flow.layouts import ManualLayout, LayeredLayout
 
 # project imports
-from create_elements import create_new_node
-from export import export_flow
-from import_flow_state import generate_state_from_import
-from node_types import NodeType, NodeCategory, get_node_types_in_category
-from medium_menu import initialize_medium_list, medium_menu
-from mediums import serialize_mediums_list
-from export_settings_menu import export_settings_menu, set_default_export_settings
+from Import_Export.export import export_flow
+from Import_Export.import_flow_state import generate_state_from_import
+
+from Components.node_types import NodeType, NodeCategory, get_node_types_in_category
+from Components.create_elements import create_new_node
+
+from Mediums.medium_menu import initialize_medium_list, medium_menu
+from Mediums.mediums import serialize_mediums_list
+
+from Susi_Variables.susi_variable_menu import export_settings_menu
+from Susi_Variables.susi_variable_util import set_default_susi_variables
 
 # Other
 import importlib
@@ -48,7 +52,7 @@ def check_state():
         st.session_state.exported = ""
     if "warning_messages" not in st.session_state:
         st.session_state.warning_messages = []
-    set_default_export_settings()
+    set_default_susi_variables()
     initialize_medium_list()
 
 

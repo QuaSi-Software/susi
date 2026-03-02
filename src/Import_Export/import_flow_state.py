@@ -5,15 +5,23 @@ from streamlit_flow.elements import StreamlitFlowNode
 from streamlit_flow.state import StreamlitFlowState
 
 # project imports
-from node_types import get_node_type_with_name, NodeType
-from create_elements import create_new_node, create_new_edge
-from node_input import NodeInput, get_node_inputs
-from mediums import MediumInput, get_imported_medium
+from Components.node_types import get_node_type_with_name, NodeType
+from Components.create_elements import create_new_node, create_new_edge
+from Components.node_input import NodeInput, get_node_inputs
+
+from Mediums.mediums import get_imported_medium
+from Susi_Variables.susi_variable_list import simulation_parameters, io_settings
 
 # Other imports
 import json
 from typing import Dict, List
 import copy
+
+
+def import_non_component_data(import_dict):
+    """Update the Simulation Parameters and IO Settings in session state using the import data"""
+    simulation_parameter_dict: Dict = import_dict[""]
+    pass
 
 
 def get_node_import_data(node_data):

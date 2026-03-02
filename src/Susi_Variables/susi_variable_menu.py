@@ -1,13 +1,7 @@
 import streamlit as st
 
-from export_settings import io_settings, simulation_parameters, SusiInput, InputType
-
-
-def set_default_export_settings():
-    pass
-    for input in io_settings + simulation_parameters:
-        if input.key not in st.session_state:
-            st.session_state[input.key] = input.default_value
+from Susi_Variables.susi_variable import SusiInput, InputType
+from Susi_Variables.susi_variable_list import io_settings, simulation_parameters
 
 
 def display_input(input: SusiInput):
@@ -73,17 +67,3 @@ def export_settings_menu():
             st.header("Simulation Parameters")
             for input in simulation_parameters:
                 display_input(input=input)
-
-
-def export_settings_dict():
-    pass
-    io_settings_dict = {}
-    for input in io_settings:
-        io_settings_dict[input.name] = input.getValue()
-    simulation_parameters_dict = {}
-    for input in simulation_parameters:
-        simulation_parameters_dict[input.name] = input.getValue()
-    return {
-        "io_settings": io_settings_dict,
-        "simulation_parameters": simulation_parameters_dict,
-    }
