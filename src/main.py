@@ -22,6 +22,7 @@ from import_flow_state import generate_state_from_import
 from node_types import NodeType, NodeCategory, get_node_types_in_category
 from medium_menu import initialize_medium_list, medium_menu
 from mediums import serialize_mediums_list
+from export_settings_menu import export_settings_menu, export_settings_dict
 
 # Other
 import importlib
@@ -176,6 +177,7 @@ def main():
         st.session_state.current_state.nodes = []
         st.session_state.current_state.edges = []
 
+    export_settings_menu()
     medium_menu()
     st.session_state.current_state = streamlit_flow_component(
         "energy_system",
