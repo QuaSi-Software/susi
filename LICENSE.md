@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2025 Authors: Etienne Ott, Heiner Steinacker
+Copyright (c) 2026 Authors: Elias Demartin, Etienne Ott, Heiner Steinacker, Sarah Werum
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

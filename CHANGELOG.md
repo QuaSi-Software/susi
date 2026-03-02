@@ -1,10 +1,9 @@
 # Changelog
 
-Current SUSI version: 0.3.0
-Implemented for ReSie version: 0.12.4
+Implemented for ReSiE version: 0.12.4
 
 ## v0.3.4
-Mediums have been added to Susi
+Mediums have been added to SUSI
 * Medium Menu
     * There is an expander in the Streamlit UI that allows the user to edit a list of mediums
     * Each medium consists of a key, name and color. The key allows the user to change the name of the medium without the nodes having to update their variables
@@ -23,6 +22,7 @@ Mediums have been added to Susi
 * Export/Import
     * The export now includes a list of the mediums and their colors, so the graph can be recreated on import
     * When importing graphs with no medium list included, the import script creates a list of all the mediums found in the nodes' inputs and assigns them random colors
+* Add title section to sidebar
 
 ## v0.3.3
 * Node Parameters are editable in 'Edit Node' Window. Supported Input Types are
