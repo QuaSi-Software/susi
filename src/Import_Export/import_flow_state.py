@@ -10,18 +10,12 @@ from Components.create_elements import create_new_node, create_new_edge
 from Components.node_input import NodeInput, get_node_inputs
 
 from Mediums.mediums import get_imported_medium
-from Susi_Variables.susi_variable_list import simulation_parameters, io_settings
+from Susi_Variables.susi_variable_export_import import import_non_component_data
 
 # Other imports
 import json
 from typing import Dict, List
 import copy
-
-
-def import_non_component_data(import_dict):
-    """Update the Simulation Parameters and IO Settings in session state using the import data"""
-    simulation_parameter_dict: Dict = import_dict[""]
-    pass
 
 
 def get_node_import_data(node_data):
@@ -139,6 +133,7 @@ def generate_state_from_import(import_data_text: str):
         warning_messages.append("Input is not a valid JSON.")
         return warning_messages, None
 
+    import_non_component_data(import_dict=import_dict)
     components = import_dict["components"].items()
     # get mediums
     mediums = import_dict.get("mediums", None)

@@ -1,6 +1,7 @@
 from typing import List
 from enum import Enum
 import streamlit as st
+from datetime import datetime
 
 
 # ---------------- Types needed by SusiInput ------------------------
@@ -21,7 +22,7 @@ class SusiVariableCategory(Enum):
 def getKey(type: SusiVariableCategory):
     match (type):
         case SusiVariableCategory.SimulationParameter:
-            return "simulation_parameter"
+            return "simulation_parameters"
         case SusiVariableCategory.IOSetting:
             return "io_settings"
 
@@ -54,8 +55,20 @@ class SusiInput:
         self.default_value = default_value
         self.key = getKey(variable_type) + "/" + self.name
 
-    def getValue(self):
+    def get_value(self):
         value = st.session_state[self.key]
-        if self.input_type == InputType.Date:
+        return value
+
+    def get_export_value(self):
+        value = self.get_value()
+        if self.input_type == InputType.Date and value is not None:
             value = value.strftime("%d.%m.%Y")
         return value
+
+    def set_value(self, value):
+        st.session_state[self.key] = value
+
+    def set_value_from_import(self, value):
+        if self.input_type == InputType.Date and type(value) == type(""):
+            value = datetime.strptime(value, "%d.%m.%Y")
+        self.set_value(value)

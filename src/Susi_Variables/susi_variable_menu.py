@@ -4,57 +4,68 @@ from Susi_Variables.susi_variable import SusiInput, InputType
 from Susi_Variables.susi_variable_list import io_settings, simulation_parameters
 
 
+def initialize_susi_variable_session_state():
+    input: SusiInput
+    for input in io_settings + simulation_parameters:
+        if input.key not in st.session_state:
+            st.session_state[input.key] = input.default_value
+    if "menu_update_counter" not in st.session_state:
+        st.session_state["menu_update_counter"] = 0
+
+
 def display_input(input: SusiInput):
+    key = input.key + "_" + str(st.session_state["menu_update_counter"])
     match (input.input_type):
         case InputType.Date:
-            st.date_input(
+            value = st.date_input(
                 label=input.name,
-                value=input.default_value,
+                value=input.get_value(),
                 help=input.help,
-                key=input.key,
+                key=key,
                 format="DD.MM.YYYY",
             )
         case InputType.Number:
-            st.number_input(
+            value = st.number_input(
                 label=input.name,
                 help=input.help,
-                key=input.key,
-                value=input.default_value,
+                key=key,
+                value=input.get_value(),
             )
         case InputType.String:
-            st.text_input(
+            value = st.text_input(
                 label=input.name,
-                value=input.default_value,
+                value=input.get_value(),
                 help=input.help,
-                key=input.key,
+                key=key,
             )
         case InputType.Dropdown:
-            index = input.options.index(input.default_value)
-            st.selectbox(
+            index = input.options.index(input.get_value())
+            value = st.selectbox(
                 label=input.name,
                 index=index,
                 help=input.help,
                 options=input.options,
-                key=input.key,
+                key=key,
             )
         case InputType.Multiselect:
-            st.multiselect(
+            value = st.multiselect(
                 label=input.name,
                 options=input.options,
-                default=input.default_value,
-                key=input.key,
+                default=input.get_value(),
+                key=key,
                 help=input.help,
             )
         case InputType.Boolean:
-            st.checkbox(
+            value = st.checkbox(
                 label=input.name,
-                value=input.default_value,
-                key=input.key,
+                value=input.get_value(),
+                key=key,
                 help=input.help,
             )
+    input.set_value(value)
 
 
-def export_settings_menu():
+def susi_variables_menu():
     with st.expander("Export Settings"):
         c1, c2 = st.columns(2, gap="large")
         with c1:
@@ -67,3 +78,7 @@ def export_settings_menu():
             st.header("Simulation Parameters")
             for input in simulation_parameters:
                 display_input(input=input)
+
+
+def update_susi_menu():
+    st.session_state["menu_update_counter"] += 1

@@ -25,8 +25,10 @@ from Components.create_elements import create_new_node
 from Mediums.medium_menu import initialize_medium_list, medium_menu
 from Mediums.mediums import serialize_mediums_list
 
-from Susi_Variables.susi_variable_menu import export_settings_menu
-from Susi_Variables.susi_variable_util import set_default_susi_variables
+from Susi_Variables.susi_variable_menu import (
+    susi_variables_menu,
+    initialize_susi_variable_session_state,
+)
 
 # Other
 import importlib
@@ -52,7 +54,7 @@ def check_state():
         st.session_state.exported = ""
     if "warning_messages" not in st.session_state:
         st.session_state.warning_messages = []
-    set_default_susi_variables()
+    initialize_susi_variable_session_state()
     initialize_medium_list()
 
 
@@ -192,7 +194,7 @@ def main():
         st.session_state.current_state.nodes = []
         st.session_state.current_state.edges = []
 
-    export_settings_menu()
+    susi_variables_menu()
     medium_menu()
     st.session_state.current_state = streamlit_flow_component(
         "energy_system",

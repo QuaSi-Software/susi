@@ -5,7 +5,7 @@ from streamlit_flow.elements import StreamlitFlowNode
 
 from Components.node_input import NodeInput
 from Mediums.mediums import MediumInput, get_medium_list_for_export
-from Susi_Variables.susi_variable_util import export_susi_variables
+from Susi_Variables.susi_variable_export_import import export_susi_variables
 
 from json import dumps
 from typing import Dict, List
