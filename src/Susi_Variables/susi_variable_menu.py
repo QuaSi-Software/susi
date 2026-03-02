@@ -1,4 +1,5 @@
 import streamlit as st
+from datetime import datetime
 
 from Susi_Variables.susi_variable import SusiInput, InputType
 from Susi_Variables.susi_variable_list import io_settings, simulation_parameters
@@ -17,7 +18,7 @@ def display_input(input: SusiInput):
     key = input.key + "_" + str(st.session_state["menu_update_counter"])
     match (input.input_type):
         case InputType.Date:
-            value = st.date_input(
+            value = st.datetime_input(
                 label=input.name,
                 value=input.get_value(),
                 help=input.help,

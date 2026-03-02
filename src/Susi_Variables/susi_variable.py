@@ -27,6 +27,9 @@ def getKey(type: SusiVariableCategory):
             return "io_settings"
 
 
+DATE_FORMAT = "%d.%m.%Y %I:%M"
+
+
 # ---------------- SusiInput ------------------------
 class SusiInput:
     name: str
@@ -62,13 +65,13 @@ class SusiInput:
     def get_export_value(self):
         value = self.get_value()
         if self.input_type == InputType.Date and value is not None:
-            value = value.strftime("%d.%m.%Y")
+            value = value.strftime(DATE_FORMAT)
         return value
 
     def set_value(self, value):
         st.session_state[self.key] = value
 
     def set_value_from_import(self, value):
-        if self.input_type == InputType.Date and type(value) == type(""):
-            value = datetime.strptime(value, "%d.%m.%Y")
+        if self.input_type == InputType.Date:
+            value = datetime.strptime(value, DATE_FORMAT)
         self.set_value(value)
