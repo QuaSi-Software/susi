@@ -5,6 +5,7 @@ from streamlit_flow.elements import StreamlitFlowNode
 
 from node_input import NodeInput
 from mediums import MediumInput, get_medium_list_for_export
+from export_settings_menu import export_settings_dict
 
 from json import dumps
 from typing import Dict, List
@@ -16,26 +17,9 @@ def base_dict():
     # Returns:
     -`dict`: The base dictionary
     """
-    return {
-        "io_settings": {
-            "csv_output_file": "./output/out.csv",
-            "auxiliary_info": True,
-            "auxiliary_info_file": "./output/auxiliary_info.md",
-            "sankey_plot": "default",
-            "csv_time_unit": "date",
-            "csv_output_keys": "all_incl_flows",
-            "output_plot": "all_incl_flows",
-        },
-        "simulation_parameters": {
-            "start": "01.01.2024 00:00",
-            "end": "07.01.2024 23:00",
-            "start_end_unit": "dd.mm.yyyy HH:MM",
-            "time_step": 900,
-            "time_step_unit": "seconds",
-            "weather_file_path": "./path/to/dat/or/epw/weather_file.epw",
-        },
-        "components": {},
-    }
+    export_dict = export_settings_dict()
+    export_dict["components"] = {}
+    return export_dict
 
 
 def get_outputs(node, nodes, edges):

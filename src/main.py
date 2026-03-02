@@ -22,7 +22,7 @@ from import_flow_state import generate_state_from_import
 from node_types import NodeType, NodeCategory, get_node_types_in_category
 from medium_menu import initialize_medium_list, medium_menu
 from mediums import serialize_mediums_list
-from export_settings_menu import export_settings_menu, export_settings_dict
+from export_settings_menu import export_settings_menu, set_default_export_settings
 
 # Other
 import importlib
@@ -48,6 +48,7 @@ def check_state():
         st.session_state.exported = ""
     if "warning_messages" not in st.session_state:
         st.session_state.warning_messages = []
+    set_default_export_settings()
     initialize_medium_list()
 
 
