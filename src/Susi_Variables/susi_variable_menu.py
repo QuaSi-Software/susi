@@ -2,7 +2,7 @@ import streamlit as st
 from datetime import datetime
 
 from Susi_Variables.susi_variable import SusiInput, InputType
-from Susi_Variables.susi_variable_list import io_settings, simulation_parameters
+from Susi_Variables.susi_variable_list import get_io_settings, get_simulation_parameters
 
 
 def initialize_susi_variable_session_state():
@@ -21,13 +21,21 @@ def display_input(input: SusiInput):
                 key=key,
                 format="DD.MM.YYYY",
             )
-        case InputType.Number:
+        case InputType.Float:
             value = st.number_input(
                 label=input.name,
                 help=input.help,
                 key=key,
                 value=input.get_value(),
                 format="%f",
+            )
+        case InputType.Int:
+            value = st.number_input(
+                label=input.name,
+                help=input.help,
+                key=key,
+                value=input.get_value(),
+                format="%i",
             )
         case InputType.String:
             value = st.text_input(
@@ -94,12 +102,12 @@ def susi_variables_menu():
         with c1:
             st.header("IO Settings")
             input: SusiInput
-            for input in io_settings:
+            for input in get_io_settings():
                 display_input(input=input)
 
         with c2:
             st.header("Simulation Parameters")
-            for input in simulation_parameters:
+            for input in get_simulation_parameters():
                 display_input(input=input)
 
 

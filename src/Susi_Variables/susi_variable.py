@@ -7,12 +7,13 @@ from datetime import datetime
 # ---------------- Types needed by SusiInput ------------------------
 class InputType(Enum):
     Date = 0
-    Number = 1
+    Int = 1
     String = 3
     Dropdown = 4
     Multiselect = 5
     Boolean = 6
     Dropdown_With_Custom_Option = 7
+    Float = 8
 
 
 class SusiVariableCategory(Enum):
@@ -62,6 +63,11 @@ class SusiInput:
         self.key = getKey(variable_type) + "/" + self.name
 
         # set session state variable
+        if (
+            input_type is InputType.Dropdown
+            or input_type is InputType.Dropdown_With_Custom_Option
+        ) and default_value not in options:
+            default_value = options[0]
         if self.key not in st.session_state:
             st.session_state[self.key] = default_value
 

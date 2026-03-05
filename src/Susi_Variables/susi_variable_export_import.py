@@ -1,7 +1,9 @@
 from typing import List, Dict
 
 import streamlit as st
-from Susi_Variables.susi_variable_list import simulation_parameters, io_settings
+from Mediums.mediums import MediumInput
+
+from Susi_Variables.susi_variable_list import get_simulation_parameters, get_io_settings
 from Susi_Variables.susi_variable import SusiInput, SusiVariableCategory, getKey
 from Susi_Variables.susi_variable_menu import update_susi_menu
 
@@ -9,12 +11,12 @@ from Susi_Variables.susi_variable_menu import update_susi_menu
 def export_susi_variables():
     input: SusiInput
     io_settings_dict = {}
-    for input in io_settings:
+    for input in get_io_settings():
         value = input.get_export_value()
         if value is not None and value != "":
             io_settings_dict[input.name] = value
     simulation_parameters_dict = {}
-    for input in simulation_parameters:
+    for input in get_simulation_parameters():
         value = input.get_export_value()
         if value is not None and value != 0:
             simulation_parameters_dict[input.name] = value
@@ -28,14 +30,14 @@ def import_non_component_data(import_dict):
     """Update the Simulation Parameters and IO Settings in session state using the import data"""
     # IO Settings
     io_settings_dict: Dict = import_dict[getKey(SusiVariableCategory.IOSetting)]
-    for input in io_settings:
+    for input in get_io_settings():
         if input.name in io_settings_dict:
             input.set_value_from_import(io_settings_dict[input.name])
     # simulation_parameters
     simulation_parameter_dict: Dict = import_dict[
         getKey(SusiVariableCategory.SimulationParameter)
     ]
-    for input in simulation_parameters:
+    for input in get_simulation_parameters():
         if input.name in simulation_parameter_dict:
             input.set_value_from_import(simulation_parameter_dict[input.name])
     update_susi_menu()
