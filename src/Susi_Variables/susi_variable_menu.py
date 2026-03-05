@@ -6,10 +6,6 @@ from Susi_Variables.susi_variable_list import io_settings, simulation_parameters
 
 
 def initialize_susi_variable_session_state():
-    input: SusiInput
-    for input in io_settings + simulation_parameters:
-        if input.key not in st.session_state:
-            st.session_state[input.key] = input.default_value
     if "menu_update_counter" not in st.session_state:
         st.session_state["menu_update_counter"] = 0
 
@@ -31,6 +27,7 @@ def display_input(input: SusiInput):
                 help=input.help,
                 key=key,
                 value=input.get_value(),
+                format="%f",
             )
         case InputType.String:
             value = st.text_input(
@@ -41,12 +38,13 @@ def display_input(input: SusiInput):
             )
         case InputType.Dropdown:
             index = input.options.index(input.get_value())
-            value = st.selectbox(
+            value = st.radio(
                 label=input.name,
                 index=index,
                 help=input.help,
                 options=input.options,
                 key=key,
+                horizontal=True,
             )
         case InputType.Multiselect:
             value = st.multiselect(
@@ -63,6 +61,30 @@ def display_input(input: SusiInput):
                 key=key,
                 help=input.help,
             )
+        case InputType.Dropdown_With_Custom_Option:
+            index = input.options.index(input.get_value())
+            # if the selected option is the last option in the list, the custom option is selected
+            is_custom = index == len(input.options) - 1
+            # show dropdown
+            with st.container(border=True):
+                value = st.radio(
+                    label=input.name,
+                    index=index,
+                    help=input.help,
+                    options=input.options,
+                    key=key,
+                )
+                # if it is custom, show the custom text
+                if is_custom:
+                    custom_input_value = st.text_area(
+                        label=input.name + " Custom Input",
+                        value=input.get_custom_input_value(),
+                        help=input.help,
+                        key=key + "_Custom_Input_Field",
+                        height=300,
+                    )
+                    input.set_custom_input_value(custom_input_value)
+
     input.set_value(value)
 
 

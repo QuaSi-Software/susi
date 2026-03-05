@@ -10,10 +10,14 @@ def export_susi_variables():
     input: SusiInput
     io_settings_dict = {}
     for input in io_settings:
-        io_settings_dict[input.name] = input.get_export_value()
+        value = input.get_export_value()
+        if value is not None and value != "":
+            io_settings_dict[input.name] = value
     simulation_parameters_dict = {}
     for input in simulation_parameters:
-        simulation_parameters_dict[input.name] = input.get_export_value()
+        value = input.get_export_value()
+        if value is not None and value != 0:
+            simulation_parameters_dict[input.name] = value
     return {
         getKey(SusiVariableCategory.IOSetting): io_settings_dict,
         getKey(SusiVariableCategory.SimulationParameter): simulation_parameters_dict,

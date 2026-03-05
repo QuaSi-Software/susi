@@ -47,11 +47,19 @@ io_settings = [
     ),
     SusiInput(
         name="step_info_interval",
-        default_value=-1,
+        default_value=-1.0,
         help="Defines how often a progress report on the loop over the timesteps of the simulation is logged to the info channel. This is useful to get an estimation of how much longer the simulation requires (albeit that such estimation is always inaccurate). If no value is given, automatically sets a value such that 20 reports are printed over the course of the simulation. To deactivate these reports, set this to 0",
         input_type=InputType.Number,
         optional=True,
         variable_type=SusiVariableCategory.IOSetting,
+    ),
+    SusiInput(
+        name="sankey_plot",
+        default_value="nothing",
+        help="Specifications for sankey plot",
+        input_type=InputType.Dropdown_With_Custom_Option,
+        optional=True,
+        options=["nothing", "default", "Use Graph's medium colors", "Custom"],
     ),
 ]
 
