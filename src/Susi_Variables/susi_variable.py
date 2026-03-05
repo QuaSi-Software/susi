@@ -29,9 +29,6 @@ def getKey(type: SusiVariableCategory):
             return "io_settings"
 
 
-DATE_FORMAT = "%d.%m.%Y %H:%M"
-
-
 # ---------------- SusiInput ------------------------
 class SusiInput:
     name: str
@@ -95,25 +92,3 @@ class SusiInput:
 
     def set_custom_input_value(self, value):
         st.session_state[self.key + "_CUSTOM_INPUT"] = value
-
-    def get_export_value(self):
-        value = self.get_value()
-        if self.input_type == InputType.Date and value is not None:
-            value = value.strftime(DATE_FORMAT)
-        if (
-            self.input_type == InputType.Dropdown_With_Custom_Option
-            and value == self.options[-1]
-        ):
-            value = self.get_custom_input_value()
-        return value
-
-    def set_value_from_import(self, value):
-        if self.input_type == InputType.Date:
-            value = datetime.strptime(value, DATE_FORMAT)
-        if (
-            self.input_type == InputType.Dropdown_With_Custom_Option
-            and value not in self.options
-        ):
-            self.set_custom_input_value(value)
-            value = self.options[-1]
-        self.set_value(value)

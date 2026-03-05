@@ -184,10 +184,10 @@ def get_simulation_parameters():
         ),
         SusiInput(
             name="start_end_unit",
-            input_type=InputType.Date,
+            input_type=InputType.String,
             help="Datetime format specifier for start, start_output and end time.",
             optional=False,
-            default_value=None,
+            default_value="dd.mm.yyyy HH:MM",
             variable_type=SusiVariableCategory.SimulationParameter,
         ),
         SusiInput(

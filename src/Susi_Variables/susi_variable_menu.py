@@ -19,7 +19,6 @@ def display_input(input: SusiInput):
                 value=input.get_value(),
                 help=input.help,
                 key=key,
-                format="DD.MM.YYYY",
             )
         case InputType.Float:
             value = st.number_input(

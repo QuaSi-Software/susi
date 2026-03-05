@@ -133,7 +133,7 @@ def generate_state_from_import(import_data_text: str):
         warning_messages.append("Input is not a valid JSON.")
         return warning_messages, None
 
-    import_non_component_data(import_dict=import_dict)
+    import_non_component_data(import_dict=import_dict, warnings=warning_messages)
     components = import_dict["components"].items()
     # get mediums
     mediums = import_dict.get("mediums", None)
