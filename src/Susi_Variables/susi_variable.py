@@ -96,7 +96,7 @@ class SusiInput:
             value = value.strftime(DATE_FORMAT)
         if (
             self.input_type == InputType.Dropdown_With_Custom_Option
-            and value.lower() == self.options[-1]
+            and value == self.options[-1]
         ):
             value = self.get_custom_input_value()
         return value
