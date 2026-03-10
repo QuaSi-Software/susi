@@ -67,13 +67,12 @@ def create_new_node(
 
     bus_data = None
     if node_type.type_name.lower() == "bus":
-        bus_data = (
-            {
-                "energy_flow": [],
-                "input_order": [],
-                "output_order": [],
-            },
-        )
+        bus_data = {
+            "energy_flow": [],
+            "input_order": [],
+            "output_order": [],
+        }
+
     return StreamlitFlowNode(
         id=name,
         pos=position,
