@@ -64,6 +64,16 @@ def create_new_node(
     handle_medium_dict = get_handle_medium_dict(
         resie_data, node_type.nr_outputs, node_type.nr_inputs
     )
+
+    bus_data = None
+    if node_type.type_name.lower() == "bus":
+        bus_data = (
+            {
+                "energy_flow": [],
+                "input_order": [],
+                "output_order": [],
+            },
+        )
     return StreamlitFlowNode(
         id=name,
         pos=position,
@@ -72,6 +82,7 @@ def create_new_node(
             "component_type": node_type.type_name,
             "resie_data": resie_data,
             "handle_medium_dict": handle_medium_dict,
+            "bus_data": bus_data,
         },
         node_type="default",
         source_position="right",
@@ -85,6 +96,23 @@ def create_new_node(
             "border": "1px solid white",
         },
     )
+
+
+def update_bus_data(node: StreamlitFlowNode, connected_node_id: str, incoming: bool):
+    if node.data["component_type"].lower() != "bus":
+        return
+    bus_data: Dict[str, List] = node.data["bus_data"]
+    bus_data["input_order" if incoming else "output_order"].append(connected_node_id)
+    # update energy flow and fill with 1s by default
+    # inputs are rows, outputs are columns
+    energy_flow: List[List[str]] = bus_data["energy_flow"]
+    if incoming:
+        new_row = [1 for x in bus_data["output_order"]]
+        energy_flow.append(new_row)
+    else:
+        for row in energy_flow:
+            row.append(1)
+    bus_data["energy_flow"] = energy_flow
 
 
 def create_new_edge(
@@ -126,6 +154,12 @@ def create_new_edge(
             + " could not be connected, because their mediums don't match."
         )
         return None
+
+    # if one of the nodes is a bus, update the bus data
+    update_bus_data(input_node, output_node.id, False)
+    update_bus_data(output_node, input_node.id, True)
+
+    # create the actual edge
     return StreamlitFlowEdge(
         id=f"{input_node.id}-{output_node.id}_{input_node_handle_index}",
         source=input_node.id,
