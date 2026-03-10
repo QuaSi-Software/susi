@@ -68,7 +68,7 @@ def energy_matrix(nr_rows, nr_columns):
     return rows
 
 
-def get_bus_connections(node, nodes, edges):
+def get_bus_connections(node):
     """
     Create the connections dictionary  for a bus with:
     * input_order
@@ -84,23 +84,11 @@ def get_bus_connections(node, nodes, edges):
     # Returns:
     -`list<str>`: A list of UACs that are the inputs of the given node
     """
-    incoming_connections = []
-    outgoing_connections = []
-    for edge in edges:
-        if edge.target == node.id:
-            source = nodes[edge.source]
-            incoming_connections.append(source.data["content"])
-        if edge.source == node.id:
-            target = nodes[edge.target]
-            outgoing_connections.append(target.data["content"])
-
+    bus_data = node.data["bus_data"]
     return {
-        "input_order": incoming_connections,
-        "output_order": outgoing_connections,
-        "energy_flow": energy_matrix(
-            len(incoming_connections),
-            len(outgoing_connections),
-        ),
+        "input_order": bus_data["input_order"],
+        "output_order": bus_data["output_order"],
+        "energy_flow": bus_data["energy_flow"],
     }
 
 
@@ -146,7 +134,7 @@ def export_flow(flow):
 
         # set output_refs/connections
         if node.data["component_type"].lower() == "bus":
-            comp_dict["connections"] = get_bus_connections(node, nodes, edges)
+            comp_dict["connections"] = get_bus_connections(node)
         else:
             handles, outputs = get_outputs(node, nodes, edges)
             comp_dict["output_refs"] = outputs
