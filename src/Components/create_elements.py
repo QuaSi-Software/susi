@@ -7,6 +7,8 @@ from Components.node_types import NodeType
 from Components.node_input import get_node_inputs, NodeInput
 from Mediums.mediums import serialize_mediums_list, medium_is_source
 
+from Import_Export.bus_data import update_bus_data
+
 from typing import List, Dict
 
 
@@ -95,23 +97,6 @@ def create_new_node(
             "border": "1px solid white",
         },
     )
-
-
-def update_bus_data(node: StreamlitFlowNode, connected_node_id: str, incoming: bool):
-    if node.data["component_type"].lower() != "bus":
-        return
-    bus_data: Dict[str, List] = node.data["bus_data"]
-    bus_data["input_order" if incoming else "output_order"].append(connected_node_id)
-    # update energy flow and fill with 1s by default
-    # inputs are rows, outputs are columns
-    energy_flow: List[List[str]] = bus_data["energy_flow"]
-    if incoming:
-        new_row = [1 for x in bus_data["output_order"]]
-        energy_flow.append(new_row)
-    else:
-        for row in energy_flow:
-            row.append(1)
-    bus_data["energy_flow"] = energy_flow
 
 
 def create_new_edge(

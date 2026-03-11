@@ -11,6 +11,7 @@ from Components.node_input import NodeInput, get_node_inputs
 
 from Mediums.mediums import get_imported_medium
 from Susi_Variables.susi_variable_export_import import import_non_component_data
+from Import_Export.bus_data import check_bus_data
 
 # Other imports
 import json
@@ -210,6 +211,12 @@ def generate_state_from_import(import_data_text: str):
             )
             if new_edge is not None:
                 edge_array.append(new_edge)
+
+    # set the bus_data and check if it matches the generated version
+    for node_id, node_data in components:
+        node = node_dict[node_id]
+        if node.data["component_type"].lower() == "bus":
+            check_bus_data(node, node_data["connections"], warning_messages)
 
     new_state: StreamlitFlowState = StreamlitFlowState(node_array, edge_array)
     return warning_messages, new_state
