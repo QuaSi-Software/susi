@@ -50,25 +50,7 @@ def get_outputs(node, nodes, edges):
     return handles, outgoing
 
 
-def energy_matrix(nr_rows, nr_columns):
-    """Construct the energy matrix config with the given number of rows and columns.
-
-    # Args:
-    -`nr_rows`: Number of rows
-    -`nr_columns`: Number of columns
-    # Returns:
-    -`list<list>`: The energy matrix
-    """
-    rows = []
-    for _ in range(nr_rows):
-        row = []
-        for __ in range(nr_columns):
-            row.append(1)
-        rows.append(row)
-    return rows
-
-
-def get_bus_connections(node):
+def get_bus_connections(node, nodes: Dict[str, StreamlitFlowNode]):
     """
     Create the connections dictionary  for a bus with:
     * input_order
@@ -85,9 +67,11 @@ def get_bus_connections(node):
     -`list<str>`: A list of UACs that are the inputs of the given node
     """
     bus_data = node.data["bus_data"]
+    input_order = [nodes[id].data["content"] for id in bus_data["input_order"]]
+    output_order = [nodes[id].data["content"] for id in bus_data["output_order"]]
     return {
-        "input_order": bus_data["input_order"],
-        "output_order": bus_data["output_order"],
+        "input_order": input_order,
+        "output_order": output_order,
         "energy_flow": bus_data["energy_flow"],
     }
 
@@ -134,7 +118,7 @@ def export_flow(flow):
 
         # set output_refs/connections
         if node.data["component_type"].lower() == "bus":
-            comp_dict["connections"] = get_bus_connections(node)
+            comp_dict["connections"] = get_bus_connections(node, nodes)
         else:
             handles, outputs = get_outputs(node, nodes, edges)
             comp_dict["output_refs"] = outputs
