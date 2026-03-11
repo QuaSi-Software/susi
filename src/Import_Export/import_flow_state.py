@@ -19,13 +19,36 @@ from typing import Dict, List
 import copy
 
 
-def get_node_import_data(node_data):
+def get_node_import_data(node_id: str, node_data: Dict, warnings: List[str]):
     # import data
     node_import_data = node_data.get("import_data", None)
     if node_import_data == None:
         # this file was created before import support was added
         node_import_data = generate_node_import_data(node_data)
         node_data["import_data"] = node_import_data
+        return node_import_data
+
+    if "node_position" not in node_import_data:
+        warnings.append("Node " + node_id + " has import_data, but no node_position.")
+        node_import_data["node_position"] = {"x": 0, "y": 0}
+    else:
+        node_position = node_import_data["node_position"]
+        if "x" not in node_position:
+            warnings.append(
+                "Node "
+                + node_id
+                + " has import_data.node_position, but no x coordinate."
+            )
+        if "y" not in node_position:
+            warnings.append(
+                "Node "
+                + node_id
+                + " has import_data.node_position, but no y coordinate."
+            )
+    if "node_type" not in node_import_data:
+        node_type = generate_node_import_data(node_data)["node_type"]
+        node_import_data["node_type"] = node_type
+
     return node_import_data
 
 
@@ -150,7 +173,7 @@ def generate_state_from_import(import_data_text: str):
     node_dict: Dict[str, StreamlitFlowNode] = {}
     for node_id, node_data in components:
         # import data
-        node_import_data = get_node_import_data(node_data)
+        node_import_data = get_node_import_data(node_id, node_data, warning_messages)
 
         node_type: NodeType = get_node_type_with_name(node_import_data["node_type"])
         pos = (
@@ -162,6 +185,7 @@ def generate_state_from_import(import_data_text: str):
 
         # fill in with node info from import
         resie_data = new_node.data["resie_data"]
+
         node_input: NodeInput
         for node_input in resie_data:
             value = node_data.get(node_input.resie_name, None)
@@ -180,6 +204,7 @@ def generate_state_from_import(import_data_text: str):
     for input_node_id, input_node_data in components:
         output_refs = get_output_refs(input_node_id, input_node_data, node_dict)
         for input_node_edge_index, output_node_id in enumerate(output_refs):
+            # check if connection is to a node that actually exists
             if output_node_id not in node_dict:
                 warning_messages.append(
                     "Node " + output_node_id + " is not defined in components."
@@ -216,7 +241,7 @@ def generate_state_from_import(import_data_text: str):
     for node_id, node_data in components:
         node = node_dict[node_id]
         if node.data["component_type"].lower() == "bus":
-            check_bus_data(node, node_data["connections"], warning_messages)
+            check_bus_data(node, node_data, warning_messages)
 
     new_state: StreamlitFlowState = StreamlitFlowState(node_array, edge_array)
     return warning_messages, new_state

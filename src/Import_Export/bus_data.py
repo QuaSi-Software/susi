@@ -61,8 +61,11 @@ def check_order_valid(
     Check if input_order or output_order is valid depending on key.
     If it is invalid, show a warning message. Return the assigned order list
     """
-    import_order = imported_bus_data[key]
     generated_order = node.data["bus_data"][key]
+    if key not in imported_bus_data:
+        warnings.append("Bus " + node.data["content"] + " does not have " + key)
+        return generated_order
+    import_order = imported_bus_data[key]
     if are_permutations(import_order, generated_order):
         node.data["bus_data"][key] = import_order
     else:
@@ -71,7 +74,7 @@ def check_order_valid(
 
 
 def check_bus_data(
-    node: StreamlitFlowNode, imported_bus_data: Dict[str, List], warnings: List[str]
+    node: StreamlitFlowNode, node_data: Dict[str, List], warnings: List[str]
 ):
     """
     Check that the bus_data that was generated from the connection info
@@ -79,6 +82,12 @@ def check_bus_data(
     input and output order must be permutations of the generated version.
     The energy_flow matrix must have the right dimensions
     """
+    if "connections" not in node_data:
+        warnings.append(
+            "Bus " + node.data["content"] + " does not have connections Object."
+        )
+        return
+    imported_bus_data = node_data["connections"]
     # check input_order and output_order
     input_order = check_order_valid(node, imported_bus_data, warnings, "input_order")
     output_order = check_order_valid(node, imported_bus_data, warnings, "output_order")
