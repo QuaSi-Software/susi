@@ -36,6 +36,8 @@ def are_permutations(arr1, arr2):
 
 def is_int_matrix_of_size(matrix: List[List[int]], num_rows: int, num_cols: int):
     """Check if a matrix is the right size and every element is an integer"""
+    if matrix is None:
+        return False
     # check matrix has the right number of rows
     if len(matrix) is not num_rows:
         return False
@@ -92,8 +94,10 @@ def check_bus_data(
     input_order = check_order_valid(node, imported_bus_data, warnings, "input_order")
     output_order = check_order_valid(node, imported_bus_data, warnings, "output_order")
     # check energy_flow is the right size
-    imported_energy_flow = imported_bus_data["energy_flow"]
+    imported_energy_flow = imported_bus_data.get("energy_flow", None)
     if is_int_matrix_of_size(imported_energy_flow, len(input_order), len(output_order)):
         node.data["bus_data"]["energy_flow"] = imported_energy_flow
     else:
-        warnings.append("Bus " + node.data["content"] + " has invalid energy_matrix")
+        warnings.append(
+            "Bus " + node.data["content"] + " has missing or invalid energy_matrix"
+        )
