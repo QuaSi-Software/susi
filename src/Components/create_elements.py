@@ -84,6 +84,7 @@ def create_new_node(
             "resie_data": resie_data,
             "handle_medium_dict": handle_medium_dict,
             "bus_data": bus_data,
+            "node_category": node_type.category,
         },
         node_type="default",
         source_position="right",
@@ -91,11 +92,6 @@ def create_new_node(
         target_position="left",  # Streamlit Flow, as they reference the edges and not
         target_handles=node_type.nr_inputs,  # the nodes, so we switch it here
         deletable=True,
-        style={
-            "color": "white",
-            "backgroundColor": node_type.node_color,
-            "border": "1px solid white",
-        },
     )
 
 

@@ -4,12 +4,12 @@ from dataclasses import dataclass
 from enum import Enum
 
 
-class NodeCategory(Enum):
-    Special = 0
-    General = 1
-    Heat = 2
-    Electricity = 3
-    Other = 4
+class NodeCategory(str, Enum):
+    Special = "Special"
+    General = "General"
+    Heat = "Heat"
+    Electricity = "Electricity"
+    Other = "Other"
 
 
 @dataclass
@@ -21,24 +21,6 @@ class NodeType:
     nr_outputs: int
     segment: str
     category: NodeCategory
-
-    node_color: str = "#000000"
-
-    def __post_init__(self):
-        self.node_color = get_node_color(self)
-
-
-def get_node_color(node: NodeType):
-    match node.category:
-        case NodeCategory.Electricity:
-            return "#eeb014"
-        case NodeCategory.Heat:
-            return "#bc1b1b"
-        case NodeCategory.Special:
-            return "#1D1446"
-        case NodeCategory.Other:
-            return "#32c8bc"
-    return "#000000"
 
 
 all_node_types = [

@@ -1,15 +1,29 @@
-[theme]
-base="dark"
+#base="dark"
 
+[theme]
+font="Nunito:https://fonts.googleapis.com/css2?family=Nunito&display=swap"
+showWidgetBorder = true
+
+[theme.dark]
 primaryColor="#836fc1ff"
 backgroundColor="#000000ff"
 secondaryBackgroundColor="#1b1135ff"
 borderColor="#836fc1ff"
 
 textColor="#edeffeff"
-font="Nunito:https://fonts.googleapis.com/css2?family=Nunito&display=swap"
+linkColor="rgb(217, 184, 255)"
 
-showWidgetBorder = true
+[theme.light]
+primaryColor="rgb(136, 111, 169)"
+
+backgroundColor="rgb(232, 232, 232)"
+secondaryBackgroundColor="rgb(217, 208, 238)"
+
+borderColor="rgb(44, 30, 84)"
+textColor="rgb(30, 10, 69)"
+linkColor="rgb(85, 0, 182)"
+
+
 
 
 [server]
