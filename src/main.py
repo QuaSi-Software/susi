@@ -58,15 +58,6 @@ def check_state():
     initialize_medium_list()
 
 
-def add_node(new_node):
-    """Add the given node to the node list.
-
-    # Args:
-    -`new_node:StreamlitFlowNode`: The node to add
-    """
-    check_state()
-    st.session_state.current_state.nodes.append(new_node)
-
 
 def nr_of_nodes(segment, nodes):
     """The number of nodes with the given segment occuring in the UAC.
@@ -96,7 +87,7 @@ def lpad(to_pad, to_len, pad_char="0"):
 
 
 def create_node(prefix, node: NodeType):
-    """Create a node of the given type.
+    """Create a node of the given type and add it to the list of nodes in the state
 
     # Args:
     -`prefix:str`: Prefix for the UAC
@@ -118,9 +109,12 @@ def create_node(prefix, node: NodeType):
             "0",
         )
     )
-    return create_new_node(
+    new_node = create_new_node(
         name=uac, position=(randint(-20, 20), randint(-20, 20)), node_type=node
     )
+    check_state()
+    st.session_state.current_state.nodes.append(new_node)
+    return new_node
 
 
 def import_data(import_data, edge_type):
@@ -145,6 +139,7 @@ def main():
     importlib.reload(streamlit_flow)
     check_state()
     st.set_page_config("SUSI - Simple UI for Simulation Input", layout="wide")
+    selected_node_id = None
 
     with st.sidebar:
         st.markdown("# SUSI")
@@ -173,7 +168,7 @@ def main():
             nodes_in_category = get_node_types_in_category(category)
             for node in nodes_in_category:
                 if st.button(node.button_name, width="stretch"):
-                    add_node(create_node(prefix, node))
+                    selected_node_id = create_node(prefix, node).id
 
         st.markdown("## Actions")
 
@@ -212,7 +207,7 @@ def main():
         allow_new_edges=True,
         min_zoom=0.1,
         default_edge_options={"deletable": True, "type": edge_type},
-        additional_data={"mediums": serialize_mediums_list()},
+        additional_data={"mediums": serialize_mediums_list(), "selectedNodeID" : selected_node_id},
     )
     c1, c2 = st.columns([80, 500])
     with c1:
