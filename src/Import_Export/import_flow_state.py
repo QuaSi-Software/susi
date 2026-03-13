@@ -107,16 +107,16 @@ def get_output_refs(
     return [value for _, value in output_refs.items()]
 
 
-def get_medium_list_from_components(components: List):
+def get_medium_list_from_components(components: List, warnings : List[str]):
     """
     If the import file was not exported with a list of mediums,
     we have to go through the nodes, get all medium variables and
     add all medium names to a list. The colors and keys are generated.
     """
     mediums = []
-    for _, node_data in components:
+    for node_id, node_data in components:
         # import data
-        node_import_data = get_node_import_data(node_data)
+        node_import_data = get_node_import_data(node_id,node_data, warnings)
         # find out which of these variables is a medium
         node_type: NodeType = get_node_type_with_name(node_import_data["node_type"])
         node_type_inputs = get_node_inputs(
@@ -162,7 +162,7 @@ def generate_state_from_import(import_data_text: str):
     # get mediums
     mediums = import_dict.get("mediums", None)
     if mediums is None:
-        mediums = get_medium_list_from_components(components)
+        mediums = get_medium_list_from_components(components, warning_messages)
     set_mediums_from_import_list(mediums)
 
     # First pass: create all the nodes
