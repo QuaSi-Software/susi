@@ -15,23 +15,12 @@ import '@xyflow/react/dist/style.css';
 
 import Sidebar from './Sidebar/Sidebar';
 import { DnDProvider, useDnD } from './DnDContext';
-import { SusiNodeData } from './Nodes/SusiNodeData';
-import { allNodeTypes } from './Nodes/SusiNodeTypes';
+import createNodeFromType, { type NodeWithSusiData } from './Nodes/CreateNode';
 
-const initialNodes = [
-	{
-		id: '1',
-		type: 'input',
-		data: { label: 'input node' },
-		position: { x: 250, y: 5 },
-	},
-];
-
-let id = 0;
-const getId = () => `dndnode_${id++}`;
+const initialNodes: NodeWithSusiData[] = [];
 
 const DnDFlow = () => {
-	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+	const [nodes, setNodes, onNodesChange] = useNodesState<NodeWithSusiData>(initialNodes);
 	const [edges, setEdges, onEdgesChange] = useEdgesState([] as any);
 	const { screenToFlowPosition } = useReactFlow();
 	const [type] = useDnD();
@@ -64,23 +53,16 @@ const DnDFlow = () => {
 				x: event.clientX,
 				y: event.clientY,
 			});
-			const susiData = new SusiNodeData(allNodeTypes[0], 'Hello');
-			const newNode = {
-				id: getId(),
-				type: type!,
-				position,
-				data: { label: `${type} node` },
-				susiData: susiData,
-			};
+			const newNode = createNodeFromType(nodes, type, position);
 
 			setNodes((nds) => nds.concat(newNode));
 		},
-		[screenToFlowPosition, type, setNodes]
+		[screenToFlowPosition, type, setNodes, nodes]
 	);
 
 	const onDragStart = (event: ReactDragEvent<HTMLDivElement>) => {
 		if (type) {
-			event.dataTransfer.setData('text/plain', type as string);
+			event.dataTransfer.setData('text/plain', type.button_name as string);
 			event.dataTransfer.effectAllowed = 'move';
 		}
 	};
@@ -98,6 +80,7 @@ const DnDFlow = () => {
 				onDragStart={onDragStart}
 				onDragOver={onDragOver}
 				fitView
+				nodeOrigin={[0.5, 0.5]}
 			>
 				<Controls />
 				<Background />

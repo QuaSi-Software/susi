@@ -1,15 +1,15 @@
-import type { NodeType, NodeCategory } from './SusiNodeTypes';
+import type { NodeCategory } from './SusiNodeTypes';
 
 export class SusiNodeData {
 	content: string;
-	componentType: NodeType;
+	componentType: string;
 	resieData: Array<string>;
 	handleMediumDict: string;
 	busData: string;
 	nodeCategory: NodeCategory;
 
 	constructor(
-		componentType: NodeType,
+		componentType: string,
 		content: string = '',
 		resieData: Array<string> = [],
 		handleMediumDict: string = '',
