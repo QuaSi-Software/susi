@@ -1,4 +1,4 @@
-import { useRef, useCallback } from 'react';
+import { useCallback } from 'react';
 import type { FC, DragEvent as ReactDragEvent } from 'react';
 import {
 	ReactFlow,
@@ -31,7 +31,6 @@ let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 const DnDFlow = () => {
-	const reactFlowWrapper = useRef(null);
 	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
 	const [edges, setEdges, onEdgesChange] = useEdgesState([] as any);
 	const { screenToFlowPosition } = useReactFlow();
@@ -89,22 +88,20 @@ const DnDFlow = () => {
 	return (
 		<div className="dndflow">
 			<Sidebar />
-			<div className="reactflow-wrapper" ref={reactFlowWrapper}>
-				<ReactFlow
-					nodes={nodes}
-					edges={edges}
-					onNodesChange={onNodesChange}
-					onEdgesChange={onEdgesChange}
-					onConnect={onConnect}
-					onDrop={onDrop}
-					onDragStart={onDragStart}
-					onDragOver={onDragOver}
-					fitView
-				>
-					<Controls />
-					<Background />
-				</ReactFlow>
-			</div>
+			<ReactFlow
+				nodes={nodes}
+				edges={edges}
+				onNodesChange={onNodesChange}
+				onEdgesChange={onEdgesChange}
+				onConnect={onConnect}
+				onDrop={onDrop}
+				onDragStart={onDragStart}
+				onDragOver={onDragOver}
+				fitView
+			>
+				<Controls />
+				<Background />
+			</ReactFlow>
 		</div>
 	);
 };
