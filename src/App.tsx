@@ -15,6 +15,8 @@ import '@xyflow/react/dist/style.css';
 
 import Sidebar from './Sidebar/Sidebar';
 import { DnDProvider, useDnD } from './DnDContext';
+import { SusiNodeData } from './Nodes/SusiNodeData';
+import { allNodeTypes } from './Nodes/SusiNodeTypes';
 
 const initialNodes = [
 	{
@@ -63,11 +65,13 @@ const DnDFlow = () => {
 				x: event.clientX,
 				y: event.clientY,
 			});
+			const susiData = new SusiNodeData(allNodeTypes[0], 'Hello');
 			const newNode = {
 				id: getId(),
 				type: type!,
 				position,
 				data: { label: `${type} node` },
+				susiData: susiData,
 			};
 
 			setNodes((nds) => nds.concat(newNode));
@@ -114,4 +118,3 @@ const App: FC = () => (
 );
 
 export default App;
-
