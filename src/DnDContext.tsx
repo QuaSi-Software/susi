@@ -11,6 +11,9 @@ export const DnDProvider = ({ children }: { children: ReactNode }) => {
 
 export default DnDContext;
 
+/**
+ * Return the Drag and Drop Context
+ */
 export const useDnD = () => {
 	return useContext(DnDContext);
 };

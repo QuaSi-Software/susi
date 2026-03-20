@@ -13,7 +13,7 @@ import {
 
 import '@xyflow/react/dist/style.css';
 
-import Sidebar from './Sidebar';
+import Sidebar from './Sidebar/Sidebar';
 import { DnDProvider, useDnD } from './DnDContext';
 
 const initialNodes = [
