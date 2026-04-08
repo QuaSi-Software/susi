@@ -2,24 +2,8 @@ import { memo } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import Markdown from 'react-markdown';
 import type { SusiNodeData } from './SusiNodeData';
-// import rehypeHighlight from 'rehype-highlight';
-// import remarkGfm from 'remark-gfm';
-// import rehypeRaw from 'rehype-raw';
-// import rehypeKatex from 'rehype-katex';
-// import remarkMath from 'remark-math';
-// import 'katex/dist/katex.min.css';
-// import 'highlight.js/styles/github.css';
 
-// import { AppContext } from './AppContext';
-// import { getMedium } from '../HandleUtils';
-
-// const remarkPlugins = [remarkGfm, remarkMath];
-// const rehypePlugins = [rehypeHighlight, rehypeRaw, rehypeKatex];
-
-const MemoizedMarkdown = memo(({ content }: { content: string }) => (
-	// <Markdown rehypePlugins={rehypePlugins} remarkPlugins={remarkPlugins}>
-	<Markdown>{content}</Markdown>
-));
+const MemoizedMarkdown = memo(({ content }: { content: string }) => <Markdown>{content}</Markdown>);
 
 /**
  * create the style object that defines the visuals of this Handle
@@ -45,20 +29,12 @@ function getHandleStyle(pos: Position, n: number, i: number, handleColor: string
 	return style;
 }
 
-// interface MarkdownNodeProperties {
-//   data : any;
-//   sourceHandles : number;
-//   targetHandles : number;
-
-// }
-
 function MarkdownNode(susiData: SusiNodeData, sourcePosition: boolean, targetPosition: boolean) {
 	const sourceHandles = susiData.sourceHandles !== undefined ? susiData.sourceHandles : 0;
 	const targetHandles = susiData.targetHandles !== undefined ? susiData.targetHandles : 0;
 	const sourcePos = sourcePosition && Position.Right;
 	const targetPos = targetPosition && Position.Left;
 	// const mediums = useContext(AppContext).mediums;
-	console.log(`Node data: ${JSON.stringify(susiData)}`);
 
 	/**
 	 * Get the color of the medium associated with this handle
@@ -66,7 +42,6 @@ function MarkdownNode(susiData: SusiNodeData, sourcePosition: boolean, targetPos
 	 * @returns {string} the color the handle should be (in format: "#ff00cc")
 	 */
 	function getHandleColor(handleName: string): string {
-		console.log(handleName);
 		// let medium = getMedium(handleName, data, mediums);
 		// if (!medium) return '#ffffff';
 		// return medium.color;
@@ -114,16 +89,8 @@ function MarkdownNode(susiData: SusiNodeData, sourcePosition: boolean, targetPos
 	);
 }
 
-const MarkdownInputNode = ({ data, sourcePosition }: any) => {
-	return MarkdownNode(data, sourcePosition, false);
-};
-
-const MarkdownOutputNode = ({ data, targetPosition }: any) => {
-	return MarkdownNode(data, false, targetPosition);
-};
-
 const MarkdownDefaultNode = ({ data, sourcePosition, targetPosition }: any) => {
 	return MarkdownNode(data, sourcePosition, targetPosition);
 };
 
-export { MarkdownInputNode, MarkdownOutputNode, MarkdownDefaultNode };
+export default memo(MarkdownDefaultNode);

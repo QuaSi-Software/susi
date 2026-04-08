@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import type { FC, DragEvent as ReactDragEvent } from 'react';
 import {
 	ReactFlow,
@@ -12,12 +12,15 @@ import {
 } from '@xyflow/react';
 
 import '@xyflow/react/dist/style.css';
+import './CSS/bootstrap.min.css';
 import './CSS/node-styling.css';
 
 import Sidebar from './Sidebar/Sidebar';
 import { DnDProvider, useDnD } from './DnDContext';
 import createNodeFromType, { type NodeWithSusiData } from './Nodes/CreateNode';
-import { MarkdownInputNode, MarkdownOutputNode, MarkdownDefaultNode } from './Nodes/MarkdownNode';
+import MarkdownNode from './Nodes/MarkdownNode';
+import type { Edge } from '@xyflow/react';
+import { EdgeContextMenu, type EdgeContextMenuData } from './Menus/EdgeContextMenu';
 
 const initialNodes: NodeWithSusiData[] = [];
 
@@ -26,15 +29,9 @@ const DnDFlow = () => {
 	const [edges, setEdges, onEdgesChange] = useEdgesState([] as any);
 	const { screenToFlowPosition } = useReactFlow();
 	const [type] = useDnD();
+	const ref = useRef<HTMLInputElement>(null);
 
-	const nodeTypes = useMemo(
-		() => ({
-			input: MarkdownInputNode,
-			output: MarkdownOutputNode,
-			default: MarkdownDefaultNode,
-		}),
-		[]
-	);
+	const [edgeContextMenu, setEdgeContextMenu] = useState<EdgeContextMenuData | null>(null);
 
 	const onConnect = useCallback(
 		(params: any): void => {
@@ -78,6 +75,21 @@ const DnDFlow = () => {
 		}
 	};
 
+	const onEdgeContextMenu = (event: React.MouseEvent, edge: Edge): void => {
+		event.preventDefault();
+		const pane = ref.current?.getBoundingClientRect();
+		console.assert(pane != undefined);
+		if (pane == undefined) return;
+		let newEdgeContextMenuData: EdgeContextMenuData = {
+			edge: edge,
+			top: event.clientY,
+			left: event.clientX,
+			right: pane.width - event.clientX,
+			bottom: pane.height - event.clientY,
+		};
+		setEdgeContextMenu(newEdgeContextMenuData);
+	};
+
 	return (
 		<div className="dndflow">
 			<Sidebar />
@@ -92,12 +104,20 @@ const DnDFlow = () => {
 				onDragOver={onDragOver}
 				fitView
 				nodeOrigin={[0.5, 0.5]}
-				nodeTypes={nodeTypes}
+				nodeTypes={{ default: MarkdownNode }}
 				colorMode="system"
+				ref={ref}
+				onEdgeContextMenu={onEdgeContextMenu}
 			>
 				<Controls />
 				<Background />
 			</ReactFlow>
+			<EdgeContextMenu
+				edgeContextMenuData={edgeContextMenu}
+				setEdges={setEdges}
+				edges={edges}
+				setEdgeContextMenu={setEdgeContextMenu}
+			/>
 		</div>
 	);
 };

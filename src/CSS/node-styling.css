@@ -6,6 +6,9 @@
 	--general-node-color: #151515;
 	--electricity-node-color: #eeb014;
 	--node-border-color: #ffffff;
+
+	--xy-edge-stroke-default: white;
+	--xy-theme-edge-hover: #bbbbbb;
 }
 
 .react-flow.light {
@@ -15,6 +18,9 @@
 	--general-node-color: #f1f1f1;
 	--electricity-node-color: #ffdb71;
 	--node-border-color: #000000;
+
+	--xy-edge-stroke-default: black;
+	--xy-theme-edge-hover: #2e2e2e;
 }
 
 /** Set node colors by category*/
@@ -41,6 +47,10 @@
 	border-color: var(--node-border-color) !important;
 	border-width: 1px !important;
 	box-shadow: none !important;
+}
+
+.markdown-node p {
+	margin: 10px 0px;
 }
 
 .react-flow__node.selected,
