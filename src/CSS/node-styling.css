@@ -1,17 +1,5 @@
 /** Define the colors the nodes take by category in light and dark mode*/
-.react-flow.dark {
-	--heat-node-color: #bc1b1b;
-	--special-node-color: #6541ca;
-	--other-node-color: #32c8bc;
-	--general-node-color: #151515;
-	--electricity-node-color: #eeb014;
-	--node-border-color: #ffffff;
-
-	--xy-edge-stroke-default: white;
-	--xy-theme-edge-hover: #bbbbbb;
-}
-
-.react-flow.light {
+:root {
 	--heat-node-color: #d49494;
 	--special-node-color: #beb4ff;
 	--other-node-color: #81d2c0;
@@ -23,19 +11,42 @@
 	--xy-theme-edge-hover: #2e2e2e;
 }
 
+@media (prefers-color-scheme: dark) {
+	:root {
+		--heat-node-color: #bc1b1b;
+		--special-node-color: #6541ca;
+		--other-node-color: #32c8bc;
+		--general-node-color: #151515;
+		--electricity-node-color: #eeb014;
+		--node-border-color: #ffffff;
+
+		--xy-edge-stroke-default: white;
+		--xy-theme-edge-hover: #bbbbbb;
+	}
+}
+
 /** Set node colors by category*/
+.dndnode[style*='--category: heat'],
 .react-flow__node[style*='--category: heat'] {
 	background-color: var(--heat-node-color);
 }
+
+.dndnode[style*='--category: special'],
 .react-flow__node[style*='--category: special'] {
 	background-color: var(--special-node-color);
 }
+
+.dndnode[style*='--category: other'],
 .react-flow__node[style*='--category: other'] {
 	background-color: var(--other-node-color);
 }
+
+.dndnode[style*='--category: general'],
 .react-flow__node[style*='--category: general'] {
 	background-color: var(--general-node-color);
 }
+
+.dndnode[style*='--category: electricity'],
 .react-flow__node[style*='--category: electricity'] {
 	background-color: var(--electricity-node-color);
 }

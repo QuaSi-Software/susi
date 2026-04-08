@@ -22,6 +22,7 @@ export default () => {
 							className="dndnode"
 							onDragStart={(event) => onDragStart(event, nodeType)}
 							draggable
+							style={{ '--category': category.toLowerCase() } as React.CSSProperties}
 						>
 							{nodeType.button_name}
 						</div>
