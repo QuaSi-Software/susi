@@ -1,26 +1,34 @@
 import type { NodeCategory } from './SusiNodeTypes';
 
-export class SusiNodeData {
+export interface SusiNodeData extends Record<string, unknown> {
 	content: string;
 	componentType: string;
 	resieData: Array<string>;
 	handleMediumDict: string;
 	busData: string;
 	nodeCategory: NodeCategory;
+	sourceHandles: number;
+	targetHandles: number;
+}
 
-	constructor(
-		componentType: string,
-		content: string = '',
-		resieData: Array<string> = [],
-		handleMediumDict: string = '',
-		busData: string = '',
-		nodeCategory: NodeCategory = 'General'
-	) {
-		this.content = content;
-		this.componentType = componentType;
-		this.resieData = resieData;
-		this.handleMediumDict = handleMediumDict;
-		this.busData = busData;
-		this.nodeCategory = nodeCategory;
-	}
+export function createSusiNodeData(
+	componentType: string,
+	content: string = '',
+	resieData: Array<string> = [],
+	handleMediumDict: string = '',
+	busData: string = '',
+	nodeCategory: NodeCategory = 'General',
+	sourceHandles: number = 0,
+	targetHandles: number = 0
+): SusiNodeData {
+	return {
+		content,
+		componentType,
+		resieData,
+		handleMediumDict,
+		busData,
+		nodeCategory,
+		sourceHandles,
+		targetHandles,
+	};
 }

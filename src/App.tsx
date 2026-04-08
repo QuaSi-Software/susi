@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import type { FC, DragEvent as ReactDragEvent } from 'react';
 import {
 	ReactFlow,
@@ -16,6 +16,7 @@ import '@xyflow/react/dist/style.css';
 import Sidebar from './Sidebar/Sidebar';
 import { DnDProvider, useDnD } from './DnDContext';
 import createNodeFromType, { type NodeWithSusiData } from './Nodes/CreateNode';
+import { MarkdownInputNode, MarkdownOutputNode, MarkdownDefaultNode } from './Nodes/MarkdownNode';
 
 const initialNodes: NodeWithSusiData[] = [];
 
@@ -24,6 +25,15 @@ const DnDFlow = () => {
 	const [edges, setEdges, onEdgesChange] = useEdgesState([] as any);
 	const { screenToFlowPosition } = useReactFlow();
 	const [type] = useDnD();
+
+	const nodeTypes = useMemo(
+		() => ({
+			input: MarkdownInputNode,
+			output: MarkdownOutputNode,
+			default: MarkdownDefaultNode,
+		}),
+		[]
+	);
 
 	const onConnect = useCallback(
 		(params: any): void => {
@@ -81,6 +91,7 @@ const DnDFlow = () => {
 				onDragOver={onDragOver}
 				fitView
 				nodeOrigin={[0.5, 0.5]}
+				nodeTypes={nodeTypes}
 			>
 				<Controls />
 				<Background />
