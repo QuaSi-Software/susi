@@ -93,7 +93,7 @@ const DnDFlow = () => {
 				fitView
 				nodeOrigin={[0.5, 0.5]}
 				nodeTypes={nodeTypes}
-				colorMode="light"
+				colorMode="system"
 			>
 				<Controls />
 				<Background />

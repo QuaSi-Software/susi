@@ -1,5 +1,18 @@
 @import './src/CSS/xy-theme.css';
 
+:root {
+	--sidebar-bg-color: #fcfcfc;
+	--sidebar-outline-color: #000000;
+	--sidebar-text-color: #000000;
+}
+@media (prefers-color-scheme: dark) {
+	:root {
+		--sidebar-bg-color: #000000;
+		--sidebar-outline-color: #fcfcfc;
+		--sidebar-text-color: #fcfcfc;
+	}
+}
+
 html,
 body {
 	margin: 0;
@@ -20,12 +33,13 @@ body {
 }
 
 .dndflow aside {
-	border-right: 1px solid #eee;
+	border-right: 1px solid var(--sidebar-outline-color);
 	padding: 15px 10px;
 	font-size: 12px;
-	background: #fcfcfc;
+	background: var(--sidebar-bg-color);
+	color: var(--sidebar-text-color);
+	overflow-y: auto;
 }
-
 .dndflow aside .description {
 	margin-bottom: 10px;
 }
@@ -33,21 +47,13 @@ body {
 .dndflow .dndnode {
 	height: 20px;
 	padding: 4px;
-	border: 1px solid #1a192b;
+	border: 1px solid var(--sidebar-outline-color);
 	border-radius: 2px;
 	margin-bottom: 10px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	cursor: grab;
-}
-
-.dndflow .dndnode.input {
-	border-color: #0041d0;
-}
-
-.dndflow .dndnode.output {
-	border-color: #ff0072;
 }
 
 .dndflow .reactflow-wrapper {
