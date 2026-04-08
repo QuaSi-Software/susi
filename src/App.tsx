@@ -12,6 +12,7 @@ import {
 } from '@xyflow/react';
 
 import '@xyflow/react/dist/style.css';
+import './CSS/node-styling.css';
 
 import Sidebar from './Sidebar/Sidebar';
 import { DnDProvider, useDnD } from './DnDContext';
@@ -92,6 +93,7 @@ const DnDFlow = () => {
 				fitView
 				nodeOrigin={[0.5, 0.5]}
 				nodeTypes={nodeTypes}
+				colorMode="light"
 			>
 				<Controls />
 				<Background />

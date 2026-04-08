@@ -3,6 +3,10 @@ import type { NodeType } from './SusiNodeTypes';
 import { Position } from '@xyflow/react';
 import { type SusiNodeData, createSusiNodeData } from './SusiNodeData';
 
+/**
+ * NodeWithSusiData is a normal ReactFlow Node, but with data replaced by the interface SusiNodeData for clarity
+ * We want our data structures to be clear, so you can easily tell what data is where without a debugger
+ */
 export type NodeWithSusiData = Node & { data: SusiNodeData };
 
 const createNodeFromType = (nodes: NodeWithSusiData[], nodeType: NodeType, position: XYPosition) => {
@@ -31,13 +35,16 @@ const createNodeFromType = (nodes: NodeWithSusiData[], nodeType: NodeType, posit
 		selected: false,
 		dragging: false,
 		draggable: true,
-		selectable: false,
+		selectable: true,
 		connectable: true,
 		resizing: false,
 		deletable: false,
 		zIndex: 0,
 		focusable: true,
-		style: {},
+		style: {
+			'--category': susiNodeData.nodeCategory.toLowerCase(),
+			width: 'auto',
+		} as React.CSSProperties,
 	};
 };
 

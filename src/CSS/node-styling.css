@@ -1,0 +1,50 @@
+/** Define the colors the nodes take by category in light and dark mode*/
+.react-flow.dark {
+	--heat-node-color: #bc1b1b;
+	--special-node-color: #6541ca;
+	--other-node-color: #32c8bc;
+	--general-node-color: #151515;
+	--electricity-node-color: #eeb014;
+	--node-border-color: #ffffff;
+}
+
+.react-flow.light {
+	--heat-node-color: #d49494;
+	--special-node-color: #beb4ff;
+	--other-node-color: #81d2c0;
+	--general-node-color: #f1f1f1;
+	--electricity-node-color: #ffdb71;
+	--node-border-color: #000000;
+}
+
+/** Set node colors by category*/
+.react-flow__node[style*='--category: heat'] {
+	background-color: var(--heat-node-color);
+}
+.react-flow__node[style*='--category: special'] {
+	background-color: var(--special-node-color);
+}
+.react-flow__node[style*='--category: other'] {
+	background-color: var(--other-node-color);
+}
+.react-flow__node[style*='--category: general'] {
+	background-color: var(--general-node-color);
+}
+.react-flow__node[style*='--category: electricity'] {
+	background-color: var(--electricity-node-color);
+}
+
+/** Set node borders*/
+.react-flow__node,
+.react-flow__node:hover {
+	padding: 10px 20px;
+	border-color: var(--node-border-color) !important;
+	border-width: 1px !important;
+	box-shadow: none !important;
+}
+
+.react-flow__node.selected,
+.react-flow__node.selected:hover {
+	border-width: 2px !important;
+	border-color: var(--node-border-color) !important;
+}
