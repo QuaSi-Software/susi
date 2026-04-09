@@ -1,9 +1,10 @@
+import type { NodeInput } from './NodeInput';
 import type { NodeCategory } from './SusiNodeTypes';
 
 export interface SusiNodeData extends Record<string, unknown> {
 	content: string;
 	componentType: string;
-	resieData: Array<string>;
+	resieData: Array<NodeInput>;
 	handleMediumDict: string;
 	busData: string;
 	nodeCategory: NodeCategory;
@@ -14,7 +15,7 @@ export interface SusiNodeData extends Record<string, unknown> {
 export function createSusiNodeData(
 	componentType: string,
 	content: string = '',
-	resieData: Array<string> = [],
+	resieData: Array<NodeInput> = [],
 	handleMediumDict: string = '',
 	busData: string = '',
 	nodeCategory: NodeCategory = 'General',

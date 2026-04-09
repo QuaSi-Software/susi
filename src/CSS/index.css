@@ -1,5 +1,5 @@
-@import './src/CSS/xy-theme.css';
-@import './src/CSS/node-styling.css';
+@import './xy-theme.css';
+@import './node-styling.css';
 
 #root {
 	width: 100vw;
@@ -35,13 +35,14 @@ body {
 
 .dndflow aside {
 	border-right: 1px solid var(--sidebar-outline-color);
-	padding: 15px 10px;
+	padding: 20px 30px;
 	font-size: 22px;
 	background: var(--sidebar-bg-color);
 	color: var(--sidebar-text-color);
 	overflow-y: auto;
 }
 .dndflow aside .description {
+	text-align: left;
 	margin-bottom: 10px;
 }
 
@@ -49,11 +50,14 @@ body {
 	padding: 20px;
 	border: 1px solid var(--sidebar-outline-color);
 	border-radius: 5px;
-	margin: 10px;
+	margin: 15px 0px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	cursor: grab;
+}
+.dndnode {
+	text-align: center;
 }
 
 .dndflow .reactflow-wrapper {

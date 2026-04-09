@@ -21,6 +21,8 @@ import createNodeFromType, { type NodeWithSusiData } from './Nodes/CreateNode';
 import MarkdownNode from './Nodes/MarkdownNode';
 import type { Edge } from '@xyflow/react';
 import { EdgeContextMenu, type EdgeContextMenuData } from './Menus/EdgeContextMenu';
+import { createMenuPosition } from './Menus/Menus';
+import { NodeContextMenu, type NodeContextMenuData } from './Menus/NodeContextMenu';
 
 const initialNodes: NodeWithSusiData[] = [];
 
@@ -32,6 +34,7 @@ const DnDFlow = () => {
 	const ref = useRef<HTMLInputElement>(null);
 
 	const [edgeContextMenu, setEdgeContextMenu] = useState<EdgeContextMenuData | null>(null);
+	const [nodeContextMenu, setNodeContextMenu] = useState<NodeContextMenuData | null>(null);
 
 	const onConnect = useCallback(
 		(params: any): void => {
@@ -77,17 +80,21 @@ const DnDFlow = () => {
 
 	const onEdgeContextMenu = (event: React.MouseEvent, edge: Edge): void => {
 		event.preventDefault();
-		const pane = ref.current?.getBoundingClientRect();
-		console.assert(pane != undefined);
-		if (pane == undefined) return;
+
 		let newEdgeContextMenuData: EdgeContextMenuData = {
 			edge: edge,
-			top: event.clientY,
-			left: event.clientX,
-			right: pane.width - event.clientX,
-			bottom: pane.height - event.clientY,
+			menuPosition: createMenuPosition(event, ref),
 		};
 		setEdgeContextMenu(newEdgeContextMenuData);
+	};
+	const onNodeContextMenu = (event: React.MouseEvent, node: NodeWithSusiData): void => {
+		event.preventDefault();
+
+		let newNodeContextMenuData: NodeContextMenuData = {
+			node: node,
+			menuPosition: createMenuPosition(event, ref),
+		};
+		setNodeContextMenu(newNodeContextMenuData);
 	};
 
 	return (
@@ -108,6 +115,7 @@ const DnDFlow = () => {
 				colorMode="system"
 				ref={ref}
 				onEdgeContextMenu={onEdgeContextMenu}
+				onNodeContextMenu={onNodeContextMenu}
 			>
 				<Controls />
 				<Background />
@@ -117,6 +125,14 @@ const DnDFlow = () => {
 				setEdges={setEdges}
 				edges={edges}
 				setEdgeContextMenu={setEdgeContextMenu}
+			/>
+			<NodeContextMenu
+				nodeContextMenu={nodeContextMenu}
+				nodes={nodes}
+				edges={edges}
+				setNodeContextMenu={setNodeContextMenu}
+				setNodes={setNodes}
+				setEdges={setEdges}
 			/>
 		</div>
 	);

@@ -2,17 +2,12 @@ import { type FC } from 'react';
 import { type Edge } from '@xyflow/react';
 import Button from 'react-bootstrap/esm/Button';
 import ButtonGroup from 'react-bootstrap/esm/ButtonGroup';
+import type { MenuPosition } from './Menus';
 
 interface EdgeContextMenuData {
-	// xPosition: number;
-	// yPosition: number;
 	edge: Edge;
-	top: number;
-	left: number;
-	right: number;
-	bottom: number;
+	menuPosition: MenuPosition;
 }
-// const
 
 const EdgeContextMenu: FC<{
 	// nodes: Node[];
@@ -20,7 +15,7 @@ const EdgeContextMenu: FC<{
 	edgeContextMenuData: EdgeContextMenuData | null;
 	edges: Edge[];
 	setEdges: (edges: Edge[]) => void;
-	setEdgeContextMenu: (edge: EdgeContextMenuData | null) => void;
+	setEdgeContextMenu: (edgeContextMenuData: EdgeContextMenuData | null) => void;
 }> = ({
 	// nodes,
 	// setNodes,
@@ -45,10 +40,10 @@ const EdgeContextMenu: FC<{
 			<div
 				style={{
 					position: 'absolute',
-					top: edgeContextMenuData.top,
-					left: edgeContextMenuData.left,
-					right: edgeContextMenuData.right,
-					bottom: edgeContextMenuData.bottom,
+					top: edgeContextMenuData.menuPosition.top,
+					left: edgeContextMenuData.menuPosition.left,
+					right: edgeContextMenuData.menuPosition.right,
+					bottom: edgeContextMenuData.menuPosition.bottom,
 					backgroundColor: 'white',
 					borderRadius: '8px',
 					zIndex: 10,

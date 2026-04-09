@@ -38,7 +38,7 @@ const createNodeFromType = (nodes: NodeWithSusiData[], nodeType: NodeType, posit
 		selectable: true,
 		connectable: true,
 		resizing: false,
-		deletable: false,
+		deletable: true,
 		zIndex: 0,
 		focusable: true,
 		style: {
