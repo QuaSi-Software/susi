@@ -12,17 +12,9 @@ interface PaneContextMenuInput {
 	nodes: NodeWithSusiData[];
 	setNodes: (nodes: NodeWithSusiData[]) => void;
 	edges: Edge[];
-	setEdges: (edges: Edge[]) => void;
 }
 
-const PaneContextMenu = ({
-	paneContextMenu,
-	setPaneContextMenu,
-	nodes,
-	setNodes,
-	edges,
-	setEdges,
-}: PaneContextMenuInput) => {
+const PaneContextMenu = ({ paneContextMenu, setPaneContextMenu, nodes, setNodes, edges }: PaneContextMenuInput) => {
 	const { fitView } = useReactFlow();
 	const [layoutCalculated, setLayoutCalculated] = useState(true);
 
@@ -35,20 +27,11 @@ const PaneContextMenu = ({
 	useEffect(() => {
 		if (layoutCalculated) return;
 		createElkGraphLayout(nodes, edges)
-			.then(
-				({
-					layoutedNodes,
-					layoutedEdges,
-				}: {
-					layoutedNodes: Array<NodeWithSusiData>;
-					layoutedEdges: Array<Edge>;
-				}) => {
-					setNodes(layoutedNodes);
-					setEdges(layoutedEdges);
-					fitView();
-					setLayoutCalculated(true);
-				}
-			)
+			.then((layoutedNodes: Array<NodeWithSusiData>) => {
+				setNodes(layoutedNodes);
+				fitView();
+				setLayoutCalculated(true);
+			})
 			.catch((err: Error) => console.log(err));
 	}, [layoutCalculated]);
 

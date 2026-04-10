@@ -149,7 +149,6 @@ const DnDFlow = () => {
 				nodes={nodes}
 				setNodes={setNodes}
 				edges={edges}
-				setEdges={setEdges}
 			/>
 		</div>
 	);

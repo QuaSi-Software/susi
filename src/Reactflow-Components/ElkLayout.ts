@@ -3,22 +3,22 @@ import type { NodeWithSusiData } from '../NodeDataStructures/NodeWithSusiData';
 import type { Edge } from '@xyflow/react';
 
 const createElkGraphLayout = async (graphNodes: Array<NodeWithSusiData>, graphEdges: Array<Edge>) => {
-	// console.log('Example node: ' + JSON.stringify(graphNodes[0]));
-	console.log('node positions before: ' + graphNodes.map((n) => JSON.stringify(n.position)));
-
+	/** Set up Layout options */
 	const elk = new Elk({
 		defaultLayoutOptions: {
-			'elk.algorithm': 'stress',
+			'elk.algorithm': 'layered',
 			'elk.direction': 'RIGHT',
 			'elk.spacing.nodeNode': '75',
-			'elk.layered.spacing.nodeNodeBetweenLayers': '200',
+			'elk.layered.spacing.nodeNodeBetweenLayers': '75',
 			'elk.layered.considerModelOrder.strategy': 'NODES_AND_EDGES',
 		},
 	});
 
+	/** add sources and targets to edges, make a deep copy of the nodes */
 	const nodes: Array<NodeWithSusiData> = JSON.parse(JSON.stringify(graphNodes));
 	const edges = graphEdges.map((e) => ({ ...e, sources: [e.source], targets: [e.target] }));
 
+	/** calculate new layout */
 	const newGraph = await elk.layout({
 		id: 'root',
 		children: nodes.map((node: NodeWithSusiData) => ({
@@ -29,19 +29,18 @@ const createElkGraphLayout = async (graphNodes: Array<NodeWithSusiData>, graphEd
 		edges: edges,
 	});
 
-	graphNodes.forEach((node) => {
+	/** set the position of the nodes using the calculated graph */
+	nodes.forEach((node) => {
 		const newLayoutNode = newGraph.children?.find((n) => n.id === node.id);
 		if (newLayoutNode?.x && newLayoutNode?.y && newLayoutNode?.width && newLayoutNode?.height) {
 			node.position = {
-				x: newLayoutNode.x, //- newLayoutNode.width / 2,
-				y: newLayoutNode.y, //- newLayoutNode.height / 2,
+				x: newLayoutNode.x,
+				y: newLayoutNode.y,
 			};
 		}
 		return node;
 	});
-	// console.log('graph.children positions after: ' + newGraph.children!.map((n) => '(' + n.x + ',' + n.y + ')'));
-	console.log('node positions after: ' + graphNodes.map((n) => JSON.stringify(n.position)));
-	return { layoutedNodes: graphNodes, layoutedEdges: newGraph.edges };
+	return nodes;
 };
 
 export default createElkGraphLayout;
