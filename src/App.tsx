@@ -21,8 +21,9 @@ import createNodeFromType, { type NodeWithSusiData } from './NodeDataStructures/
 import MarkdownNode from './Reactflow-Components/MarkdownNode';
 import type { Edge } from '@xyflow/react';
 import { EdgeContextMenu, type EdgeContextMenuData } from './Reactflow-Components/Reactflow-Menus/EdgeContextMenu';
-import { createMenuPosition } from './Reactflow-Components/Reactflow-Menus/Menus';
+import { createMenuPosition, type MenuPosition } from './Reactflow-Components/Reactflow-Menus/Menus';
 import { NodeContextMenu, type NodeContextMenuData } from './Reactflow-Components/Reactflow-Menus/NodeContextMenu';
+import PaneContextMenu from './Reactflow-Components/Reactflow-Menus/PaneContextMenu';
 
 const initialNodes: NodeWithSusiData[] = [];
 
@@ -35,6 +36,7 @@ const DnDFlow = () => {
 
 	const [edgeContextMenu, setEdgeContextMenu] = useState<EdgeContextMenuData | null>(null);
 	const [nodeContextMenu, setNodeContextMenu] = useState<NodeContextMenuData | null>(null);
+	const [paneContextMenu, setPaneContextMenu] = useState<MenuPosition | null>(null);
 
 	const onConnect = useCallback(
 		(params: any): void => {
@@ -96,6 +98,12 @@ const DnDFlow = () => {
 		};
 		setNodeContextMenu(newNodeContextMenuData);
 	};
+	const onPaneContextMenu = (event: MouseEvent | React.MouseEvent<Element, MouseEvent>) => {
+		event.preventDefault();
+
+		let newPaneContextMenuData: MenuPosition = createMenuPosition(event, ref);
+		setPaneContextMenu(newPaneContextMenuData);
+	};
 
 	return (
 		<div className="dndflow">
@@ -116,6 +124,7 @@ const DnDFlow = () => {
 				ref={ref}
 				onEdgeContextMenu={onEdgeContextMenu}
 				onNodeContextMenu={onNodeContextMenu}
+				onPaneContextMenu={onPaneContextMenu}
 			>
 				<Controls />
 				<Background />
@@ -132,6 +141,14 @@ const DnDFlow = () => {
 				edges={edges}
 				setNodeContextMenu={setNodeContextMenu}
 				setNodes={setNodes}
+				setEdges={setEdges}
+			/>
+			<PaneContextMenu
+				paneContextMenu={paneContextMenu}
+				setPaneContextMenu={setPaneContextMenu}
+				nodes={nodes}
+				setNodes={setNodes}
+				edges={edges}
 				setEdges={setEdges}
 			/>
 		</div>

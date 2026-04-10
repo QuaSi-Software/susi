@@ -5,7 +5,10 @@ interface MenuPosition {
 	bottom: number;
 }
 
-const createMenuPosition = (event: React.MouseEvent, ref: React.RefObject<HTMLInputElement | null>) => {
+const createMenuPosition = (
+	event: MouseEvent | React.MouseEvent<Element, MouseEvent>,
+	ref: React.RefObject<HTMLInputElement | null>
+) => {
 	const pane = ref.current?.getBoundingClientRect();
 	console.assert(pane != undefined);
 	if (pane == undefined) {
