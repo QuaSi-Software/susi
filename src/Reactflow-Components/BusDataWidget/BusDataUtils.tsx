@@ -1,5 +1,5 @@
 import type { Edge } from '@xyflow/react';
-import type { NodeWithSusiData } from '../../Nodes/CreateNode';
+import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
 
 /**
  * Update input_order, output_order and energy_flow in node.data.bus_data with this new connection

@@ -17,12 +17,12 @@ import './CSS/node-styling.css';
 
 import Sidebar from './Sidebar/Sidebar';
 import { DnDProvider, useDnD } from './DnDContext';
-import createNodeFromType, { type NodeWithSusiData } from './Nodes/CreateNode';
-import MarkdownNode from './Nodes/MarkdownNode';
+import createNodeFromType, { type NodeWithSusiData } from './NodeDataStructures/NodeWithSusiData';
+import MarkdownNode from './Reactflow-Components/MarkdownNode';
 import type { Edge } from '@xyflow/react';
-import { EdgeContextMenu, type EdgeContextMenuData } from './Menus/EdgeContextMenu';
-import { createMenuPosition } from './Menus/Menus';
-import { NodeContextMenu, type NodeContextMenuData } from './Menus/NodeContextMenu';
+import { EdgeContextMenu, type EdgeContextMenuData } from './Reactflow-Components/Reactflow-Menus/EdgeContextMenu';
+import { createMenuPosition } from './Reactflow-Components/Reactflow-Menus/Menus';
+import { NodeContextMenu, type NodeContextMenuData } from './Reactflow-Components/Reactflow-Menus/NodeContextMenu';
 
 const initialNodes: NodeWithSusiData[] = [];
 

@@ -4,8 +4,8 @@ import ButtonGroup from 'react-bootstrap/esm/ButtonGroup';
 
 import type { Edge } from '@xyflow/react';
 import type { MenuPosition } from './Menus';
-import type { NodeWithSusiData } from '../Nodes/CreateNode';
-import EditNodeModal from './EditNodeModal';
+import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
+import EditNodeModal from './EditNodeModal/EditNodeModal';
 // import ResieInputMenu from './ResieInputMenu/ResieInputMenu';
 // import { getEdgesWithMediumMismatch } from '../HandleUtils';
 // import { getEmptyBusdata, updateBusDataOnNodeDelete, updateBusDataOnEdgeDelete } from './BusDataWidget/BusDataUtils';

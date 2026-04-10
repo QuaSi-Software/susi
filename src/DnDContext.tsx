@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
-import type { NodeType } from './Nodes/SusiNodeTypes';
+import type { NodeType } from './NodeDataStructures/SusiNodeTypes';
 
 const DnDContext = createContext<[NodeType | null, (type: NodeType | null) => void]>([null, () => {}]);
 

@@ -7,10 +7,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import type { Edge } from '@xyflow/react';
-import type { NodeWithSusiData } from '../Nodes/CreateNode';
-import type BusData from '../Nodes/BusData';
-import type { NodeInput } from '../Nodes/NodeInput';
-import ResieInputMenu from './ResieInputMenu/ResieInputMenu';
+import type { NodeWithSusiData } from '../../../NodeDataStructures/NodeWithSusiData';
+import type BusData from '../../../NodeDataStructures/BusData';
+import type { NodeInput } from '../../../NodeDataStructures/NodeInput';
+import ResieInputMenu from './ResieInputMenu';
 
 // import ResieInputMenu from './ResieInputMenu/ResieInputMenu';
 // import { getEdgesWithMediumMismatch } from '../HandleUtils';

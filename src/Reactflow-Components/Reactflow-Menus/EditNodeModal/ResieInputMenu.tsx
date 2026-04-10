@@ -1,8 +1,8 @@
 // import RequiredInputMenu from './RequiredInputMenu';
 // import OptionalInputMenu from './OptionalInputMenu';
 // import BusConnectionMenu from '../BusDataWidget/BusConnectionMenu';
-import type { NodeWithSusiData } from '../../Nodes/CreateNode';
-import type BusData from '../../Nodes/BusData';
+import type { NodeWithSusiData } from '../../../NodeDataStructures/NodeWithSusiData';
+import type BusData from '../../../NodeDataStructures/BusData';
 
 interface ResieInputMenuInput {
 	node: NodeWithSusiData;
