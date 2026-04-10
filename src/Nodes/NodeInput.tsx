@@ -1,26 +1,30 @@
 interface NodeInput {
 	type: string;
 	resieName: string;
-	editable: boolean;
 	displayName: string;
 	value: any;
+	tooltip: string;
+	editable: boolean;
+	isMedium: boolean;
+	isRequired: boolean;
+	isIncluded: boolean;
 	dropdownOptions: Array<string>;
 	dropdownOptionDisplayNames: Array<string>;
-	isMedium: boolean;
-	tooltip: string;
-	isIncluded: boolean;
 }
 
 const createNodeInput = (
 	type: string,
 	resieName: string,
-	editable: boolean,
 	displayName: string,
 	value: any,
-	dropdownOptions: Array<string>,
-	dropdownOptionDisplayNames: Array<string>,
+	tooltip: string,
+	/** Different input types */
+	editable: boolean,
 	isMedium: boolean,
-	tooltip: string
+	isRequired: boolean,
+	/** Dropdown Options */
+	dropdownOptions: Array<string>,
+	dropdownOptionDisplayNames: Array<string>
 ) => {
 	if (!type) type = typeof value;
 	if (dropdownOptions.length > 0) {
@@ -31,14 +35,15 @@ const createNodeInput = (
 	let nodeInput: NodeInput = {
 		type: type,
 		resieName: resieName,
-		editable: editable,
 		displayName: displayName,
 		value: value,
+		tooltip: tooltip,
+		editable: editable,
+		isMedium: isMedium,
+		isRequired: isRequired,
+		isIncluded: true,
 		dropdownOptions: dropdownOptions,
 		dropdownOptionDisplayNames: dropdownOptionDisplayNames,
-		isMedium: isMedium,
-		tooltip: tooltip,
-		isIncluded: true,
 	};
 	return nodeInput;
 };

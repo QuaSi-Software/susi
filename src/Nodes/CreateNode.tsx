@@ -17,9 +17,9 @@ const createNodeFromType = (nodes: NodeWithSusiData[], nodeType: NodeType, posit
 	const susiNodeData = createSusiNodeData(
 		nodeType.type_name,
 		content,
-		[''],
+		[],
 		'',
-		'',
+		null,
 		nodeType.category,
 		nodeType.nr_outputs,
 		nodeType.nr_inputs

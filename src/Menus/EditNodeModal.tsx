@@ -8,6 +8,9 @@ import Col from 'react-bootstrap/Col';
 
 import type { Edge } from '@xyflow/react';
 import type { NodeWithSusiData } from '../Nodes/CreateNode';
+import type BusData from '../Nodes/BusData';
+import type { NodeInput } from '../Nodes/NodeInput';
+import ResieInputMenu from './ResieInputMenu/ResieInputMenu';
 
 // import ResieInputMenu from './ResieInputMenu/ResieInputMenu';
 // import { getEdgesWithMediumMismatch } from '../HandleUtils';
@@ -16,11 +19,11 @@ import type { NodeWithSusiData } from '../Nodes/CreateNode';
 interface EditNodeModalInputs {
 	show: boolean;
 	node: NodeWithSusiData;
-	handleClose: () => void;
 	nodes: NodeWithSusiData[];
 	setNodes: (nodes: NodeWithSusiData[]) => void;
 	edges: Edge[];
 	setEdges: (edges: Edge[]) => void;
+	handleClose: () => void;
 }
 
 const EditNodeModal = ({
@@ -42,30 +45,38 @@ const EditNodeModal = ({
 		}));
 	};
 
-	// const onNodeInputValueChange = (key: string, newValue: any) => {
-	// 	changeNodeInput(key, 'value', newValue);
-	// };
-	// const onNodeInputIncludedChange = (key: string, isIncluded: boolean) => {
-	// 	changeNodeInput(key, 'isIncluded', isIncluded);
-	// };
-	// const changeNodeInput = (resieName: string, inputAttributeName: string, value: any) => {
-	// 	//change node input
-	// 	//if you don't make a copy, the change to the resie_data is applied to the nodes list, since editedNode is a reference, not a copy
-	// 	const resie_data_copy = JSON.parse(JSON.stringify(editedNode.data.resie_data));
-	// 	let node_input = resie_data_copy.find((obj: NodeInput) => obj.resieName === resieName);
-	// 	node_input[inputAttributeName] = value;
-	// 	setEditedNode((editedNode: NodeWithSusiData) => ({
-	// 		...editedNode,
-	// 		data: { ...editedNode.data, resie_data: resie_data_copy },
-	// 	}));
-	// 	// remove edge if the medium change necessitates it
-	// 	// let newEdgesToDelete = getEdgesWithMediumMismatch(edges, editedNode, resieName);
-	// 	// newEdgesToDelete = newEdgesToDelete.concat(edgesToDelete);
-	// 	// setEdgesToDelete(newEdgesToDelete);
-	// };
-	// const onNodeBusDataChange = (busData) => {
-	// 	setEditedNode((editedNode : Node) => ({ ...editedNode, data: { ...editedNode.data, bus_data: busData } }));
-	// };
+	const onNodeInputValueChange = (key: string, newValue: any) => {
+		changeNodeInput(key, newValue, true);
+	};
+	const onNodeInputIncludedChange = (key: string, isIncluded: boolean) => {
+		changeNodeInput(key, isIncluded, false);
+	};
+	const changeNodeInput = (resieName: string, value: any, isValueChange: boolean) => {
+		//change node input
+		//if you don't make a copy, the change to the resie_data is applied to the nodes list, since editedNode is a reference, not a copy
+		const resieDataCopy: Array<NodeInput> = JSON.parse(JSON.stringify(editedNode.data.resieData));
+		let nodeInput = resieDataCopy.find((obj: NodeInput) => obj.resieName === resieName);
+		console.assert(nodeInput != undefined);
+		if (isValueChange) {
+			nodeInput!.value = value;
+		} else {
+			nodeInput!.isIncluded = value;
+		}
+		setEditedNode((editedNode: NodeWithSusiData) => ({
+			...editedNode,
+			data: { ...editedNode.data, resieData: resieDataCopy },
+		}));
+		// remove edge if the medium change necessitates it
+		// let newEdgesToDelete = getEdgesWithMediumMismatch(edges, editedNode, resieName);
+		// newEdgesToDelete = newEdgesToDelete.concat(edgesToDelete);
+		// setEdgesToDelete(newEdgesToDelete);
+	};
+	const onNodeBusDataChange = (busData: BusData) => {
+		setEditedNode((editedNode: NodeWithSusiData) => ({
+			...editedNode,
+			data: { ...editedNode.data, busData: busData },
+		}));
+	};
 
 	const handleSaveChanges = () => {
 		let updatedNodes = nodes.map((n: NodeWithSusiData) => (n.id === editedNode.id ? editedNode : n));
@@ -103,13 +114,13 @@ const EditNodeModal = ({
 						</Col>
 					</Row>
 				</Modal.Body>
-				{/* <ResieInputMenu
-				node={editedNode}
-				nodes={nodes}
-				onValueChange={onNodeInputValueChange}
-				onIncludedChange={onNodeInputIncludedChange}
-				onBusDataChange={onNodeBusDataChange}
-                /> */}
+				<ResieInputMenu
+					node={editedNode}
+					nodes={nodes}
+					onValueChange={onNodeInputValueChange}
+					onIncludedChange={onNodeInputIncludedChange}
+					onBusDataChange={onNodeBusDataChange}
+				/>
 				<Modal.Footer>
 					<Button variant="secondary" onClick={handleClose}>
 						Close
