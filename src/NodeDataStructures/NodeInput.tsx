@@ -1,11 +1,35 @@
+const NodeInputType = {
+	NUMBER: 'NUMBER',
+	STRING: 'STRING',
+	DROPDOWN: 'DROPDOWN',
+	MEDIUM: 'MEDIUM',
+	BOOLEAN: 'BOOLEAN',
+	UNSET: 'UNSET',
+} as const;
+
+type NodeInputType = (typeof NodeInputType)[keyof typeof NodeInputType];
+
+const getNodeInputType = (value: any, dropdownOptions: string[]) => {
+	if (dropdownOptions.length > 0) return NodeInputType.DROPDOWN;
+	switch (typeof value) {
+		case 'string':
+			return NodeInputType.STRING;
+		case 'number':
+			return NodeInputType.NUMBER;
+		case 'boolean':
+			return NodeInputType.BOOLEAN;
+	}
+	console.error(`Node Input value has unsupported type: ${typeof value}`);
+	return NodeInputType.UNSET;
+};
+
 interface NodeInput {
-	type: string;
+	type: NodeInputType;
 	resieName: string;
 	displayName: string;
 	value: any;
 	tooltip: string;
 	editable: boolean;
-	isMedium: boolean;
 	isRequired: boolean;
 	isIncluded: boolean;
 	dropdownOptions: Array<string>;
@@ -13,22 +37,20 @@ interface NodeInput {
 }
 
 const createNodeInput = (
-	type: string,
+	type: NodeInputType | null,
 	resieName: string,
 	displayName: string,
 	value: any,
-	tooltip: string,
+	tooltip: string = '',
 	/** Different input types */
-	editable: boolean,
-	isMedium: boolean,
-	isRequired: boolean,
+	editable: boolean = true,
+	isRequired: boolean = true,
 	/** Dropdown Options */
-	dropdownOptions: Array<string>,
-	dropdownOptionDisplayNames: Array<string>
+	dropdownOptions: Array<string> = [],
+	dropdownOptionDisplayNames: Array<string> = []
 ) => {
-	if (!type) type = typeof value;
+	if (!type) type = getNodeInputType(value, dropdownOptions);
 	if (dropdownOptions.length > 0) {
-		type = 'dropdown';
 		if (!dropdownOptions.includes(value)) value = dropdownOptions[0];
 	}
 
@@ -39,7 +61,6 @@ const createNodeInput = (
 		value: value,
 		tooltip: tooltip,
 		editable: editable,
-		isMedium: isMedium,
 		isRequired: isRequired,
 		isIncluded: true,
 		dropdownOptions: dropdownOptions,
@@ -48,4 +69,4 @@ const createNodeInput = (
 	return nodeInput;
 };
 
-export { type NodeInput, createNodeInput };
+export { type NodeInput, createNodeInput, NodeInputType };

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Form, FloatingLabel } from 'react-bootstrap';
 import CustomDropdown from './CustomDropdown';
 // import { AppContext } from './../AppContext';
-import type { NodeInput } from '../../NodeDataStructures/NodeInput';
+import { NodeInputType, type NodeInput } from '../../NodeDataStructures/NodeInput';
 import React from 'react';
 
 interface CustomInputFieldProps {
@@ -17,20 +17,14 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 	const [inputValue, setInputValue] = useState<any>(startValue);
 	// const appContext = useContext(AppContext);
 	// const mediums = appContext?.mediums || [];
+	// const mediums = [];
 
 	// Create a mutable copy for dropdown options
 	const nodeInputCopy = { ...nodeInput };
 
-	// if this is a medium, make the options the mediums
-	// if (nodeInput.isMedium) {
-	// 	js_type = 'dropdown';
-	// 	nodeInputCopy.dropdownOptions = mediums.map((m: any) => m.key);
-	// 	nodeInputCopy.dropdownOptionDisplayNames = mediums.map((m: any) => m.name);
-	// }
-
 	const onInputChanged = (newInput: string | number | boolean): void => {
 		let finalValue: string | number | boolean = newInput;
-		if (js_type === 'boolean') {
+		if (nodeInput.type === NodeInputType.BOOLEAN) {
 			finalValue = !inputValue;
 		}
 		setInputValue(finalValue);
@@ -39,7 +33,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 
 	const getInputFieldByType = (): React.ReactNode => {
 		switch (js_type) {
-			case 'string':
+			case NodeInputType.STRING:
 				return (
 					<FloatingLabel controlId="floatingInput" label={displayName}>
 						<Form.Control
@@ -53,7 +47,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 						/>
 					</FloatingLabel>
 				);
-			case 'number':
+			case NodeInputType.NUMBER:
 				return (
 					<FloatingLabel controlId="floatingInput" label={displayName}>
 						<Form.Control
@@ -64,7 +58,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 						/>
 					</FloatingLabel>
 				);
-			case 'boolean':
+			case NodeInputType.BOOLEAN:
 				return (
 					<Form.Check
 						type="switch"
@@ -74,7 +68,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 						onChange={(e) => onInputChanged(e.target.checked)}
 					/>
 				);
-			case 'dropdown':
+			case NodeInputType.DROPDOWN:
 				return (
 					<CustomDropdown
 						displayName={displayName}
@@ -84,6 +78,16 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 						onEdit={onInputChanged}
 					/>
 				);
+			// case NodeInputType.MEDIUM:
+			// 	return (
+			// 		<CustomDropdown
+			// 			displayName={displayName}
+			// 			startValue={startValue}
+			// 			dropdown_options={mediums.map((m: any) => m.key)}
+			// 			dropdown_options_display_names={mediums.map((m: any) => m.name)}
+			// 			onEdit={onInputChanged}
+			// 		/>
+			// 	);
 			default:
 				console.log('Input ' + displayName + ' has type that is not defined yet.');
 				return null;
