@@ -82,6 +82,8 @@ const DnDFlow = () => {
 
 	const onEdgeContextMenu = (event: React.MouseEvent, edge: Edge): void => {
 		event.preventDefault();
+		setNodeContextMenu(null);
+		setPaneContextMenu(null);
 
 		let newEdgeContextMenuData: EdgeContextMenuData = {
 			edge: edge,
@@ -91,6 +93,8 @@ const DnDFlow = () => {
 	};
 	const onNodeContextMenu = (event: React.MouseEvent, node: NodeWithSusiData): void => {
 		event.preventDefault();
+		setPaneContextMenu(null);
+		setEdgeContextMenu(null);
 
 		let newNodeContextMenuData: NodeContextMenuData = {
 			node: node,
@@ -100,9 +104,16 @@ const DnDFlow = () => {
 	};
 	const onPaneContextMenu = (event: MouseEvent | React.MouseEvent<Element, MouseEvent>) => {
 		event.preventDefault();
+		setNodeContextMenu(null);
+		setEdgeContextMenu(null);
 
 		let newPaneContextMenuData: MenuPosition = createMenuPosition(event, ref);
 		setPaneContextMenu(newPaneContextMenuData);
+	};
+	const clearAllMenus = () => {
+		setNodeContextMenu(null);
+		setEdgeContextMenu(null);
+		setPaneContextMenu(null);
 	};
 
 	return (
@@ -125,6 +136,7 @@ const DnDFlow = () => {
 				onEdgeContextMenu={onEdgeContextMenu}
 				onNodeContextMenu={onNodeContextMenu}
 				onPaneContextMenu={onPaneContextMenu}
+				onPaneClick={clearAllMenus}
 			>
 				<Controls />
 				<Background />
