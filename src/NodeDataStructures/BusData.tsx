@@ -36,6 +36,7 @@ class BusData {
 			});
 			newEnergyFlow.push(newRow);
 		});
+		this.outputOrder = newOutputOrder;
 		this.energyFlow = newEnergyFlow;
 	}
 
