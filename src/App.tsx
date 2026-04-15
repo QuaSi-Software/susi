@@ -23,6 +23,8 @@ import { createMenuPosition, type MenuPosition } from './Reactflow-Components/Re
 import { NodeContextMenu, type NodeContextMenuData } from './Reactflow-Components/Reactflow-Menus/NodeContextMenu';
 import PaneContextMenu from './Reactflow-Components/Reactflow-Menus/PaneContextMenu';
 import { updateBusDataOnEdgeConnect } from './Reactflow-Components/BusDataWidget/BusDataUtils';
+import { type Medium } from './NodeDataStructures/Medium';
+import { getDefaultMediums } from './Sidebar/Mediums/MediumUtils';
 
 const initialNodes: NodeWithSusiData[] = [];
 
@@ -36,6 +38,7 @@ const DnDFlow = () => {
 	const [edgeContextMenu, setEdgeContextMenu] = useState<EdgeContextMenuData | null>(null);
 	const [nodeContextMenu, setNodeContextMenu] = useState<NodeContextMenuData | null>(null);
 	const [paneContextMenu, setPaneContextMenu] = useState<MenuPosition | null>(null);
+	const [mediums, setMediums] = useState<Medium[]>(getDefaultMediums());
 
 	const onConnect = useCallback(
 		(connection: Connection): void => {
@@ -123,7 +126,7 @@ const DnDFlow = () => {
 
 	return (
 		<div className="dndflow">
-			<Sidebar />
+			<Sidebar mediums={mediums} setMediums={setMediums} />
 			<ReactFlow
 				nodes={nodes}
 				edges={edges}

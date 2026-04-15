@@ -1,0 +1,32 @@
+:root {
+	--swatch-border-color: #0c0c0c;
+	--swatch-border-thickness: 1px;
+}
+@media (prefers-color-scheme: dark) {
+	:root {
+		--swatch-border-color: #ffffff;
+		--swatch-border-thickness: 2px;
+	}
+}
+.picker {
+	position: relative;
+}
+
+.swatch {
+	width: 28px;
+	height: 28px;
+	border-radius: 8px;
+	border: var(--swatch-border-thickness) solid var(--swatch-border-color);
+	box-shadow:
+		0 0 0 1px rgba(0, 0, 0, 0.1),
+		inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+}
+
+.popover {
+	position: absolute;
+	top: calc(100% + 2px);
+	left: 0;
+	border-radius: 9px;
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
