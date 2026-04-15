@@ -2,7 +2,7 @@
 @import '@xyflow/react/dist/style.css';
 
 @import './xy-theme.css';
-@import './bootstrap.min.css';
+@import './context-menus.css';
 @import './sidebar.css';
 @import './node-styling.css';
 

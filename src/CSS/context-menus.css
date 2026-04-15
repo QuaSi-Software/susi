@@ -1,0 +1,13 @@
+:root {
+	--context-menu-color: #f9f9f9;
+}
+
+.btn-outline-primary {
+	background-color: var(--context-menu-color);
+}
+.btn-outline-success {
+	background-color: var(--context-menu-color);
+}
+.btn-outline-danger {
+	background-color: var(--context-menu-color);
+}
