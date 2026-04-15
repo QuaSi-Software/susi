@@ -107,7 +107,7 @@ const NodeContextMenu = ({
 		duplicateNode.position.y += 20;
 		duplicateNode.id = nodeToDuplicate.id + '_' + new Date().getTime();
 		let isBus = duplicateNode.data.componentType.toLowerCase() === 'bus';
-		duplicateNode.data.bus_data = isBus ? new BusData() : null;
+		duplicateNode.data.busData = isBus ? new BusData() : null;
 		duplicateNode.data.content = findNameForDuplicate(nodeToDuplicate.data.content, nodes);
 		duplicateNode.selected = false;
 		// update list of nodes

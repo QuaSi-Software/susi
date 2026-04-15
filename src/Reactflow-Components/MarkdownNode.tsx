@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import Markdown from 'react-markdown';
-import type { SusiNodeData } from './SusiNodeData';
+import type { SusiNodeData } from '../NodeDataStructures/SusiNodeData';
 
 const MemoizedMarkdown = memo(({ content }: { content: string }) => <Markdown>{content}</Markdown>);
 
