@@ -21,7 +21,6 @@ const createNodeFromType = (nodes: NodeWithSusiData[], nodeType: NodeType, posit
 		content,
 		nodeInputs,
 		'',
-		null,
 		nodeType.category,
 		nodeType.nr_outputs,
 		nodeType.nr_inputs

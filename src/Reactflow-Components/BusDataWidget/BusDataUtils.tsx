@@ -1,5 +1,6 @@
 import type { Edge } from '@xyflow/react';
 import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
+import BusData from '../../NodeDataStructures/BusData';
 
 /**
  * Update input_order, output_order and energy_flow in node.data.bus_data with this new connection
@@ -26,10 +27,11 @@ function updateBusDataOnEdgeConnect(node: NodeWithSusiData, connectedNodeID: str
  * @param {boolean} incoming Is this an incoming connection i.e. is the bus the target
  */
 function removeBusConnection(node: NodeWithSusiData, disconnectedNodeID: string, incoming: boolean) {
-	if (node.data.componentType.toLowerCase() !== 'bus') return;
-	let busData = node.data.busData;
-	if (incoming) busData?.removeFromInputOrder(disconnectedNodeID);
-	else busData?.removeFromOutputOrder(disconnectedNodeID);
+	if (!node.data.busData) return;
+	const busData = node.data.busData;
+	if (busData instanceof BusData) console.log(busData);
+	if (incoming) busData.removeFromInputOrder(disconnectedNodeID);
+	else busData.removeFromOutputOrder(disconnectedNodeID);
 }
 
 /**

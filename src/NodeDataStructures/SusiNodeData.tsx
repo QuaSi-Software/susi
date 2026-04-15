@@ -1,4 +1,4 @@
-import type BusData from './BusData';
+import BusData from './BusData';
 import type { NodeInput } from './NodeInput';
 import type { NodeCategory } from './SusiNodeTypes';
 
@@ -18,11 +18,11 @@ export function createSusiNodeData(
 	content: string = '',
 	resieData: Array<NodeInput> = [],
 	handleMediumDict: string = '',
-	busData: BusData | null = null,
 	nodeCategory: NodeCategory = 'General',
 	sourceHandles: number = 0,
 	targetHandles: number = 0
 ): SusiNodeData {
+	const busData = componentType.toLowerCase() === 'bus' ? new BusData() : null;
 	return {
 		content,
 		componentType,

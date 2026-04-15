@@ -1,33 +1,38 @@
-import { type FC } from 'react';
 import { type Edge } from '@xyflow/react';
 import Button from 'react-bootstrap/esm/Button';
 import ButtonGroup from 'react-bootstrap/esm/ButtonGroup';
 import type { MenuPosition } from './Menus';
+import { updateBusDataOnEdgeDelete } from '../BusDataWidget/BusDataUtils';
+import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
 
 interface EdgeContextMenuData {
 	edge: Edge;
 	menuPosition: MenuPosition;
 }
-
-const EdgeContextMenu: FC<{
-	// nodes: Node[];
-	// setNodes: (nodes: Node[]) => void;
+interface EdgeContextMenuInput {
+	nodes: NodeWithSusiData[];
+	setNodes: (nodes: NodeWithSusiData[]) => void;
 	edgeContextMenuData: EdgeContextMenuData | null;
 	edges: Edge[];
 	setEdges: (edges: Edge[]) => void;
 	setEdgeContextMenu: (edgeContextMenuData: EdgeContextMenuData | null) => void;
-}> = ({
-	// nodes,
-	// setNodes,
+}
+
+const EdgeContextMenu = ({
+	nodes,
+	setNodes,
 	edgeContextMenuData,
 	edges,
 	setEdges,
 	setEdgeContextMenu,
-}) => {
-	// const [edges, setEdges] = useEdgesState([] as any);
-
+}: EdgeContextMenuInput) => {
 	const handleDeleteEdge = () => {
 		if (!edgeContextMenuData) return;
+		/** update bus data of connected nodes */
+		const updatedNodes: NodeWithSusiData[] = Object.assign([], nodes);
+		updateBusDataOnEdgeDelete(updatedNodes, edgeContextMenuData.edge);
+		setNodes(updatedNodes);
+		/** update edge list */
 		const updatedEdges = edges.filter((edge) => edge.id !== edgeContextMenuData.edge.id);
 		setEdges(updatedEdges);
 		setEdgeContextMenu(null);

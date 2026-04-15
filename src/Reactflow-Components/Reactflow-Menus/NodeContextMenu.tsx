@@ -103,7 +103,7 @@ const NodeContextMenu = ({
 		const nodeToDuplicate: NodeWithSusiData | undefined = nodes.find((node) => node.id === nodeContextMenu.node.id);
 		console.assert(nodeToDuplicate != undefined);
 		if (!nodeToDuplicate) return;
-		const duplicateNode: NodeWithSusiData = JSON.parse(JSON.stringify(nodeToDuplicate));
+		const duplicateNode: NodeWithSusiData = Object.assign({}, nodeToDuplicate);
 		// move node towards bottom right and give it a unique ID
 		duplicateNode.position.x += 20;
 		duplicateNode.position.y += 20;

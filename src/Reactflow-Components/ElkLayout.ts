@@ -15,7 +15,7 @@ const createElkGraphLayout = async (graphNodes: Array<NodeWithSusiData>, graphEd
 	});
 
 	/** add sources and targets to edges, make a deep copy of the nodes */
-	const nodes: Array<NodeWithSusiData> = JSON.parse(JSON.stringify(graphNodes));
+	const nodes: Array<NodeWithSusiData> = Object.assign([], graphNodes);
 	const edges = graphEdges.map((e) => ({ ...e, sources: [e.source], targets: [e.target] }));
 
 	/** calculate new layout */
