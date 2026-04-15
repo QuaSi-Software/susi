@@ -13,7 +13,7 @@ interface ResieInputMenuInput {
 }
 
 function ResieInputMenu({ node, nodes, onValueChange, onIncludedChange, onBusDataChange }: ResieInputMenuInput) {
-	let nodeInputObjects = node.data.resieData;
+	let nodeInputObjects = node.data.nodeInputs;
 	let requiredInputs = nodeInputObjects.filter((obj) => obj.isRequired);
 	let optionalInputs = nodeInputObjects.filter((obj) => !obj.isRequired);
 
