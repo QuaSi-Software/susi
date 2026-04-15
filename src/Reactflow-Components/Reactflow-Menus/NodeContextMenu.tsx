@@ -6,9 +6,7 @@ import type { Edge } from '@xyflow/react';
 import type { MenuPosition } from './Menus';
 import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
 import EditNodeModal from './EditNodeModal/EditNodeModal';
-// import ResieInputMenu from './ResieInputMenu/ResieInputMenu';
-// import { getEdgesWithMediumMismatch } from '../HandleUtils';
-// import { getEmptyBusdata, updateBusDataOnNodeDelete, updateBusDataOnEdgeDelete } from './BusDataWidget/BusDataUtils';
+import BusData from '../../NodeDataStructures/BusData';
 
 interface NodeContextMenuInput {
 	nodeContextMenu: NodeContextMenuData | null;
@@ -103,13 +101,13 @@ const NodeContextMenu = ({
 		const nodeToDuplicate: NodeWithSusiData | undefined = nodes.find((node) => node.id === nodeContextMenu.node.id);
 		console.assert(nodeToDuplicate != undefined);
 		if (!nodeToDuplicate) return;
-		const duplicateNode: NodeWithSusiData = Object.assign({}, nodeToDuplicate);
+		const duplicateNode: NodeWithSusiData = JSON.parse(JSON.stringify(nodeToDuplicate));
 		// move node towards bottom right and give it a unique ID
 		duplicateNode.position.x += 20;
 		duplicateNode.position.y += 20;
 		duplicateNode.id = nodeToDuplicate.id + '_' + new Date().getTime();
-		// let isBus = duplicateNode.data.component_type.toLowerCase() === 'bus';
-		// duplicateNode.data.bus_data = isBus ? getEmptyBusdata() : null;
+		let isBus = duplicateNode.data.componentType.toLowerCase() === 'bus';
+		duplicateNode.data.bus_data = isBus ? new BusData() : null;
 		duplicateNode.data.content = findNameForDuplicate(nodeToDuplicate.data.content, nodes);
 		duplicateNode.selected = false;
 		// update list of nodes
