@@ -4,6 +4,7 @@ import CustomDropdown from './CustomDropdown';
 // import { AppContext } from './../AppContext';
 import { NodeInputType, type NodeInput } from '../../NodeDataStructures/NodeInput';
 import React from 'react';
+import type { Medium } from '../../NodeDataStructures/Medium';
 
 interface CustomInputFieldProps {
 	nodeInput: NodeInput;
@@ -17,7 +18,10 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 	const [inputValue, setInputValue] = useState<any>(startValue);
 	// const appContext = useContext(AppContext);
 	// const mediums = appContext?.mediums || [];
-	// const mediums = [];
+	const mediums: Medium[] = [
+		{ name: 'Medium1', key: 'm1', color: '#ffffff' },
+		{ name: 'Medium2', key: 'm2', color: '#ffffff' },
+	];
 
 	// Create a mutable copy for dropdown options
 	const nodeInputCopy = { ...nodeInput };
@@ -78,16 +82,16 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 						onEdit={onInputChanged}
 					/>
 				);
-			// case NodeInputType.MEDIUM:
-			// 	return (
-			// 		<CustomDropdown
-			// 			displayName={displayName}
-			// 			startValue={startValue}
-			// 			dropdown_options={mediums.map((m: any) => m.key)}
-			// 			dropdown_options_display_names={mediums.map((m: any) => m.name)}
-			// 			onEdit={onInputChanged}
-			// 		/>
-			// 	);
+			case NodeInputType.MEDIUM:
+				return (
+					<CustomDropdown
+						displayName={displayName}
+						startValue={startValue}
+						dropdown_options={mediums.map((m: Medium) => m.key)}
+						dropdown_options_display_names={mediums.map((m: Medium) => m.name)}
+						onEdit={onInputChanged}
+					/>
+				);
 			default:
 				console.log('Input ' + displayName + ' has type that is not defined yet.');
 				return null;

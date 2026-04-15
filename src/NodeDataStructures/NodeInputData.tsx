@@ -10,9 +10,9 @@ export function getNodeInputs(componentType: string): NodeInput[] {
 	const normalizedType = componentType.toLowerCase();
 
 	const configs: Record<string, NodeInput[]> = {
-		bus: [createNodeInput(NodeInputType.STRING, 'medium', 'Medium', 'FILL_IN')],
+		bus: [createNodeInput(NodeInputType.MEDIUM, 'medium', 'Medium', 'FILL_IN')],
 		gridinput: [
-			createNodeInput(NodeInputType.STRING, 'medium', 'Medium', 'FILL_IN'),
+			createNodeInput(NodeInputType.MEDIUM, 'medium', 'Medium', 'FILL_IN'),
 			createNodeInput(NodeInputType.BOOLEAN, 'is_source', 'Is Source', true),
 			createNodeInput(NodeInputType.NUMBER, 'constant_temperature', 'Constant Temperature', -9999),
 			createNodeInput(
@@ -23,7 +23,7 @@ export function getNodeInputs(componentType: string): NodeInput[] {
 			),
 		],
 		gridoutput: [
-			createNodeInput(NodeInputType.STRING, 'medium', 'Medium', 'FILL_IN'),
+			createNodeInput(NodeInputType.MEDIUM, 'medium', 'Medium', 'FILL_IN'),
 			createNodeInput(NodeInputType.BOOLEAN, 'is_source', 'Is Source', false),
 			createNodeInput(NodeInputType.NUMBER, 'constant_temperature', 'Constant Temperature', -9999),
 			createNodeInput(
@@ -34,7 +34,7 @@ export function getNodeInputs(componentType: string): NodeInput[] {
 			),
 		],
 		boundedsupply: [
-			createNodeInput(NodeInputType.STRING, 'medium', 'Medium', 'FILL_IN'),
+			createNodeInput(NodeInputType.MEDIUM, 'medium', 'Medium', 'FILL_IN'),
 			createNodeInput(NodeInputType.NUMBER, 'constant_power', 'Constant Power', -9999),
 			createNodeInput(NodeInputType.NUMBER, 'constant_temperature', 'Constant Temperature', -9999),
 			createNodeInput(
@@ -52,7 +52,7 @@ export function getNodeInputs(componentType: string): NodeInput[] {
 			createNodeInput(NodeInputType.NUMBER, 'scale', 'Scale', -9999),
 		],
 		boundedsink: [
-			createNodeInput(NodeInputType.STRING, 'medium', 'Medium', 'FILL_IN'),
+			createNodeInput(NodeInputType.MEDIUM, 'medium', 'Medium', 'FILL_IN'),
 			createNodeInput(NodeInputType.NUMBER, 'constant_power', 'Constant Power', -9999),
 			createNodeInput(NodeInputType.NUMBER, 'constant_temperature', 'Constant Temperature', -9999),
 			createNodeInput(
@@ -70,7 +70,7 @@ export function getNodeInputs(componentType: string): NodeInput[] {
 			createNodeInput(NodeInputType.NUMBER, 'scale', 'Scale', -9999),
 		],
 		fixedsupply: [
-			createNodeInput(NodeInputType.STRING, 'medium', 'Medium', 'FILL_IN'),
+			createNodeInput(NodeInputType.MEDIUM, 'medium', 'Medium', 'FILL_IN'),
 			createNodeInput(NodeInputType.NUMBER, 'constant_supply', 'Constant Supply', -9999),
 			createNodeInput(NodeInputType.NUMBER, 'constant_temperature', 'Constant Temperature', -9999),
 			createNodeInput(NodeInputType.STRING, 'energy_profile_file_path', 'Energy Profile File Path', 'FILL_IN'),
@@ -83,7 +83,7 @@ export function getNodeInputs(componentType: string): NodeInput[] {
 			createNodeInput(NodeInputType.NUMBER, 'scale', 'Scale', -9999),
 		],
 		demand: [
-			createNodeInput(NodeInputType.STRING, 'medium', 'Medium', 'FILL_IN'),
+			createNodeInput(NodeInputType.MEDIUM, 'medium', 'Medium', 'FILL_IN'),
 			createNodeInput(NodeInputType.NUMBER, 'constant_demand', 'Constant Demand', -9999),
 			createNodeInput(NodeInputType.NUMBER, 'constant_temperature', 'Constant Temperature', -9999),
 			createNodeInput(NodeInputType.STRING, 'energy_profile_file_path', 'Energy Profile File Path', 'FILL_IN'),
@@ -96,12 +96,12 @@ export function getNodeInputs(componentType: string): NodeInput[] {
 			createNodeInput(NodeInputType.NUMBER, 'scale', 'Scale', -9999),
 		],
 		storage: [
-			createNodeInput(NodeInputType.STRING, 'medium', 'Medium', 'FILL_IN'),
+			createNodeInput(NodeInputType.MEDIUM, 'medium', 'Medium', 'FILL_IN'),
 			createNodeInput(NodeInputType.NUMBER, 'capacity', 'Capacity', -9999),
 			createNodeInput(NodeInputType.NUMBER, 'load', 'Load', -9999),
 		],
 		genericheatsource: [
-			createNodeInput(NodeInputType.STRING, 'medium', 'Medium', 'FILL_IN'),
+			createNodeInput(NodeInputType.MEDIUM, 'medium', 'Medium', 'FILL_IN'),
 			createNodeInput(NodeInputType.NUMBER, 'constant_power', 'Constant Power', -9999),
 			createNodeInput(NodeInputType.NUMBER, 'constant_temperature', 'Constant Temperature', -9999),
 			createNodeInput(
@@ -119,8 +119,8 @@ export function getNodeInputs(componentType: string): NodeInput[] {
 			createNodeInput(NodeInputType.NUMBER, 'scale', 'Scale', -9999),
 		],
 		fuelboiler: [
-			createNodeInput(NodeInputType.STRING, 'm_fuel_in', 'M Fuel In', 'FILL_IN'),
-			createNodeInput(NodeInputType.STRING, 'm_heat_out', 'M Heat Out', 'm_h_w_ht1'),
+			createNodeInput(NodeInputType.MEDIUM, 'm_fuel_in', 'M Fuel In', 'FILL_IN'),
+			createNodeInput(NodeInputType.MEDIUM, 'm_heat_out', 'M Heat Out', 'm_h_w_ht1'),
 			createNodeInput(NodeInputType.NUMBER, 'power_th', 'Power Th', -9999),
 			createNodeInput(NodeInputType.STRING, 'efficiency_fuel_in', 'Efficiency Fuel In', 'const:1.1'),
 			createNodeInput(NodeInputType.STRING, 'efficiency_heat_out', 'Efficiency Heat Out', 'const:1.0'),
@@ -130,9 +130,9 @@ export function getNodeInputs(componentType: string): NodeInput[] {
 		],
 		heatpump: [
 			createNodeInput(NodeInputType.NUMBER, 'power_th', 'Power Th', -9999),
-			createNodeInput(NodeInputType.STRING, 'm_heat_in', 'M Heat In', 'm_h_w_lt1'),
-			createNodeInput(NodeInputType.STRING, 'm_el_in', 'M El In', 'm_e_ac_230v'),
-			createNodeInput(NodeInputType.STRING, 'm_heat_out', 'M Heat Out', 'm_h_w_ht1'),
+			createNodeInput(NodeInputType.MEDIUM, 'm_heat_in', 'M Heat In', 'm_h_w_lt1'),
+			createNodeInput(NodeInputType.MEDIUM, 'm_el_in', 'M El In', 'm_e_ac_230v'),
+			createNodeInput(NodeInputType.MEDIUM, 'm_heat_out', 'M Heat Out', 'm_h_w_ht1'),
 			createNodeInput(NodeInputType.NUMBER, 'input_temperature', 'Input Temperature', -9999),
 			createNodeInput(NodeInputType.NUMBER, 'output_temperature', 'Output Temperature', -9999),
 			createNodeInput(NodeInputType.STRING, 'cop_function', 'Cop Function', 'const:3.5'),
@@ -150,20 +150,20 @@ export function getNodeInputs(componentType: string): NodeInput[] {
 		pvplant: [
 			createNodeInput(NodeInputType.STRING, 'energy_profile_file_path', 'Energy Profile File Path', 'FILL_IN'),
 			createNodeInput(NodeInputType.NUMBER, 'scale', 'Scale', -9999),
-			createNodeInput(NodeInputType.STRING, 'm_el_out', 'M El Out', 'm_e_ac_230v'),
+			createNodeInput(NodeInputType.MEDIUM, 'm_el_out', 'M El Out', 'm_e_ac_230v'),
 		],
 		battery: [
-			createNodeInput(NodeInputType.STRING, 'medium', 'Medium', 'FILL_IN'),
+			createNodeInput(NodeInputType.MEDIUM, 'medium', 'Medium', 'FILL_IN'),
 			createNodeInput(NodeInputType.NUMBER, 'capacity', 'Capacity', -9999),
 			createNodeInput(NodeInputType.NUMBER, 'initial_charge', 'Initial Charge', -9999),
 		],
 		electrolyser: [
 			createNodeInput(NodeInputType.NUMBER, 'power_el', 'Power El', -9999),
-			createNodeInput(NodeInputType.STRING, 'm_el_in', 'M El In', 'm_e_ac_230v'),
-			createNodeInput(NodeInputType.STRING, 'm_heat_lt_out', 'M Heat Lt Out', 'm_h_w_lt1'),
-			createNodeInput(NodeInputType.STRING, 'm_heat_ht_out', 'M Heat Ht Out', 'm_h_w_ht1'),
-			createNodeInput(NodeInputType.STRING, 'm_h2_out', 'M H2 Out', 'm_c_g_h2'),
-			createNodeInput(NodeInputType.STRING, 'm_o2_out', 'M O2 Out', 'm_c_g_o2'),
+			createNodeInput(NodeInputType.MEDIUM, 'm_el_in', 'M El In', 'm_e_ac_230v'),
+			createNodeInput(NodeInputType.MEDIUM, 'm_heat_lt_out', 'M Heat Lt Out', 'm_h_w_lt1'),
+			createNodeInput(NodeInputType.MEDIUM, 'm_heat_ht_out', 'M Heat Ht Out', 'm_h_w_ht1'),
+			createNodeInput(NodeInputType.MEDIUM, 'm_h2_out', 'M H2 Out', 'm_c_g_h2'),
+			createNodeInput(NodeInputType.MEDIUM, 'm_o2_out', 'M O2 Out', 'm_c_g_o2'),
 			createNodeInput(NodeInputType.BOOLEAN, 'heat_lt_is_usable', 'Heat Lt Is Usable', true),
 			createNodeInput(NodeInputType.NUMBER, 'output_temperature_ht', 'Output Temperature Ht', -9999),
 			createNodeInput(NodeInputType.NUMBER, 'output_temperature_lt', 'Output Temperature Lt', -9999),
@@ -174,7 +174,7 @@ export function getNodeInputs(componentType: string): NodeInput[] {
 			createNodeInput(NodeInputType.NUMBER, 'optimal_unit_plr', 'Optimal Unit Plr', 0.5),
 		],
 		buffertank: [
-			createNodeInput(NodeInputType.STRING, 'medium', 'Medium', 'm_h_w_ht1'),
+			createNodeInput(NodeInputType.MEDIUM, 'medium', 'Medium', 'm_h_w_ht1'),
 			createNodeInput(NodeInputType.NUMBER, 'capacity', 'Capacity', -9999),
 			createNodeInput(NodeInputType.NUMBER, 'volume', 'Volume', -9999),
 			createNodeInput(NodeInputType.STRING, 'model_type', 'Model Type', 'ideally_stratified'),
