@@ -11,9 +11,7 @@ import {
 	Background,
 } from '@xyflow/react';
 
-import '@xyflow/react/dist/style.css';
-import './CSS/bootstrap.min.css';
-import './CSS/node-styling.css';
+import './CSS/index.css';
 
 import Sidebar from './Sidebar/Sidebar';
 import { DnDProvider, useDnD } from './DnDContext';

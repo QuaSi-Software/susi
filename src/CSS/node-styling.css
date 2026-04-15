@@ -54,10 +54,11 @@
 /** Set node borders*/
 .react-flow__node,
 .react-flow__node:hover {
-	padding: 10px 20px;
+	/* padding: 10px 20px; */
 	border-color: var(--node-border-color) !important;
 	border-width: 1px !important;
 	box-shadow: none !important;
+	border-radius: 5%;
 }
 
 .markdown-node p {
