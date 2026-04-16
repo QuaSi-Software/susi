@@ -23,32 +23,6 @@ const getDefaultMediums = () => {
 };
 
 /**
- * Check if the source and target handle of the edge we are trying to connect are already taken
- * i.e. if there exists an edge that is already attached to it.
- * An exception is made for Buses, which are the only node allowed to have multiple edges connect to its handles
- */
-function isHandleTaken(
-	sourceHandle: string,
-	targetHandle: string,
-	sourceNode: NodeWithSusiData,
-	targetNode: NodeWithSusiData,
-	edges: Edge[]
-) {
-	// edge is valid if its target and source handle are not already taken unless the node is a bus
-	var sourceIsBus = sourceNode.data.componentType === 'Bus';
-	var targetIsBus = targetNode.data.componentType === 'Bus';
-	for (let i = 0; i < edges.length; i++) {
-		const edge = edges[i];
-		var sourceHandleTaken = edge.source === sourceNode.id && edge.sourceHandle === sourceHandle;
-		var targetHandleTaken = edge.target === targetNode.id && edge.targetHandle === targetHandle;
-		if ((!sourceIsBus && sourceHandleTaken) || (!targetIsBus && targetHandleTaken)) {
-			return true;
-		}
-	}
-	return false;
-}
-
-/**
  * Check if two mediums are defined and the same
  * @param {string} m1 the key of the medium to check
  * @param {string} m2 the key of the medium to check
@@ -83,10 +57,10 @@ function getMediumKey(handleName: string, nodeData: SusiNodeData) {
  * @param {List[Object]} mediums A list of the mediums
  * @returns {Object} the medium Objects with {key, name, color}
  */
-function getMediumColor(handleName: string, nodeData: SusiNodeData, mediums: Medium[]) {
+function getMedium(handleName: string, nodeData: SusiNodeData, mediums: Medium[]) {
 	let key = getMediumKey(handleName, nodeData);
 	let medium = mediums.find((x) => x.key === key);
-	return medium?.color;
+	return medium;
 }
 
 /**
@@ -137,4 +111,4 @@ function getEdgesWithMediumMismatch(edges: Edge[], node: NodeWithSusiData, mediu
 	}
 }
 
-export { getDefaultMediums, isHandleTaken, getMediumColor, getMediumKey, mediumsMatch, getEdgesWithMediumMismatch };
+export { getDefaultMediums, getMedium, getMediumKey, mediumsMatch, getEdgesWithMediumMismatch };

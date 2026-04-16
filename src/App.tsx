@@ -22,10 +22,10 @@ import { EdgeContextMenu, type EdgeContextMenuData } from './Reactflow-Component
 import { createMenuPosition, type MenuPosition } from './Reactflow-Components/Reactflow-Menus/Menus';
 import { NodeContextMenu, type NodeContextMenuData } from './Reactflow-Components/Reactflow-Menus/NodeContextMenu';
 import PaneContextMenu from './Reactflow-Components/Reactflow-Menus/PaneContextMenu';
-import { updateBusDataOnEdgeConnect } from './Reactflow-Components/BusDataWidget/BusDataUtils';
 import { type Medium } from './NodeDataStructures/Medium';
 import { getDefaultMediums } from './Sidebar/Mediums/MediumUtils';
 import { AppContext } from './Reactflow-Components/AppContext';
+import { getNewEdge } from './Reactflow-Components/CreateEdge';
 
 const initialNodes: NodeWithSusiData[] = [];
 
@@ -43,13 +43,9 @@ const DnDFlow = () => {
 
 	const onConnect = useCallback(
 		(connection: Connection): void => {
-			const sourceNode = nodes.find((e) => e.id === connection.source);
-			const targetNode = nodes.find((e) => e.id === connection.target);
-			if (sourceNode && targetNode) {
-				updateBusDataOnEdgeConnect(sourceNode, targetNode.id, false);
-				updateBusDataOnEdgeConnect(targetNode, sourceNode.id, true);
-			}
-			setEdges((eds: any[]) => addEdge(connection, eds) as any[]);
+			const edge: Edge | null = getNewEdge(connection, nodes, mediums);
+			if (edge === null) return;
+			setEdges((eds: any[]) => addEdge(edge, eds) as any[]);
 		},
 		[setEdges, nodes]
 	);

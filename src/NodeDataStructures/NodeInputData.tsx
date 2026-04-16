@@ -199,6 +199,7 @@ export function getNodeInputs(componentType: string, mediums: Medium[]): NodeInp
 		],
 	};
 	const nodeInputs = configs[normalizedType];
+	console.assert(nodeInputs !== undefined);
 	nodeInputs.forEach((nodeInput) => {
 		if (nodeInput.type !== NodeInputType.MEDIUM) return;
 		const medium = mediums.find((m) => m.name === nodeInput.value);
