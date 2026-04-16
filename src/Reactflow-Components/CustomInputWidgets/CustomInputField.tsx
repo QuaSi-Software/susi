@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Form, FloatingLabel } from 'react-bootstrap';
 import CustomDropdown from './CustomDropdown';
 // import { AppContext } from './../AppContext';
 import { NodeInputType, type NodeInput } from '../../NodeDataStructures/NodeInput';
 import React from 'react';
 import type { Medium } from '../../NodeDataStructures/Medium';
+import { AppContext } from '../AppContext';
 
 interface CustomInputFieldProps {
 	nodeInput: NodeInput;
@@ -16,12 +17,8 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 	const startValue = nodeInput.value;
 	let js_type = nodeInput.type;
 	const [inputValue, setInputValue] = useState<any>(startValue);
-	// const appContext = useContext(AppContext);
-	// const mediums = appContext?.mediums || [];
-	const mediums: Medium[] = [
-		{ name: 'Medium1', key: 'm1', color: '#ffffff' },
-		{ name: 'Medium2', key: 'm2', color: '#ffffff' },
-	];
+	const appContext = useContext(AppContext);
+	const mediums = appContext?.mediums || [];
 
 	// Create a mutable copy for dropdown options
 	const nodeInputCopy = { ...nodeInput };

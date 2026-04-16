@@ -1,12 +1,15 @@
+// import { useContext } from 'react';
+import type { Medium } from './Medium';
 import type { NodeInput } from './NodeInput';
 import { createNodeInput, NodeInputType } from './NodeInput';
+// import { AppContext } from '../Reactflow-Components/AppContext';
 
 /**
  * Get NodeInput array for a given component type
  * @param componentType The component type (e.g., "Bus", "GridInput", "Storage")
  * @returns Array of NodeInput objects for the component
  */
-export function getNodeInputs(componentType: string): NodeInput[] {
+export function getNodeInputs(componentType: string, mediums: Medium[]): NodeInput[] {
 	const normalizedType = componentType.toLowerCase();
 
 	const configs: Record<string, NodeInput[]> = {
@@ -195,8 +198,12 @@ export function getNodeInputs(componentType: string): NodeInput[] {
 			createNodeInput(NodeInputType.NUMBER, 'thermal_transmission_bottom', 'Thermal Transmission Bottom', 1.0),
 		],
 	};
-
 	const nodeInputs = configs[normalizedType];
+	nodeInputs.forEach((nodeInput) => {
+		if (nodeInput.type !== NodeInputType.MEDIUM) return;
+		const medium = mediums.find((m) => m.name === nodeInput.value);
+		nodeInput.value = medium !== undefined ? medium!.key : 'UNDEFINED';
+	});
 
 	if (!nodeInputs) {
 		console.warn(`Unknown component type: ${componentType}`);

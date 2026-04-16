@@ -26,14 +26,17 @@ const MediumMenu = () => {
 		<>
 			<div className="description">{'Mediums'}</div>
 			<Col className="d-flex flex-column gap-2">
-				{mediums.map((medium) => (
-					<MediumInputWidget
-						key={medium.key}
-						medium={medium}
-						onMediumChange={onMediumChange}
-						onDelete={() => onMediumDelete(medium.key)}
-					/>
-				))}
+				{mediums.map(
+					(medium) =>
+						medium.key !== 'UNDEFINED' && (
+							<MediumInputWidget
+								key={medium.key}
+								medium={medium}
+								onMediumChange={onMediumChange}
+								onDelete={() => onMediumDelete(medium.key)}
+							/>
+						)
+				)}
 			</Col>
 		</>
 	);

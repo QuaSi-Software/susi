@@ -75,7 +75,7 @@ const DnDFlow = () => {
 				x: event.clientX,
 				y: event.clientY,
 			});
-			const newNode = createNodeFromType(nodes, type, position);
+			const newNode = createNodeFromType(nodes, type, position, mediums);
 
 			setNodes((nds) => nds.concat(newNode));
 		},

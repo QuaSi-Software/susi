@@ -1,4 +1,4 @@
-export class SusiNodeData {
+export class SusiEdgeData {
 	mediumKey: string;
 
 	constructor(mediumKey: string = '') {

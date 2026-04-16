@@ -1,7 +1,9 @@
-import { memo } from 'react';
+import { memo, useContext } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import Markdown from 'react-markdown';
 import type { SusiNodeData } from '../NodeDataStructures/SusiNodeData';
+import { getMediumColor } from '../Sidebar/Mediums/MediumUtils';
+import { AppContext } from './AppContext';
 
 const MemoizedMarkdown = memo(({ content }: { content: string }) => <Markdown>{content}</Markdown>);
 
@@ -34,7 +36,7 @@ function MarkdownNode(susiData: SusiNodeData, sourcePosition: boolean, targetPos
 	const targetHandles = susiData.targetHandles !== undefined ? susiData.targetHandles : 0;
 	const sourcePos = sourcePosition && Position.Right;
 	const targetPos = targetPosition && Position.Left;
-	// const mediums = useContext(AppContext).mediums;
+	const mediums = useContext(AppContext)!.mediums;
 
 	/**
 	 * Get the color of the medium associated with this handle
@@ -42,10 +44,7 @@ function MarkdownNode(susiData: SusiNodeData, sourcePosition: boolean, targetPos
 	 * @returns {string} the color the handle should be (in format: "#ff00cc")
 	 */
 	function getHandleColor(handleName: string): string {
-		// let medium = getMedium(handleName, data, mediums);
-		// if (!medium) return '#ffffff';
-		// return medium.color;
-		return '#000000';
+		return getMediumColor(handleName, susiData, mediums)!;
 	}
 
 	let isBus = susiData.componentType.toLowerCase() === 'bus';

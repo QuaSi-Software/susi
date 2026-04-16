@@ -1,7 +1,18 @@
-import { createMedium } from '../../NodeDataStructures/Medium';
+import type { Edge } from 'reactflow';
+import { createMedium, type Medium } from '../../NodeDataStructures/Medium';
+import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
+import type { SusiNodeData } from '../../NodeDataStructures/SusiNodeData';
+
+const HandleType = {
+	source: 'source',
+	target: 'target',
+} as const;
+
+type HandleType = (typeof HandleType)[keyof typeof HandleType];
 
 const getDefaultMediums = () => {
 	return [
+		createMedium('UNDEFINED', '#ffffff', 'UNDEFINED'),
 		createMedium('m_e_ac_230v', '#ffee00', 'm_e_ac_230v_DEFAULT_KEY'),
 		createMedium('m_h_w_lt1', '#ff6c6c', 'm_h_w_lt1_DEFAULT_KEY'),
 		createMedium('m_h_w_ht1', '#940000', 'm_h_w_ht1_DEFAULT_KEY'),
@@ -11,4 +22,119 @@ const getDefaultMediums = () => {
 	];
 };
 
-export { getDefaultMediums };
+/**
+ * Check if the source and target handle of the edge we are trying to connect are already taken
+ * i.e. if there exists an edge that is already attached to it.
+ * An exception is made for Buses, which are the only node allowed to have multiple edges connect to its handles
+ */
+function isHandleTaken(
+	sourceHandle: string,
+	targetHandle: string,
+	sourceNode: NodeWithSusiData,
+	targetNode: NodeWithSusiData,
+	edges: Edge[]
+) {
+	// edge is valid if its target and source handle are not already taken unless the node is a bus
+	var sourceIsBus = sourceNode.data.componentType === 'Bus';
+	var targetIsBus = targetNode.data.componentType === 'Bus';
+	for (let i = 0; i < edges.length; i++) {
+		const edge = edges[i];
+		var sourceHandleTaken = edge.source === sourceNode.id && edge.sourceHandle === sourceHandle;
+		var targetHandleTaken = edge.target === targetNode.id && edge.targetHandle === targetHandle;
+		if ((!sourceIsBus && sourceHandleTaken) || (!targetIsBus && targetHandleTaken)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ * Check if two mediums are defined and the same
+ * @param {string} m1 the key of the medium to check
+ * @param {string} m2 the key of the medium to check
+ * @returns {bool} whether the mediums are defined and the same
+ */
+function mediumsMatch(m1: string, m2: string) {
+	return m1 !== 'UNDEFINED' && m1 === m2;
+}
+
+/**
+ * Get the key of the medium associated with a specific handle on a node
+ * @param {string} handleName the name of the handle
+ * @param {Object} nodeData node.data for our node
+ * @returns {Object} the key of the medium associated with this handle
+ */
+function getMediumKey(handleName: string, nodeData: SusiNodeData) {
+	let splitName = handleName.split('-');
+	const sourceOrTarget = splitName[0] as HandleType;
+	const handleIndex = parseInt(splitName[1], 10);
+	// get the variable name for the medium that sets this handle's color
+	let mediumPerHandle = nodeData.handleMediumDict[sourceOrTarget];
+	let variableName = mediumPerHandle[handleIndex];
+	// find the medium that is set in this variable
+	let mediumNodeInput = nodeData.nodeInputs.find((x) => x.resieName === variableName);
+	return mediumNodeInput!.value;
+}
+
+/**
+ * Get the medium for the handle on a node
+ * @param {string} handleName the name of the handle e.g. target-1 or source-2
+ * @param {Object} nodeData node.data of some node, so we can get its resie_data
+ * @param {List[Object]} mediums A list of the mediums
+ * @returns {Object} the medium Objects with {key, name, color}
+ */
+function getMediumColor(handleName: string, nodeData: SusiNodeData, mediums: Medium[]) {
+	let key = getMediumKey(handleName, nodeData);
+	let medium = mediums.find((x) => x.key === key);
+	return medium?.color;
+}
+
+/**
+ * find all edges, whose medium is controlled by the variable with name var_name on the given node
+ * @param {List[Object]} edges a list of all existing edges
+ * @param {Object} node the node, whose medium was changed
+ * @param {string} mediumVarName the name of the medium variable that was changed
+ * @returns {List[string]} a list of all the edge IDs that need to be deleted as a result of the medium change
+ */
+function getEdgesWithMediumMismatch(edges: Edge[], node: NodeWithSusiData, mediumVarName: string) {
+	// find all edges connected to this medium variables
+	let handleMediumDict = node.data.handleMediumDict;
+	let sourceEdgesToDelete = getEdgesToDelete(edges, node.id, mediumVarName, HandleType.source);
+	let targetEdgesToDelete = getEdgesToDelete(edges, node.id, mediumVarName, HandleType.target);
+	// get just the edge IDs
+	const edgeIDs: string[] = [];
+	sourceEdgesToDelete.concat(targetEdgesToDelete).forEach((e) => {
+		edgeIDs.push(e.id);
+	});
+	return edgeIDs;
+
+	/**
+	 * Get a List of all edge objects that are on the handle controlled by this medium variable
+	 * @param {List[Object]} _edges a list of all the edges in the scene
+	 * @param {string} _nodeID the id of the node that's being edited
+	 * @param {string} _mediumVarName the name of the medium variable, whose value was just changed
+	 * @param {string} handleType 'source' or 'target'
+	 * @returns {List[Object]} List of all edge objects that are on the handle controlled by this medium variable
+	 */
+	function getEdgesToDelete(_edges: Edge[], _nodeID: string, _mediumVarName: string, handleType: HandleType) {
+		let listOfEdgesToDelete: Edge[] = [];
+		//get the list of variable names
+		let mediumVarNames = handleMediumDict[handleType];
+		// multiple edges are possible for the bus node
+		for (let handleIndex = 0; handleIndex < mediumVarNames.length; handleIndex++) {
+			if (mediumVarNames[handleIndex] !== _mediumVarName) continue;
+			let handleID = handleType + '-' + handleIndex;
+			// find edges that connect to this handle on this node
+			let edgesOnHandle = _edges.filter((e) => {
+				return (
+					e[handleType] === _nodeID &&
+					e[handleType == HandleType.source ? 'sourceHandle' : 'targetHandle'] === handleID
+				);
+			});
+			listOfEdgesToDelete = listOfEdgesToDelete.concat(edgesOnHandle);
+		}
+		return listOfEdgesToDelete;
+	}
+}
+
+export { getDefaultMediums, isHandleTaken, getMediumColor, getMediumKey, mediumsMatch, getEdgesWithMediumMismatch };
