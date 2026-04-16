@@ -1,14 +1,15 @@
-import React from 'react';
+import { useContext } from 'react';
 import { Col } from 'react-bootstrap';
 import type { Medium } from '../../NodeDataStructures/Medium';
 import MediumInputWidget from './MediumInputWidget';
+import { AppContext } from '../../Reactflow-Components/AppContext';
 
-interface MediumMenuProps {
-	mediums: Medium[];
-	setMediums: (mediums: Medium[]) => void;
-}
+const MediumMenu = () => {
+	const context = useContext(AppContext);
+	if (!context) return <></>;
+	const mediums = context.mediums;
+	const setMediums = context.setMediums;
 
-const MediumMenu: React.FC<MediumMenuProps> = ({ mediums, setMediums }) => {
 	const onMediumChange = (medium: Medium) => {
 		const mediumIndex = mediums.findIndex((m) => m.key === medium.key);
 		const newMediums = JSON.parse(JSON.stringify(mediums));
@@ -38,4 +39,4 @@ const MediumMenu: React.FC<MediumMenuProps> = ({ mediums, setMediums }) => {
 	);
 };
 
-export { MediumMenu, type MediumMenuProps };
+export default MediumMenu;

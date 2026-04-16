@@ -25,6 +25,7 @@ import PaneContextMenu from './Reactflow-Components/Reactflow-Menus/PaneContextM
 import { updateBusDataOnEdgeConnect } from './Reactflow-Components/BusDataWidget/BusDataUtils';
 import { type Medium } from './NodeDataStructures/Medium';
 import { getDefaultMediums } from './Sidebar/Mediums/MediumUtils';
+import { AppContext } from './Reactflow-Components/AppContext';
 
 const initialNodes: NodeWithSusiData[] = [];
 
@@ -126,52 +127,54 @@ const DnDFlow = () => {
 
 	return (
 		<div className="dndflow">
-			<Sidebar mediums={mediums} setMediums={setMediums} />
-			<ReactFlow
-				nodes={nodes}
-				edges={edges}
-				onNodesChange={onNodesChange}
-				onEdgesChange={onEdgesChange}
-				onConnect={onConnect}
-				onDrop={onDrop}
-				onDragStart={onDragStart}
-				onDragOver={onDragOver}
-				fitView
-				nodeOrigin={[0.5, 0.5]}
-				nodeTypes={{ default: MarkdownNode }}
-				colorMode="system"
-				ref={ref}
-				onEdgeContextMenu={onEdgeContextMenu}
-				onNodeContextMenu={onNodeContextMenu}
-				onPaneContextMenu={onPaneContextMenu}
-				onPaneClick={clearAllMenus}
-			>
-				<Controls />
-				<Background />
-			</ReactFlow>
-			<EdgeContextMenu
-				edgeContextMenuData={edgeContextMenu}
-				setEdgeContextMenu={setEdgeContextMenu}
-				edges={edges}
-				setEdges={setEdges}
-				nodes={nodes}
-				setNodes={setNodes}
-			/>
-			<NodeContextMenu
-				nodeContextMenu={nodeContextMenu}
-				nodes={nodes}
-				edges={edges}
-				setNodeContextMenu={setNodeContextMenu}
-				setNodes={setNodes}
-				setEdges={setEdges}
-			/>
-			<PaneContextMenu
-				paneContextMenu={paneContextMenu}
-				setPaneContextMenu={setPaneContextMenu}
-				nodes={nodes}
-				setNodes={setNodes}
-				edges={edges}
-			/>
+			<AppContext.Provider value={{ mediums: mediums, setMediums: setMediums }}>
+				<Sidebar />
+				<ReactFlow
+					nodes={nodes}
+					edges={edges}
+					onNodesChange={onNodesChange}
+					onEdgesChange={onEdgesChange}
+					onConnect={onConnect}
+					onDrop={onDrop}
+					onDragStart={onDragStart}
+					onDragOver={onDragOver}
+					fitView
+					nodeOrigin={[0.5, 0.5]}
+					nodeTypes={{ default: MarkdownNode }}
+					colorMode="system"
+					ref={ref}
+					onEdgeContextMenu={onEdgeContextMenu}
+					onNodeContextMenu={onNodeContextMenu}
+					onPaneContextMenu={onPaneContextMenu}
+					onPaneClick={clearAllMenus}
+				>
+					<Controls />
+					<Background />
+				</ReactFlow>
+				<EdgeContextMenu
+					edgeContextMenuData={edgeContextMenu}
+					setEdgeContextMenu={setEdgeContextMenu}
+					edges={edges}
+					setEdges={setEdges}
+					nodes={nodes}
+					setNodes={setNodes}
+				/>
+				<NodeContextMenu
+					nodeContextMenu={nodeContextMenu}
+					nodes={nodes}
+					edges={edges}
+					setNodeContextMenu={setNodeContextMenu}
+					setNodes={setNodes}
+					setEdges={setEdges}
+				/>
+				<PaneContextMenu
+					paneContextMenu={paneContextMenu}
+					setPaneContextMenu={setPaneContextMenu}
+					nodes={nodes}
+					setNodes={setNodes}
+					edges={edges}
+				/>
+			</AppContext.Provider>
 		</div>
 	);
 };

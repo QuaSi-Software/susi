@@ -1,34 +1,8 @@
-import { createContext, useContext } from 'react';
-import type { ReactNode } from 'react';
-
-interface Medium {
-	key: string;
-	name: string;
-}
+import { createContext } from 'react';
+import type { Medium } from '../NodeDataStructures/Medium';
 
 interface AppContextType {
-	theme: string;
 	mediums: Medium[];
+	setMediums: (mediums: Medium[]) => void;
 }
-
-const AppContext = createContext<AppContextType | undefined>(undefined);
-
-interface AppProviderProps {
-	children: ReactNode;
-	theme?: string;
-	mediums?: Medium[];
-}
-
-export const AppProvider = ({ children, theme = 'light', mediums = [] }: AppProviderProps): JSX.Element => {
-	return <AppContext.Provider value={{ theme, mediums }}>{children}</AppContext.Provider>;
-};
-
-export { AppContext };
-
-export const useAppContext = (): AppContextType => {
-	const context = useContext(AppContext);
-	if (!context) {
-		throw new Error('useAppContext must be used within an AppProvider');
-	}
-	return context;
-};
+export const AppContext = createContext<AppContextType | null>(null);

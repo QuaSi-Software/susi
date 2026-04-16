@@ -1,10 +1,10 @@
-import { MediumMenu, type MediumMenuProps } from './Mediums/MediumMenu';
+import MediumMenu from './Mediums/MediumMenu';
 import NewNodeMenu from './NewNodeMenu';
 
-const Sidebar: React.FC<MediumMenuProps> = ({ mediums, setMediums }) => {
+const Sidebar = () => {
 	return (
 		<aside>
-			<MediumMenu mediums={mediums} setMediums={setMediums} />
+			<MediumMenu />
 			<NewNodeMenu />
 		</aside>
 	);
