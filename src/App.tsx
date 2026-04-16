@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState, useEffect } from 'react';
 import type { FC, DragEvent as ReactDragEvent } from 'react';
 import {
 	ReactFlow,
@@ -12,6 +12,7 @@ import {
 } from '@xyflow/react';
 
 import './CSS/index.css';
+import { setMediumCSSVariables } from './Sidebar/Mediums/MediumCSSUtils';
 
 import Sidebar from './Sidebar/Sidebar';
 import { DnDProvider, useDnD } from './DnDContext';
@@ -40,6 +41,11 @@ const DnDFlow = () => {
 	const [nodeContextMenu, setNodeContextMenu] = useState<NodeContextMenuData | null>(null);
 	const [paneContextMenu, setPaneContextMenu] = useState<MenuPosition | null>(null);
 	const [mediums, setMediums] = useState<Medium[]>(getDefaultMediums());
+
+	// Update CSS variables whenever mediums change
+	useEffect(() => {
+		setMediumCSSVariables(mediums);
+	}, [mediums]);
 
 	const onConnect = useCallback(
 		(connection: Connection): void => {

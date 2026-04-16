@@ -52,8 +52,7 @@ const getNewEdge = (connection: Connection, nodes: NodeWithSusiData[], mediums: 
 	const newEdge: Edge = {
 		...connection,
 		style: {
-			'--category': sourceMediumKey,
-			width: 'auto',
+			stroke: `var(--medium-${sourceMediumKey})`,
 		} as React.CSSProperties,
 		data: { medium_key: sourceMediumKey },
 		labelShowBg: false,
