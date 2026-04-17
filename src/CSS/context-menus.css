@@ -2,12 +2,23 @@
 	--context-menu-color: #f9f9f9;
 }
 
-.btn-outline-primary {
-	background-color: var(--context-menu-color);
-}
-.btn-outline-success {
-	background-color: var(--context-menu-color);
-}
+.btn-outline-primary,
+.btn-outline-success,
 .btn-outline-danger {
 	background-color: var(--context-menu-color);
+}
+
+.btn-secondary {
+	--bs-btn-color: #000000;
+	--bs-btn-bg: #dbdbdb;
+	--bs-btn-border-color: #929292;
+	/** Hover */
+	--bs-btn-hover-color: #000000;
+	--bs-btn-hover-bg: #868686;
+	--bs-btn-hover-border-color: #2c2c2c;
+	/** Active */
+	--bs-btn-active-color: #ffffff;
+	--bs-btn-active-bg: #242424;
+	--bs-btn-active-border-color: #333333;
+	margin: 0.5rem 2rem;
 }
