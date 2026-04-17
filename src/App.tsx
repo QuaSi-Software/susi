@@ -51,7 +51,7 @@ const DnDFlow = () => {
 
 	const onConnect = useCallback(
 		(connection: Connection): void => {
-			const edge: Edge | null = getNewEdge(connection, nodes, mediums, setErrorMessage);
+			const edge: Edge | null = getNewEdge(connection, nodes, edges, mediums, setErrorMessage);
 			if (edge === null) return;
 			setEdges((eds: any[]) => addEdge(edge, eds) as any[]);
 		},

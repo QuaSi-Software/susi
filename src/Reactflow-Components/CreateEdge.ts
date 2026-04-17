@@ -1,7 +1,6 @@
-import type { Connection } from '@xyflow/react';
+import type { Connection, Edge } from '@xyflow/react';
 import type { NodeWithSusiData } from '../NodeDataStructures/NodeWithSusiData';
 import { updateBusDataOnEdgeConnect } from './BusDataWidget/BusDataUtils';
-import { type Edge } from 'reactflow';
 import { getMedium, getMediumKey, mediumsMatch } from '../Sidebar/Mediums/MediumUtils';
 import type { Medium } from '../NodeDataStructures/Medium';
 
@@ -34,11 +33,17 @@ function isHandleTaken(
 const getNewEdge = (
 	connection: Connection,
 	nodes: NodeWithSusiData[],
+	edges: Edge[],
 	mediums: Medium[],
 	setError: (error: string) => void
 ): Edge | null => {
 	const sourceNode = nodes.find((e) => e.id === connection.source);
 	const targetNode = nodes.find((e) => e.id === connection.target);
+	/** Check if handle is taken */
+	if (isHandleTaken(connection.sourceHandle!, connection.targetHandle!, sourceNode!, targetNode!, edges)) {
+		setError('Cannot attach two edges to the same Handle');
+		return null;
+	}
 	/** Set Mediums */
 	const sourceMedium = getMedium(connection.sourceHandle!, sourceNode!.data, mediums);
 	const sourceMediumKey = sourceMedium!.key;
