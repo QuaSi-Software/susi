@@ -10,12 +10,12 @@
 
 .btn-secondary {
 	--bs-btn-color: #000000;
-	--bs-btn-bg: #dbdbdb;
+	--bs-btn-bg: #ebebeb;
 	--bs-btn-border-color: #929292;
 	/** Hover */
-	--bs-btn-hover-color: #000000;
-	--bs-btn-hover-bg: #868686;
-	--bs-btn-hover-border-color: #2c2c2c;
+	--bs-btn-hover-color: #ffffff;
+	--bs-btn-hover-bg: #303030;
+	--bs-btn-hover-border-color: #000000;
 	/** Active */
 	--bs-btn-active-color: #ffffff;
 	--bs-btn-active-bg: #242424;

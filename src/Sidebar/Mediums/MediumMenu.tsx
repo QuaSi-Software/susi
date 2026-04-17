@@ -3,6 +3,8 @@ import { Col, Button } from 'react-bootstrap';
 import type { Medium } from '../../NodeDataStructures/Medium';
 import MediumInputWidget from './MediumInputWidget';
 import { AppContext } from '../../Reactflow-Components/AppContext';
+import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
+import { NodeInputType } from '../../NodeDataStructures/NodeInput';
 
 const getRandomColor = () => {
 	return `#${Math.floor(Math.random() * 0x1000000)
@@ -10,7 +12,12 @@ const getRandomColor = () => {
 		.padStart(6, '0')}`;
 };
 
-const MediumMenu = () => {
+export interface MediumMenuInput {
+	nodes: NodeWithSusiData[];
+	setNodes: (nodes: NodeWithSusiData[]) => void;
+}
+
+const MediumMenu = ({ nodes, setNodes }: MediumMenuInput) => {
 	const context = useContext(AppContext);
 	if (!context) return <></>;
 	const mediums = context.mediums;
@@ -25,6 +32,15 @@ const MediumMenu = () => {
 
 	const onMediumDelete = (key: string) => {
 		const newMediums = mediums.filter((m) => m.key !== key);
+		const newNodes: NodeWithSusiData[] = Object.assign([], nodes);
+		newNodes.forEach((node) => {
+			node.data.nodeInputs.forEach((nodeInput) => {
+				if (nodeInput.type === NodeInputType.MEDIUM && nodeInput.value === key) {
+					nodeInput.value = 'UNDEFINED';
+				}
+			});
+		});
+		setNodes(newNodes);
 		setMediums(newMediums);
 	};
 	const addMedium = () => {

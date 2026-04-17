@@ -132,7 +132,7 @@ const DnDFlow = () => {
 	return (
 		<div className="dndflow">
 			<AppContext.Provider value={{ mediums: mediums, setMediums: setMediums, setErrorMessage: setErrorMessage }}>
-				<Sidebar />
+				<Sidebar nodes={nodes} setNodes={setNodes} />
 				<ReactFlow
 					nodes={nodes}
 					edges={edges}
