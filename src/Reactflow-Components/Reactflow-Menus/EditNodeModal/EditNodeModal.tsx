@@ -11,10 +11,8 @@ import type { NodeWithSusiData } from '../../../NodeDataStructures/NodeWithSusiD
 import type BusData from '../../../NodeDataStructures/BusData';
 import type { NodeInput } from '../../../NodeDataStructures/NodeInput';
 import ResieInputMenu from './ResieInputMenu';
-
-// import ResieInputMenu from './ResieInputMenu/ResieInputMenu';
-// import { getEdgesWithMediumMismatch } from '../HandleUtils';
-// import { getEmptyBusdata, updateBusDataOnNodeDelete, updateBusDataOnEdgeDelete } from './BusDataWidget/BusDataUtils';
+import { getEdgesWithMediumMismatch } from '../../../Sidebar/Mediums/MediumUtils';
+import { updateBusDataOnEdgeDelete } from '../../BusDataWidget/BusDataUtils';
 
 interface EditNodeModalInputs {
 	show: boolean;
@@ -26,17 +24,9 @@ interface EditNodeModalInputs {
 	handleClose: () => void;
 }
 
-const EditNodeModal = ({
-	show,
-	node,
-	handleClose,
-	nodes,
-	setNodes,
-	// setEdges,
-	// edges,
-}: EditNodeModalInputs) => {
+const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edges }: EditNodeModalInputs) => {
 	const [editedNode, setEditedNode] = useState(node);
-	// const [edgesToDelete, setEdgesToDelete] = useState([]);
+	const [edgesToDelete, setEdgesToDelete] = useState<string[]>([]);
 
 	const onNodeContentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setEditedNode((editedNode: NodeWithSusiData) => ({
@@ -67,9 +57,9 @@ const EditNodeModal = ({
 			data: { ...editedNode.data, nodeInputs: resieDataCopy },
 		}));
 		// remove edge if the medium change necessitates it
-		// let newEdgesToDelete = getEdgesWithMediumMismatch(edges, editedNode, resieName);
-		// newEdgesToDelete = newEdgesToDelete.concat(edgesToDelete);
-		// setEdgesToDelete(newEdgesToDelete);
+		let newEdgesToDelete = getEdgesWithMediumMismatch(edges, editedNode, resieName);
+		newEdgesToDelete = newEdgesToDelete.concat(edgesToDelete);
+		setEdgesToDelete(newEdgesToDelete);
 	};
 	const onNodeBusDataChange = (busData: BusData) => {
 		setEditedNode((editedNode: NodeWithSusiData) => ({
@@ -80,14 +70,13 @@ const EditNodeModal = ({
 
 	const handleSaveChanges = () => {
 		let updatedNodes = nodes.map((n: NodeWithSusiData) => (n.id === editedNode.id ? editedNode : n));
-		// edgesToDelete.forEach((edgeID) => {
-		// 	const edge = edges.find((e) => e.id === edgeID);
-		// 	updateBusDataOnEdgeDelete(updatedNodes, edge);
-		// });
+		edgesToDelete.forEach((edgeID) => {
+			const edge = edges.find((e) => e.id === edgeID);
+			updateBusDataOnEdgeDelete(updatedNodes, edge!);
+		});
 		setNodes(updatedNodes);
-		// const updatedEdges = edges.filter((edge: Edge) => edgesToDelete.findIndex((e) => e === edge.id) === -1);
-		// setEdges(updatedEdges);
-		// setNodeContextMenu(null);
+		const updatedEdges = edges.filter((edge: Edge) => edgesToDelete.findIndex((e) => e === edge.id) === -1);
+		setEdges(updatedEdges);
 		handleClose();
 	};
 

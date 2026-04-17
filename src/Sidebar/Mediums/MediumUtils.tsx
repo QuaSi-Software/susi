@@ -1,4 +1,4 @@
-import type { Edge } from 'reactflow';
+import type { Edge } from '@xyflow/react';
 import { createMedium, type Medium } from '../../NodeDataStructures/Medium';
 import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
 import type { SusiNodeData } from '../../NodeDataStructures/SusiNodeData';
