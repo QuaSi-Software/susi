@@ -18,6 +18,7 @@ import Sidebar from './Sidebar/Sidebar';
 import { DnDProvider, useDnD } from './DnDContext';
 import createNodeFromType, { type NodeWithSusiData } from './NodeDataStructures/NodeWithSusiData';
 import MarkdownNode from './Reactflow-Components/MarkdownNode';
+import ErrorLogger from './Reactflow-Components/ErrorLogger';
 import type { Connection, Edge } from '@xyflow/react';
 import { EdgeContextMenu, type EdgeContextMenuData } from './Reactflow-Components/Reactflow-Menus/EdgeContextMenu';
 import { createMenuPosition, type MenuPosition } from './Reactflow-Components/Reactflow-Menus/Menus';
@@ -41,6 +42,7 @@ const DnDFlow = () => {
 	const [nodeContextMenu, setNodeContextMenu] = useState<NodeContextMenuData | null>(null);
 	const [paneContextMenu, setPaneContextMenu] = useState<MenuPosition | null>(null);
 	const [mediums, setMediums] = useState<Medium[]>(getDefaultMediums());
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 	// Update CSS variables whenever mediums change
 	useEffect(() => {
@@ -49,7 +51,7 @@ const DnDFlow = () => {
 
 	const onConnect = useCallback(
 		(connection: Connection): void => {
-			const edge: Edge | null = getNewEdge(connection, nodes, mediums);
+			const edge: Edge | null = getNewEdge(connection, nodes, mediums, setErrorMessage);
 			if (edge === null) return;
 			setEdges((eds: any[]) => addEdge(edge, eds) as any[]);
 		},
@@ -129,7 +131,7 @@ const DnDFlow = () => {
 
 	return (
 		<div className="dndflow">
-			<AppContext.Provider value={{ mediums: mediums, setMediums: setMediums }}>
+			<AppContext.Provider value={{ mediums: mediums, setMediums: setMediums, setErrorMessage: setErrorMessage }}>
 				<Sidebar />
 				<ReactFlow
 					nodes={nodes}
@@ -175,7 +177,8 @@ const DnDFlow = () => {
 					nodes={nodes}
 					setNodes={setNodes}
 					edges={edges}
-				/>
+				/>{' '}
+				<ErrorLogger message={errorMessage} onClear={() => setErrorMessage(null)} />{' '}
 			</AppContext.Provider>
 		</div>
 	);

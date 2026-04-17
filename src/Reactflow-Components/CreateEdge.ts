@@ -31,7 +31,12 @@ function isHandleTaken(
 	return false;
 }
 
-const getNewEdge = (connection: Connection, nodes: NodeWithSusiData[], mediums: Medium[]): Edge | null => {
+const getNewEdge = (
+	connection: Connection,
+	nodes: NodeWithSusiData[],
+	mediums: Medium[],
+	setError: (error: string) => void
+): Edge | null => {
 	const sourceNode = nodes.find((e) => e.id === connection.source);
 	const targetNode = nodes.find((e) => e.id === connection.target);
 	/** Set Mediums */
@@ -39,7 +44,7 @@ const getNewEdge = (connection: Connection, nodes: NodeWithSusiData[], mediums: 
 	const sourceMediumKey = sourceMedium!.key;
 	const targetMediumKey = getMediumKey(connection.targetHandle!, targetNode!.data);
 	if (!mediumsMatch(sourceMediumKey, targetMediumKey)) {
-		console.log('The mediums of these handles do not match or are undefined.');
+		setError('The mediums of these handles do not match or are undefined.');
 		return null;
 	}
 	/** Update Bus Data */
