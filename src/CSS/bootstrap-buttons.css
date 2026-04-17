@@ -10,7 +10,7 @@
 
 .btn-secondary {
 	--bs-btn-color: #000000;
-	--bs-btn-bg: #ebebeb;
+	--bs-btn-bg: #f5f5f5;
 	--bs-btn-border-color: #929292;
 	/** Hover */
 	--bs-btn-hover-color: #ffffff;
@@ -20,5 +20,6 @@
 	--bs-btn-active-color: #ffffff;
 	--bs-btn-active-bg: #242424;
 	--bs-btn-active-border-color: #333333;
-	margin: 0.5rem 2rem;
+	margin: 0rem 2rem;
+	border-width: 3px;
 }

@@ -5,6 +5,9 @@ import MediumInputWidget from './MediumInputWidget';
 import { AppContext } from '../../Reactflow-Components/AppContext';
 import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
 import { NodeInputType } from '../../NodeDataStructures/NodeInput';
+import { getDefaultMediums } from './MediumUtils';
+
+import _ from 'lodash';
 
 const getRandomColor = () => {
 	return `#${Math.floor(Math.random() * 0x1000000)
@@ -53,6 +56,14 @@ const MediumMenu = ({ nodes, setNodes }: MediumMenuInput) => {
 		newMediums.push(newMedium);
 		setMediums(newMediums);
 	};
+	const resetMenu = () => {
+		const newMediums = getDefaultMediums();
+		setMediums(newMediums);
+	};
+	const mediumsAreDefault = () => {
+		const newMediums = getDefaultMediums();
+		return _.isEqual(newMediums, mediums);
+	};
 
 	return (
 		<>
@@ -71,6 +82,9 @@ const MediumMenu = ({ nodes, setNodes }: MediumMenuInput) => {
 				)}
 				<Button variant="secondary" size="sm" onClick={addMedium}>
 					<i className="bi bi-plus-circle" /> Add new Medium
+				</Button>
+				<Button variant="secondary" size="sm" onClick={resetMenu} disabled={mediumsAreDefault()}>
+					<i className="bi bi-arrow-clockwise" /> Reset Medium Menu
 				</Button>
 			</Col>
 		</>
