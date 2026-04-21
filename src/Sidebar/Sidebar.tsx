@@ -8,7 +8,7 @@ import { DropdownDivider } from 'react-bootstrap';
 type MenuType = 'mediums' | 'nodes' | 'import-export';
 
 const Sidebar = (menuProps: ImportExportMenuProps) => {
-	const [selectedMenu, setSelectedMenu] = useState<MenuType>('mediums');
+	const [selectedMenu, setSelectedMenu] = useState<MenuType>('nodes');
 
 	const renderMenu = () => {
 		switch (selectedMenu) {
@@ -29,16 +29,16 @@ const Sidebar = (menuProps: ImportExportMenuProps) => {
 				<h3 className="sidebar-menu-heading">Menus</h3>
 				<div className="sidebar-menu-buttons">
 					<button
-						className={`sidebar-menu-btn ${selectedMenu === 'mediums' ? 'active' : ''}`}
-						onClick={() => setSelectedMenu('mediums')}
-					>
-						Mediums
-					</button>
-					<button
 						className={`sidebar-menu-btn ${selectedMenu === 'nodes' ? 'active' : ''}`}
 						onClick={() => setSelectedMenu('nodes')}
 					>
 						New Nodes
+					</button>
+					<button
+						className={`sidebar-menu-btn ${selectedMenu === 'mediums' ? 'active' : ''}`}
+						onClick={() => setSelectedMenu('mediums')}
+					>
+						Mediums
 					</button>
 					<button
 						className={`sidebar-menu-btn ${selectedMenu === 'import-export' ? 'active' : ''}`}

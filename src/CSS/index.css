@@ -1,14 +1,18 @@
 @import 'bootstrap/dist/css/bootstrap.css';
 @import '@xyflow/react/dist/style.css';
 
-@import './xy-theme.css';
-@import './bootstrap-buttons.css';
-@import './sidebar.css';
-@import './sidebar-menu-buttons.css';
-@import './node-styling.css';
-@import './color-picker.css';
+/** Custom Reactflow Styling */
+@import './Reactflow-Styling/node-styling.css';
+@import './Reactflow-Styling/error-logger.css';
 
-@import './import-export-menu.css';
+/** Sidebar Styling */
+@import './Sidebar-Styling/sidebar.css';
+@import './Sidebar-Styling/sidebar-menu-buttons.css';
+@import './Sidebar-Styling/color-picker.css';
+@import './Sidebar-Styling/import-export-menu.css';
+
+/** Both */
+@import './bootstrap-buttons.css';
 
 #root {
 	width: 100vw;

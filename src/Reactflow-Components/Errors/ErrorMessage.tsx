@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import '../../CSS/error-logger.css';
 
 export interface ErrorMessage {
 	message: string;
