@@ -1,0 +1,17 @@
+.dndnode {
+	padding: 20px;
+	border: 1px solid var(--sidebar-outline-color);
+	border-radius: 5px;
+	margin: 15px 0px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: grab;
+	text-align: center;
+	font-size: 24px;
+}
+
+.node-category-heading {
+	font-size: 24px;
+	font-weight: 600;
+}

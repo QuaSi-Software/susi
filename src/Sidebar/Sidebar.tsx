@@ -26,7 +26,7 @@ const Sidebar = (menuProps: ImportExportMenuProps) => {
 	return (
 		<aside>
 			<div className="sidebar-menu-section">
-				<h3 className="sidebar-menu-heading">Menus</h3>
+				<h3 className="sidebar-heading">Menus</h3>
 				<div className="sidebar-menu-buttons">
 					<button
 						className={`sidebar-menu-btn ${selectedMenu === 'nodes' ? 'active' : ''}`}

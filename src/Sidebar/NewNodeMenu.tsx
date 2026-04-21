@@ -13,9 +13,10 @@ export default () => {
 	const nodeCategories = Object.values(NodeCategory);
 	return (
 		<>
+			<div className="sidebar-heading">Components </div>
 			{nodeCategories.map((category: string) => (
 				<div key={category}>
-					<div className="description">{category}</div>
+					<div className="node-category-heading">{category}</div>
 					{getNodeTypesInCategory(category as NodeCategory).map((nodeType) => (
 						<div
 							key={nodeType.type_name}

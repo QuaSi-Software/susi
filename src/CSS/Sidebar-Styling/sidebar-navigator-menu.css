@@ -1,22 +1,14 @@
 :root {
 	--text-color: #fff;
 	--unselected-text-color: #cfcfcf;
-	--button-text-size: 20px;
-	--selected-button-text-size: 22px;
+	--button-text-size: 24px;
+	--selected-button-text-size: 28px;
 }
 
 .sidebar-menu-section {
 	padding: 20px;
 	border-bottom: 1px solid #e0e0e0;
 }
-
-.sidebar-menu-heading {
-	margin: 0 0 15px 0;
-	font-size: 28px;
-	font-weight: 600;
-	color: var(--text-color);
-}
-
 .sidebar-menu-buttons {
 	display: flex;
 	flex-direction: column;

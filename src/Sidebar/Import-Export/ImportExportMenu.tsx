@@ -29,6 +29,7 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 
 	return (
 		<div className="import-export-menu">
+			<div className="sidebar-heading">Import & Export</div>
 			<div className="import-export-buttons">
 				<Button variant="primary" onClick={handleImport}>
 					Import

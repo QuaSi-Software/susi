@@ -13,8 +13,8 @@
 }
 
 .swatch {
-	width: 28px;
-	height: 28px;
+	width: var(--color-picker-size);
+	height: var(--color-picker-size);
 	border-radius: 8px;
 	border: var(--swatch-border-thickness) solid var(--swatch-border-color);
 	box-shadow:

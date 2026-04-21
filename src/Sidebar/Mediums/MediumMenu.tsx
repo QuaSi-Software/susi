@@ -66,8 +66,8 @@ const MediumMenu = ({ nodes, setNodes }: MediumMenuInput) => {
 	};
 
 	return (
-		<>
-			<div className="description">{'Mediums'}</div>
+		<div className="medium-menu">
+			<div className="sidebar-heading">{'Mediums'}</div>
 			<Col className="d-flex flex-column gap-2">
 				{mediums.map(
 					(medium) =>
@@ -87,7 +87,7 @@ const MediumMenu = ({ nodes, setNodes }: MediumMenuInput) => {
 					<i className="bi bi-arrow-clockwise" /> Reset Medium Menu
 				</Button>
 			</Col>
-		</>
+		</div>
 	);
 };
 

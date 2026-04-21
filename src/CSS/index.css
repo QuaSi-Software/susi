@@ -7,9 +7,11 @@
 
 /** Sidebar Styling */
 @import './Sidebar-Styling/sidebar.css';
-@import './Sidebar-Styling/sidebar-menu-buttons.css';
+@import './Sidebar-Styling/sidebar-navigator-menu.css';
 @import './Sidebar-Styling/color-picker.css';
 @import './Sidebar-Styling/import-export-menu.css';
+@import './Sidebar-Styling/sidebar-new-node-menu.css';
+@import './Sidebar-Styling/medium-menu.css';
 
 /** Both */
 @import './bootstrap-buttons.css';
@@ -17,4 +19,19 @@
 #root {
 	width: 100vw;
 	height: 100vh;
+}
+
+html,
+body {
+	margin: 0;
+	box-sizing: border-box;
+}
+
+.dndflow {
+	display: flex;
+	height: 100%;
+	text-align: left;
+	margin-bottom: 10px;
+	flex-grow: 1;
+	height: 100%;
 }

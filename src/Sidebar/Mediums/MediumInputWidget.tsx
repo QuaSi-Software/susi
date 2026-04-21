@@ -20,7 +20,7 @@ const MediumInputWidget: React.FC<MediumInputWidgetProps> = ({ medium, onMediumC
 	};
 
 	return (
-		<Row className="align-items-center g-2">
+		<Row className="align-items-center g-2 medium-input-row">
 			<Col xs="auto">
 				<PopoverPicker color={medium.color} onChange={onMediumColorChange} />
 			</Col>
