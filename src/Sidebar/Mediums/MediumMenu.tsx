@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Col, Button } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 import type { Medium } from '../../NodeDataStructures/Medium';
 import MediumInputWidget from './MediumInputWidget';
 import { AppContext } from '../../Reactflow-Components/AppContext';
@@ -80,12 +80,14 @@ const MediumMenu = ({ nodes, setNodes }: MediumMenuInput) => {
 							/>
 						)
 				)}
-				<Button variant="secondary" size="sm" onClick={addMedium}>
-					<i className="bi bi-plus-circle" /> Add new Medium
-				</Button>
-				<Button variant="secondary" size="sm" onClick={resetMenu} disabled={mediumsAreDefault()}>
-					<i className="bi bi-arrow-clockwise" /> Reset Medium Menu
-				</Button>
+				<div className="medium-menu-button-section ">
+					<button className="medium-menu-button" onClick={addMedium}>
+						<i className="bi bi-plus-circle" /> Add new Medium
+					</button>
+					<button className="medium-menu-button" onClick={resetMenu} disabled={mediumsAreDefault()}>
+						<i className="bi bi-arrow-clockwise" /> Reset Medium Menu
+					</button>
+				</div>
 			</Col>
 		</div>
 	);
