@@ -44,7 +44,7 @@ const DnDFlow = () => {
 	const [paneContextMenu, setPaneContextMenu] = useState<MenuPosition | null>(null);
 	const [mediums, setMediums] = useState<Medium[]>(getDefaultMediums());
 	const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([]);
-	const addErrorMessage = (message: string) => {
+	const logError = (message: string) => {
 		setErrorMessages((prevMessages) => [
 			...prevMessages,
 			{
@@ -62,7 +62,7 @@ const DnDFlow = () => {
 	const onConnect = useCallback(
 		(connection: Connection): void => {
 			console.log('Edge connect');
-			const edge: Edge | null = getNewEdge(connection, nodes, edges, mediums, addErrorMessage);
+			const edge: Edge | null = getNewEdge(connection, nodes, edges, mediums, logError);
 			if (edge === null) return;
 			setEdges((eds: any[]) => addEdge(edge, eds) as any[]);
 		},
@@ -145,7 +145,15 @@ const DnDFlow = () => {
 			<AppContext.Provider
 				value={{ mediums: mediums, setMediums: setMediums, setErrorMessages: setErrorMessages }}
 			>
-				<Sidebar nodes={nodes} setNodes={setNodes} />
+				<Sidebar
+					nodes={nodes}
+					setNodes={setNodes}
+					setEdges={setEdges}
+					edges={edges}
+					mediums={mediums}
+					setMediums={setMediums}
+					logError={logError}
+				/>
 				<ReactFlow
 					nodes={nodes}
 					edges={edges}

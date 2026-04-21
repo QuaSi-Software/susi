@@ -7,6 +7,9 @@
 @import './node-styling.css';
 @import './color-picker.css';
 
+@import './import-export-menu.css';
+@import './import-export.css';
+
 #root {
 	width: 100vw;
 	height: 100vh;
