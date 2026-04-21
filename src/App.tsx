@@ -18,7 +18,6 @@ import Sidebar from './Sidebar/Sidebar';
 import { DnDProvider, useDnD } from './DnDContext';
 import createNodeFromType, { type NodeWithSusiData } from './NodeDataStructures/NodeWithSusiData';
 import MarkdownNode from './Reactflow-Components/MarkdownNode';
-import ErrorLogger from './Reactflow-Components/ErrorLogger';
 import type { Connection, Edge } from '@xyflow/react';
 import { EdgeContextMenu, type EdgeContextMenuData } from './Reactflow-Components/Reactflow-Menus/EdgeContextMenu';
 import { createMenuPosition, type MenuPosition } from './Reactflow-Components/Reactflow-Menus/Menus';
@@ -28,6 +27,8 @@ import { type Medium } from './NodeDataStructures/Medium';
 import { getDefaultMediums } from './Sidebar/Mediums/MediumUtils';
 import { AppContext } from './Reactflow-Components/AppContext';
 import { getNewEdge } from './Reactflow-Components/CreateEdge';
+import ErrorMenu from './Reactflow-Components/Errors/ErrorMenu';
+import type { ErrorMessage } from './Reactflow-Components/Errors/ErrorMessage';
 
 const initialNodes: NodeWithSusiData[] = [];
 
@@ -42,7 +43,16 @@ const DnDFlow = () => {
 	const [nodeContextMenu, setNodeContextMenu] = useState<NodeContextMenuData | null>(null);
 	const [paneContextMenu, setPaneContextMenu] = useState<MenuPosition | null>(null);
 	const [mediums, setMediums] = useState<Medium[]>(getDefaultMediums());
-	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([]);
+	const addErrorMessage = (message: string) => {
+		setErrorMessages((prevMessages) => [
+			...prevMessages,
+			{
+				message: message,
+				key: `id_${Math.random().toString(16).slice(2)}`,
+			},
+		]);
+	};
 
 	// Update CSS variables whenever mediums change
 	useEffect(() => {
@@ -51,7 +61,8 @@ const DnDFlow = () => {
 
 	const onConnect = useCallback(
 		(connection: Connection): void => {
-			const edge: Edge | null = getNewEdge(connection, nodes, edges, mediums, setErrorMessage);
+			console.log('Edge connect');
+			const edge: Edge | null = getNewEdge(connection, nodes, edges, mediums, addErrorMessage);
 			if (edge === null) return;
 			setEdges((eds: any[]) => addEdge(edge, eds) as any[]);
 		},
@@ -131,7 +142,9 @@ const DnDFlow = () => {
 
 	return (
 		<div className="dndflow">
-			<AppContext.Provider value={{ mediums: mediums, setMediums: setMediums, setErrorMessage: setErrorMessage }}>
+			<AppContext.Provider
+				value={{ mediums: mediums, setMediums: setMediums, setErrorMessages: setErrorMessages }}
+			>
 				<Sidebar nodes={nodes} setNodes={setNodes} />
 				<ReactFlow
 					nodes={nodes}
@@ -178,7 +191,7 @@ const DnDFlow = () => {
 					setNodes={setNodes}
 					edges={edges}
 				/>{' '}
-				<ErrorLogger message={errorMessage} onClear={() => setErrorMessage(null)} />{' '}
+				<ErrorMenu messages={errorMessages} setMessages={setErrorMessages} />
 			</AppContext.Provider>
 		</div>
 	);

@@ -5,6 +5,7 @@ const Sidebar = ({ nodes, setNodes }: MediumMenuInput) => {
 	return (
 		<aside>
 			<MediumMenu nodes={nodes} setNodes={setNodes} />
+			<div style={{ margin: '20px' }}></div>
 			<NewNodeMenu />
 		</aside>
 	);

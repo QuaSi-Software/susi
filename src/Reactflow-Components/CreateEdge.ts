@@ -35,7 +35,7 @@ const getNewEdge = (
 	nodes: NodeWithSusiData[],
 	edges: Edge[],
 	mediums: Medium[],
-	setError: (error: string) => void
+	setError: (errors: string) => void
 ): Edge | null => {
 	const sourceNode = nodes.find((e) => e.id === connection.source);
 	const targetNode = nodes.find((e) => e.id === connection.target);
