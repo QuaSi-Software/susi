@@ -1,15 +1,56 @@
+import { useState } from 'react';
 import type { ImportExportMenuProps } from './Import-Export/ImportExportMenu';
 import ImportExportMenu from './Import-Export/ImportExportMenu';
 import MediumMenu from './Mediums/MediumMenu';
 import NewNodeMenu from './NewNodeMenu';
+import { DropdownDivider } from 'react-bootstrap';
+
+type MenuType = 'mediums' | 'nodes' | 'import-export';
 
 const Sidebar = (menuProps: ImportExportMenuProps) => {
+	const [selectedMenu, setSelectedMenu] = useState<MenuType>('mediums');
+
+	const renderMenu = () => {
+		switch (selectedMenu) {
+			case 'mediums':
+				return <MediumMenu nodes={menuProps.nodes} setNodes={menuProps.setNodes} />;
+			case 'nodes':
+				return <NewNodeMenu />;
+			case 'import-export':
+				return <ImportExportMenu {...menuProps} />;
+			default:
+				return null;
+		}
+	};
+
 	return (
 		<aside>
-			<MediumMenu nodes={menuProps.nodes} setNodes={menuProps.setNodes} />
-			<div style={{ margin: '20px' }}></div>
-			<NewNodeMenu />
-			<ImportExportMenu {...menuProps} />
+			<div className="sidebar-menu-section">
+				<h3 className="sidebar-menu-heading">Menus</h3>
+				<div className="sidebar-menu-buttons">
+					<button
+						className={`sidebar-menu-btn ${selectedMenu === 'mediums' ? 'active' : ''}`}
+						onClick={() => setSelectedMenu('mediums')}
+					>
+						Mediums
+					</button>
+					<button
+						className={`sidebar-menu-btn ${selectedMenu === 'nodes' ? 'active' : ''}`}
+						onClick={() => setSelectedMenu('nodes')}
+					>
+						New Nodes
+					</button>
+					<button
+						className={`sidebar-menu-btn ${selectedMenu === 'import-export' ? 'active' : ''}`}
+						onClick={() => setSelectedMenu('import-export')}
+					>
+						Import/Export
+					</button>
+				</div>
+			</div>
+
+			<DropdownDivider />
+			<div className="sidebar-menu-content">{renderMenu()}</div>
 		</aside>
 	);
 };

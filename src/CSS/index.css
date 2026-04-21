@@ -4,11 +4,11 @@
 @import './xy-theme.css';
 @import './bootstrap-buttons.css';
 @import './sidebar.css';
+@import './sidebar-menu-buttons.css';
 @import './node-styling.css';
 @import './color-picker.css';
 
 @import './import-export-menu.css';
-@import './import-export.css';
 
 #root {
 	width: 100vw;
