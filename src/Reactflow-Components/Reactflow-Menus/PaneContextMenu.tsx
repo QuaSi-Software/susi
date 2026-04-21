@@ -52,7 +52,7 @@ const PaneContextMenu = ({ paneContextMenu, setPaneContextMenu, nodes, setNodes,
 			>
 				{
 					<ButtonGroup vertical>
-						<Button variant="outline-success" onClick={handleLayoutReset}>
+						<Button className="contextMenu" variant="outline-success" onClick={handleLayoutReset}>
 							<i className="bi bi-arrow-clockwise"></i> Reset Layout
 						</Button>
 					</ButtonGroup>

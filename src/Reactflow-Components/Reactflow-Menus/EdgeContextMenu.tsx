@@ -56,7 +56,7 @@ const EdgeContextMenu = ({
 			>
 				{
 					<ButtonGroup vertical>
-						<Button variant={'outline-danger'} onClick={handleDeleteEdge}>
+						<Button className="contextMenu" variant={'outline-danger'} onClick={handleDeleteEdge}>
 							<i className="bi bi-trash3"></i> Delete Edge
 						</Button>
 					</ButtonGroup>

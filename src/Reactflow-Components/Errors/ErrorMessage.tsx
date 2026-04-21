@@ -12,12 +12,13 @@ interface ErrorMessagePopupProps {
 }
 
 const ErrorMessagePopup = ({ errorMessage, removeMessage }: ErrorMessagePopupProps) => {
-	// Auto-dismiss after 5 seconds
+	const showErrorForSeconds = 10;
+	/** remove message after showErrorForSeconds seconds  */
 	useEffect(() => {
 		if (errorMessage) {
 			const timer = setTimeout(() => {
 				removeMessage(errorMessage);
-			}, 5000);
+			}, showErrorForSeconds * 1000);
 			return () => clearTimeout(timer);
 		}
 	}, [errorMessage]);

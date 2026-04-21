@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import ErrorMessagePopup, { type ErrorMessage } from './ErrorMessage';
+import { Button } from 'react-bootstrap';
 
 interface ErrorLoggerProps {
 	messages: ErrorMessage[];
@@ -7,42 +8,27 @@ interface ErrorLoggerProps {
 }
 
 const ErrorMenu = ({ messages, setMessages }: ErrorLoggerProps) => {
-	const [isClickable, setIsClickable] = useState(false);
-
-	// Enable clicking after a short delay to prevent immediate dismissal
+	/** messages are packed in a ref, because otherwise removeMessage
+	 * will be using a stale version of messages without all the messages in it*/
+	const messagesRef = useRef(messages);
 	useEffect(() => {
-		if (messages.length === 0) {
-			setIsClickable(false);
-			return;
-		}
-
-		const timer = setTimeout(() => {
-			setIsClickable(true);
-		}, 300);
-
-		return () => clearTimeout(timer);
+		messagesRef.current = messages;
 	}, [messages]);
 
-	// Dismiss on any click (only if clickable)
-	// useEffect(() => {
-	// 	if (messages.length === 0 || !isClickable) return;
-
-	// 	const handleClick = () => {
-	// 		setMessages([]);
-	// 	};
-
-	// 	document.addEventListener('click', handleClick);
-	// 	return () => document.removeEventListener('click', handleClick);
-	// }, [messages, isClickable, setMessages]);
-
 	const removeMessage = (message: ErrorMessage) => {
-		const newMessages = messages.filter((m) => m.key !== message.key);
+		const newMessages = messagesRef.current.filter((m) => m.key !== message.key);
 		setMessages(newMessages);
+	};
+	const clearErrorMenu = () => {
+		setMessages([]);
 	};
 
 	if (messages.length === 0) return null;
 	return (
 		<div className="error-menu-container">
+			<Button variant={'outline-danger'} onClick={clearErrorMenu}>
+				<i className="bi bi-trash3" /> Clear Error Messages
+			</Button>
 			{messages.map((message) => (
 				<ErrorMessagePopup key={message.key} errorMessage={message} removeMessage={removeMessage} />
 			))}

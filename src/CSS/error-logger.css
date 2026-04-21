@@ -23,7 +23,7 @@
 	border: 1px solid rgba(220, 53, 69, 0.3);
 	border-radius: 6px;
 	color: #dc3545;
-	font-size: 14px;
+	font-size: 20px;
 	font-weight: 500;
 	backdrop-filter: blur(4px);
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -31,12 +31,6 @@
 	cursor: pointer;
 	user-select: none;
 }
-
-.error-logger-content:hover {
-	background-color: rgba(220, 53, 69, 0.2);
-	border-color: rgba(220, 53, 69, 0.4);
-}
-
 .error-logger-content i {
 	flex-shrink: 0;
 	font-size: 16px;
@@ -64,10 +58,5 @@
 	.error-logger-content {
 		background-color: rgba(220, 53, 69, 0.2);
 		border-color: rgba(220, 53, 69, 0.4);
-	}
-
-	.error-logger-content:hover {
-		background-color: rgba(220, 53, 69, 0.3);
-		border-color: rgba(220, 53, 69, 0.5);
 	}
 }

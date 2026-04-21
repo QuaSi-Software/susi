@@ -133,13 +133,14 @@ const NodeContextMenu = ({
 			>
 				{!showModal && (
 					<ButtonGroup vertical>
-						<Button variant="outline-primary" onClick={handleEditNode}>
+						<Button className="contextMenu" variant="outline-primary" onClick={handleEditNode}>
 							<i className="bi bi-tools"></i> Edit Node
 						</Button>
-						<Button variant="outline-primary" onClick={handleDuplicateNode}>
+						<Button className="contextMenu" variant="outline-primary" onClick={handleDuplicateNode}>
 							<i className="bi bi-copy"></i> Duplicate Node
 						</Button>
 						<Button
+							className="contextMenu"
 							variant={nodeContextMenu.node.deletable ? 'outline-danger' : 'secondary'}
 							onClick={handleDeleteNode}
 							disabled={!nodeContextMenu.node.deletable}
