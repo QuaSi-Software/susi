@@ -1,12 +1,13 @@
 :root {
 	--color-picker-size: 60px;
-	/** Add Medium and Reset menu buttons */
-	--button-color: #ffffff;
-	--button-bg: #000000;
-	--button-border-color: #cfcfcf;
-	--button-hover-bg: #2b2b2b;
-	--button-active-bg: #5d5d5d;
+	--button-disabled-bg: #8b8b8b;
 }
+@media (prefers-color-scheme: dark) {
+	:root {
+		--button-disabled-bg: #636363;
+	}
+}
+
 .medium-menu-button-section {
 	display: flex;
 	align-items: center;
@@ -37,25 +38,14 @@
 }
 
 .medium-menu-button {
-	color: var(--button-color);
-	background-color: var(--button-bg);
-	border-color: var(--button-border-color);
-	border-radius: 4px;
+	border-radius: 6px;
 	margin: 5px;
 	width: 60%;
 	min-width: fit-content;
-	padding: 20px 0px;
-}
-.medium-menu-button:hover {
-	/* color: var(--button-color-hover); */
-	background-color: var(--button-hover-bg);
-	/* border-color: var(--button-hover-border-color); */
-}
-
-.medium-menu-button:active {
-	background-color: var(--button-active-bg);
+	padding: 20px;
+	font-size: 20px;
 }
 .medium-menu-button:disabled {
 	text-decoration: line-through;
-	background-color: #aaa;
+	background-color: var(--button-disabled-bg);
 }

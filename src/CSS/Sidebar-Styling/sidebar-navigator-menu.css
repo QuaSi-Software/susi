@@ -1,10 +1,15 @@
 :root {
-	--text-color: #fff;
-	--unselected-text-color: #cfcfcf;
+	--text-color: #000000;
+	--unselected-text-color: #424242;
 	--button-text-size: 24px;
 	--selected-button-text-size: 28px;
 }
-
+@media (prefers-color-scheme: dark) {
+	:root {
+		--text-color: #fff;
+		--unselected-text-color: #cfcfcf;
+	}
+}
 .sidebar-menu-section {
 	padding: 20px;
 	border-bottom: 1px solid #e0e0e0;

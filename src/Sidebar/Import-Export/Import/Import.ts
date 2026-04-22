@@ -7,11 +7,11 @@ import getNodeInputs from '../../../NodeDataStructures/NodeInputData';
 import { getNewEdge } from '../../../Reactflow-Components/CreateEdge';
 import getImportMediums from './ImportMediums';
 import type { ComponentData, ComponentImportData, ImportData } from '../ExportDataStrucures';
-import { getComponentImportData } from '../ImportData';
+import { getComponentImportData } from './ImportData';
 import { isBusDataValid } from './ImportBusData';
 import BusData from '../../../NodeDataStructures/BusData';
 import { setNodeInputValue } from '../../../NodeDataStructures/NodeInput';
-import { max, min } from 'lodash';
+import { min } from 'lodash';
 
 interface ImportStateProps {
 	stateJSON: string;

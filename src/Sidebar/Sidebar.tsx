@@ -32,7 +32,7 @@ const Sidebar = (menuProps: ImportExportMenuProps) => {
 						className={`sidebar-menu-btn ${selectedMenu === 'nodes' ? 'active' : ''}`}
 						onClick={() => setSelectedMenu('nodes')}
 					>
-						New Nodes
+						Add New Components
 					</button>
 					<button
 						className={`sidebar-menu-btn ${selectedMenu === 'mediums' ? 'active' : ''}`}

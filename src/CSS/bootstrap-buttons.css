@@ -5,3 +5,34 @@
 .contextMenu {
 	background-color: var(--context-menu-color);
 }
+
+.btn-primary {
+	--bs-btn-color: #ffffff;
+	--bs-btn-bg: #46598d;
+	--bs-btn-border-color: #051236;
+	/** Hover */
+	--bs-btn-hover-color: #ffffff;
+	--bs-btn-hover-bg: #34477c;
+	--bs-btn-hover-border-color: #051236;
+	/** Active */
+	--bs-btn-active-color: #ffffff;
+	--bs-btn-active-bg: #12214b;
+	--bs-btn-active-border-color: #051236;
+	border-width: 1px;
+}
+
+@media (prefers-color-scheme: dark) {
+	.btn-primary {
+		--bs-btn-color: #ffffff;
+		--bs-btn-bg: #294ba7;
+		--bs-btn-border-color: #94a5d3;
+		/** Hover */
+		--bs-btn-hover-color: #ffffff;
+		--bs-btn-hover-bg: #4764b6;
+		--bs-btn-hover-border-color: #94a5d3;
+		/** Active */
+		--bs-btn-active-color: #ffffff;
+		--bs-btn-active-bg: #1a3175;
+		--bs-btn-active-border-color: #6f83c0;
+	}
+}
