@@ -10,11 +10,19 @@ import type { Medium } from './Medium';
  */
 export type NodeWithSusiData = Node & { data: SusiNodeData };
 
-const createNodeFromType = (nodes: NodeWithSusiData[], nodeType: NodeType, position: XYPosition, mediums: Medium[]) => {
+const createNodeFromType = (
+	nodes: NodeWithSusiData[],
+	nodeType: NodeType,
+	position: XYPosition,
+	mediums: Medium[],
+	content: string | null = null
+) => {
 	const nodesWithType = nodes.filter((node: NodeWithSusiData) => node.data.componentType === nodeType.type_name);
 	const index = nodesWithType.length;
-	const content = 'TST_' + nodeType.segment + '_' + index;
 	const timestamp = Date.now();
+	if (!content) {
+		content = 'TST_' + nodeType.segment + '_' + index;
+	}
 	const susiNodeData = createSusiNodeData(nodeType, content, mediums);
 	return {
 		id: `${content}_${timestamp}`,

@@ -1,4 +1,4 @@
-import type { ComponentData, ComponentImportData } from './ExportDataStrucures';
+import type { ComponentData, ComponentImportData } from '../ExportDataStrucures';
 
 export const getComponentImportData = (nodeData: ComponentData): ComponentImportData => {
 	let importData: ComponentImportData | undefined = nodeData.import_data;

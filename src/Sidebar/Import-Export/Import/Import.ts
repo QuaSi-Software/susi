@@ -6,12 +6,13 @@ import createNodeFromType from '../../../NodeDataStructures/NodeWithSusiData';
 import getNodeInputs from '../../../NodeDataStructures/NodeInputData';
 import { getNewEdge } from '../../../Reactflow-Components/CreateEdge';
 import getImportMediums from './ImportMediums';
-import type { ComponentData, ComponentImportData, ImportData } from '../ExportDataStrucures';
+import type { ComponentImportData, ImportData } from '../ExportDataStrucures';
 import { getComponentImportData } from './ImportData';
 import { isBusDataValid } from './ImportBusData';
 import BusData from '../../../NodeDataStructures/BusData';
 import { setNodeInputValue } from '../../../NodeDataStructures/NodeInput';
 import { min } from 'lodash';
+import getOutputRefs from './ImportOutputRefs';
 
 interface ImportStateProps {
 	stateJSON: string;
@@ -46,7 +47,7 @@ const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: Im
 			logError(`Node ${nodeId} has unknown component type: ${nodeData.type}`);
 			continue;
 		}
-		const newNode = createNodeFromType(nodeArray, nodeType, importData.node_position, mediums);
+		const newNode = createNodeFromType(nodeArray, nodeType, importData.node_position, mediums, nodeId);
 
 		// Fill in node inputs from import data
 		const nodeInputs = getNodeInputs(nodeType.type_name, mediums);
@@ -73,7 +74,7 @@ const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: Im
 		const inputNode = nodeDict[inputNodeId];
 		if (!inputNode) continue;
 
-		const outputRefs = getOutputRefs(inputNodeData);
+		const outputRefs = getOutputRefs(inputNodeData, inputNode, logError);
 
 		for (let inputNodeEdgeIndex = 0; inputNodeEdgeIndex < outputRefs.length; inputNodeEdgeIndex++) {
 			const outputNodeId = outputRefs[inputNodeEdgeIndex];
@@ -89,9 +90,21 @@ const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: Im
 			numIncomingEdgesPerNode[outputNodeId] = outputNodeIncomingEdges + 1;
 
 			// Create the source and target handles the edge should connect to
-			const sourceHandleIndex = min([inputNodeEdgeIndex, inputNode.data.sourceHandles - 1]);
-			const targetHandleIndex = min([0, outputNodeIncomingEdges, outputNode.data.targetHandles - 1]);
+			//source
+			if (inputNodeId === 'TST_ELY_01') {
+				console.log('Problem Child');
+			}
+			const importedConnectionHandles = inputNodeData.import_data?.connection_handles?.[inputNodeEdgeIndex];
+			let sourceHandleIndex = importedConnectionHandles?.source;
+			if (sourceHandleIndex === undefined) {
+				sourceHandleIndex = min([inputNodeEdgeIndex, inputNode.data.sourceHandles - 1]);
+			}
 			const sourceHandle = `source-${sourceHandleIndex}`;
+			// target
+			let targetHandleIndex = importedConnectionHandles?.target;
+			if (targetHandleIndex === undefined) {
+				targetHandleIndex = min([outputNodeIncomingEdges, outputNode.data.targetHandles - 1]);
+			}
 			const targetHandle = `target-${targetHandleIndex}`;
 
 			// Create edge
@@ -132,22 +145,5 @@ const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: Im
 	setNodes(nodeArray);
 	setEdges(edgeArray);
 };
-
-function getOutputRefs(nodeData: ComponentData): string[] {
-	if (nodeData.import_data!.node_type!.toLowerCase() === 'bus') {
-		return nodeData.connections?.output_order || [];
-	}
-
-	const outputRefs = nodeData.output_refs;
-	if (Array.isArray(outputRefs)) {
-		return outputRefs;
-	}
-
-	if (typeof outputRefs === 'object' && outputRefs !== null) {
-		return Object.values(outputRefs) as string[];
-	}
-
-	return [];
-}
 
 export default importState;

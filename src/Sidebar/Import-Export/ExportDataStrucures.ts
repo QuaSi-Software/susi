@@ -15,15 +15,19 @@ export interface ComponentData {
 	type: string;
 	import_data?: ComponentImportData;
 	connections?: Connections;
-	output_refs?: string[];
+	output_refs?: string[] | Record<string, string>;
 	[key: string]: any;
 }
 
+export interface ConnectionHandles {
+	source: number;
+	target?: number;
+}
 export interface ComponentImportData {
 	node_position: {
 		x: number;
 		y: number;
 	};
 	node_type: string;
-	connection_handles?: string[];
+	connection_handles?: ConnectionHandles[];
 }
