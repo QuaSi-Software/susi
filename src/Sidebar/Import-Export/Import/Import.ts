@@ -91,9 +91,6 @@ const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: Im
 
 			// Create the source and target handles the edge should connect to
 			//source
-			if (inputNodeId === 'TST_ELY_01') {
-				console.log('Problem Child');
-			}
 			const importedConnectionHandles = inputNodeData.import_data?.connection_handles?.[inputNodeEdgeIndex];
 			let sourceHandleIndex = importedConnectionHandles?.source;
 			if (sourceHandleIndex === undefined) {

@@ -1,7 +1,7 @@
 import { createMedium, type Medium } from '../../../NodeDataStructures/Medium';
 import { NodeInputType } from '../../../NodeDataStructures/NodeInput';
 import getNodeInputs from '../../../NodeDataStructures/NodeInputData';
-import { getRandomColor } from '../../Mediums/MediumUtils';
+import { getDefaultMediums, getRandomColor } from '../../Mediums/MediumUtils';
 import type { ComponentData, ImportData } from '../ExportDataStrucures';
 import { getComponentImportData } from './ImportData';
 
@@ -10,12 +10,21 @@ export default function getImportMediums(importDict: ImportData) {
 	const importedMediums = importDict.mediums || generateMediumListFromComponents(importDict.components);
 
 	for (const [name, color] of importedMediums) {
-		const mediumColor = color || getRandomColor();
-		const key = `m_${name}_${Date.now()}`;
-		mediums.push(createMedium(name, mediumColor, key));
+		mediums.push(createMediumFromImport(name, color));
 	}
 	return mediums;
 }
+
+const createMediumFromImport = (name: string, color: string | null) => {
+	const defaultMediums = getDefaultMediums();
+	const defaultMediumWithName = defaultMediums.find((m) => m.name == name);
+	if (defaultMediumWithName) {
+		return defaultMediumWithName;
+	}
+	const mediumColor = color || getRandomColor();
+	const key = `m_${name}_${Date.now()}`;
+	return createMedium(name, mediumColor, key);
+};
 
 function generateMediumListFromComponents(components: Record<string, ComponentData>): Array<[string, string | null]> {
 	const mediums: string[] = [];

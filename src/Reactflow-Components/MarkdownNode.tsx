@@ -44,7 +44,12 @@ function MarkdownNode(susiData: SusiNodeData, sourcePosition: boolean, targetPos
 	 * @returns {string} the color the handle should be (in format: "#ff00cc")
 	 */
 	function getHandleColor(handleName: string): string {
-		return getMedium(handleName, susiData, mediums)!.color;
+		const medium = getMedium(handleName, susiData, mediums);
+		if (!medium) {
+			console.error(`Handle ${handleName} on Node ${susiData.content} has no medium defined.`);
+			return '#ffffff';
+		}
+		return medium.color;
 	}
 
 	let isBus = susiData.componentType.toLowerCase() === 'bus';

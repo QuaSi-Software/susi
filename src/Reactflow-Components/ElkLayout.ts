@@ -42,8 +42,6 @@ const createElkGraphLayout = async (graphNodes: Array<NodeWithSusiData>, graphEd
 		}
 		return node;
 	});
-	console.log('original nodes: ' + JSON.stringify(graphNodes.map((n) => n.position)));
-	console.log('new nodes: ' + JSON.stringify(nodes.map((n) => n.position)));
 	return nodes;
 };
 
