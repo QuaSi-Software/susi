@@ -6,21 +6,21 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import type { Edge } from '@xyflow/react';
 import type { NodeWithSusiData } from '../../../NodeDataStructures/NodeWithSusiData';
 import type BusData from '../../../NodeDataStructures/BusData';
 import type { NodeInput } from '../../../NodeDataStructures/NodeInput';
 import ResieInputMenu from './ResieInputMenu';
 import { getEdgesWithMediumMismatch } from '../../../Sidebar/Mediums/MediumUtils';
 import { updateBusDataOnEdgeDelete } from '../../BusDataWidget/BusDataUtils';
+import type { SusiEdge } from '../../../NodeDataStructures/SusiEdgeData';
 
 interface EditNodeModalInputs {
 	show: boolean;
 	node: NodeWithSusiData;
 	nodes: NodeWithSusiData[];
 	setNodes: (nodes: NodeWithSusiData[]) => void;
-	edges: Edge[];
-	setEdges: (edges: Edge[]) => void;
+	edges: SusiEdge[];
+	setEdges: (edges: SusiEdge[]) => void;
 	handleClose: () => void;
 }
 
@@ -75,7 +75,7 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 			updateBusDataOnEdgeDelete(updatedNodes, edge!);
 		});
 		setNodes(updatedNodes);
-		const updatedEdges = edges.filter((edge: Edge) => edgesToDelete.findIndex((e) => e === edge.id) === -1);
+		const updatedEdges = edges.filter((edge: SusiEdge) => edgesToDelete.findIndex((e) => e === edge.id) === -1);
 		setEdges(updatedEdges);
 		handleClose();
 	};

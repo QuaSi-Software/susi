@@ -1,6 +1,5 @@
-import type { Edge } from '@xyflow/react';
 import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
-import BusData from '../../NodeDataStructures/BusData';
+import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
 
 /**
  * Update input_order, output_order and energy_flow in node.data.bus_data with this new connection
@@ -29,7 +28,6 @@ function updateBusDataOnEdgeConnect(node: NodeWithSusiData, connectedNodeID: str
 function removeBusConnection(node: NodeWithSusiData, disconnectedNodeID: string, incoming: boolean) {
 	if (!node.data.busData) return;
 	const busData = node.data.busData;
-	if (busData instanceof BusData) console.log(busData);
 	if (incoming) busData.removeFromInputOrder(disconnectedNodeID);
 	else busData.removeFromOutputOrder(disconnectedNodeID);
 }
@@ -41,7 +39,7 @@ function removeBusConnection(node: NodeWithSusiData, disconnectedNodeID: string,
  * @param {List[Object]} nodes All the nodes in the scene
  * @param {List[Object]} edges All the edges in the scene
  */
-function updateBusDataOnNodeDelete(deletedNodeID: string, nodes: Array<NodeWithSusiData>, edges: Array<Edge>) {
+function updateBusDataOnNodeDelete(deletedNodeID: string, nodes: Array<NodeWithSusiData>, edges: Array<SusiEdge>) {
 	const deletedEdges = edges.filter((edge) => edge.source === deletedNodeID || edge.target === deletedNodeID);
 	deletedEdges.forEach((edge) => {
 		let source = nodes.find((node) => node.id === edge.source);
@@ -53,7 +51,7 @@ function updateBusDataOnNodeDelete(deletedNodeID: string, nodes: Array<NodeWithS
 	});
 }
 
-function updateBusDataOnEdgeDelete(nodes: Array<NodeWithSusiData>, edge: Edge) {
+function updateBusDataOnEdgeDelete(nodes: Array<NodeWithSusiData>, edge: SusiEdge) {
 	nodes.forEach((node) => {
 		if (edge.source === node.id) {
 			removeBusConnection(node, edge.target, false);

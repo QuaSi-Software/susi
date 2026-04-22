@@ -5,16 +5,18 @@ import MediumInputWidget from './MediumInputWidget';
 import { AppContext } from '../../Reactflow-Components/AppContext';
 import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
 import { NodeInputType } from '../../NodeDataStructures/NodeInput';
-import { getDefaultMediums, getRandomColor } from './MediumUtils';
-
+import { getDefaultMediums, getRandomColor, getUndefinedMedium } from './MediumUtils';
 import _ from 'lodash';
+import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
 
-export interface MediumMenuInput {
+export interface MediumMenuProps {
 	nodes: NodeWithSusiData[];
 	setNodes: (nodes: NodeWithSusiData[]) => void;
+	edges: SusiEdge[];
+	setEdges: (edges: SusiEdge[]) => void;
 }
 
-const MediumMenu = ({ nodes, setNodes }: MediumMenuInput) => {
+const MediumMenu = ({ nodes, setNodes, edges, setEdges }: MediumMenuProps) => {
 	const context = useContext(AppContext);
 	if (!context) return <></>;
 	const mediums = context.mediums;
@@ -27,17 +29,26 @@ const MediumMenu = ({ nodes, setNodes }: MediumMenuInput) => {
 		setMediums(newMediums);
 	};
 
-	const onMediumDelete = (key: string) => {
-		const newMediums = mediums.filter((m) => m.key !== key);
-		const newNodes: NodeWithSusiData[] = Object.assign([], nodes);
-		newNodes.forEach((node) => {
-			node.data.nodeInputs.forEach((nodeInput) => {
-				if (nodeInput.type === NodeInputType.MEDIUM && nodeInput.value === key) {
-					nodeInput.value = 'UNDEFINED';
-				}
+	const updateNodesAndEdgesOnMediumDelete = (mediumKeys: string[]) => {
+		/** set the the medium variables to undefined
+		 * that were previously one of the medium keys we're deleting */
+		const newNodes: NodeWithSusiData[] = _.cloneDeep(nodes);
+		mediumKeys.forEach((mediumKey) => {
+			newNodes.forEach((node) => {
+				node.data.nodeInputs.forEach((nodeInput) => {
+					if (nodeInput.type === NodeInputType.MEDIUM && nodeInput.value === mediumKey) {
+						nodeInput.value = getUndefinedMedium().key;
+					}
+				});
 			});
 		});
 		setNodes(newNodes);
+		const newEdges = edges.filter((e) => mediumKeys.includes(e.data.mediumKey));
+		setEdges(newEdges);
+	};
+	const onMediumDelete = (key: string) => {
+		const newMediums = mediums.filter((m) => m.key !== key);
+		updateNodesAndEdgesOnMediumDelete([key]);
 		setMediums(newMediums);
 	};
 	const addMedium = () => {
@@ -51,9 +62,15 @@ const MediumMenu = ({ nodes, setNodes }: MediumMenuInput) => {
 		setMediums(newMediums);
 	};
 	const resetMenu = () => {
-		const newMediums = getDefaultMediums();
-		setMediums(newMediums);
+		const defaultMediums = getDefaultMediums();
+		const mediumsToDelete = mediums.filter((oldMedium) => {
+			const defaultMediumWithSameKey = defaultMediums.find((m) => m.key === oldMedium.key);
+			return defaultMediumWithSameKey === undefined;
+		});
+		updateNodesAndEdgesOnMediumDelete(mediumsToDelete.map((m) => m.key));
+		setMediums(defaultMediums);
 	};
+
 	const mediumsAreDefault = () => {
 		const newMediums = getDefaultMediums();
 		return _.isEqual(newMediums, mediums);
@@ -65,7 +82,7 @@ const MediumMenu = ({ nodes, setNodes }: MediumMenuInput) => {
 			<Col className="d-flex flex-column gap-2">
 				{mediums.map(
 					(medium) =>
-						medium.key !== 'UNDEFINED' && (
+						medium.key !== getUndefinedMedium().key && (
 							<MediumInputWidget
 								key={medium.key}
 								medium={medium}

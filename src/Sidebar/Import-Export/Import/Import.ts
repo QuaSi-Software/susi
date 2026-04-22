@@ -1,4 +1,3 @@
-import type { Edge } from '@xyflow/react';
 import type { NodeWithSusiData } from '../../../NodeDataStructures/NodeWithSusiData';
 import type { Medium } from '../../../NodeDataStructures/Medium';
 import { getNodeTypeWithName } from '../../../NodeDataStructures/SusiNodeTypes';
@@ -13,11 +12,12 @@ import BusData from '../../../NodeDataStructures/BusData';
 import { setNodeInputValue } from '../../../NodeDataStructures/NodeInput';
 import { min } from 'lodash';
 import getOutputRefs from './ImportOutputRefs';
+import type { SusiEdge } from '../../../NodeDataStructures/SusiEdgeData';
 
 interface ImportStateProps {
 	stateJSON: string;
 	setNodes: (nodes: NodeWithSusiData[]) => void;
-	setEdges: (edges: Edge[]) => void;
+	setEdges: (edges: SusiEdge[]) => void;
 	setMediums: (mediums: Medium[]) => void;
 	logError: (errorMessage: string) => void;
 }
@@ -67,7 +67,7 @@ const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: Im
 	}
 
 	// Second pass: create edges
-	const edgeArray: Edge[] = [];
+	const edgeArray: SusiEdge[] = [];
 	const numIncomingEdgesPerNode: Record<string, number> = {};
 
 	for (const [inputNodeId, inputNodeData] of Object.entries(importDict.components)) {

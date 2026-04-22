@@ -1,19 +1,26 @@
 import { useState } from 'react';
 import type { ImportExportMenuProps } from './Import-Export/ImportExportMenu';
 import ImportExportMenu from './Import-Export/ImportExportMenu';
-import MediumMenu from './Mediums/MediumMenu';
+import MediumMenu, { type MediumMenuProps } from './Mediums/MediumMenu';
 import NewNodeMenu from './NewNodeMenu';
 import { DropdownDivider } from 'react-bootstrap';
 
 type MenuType = 'mediums' | 'nodes' | 'import-export';
 
-const Sidebar = (menuProps: ImportExportMenuProps) => {
+const Sidebar = (menuProps: ImportExportMenuProps & MediumMenuProps) => {
 	const [selectedMenu, setSelectedMenu] = useState<MenuType>('nodes');
 
 	const renderMenu = () => {
 		switch (selectedMenu) {
 			case 'mediums':
-				return <MediumMenu nodes={menuProps.nodes} setNodes={menuProps.setNodes} />;
+				return (
+					<MediumMenu
+						nodes={menuProps.nodes}
+						setNodes={menuProps.setNodes}
+						edges={menuProps.edges}
+						setEdges={menuProps.setEdges}
+					/>
+				);
 			case 'nodes':
 				return <NewNodeMenu />;
 			case 'import-export':

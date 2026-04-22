@@ -1,4 +1,5 @@
 // import { useContext } from 'react';
+import { getUndefinedMedium } from '../Sidebar/Mediums/MediumUtils';
 import type { Medium } from './Medium';
 import type { NodeInput } from './NodeInput';
 import { createNodeInput, NodeInputType } from './NodeInput';
@@ -212,7 +213,7 @@ export function getNodeInputs(componentType: string, mediums: Medium[]): NodeInp
 	nodeInputs.forEach((nodeInput) => {
 		if (nodeInput.type !== NodeInputType.MEDIUM) return;
 		const medium = mediums.find((m) => m.name === nodeInput.value);
-		nodeInput.value = medium !== undefined ? medium!.key : 'UNDEFINED';
+		nodeInput.value = medium !== undefined ? medium!.key : getUndefinedMedium().key;
 	});
 
 	if (!nodeInputs) {

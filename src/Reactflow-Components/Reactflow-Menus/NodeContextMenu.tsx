@@ -2,19 +2,19 @@ import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/esm/ButtonGroup';
 
-import type { Edge } from '@xyflow/react';
 import type { MenuPosition } from './Menus';
 import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
 import EditNodeModal from './EditNodeModal/EditNodeModal';
 import BusData from '../../NodeDataStructures/BusData';
+import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
 
 interface NodeContextMenuInput {
 	nodeContextMenu: NodeContextMenuData | null;
 	nodes: NodeWithSusiData[];
-	edges: Edge[];
+	edges: SusiEdge[];
 	setNodeContextMenu: (NodeContextMenuData: NodeContextMenuData | null) => void;
 	setNodes: (nodes: NodeWithSusiData[]) => void;
-	setEdges: (edges: Edge[]) => void;
+	setEdges: (edges: SusiEdge[]) => void;
 }
 
 interface NodeContextMenuData {

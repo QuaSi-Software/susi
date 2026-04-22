@@ -1,20 +1,20 @@
-import { type Edge } from '@xyflow/react';
 import Button from 'react-bootstrap/esm/Button';
 import ButtonGroup from 'react-bootstrap/esm/ButtonGroup';
 import type { MenuPosition } from './Menus';
 import { updateBusDataOnEdgeDelete } from '../BusDataWidget/BusDataUtils';
 import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
+import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
 
 interface EdgeContextMenuData {
-	edge: Edge;
+	edge: SusiEdge;
 	menuPosition: MenuPosition;
 }
 interface EdgeContextMenuInput {
 	nodes: NodeWithSusiData[];
 	setNodes: (nodes: NodeWithSusiData[]) => void;
 	edgeContextMenuData: EdgeContextMenuData | null;
-	edges: Edge[];
-	setEdges: (edges: Edge[]) => void;
+	edges: SusiEdge[];
+	setEdges: (edges: SusiEdge[]) => void;
 	setEdgeContextMenu: (edgeContextMenuData: EdgeContextMenuData | null) => void;
 }
 

@@ -1,12 +1,12 @@
 import { createMedium, type Medium } from '../../../NodeDataStructures/Medium';
 import { NodeInputType } from '../../../NodeDataStructures/NodeInput';
 import getNodeInputs from '../../../NodeDataStructures/NodeInputData';
-import { getDefaultMediums, getRandomColor } from '../../Mediums/MediumUtils';
+import { getDefaultMediums, getRandomColor, getUndefinedMedium } from '../../Mediums/MediumUtils';
 import type { ComponentData, ImportData } from '../ExportDataStrucures';
 import { getComponentImportData } from './ImportData';
 
 export default function getImportMediums(importDict: ImportData) {
-	let mediums: Medium[] = [];
+	let mediums: Medium[] = [getUndefinedMedium()];
 	const importedMediums = importDict.mediums || generateMediumListFromComponents(importDict.components);
 
 	for (const [name, color] of importedMediums) {

@@ -1,8 +1,9 @@
-import type { Connection, Edge } from '@xyflow/react';
+import type { Connection } from '@xyflow/react';
 import type { NodeWithSusiData } from '../NodeDataStructures/NodeWithSusiData';
 import { updateBusDataOnEdgeConnect } from './BusDataWidget/BusDataUtils';
 import { getMedium, getMediumKey, mediumsMatch } from '../Sidebar/Mediums/MediumUtils';
 import type { Medium } from '../NodeDataStructures/Medium';
+import type { SusiEdge } from '../NodeDataStructures/SusiEdgeData';
 
 /**
  * Check if the source and target handle of the edge we are trying to connect are already taken
@@ -14,7 +15,7 @@ function isHandleTaken(
 	targetHandle: string,
 	sourceNode: NodeWithSusiData,
 	targetNode: NodeWithSusiData,
-	edges: Edge[]
+	edges: SusiEdge[]
 ) {
 	// edge is valid if its target and source handle are not already taken unless the node is a bus
 	var sourceIsBus = sourceNode.data.componentType === 'Bus';
@@ -33,10 +34,10 @@ function isHandleTaken(
 const getNewEdge = (
 	connection: Connection,
 	nodes: NodeWithSusiData[],
-	edges: Edge[],
+	edges: SusiEdge[],
 	mediums: Medium[],
 	setError: (errors: string) => void
-): Edge | null => {
+): SusiEdge | null => {
 	const sourceNode = nodes.find((e) => e.id === connection.source);
 	const targetNode = nodes.find((e) => e.id === connection.target);
 	/** Check if handle is taken */
@@ -61,12 +62,12 @@ const getNewEdge = (
 	}
 	var newEdgeId = `st-flow-edge_${connection.source}-${connection.target}`;
 	newEdgeId += '_' + Date.now();
-	const newEdge: Edge = {
+	const newEdge: SusiEdge = {
 		...connection,
 		style: {
 			stroke: `var(--medium-${sourceMediumKey})`,
 		} as React.CSSProperties,
-		data: { medium_key: sourceMediumKey },
+		data: { mediumKey: sourceMediumKey },
 		labelShowBg: false,
 		id: newEdgeId,
 	};

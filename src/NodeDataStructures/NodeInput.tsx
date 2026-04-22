@@ -1,3 +1,4 @@
+import { getUndefinedMedium } from '../Sidebar/Mediums/MediumUtils';
 import type { Medium } from './Medium';
 
 const NodeInputType = {
@@ -76,7 +77,7 @@ const setNodeInputValue = (nodeInput: NodeInput, value: any, mediums: Medium[]):
 		const mediumWithKey = mediums.find((m) => m.key === value);
 		if (mediumWithKey === undefined) {
 			const mediumWithName = mediums.find((m) => m.name === value);
-			value = mediumWithName?.key || 'UNDEFINED';
+			value = mediumWithName?.key || getUndefinedMedium().key;
 		}
 	}
 	nodeInput.value = value;

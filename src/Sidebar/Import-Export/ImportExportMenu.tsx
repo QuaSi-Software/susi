@@ -1,29 +1,33 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
-import type { Edge } from '@xyflow/react';
 import type { Medium } from '../../NodeDataStructures/Medium';
 import importState from './Import/Import';
 import exportState from './Export';
+import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
+import { AppContext } from '../../Reactflow-Components/AppContext';
 
 export interface ImportExportMenuProps {
 	setNodes: (nodes: NodeWithSusiData[]) => void;
-	setEdges: (edges: Edge[]) => void;
-	setMediums: (mediums: Medium[]) => void;
+	setEdges: (edges: SusiEdge[]) => void;
 	logError: (errorMessage: string) => void;
 	nodes: NodeWithSusiData[];
-	edges: Edge[];
-	mediums: Medium[];
+	edges: SusiEdge[];
 }
 
 const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 	const [textContent, setTextContent] = useState('');
+	const context = useContext(AppContext);
+	if (!context) return <></>;
+	const mediums = context.mediums;
+	const setMediums = context.setMediums;
+
 	const handleImport = () => {
-		importState({ ...menuProps, stateJSON: textContent });
+		importState({ ...menuProps, stateJSON: textContent, setMediums: setMediums });
 	};
 
 	const handleExport = () => {
-		const data = exportState(menuProps);
+		const data = exportState({ ...menuProps, mediums: mediums });
 		setTextContent(data);
 	};
 

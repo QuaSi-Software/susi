@@ -1,9 +1,9 @@
 // import Elk from 'elkjs/lib/elk.bundled.js';
 import type { NodeWithSusiData } from '../NodeDataStructures/NodeWithSusiData';
-import type { Edge } from '@xyflow/react';
 import _ from 'lodash';
+import type { SusiEdge } from '../NodeDataStructures/SusiEdgeData';
 
-const createElkGraphLayout = async (graphNodes: Array<NodeWithSusiData>, graphEdges: Array<Edge>) => {
+const createElkGraphLayout = async (graphNodes: Array<NodeWithSusiData>, graphEdges: Array<SusiEdge>) => {
 	/** Set up Layout options */
 	// const elk = new Elk({
 	const elk = new (await import('elkjs')).default({

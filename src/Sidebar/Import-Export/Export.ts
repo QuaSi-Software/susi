@@ -1,10 +1,10 @@
-import type { Edge } from '@xyflow/react';
 import type { Medium } from '../../NodeDataStructures/Medium';
 import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
+import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
 
 interface ExportProps {
 	nodes: NodeWithSusiData[];
-	edges: Edge[];
+	edges: SusiEdge[];
 	mediums: Medium[];
 }
 

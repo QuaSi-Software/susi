@@ -2,16 +2,17 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import type { MenuPosition } from './Menus';
 import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
-import { useReactFlow, type Edge } from '@xyflow/react';
+import { useReactFlow } from '@xyflow/react';
 import createElkGraphLayout from '../ElkLayout';
 import { useEffect, useState } from 'react';
+import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
 
 interface PaneContextMenuInput {
 	paneContextMenu: MenuPosition | null;
 	setPaneContextMenu: (NodeContextMenuData: MenuPosition | null) => void;
 	nodes: NodeWithSusiData[];
 	setNodes: (nodes: NodeWithSusiData[]) => void;
-	edges: Edge[];
+	edges: SusiEdge[];
 }
 
 const PaneContextMenu = ({ paneContextMenu, setPaneContextMenu, nodes, setNodes, edges }: PaneContextMenuInput) => {

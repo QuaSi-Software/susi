@@ -18,7 +18,7 @@ import Sidebar from './Sidebar/Sidebar';
 import { DnDProvider, useDnD } from './DnDContext';
 import createNodeFromType, { type NodeWithSusiData } from './NodeDataStructures/NodeWithSusiData';
 import MarkdownNode from './Reactflow-Components/MarkdownNode';
-import type { Connection, Edge } from '@xyflow/react';
+import type { Connection } from '@xyflow/react';
 import { EdgeContextMenu, type EdgeContextMenuData } from './Reactflow-Components/Reactflow-Menus/EdgeContextMenu';
 import { createMenuPosition, type MenuPosition } from './Reactflow-Components/Reactflow-Menus/Menus';
 import { NodeContextMenu, type NodeContextMenuData } from './Reactflow-Components/Reactflow-Menus/NodeContextMenu';
@@ -29,12 +29,13 @@ import { AppContext } from './Reactflow-Components/AppContext';
 import { getNewEdge } from './Reactflow-Components/CreateEdge';
 import ErrorMenu from './Reactflow-Components/Errors/ErrorMenu';
 import type { ErrorMessage } from './Reactflow-Components/Errors/ErrorMessage';
+import type { SusiEdge } from './NodeDataStructures/SusiEdgeData';
 
 const initialNodes: NodeWithSusiData[] = [];
 
 const DnDFlow = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<NodeWithSusiData>(initialNodes);
-	const [edges, setEdges, onEdgesChange] = useEdgesState([] as any);
+	const [edges, setEdges, onEdgesChange] = useEdgesState<SusiEdge>([] as any);
 	const { screenToFlowPosition } = useReactFlow();
 	const [type] = useDnD();
 	const ref = useRef<HTMLInputElement>(null);
@@ -62,7 +63,7 @@ const DnDFlow = () => {
 	const onConnect = useCallback(
 		(connection: Connection): void => {
 			console.log('Edge connect');
-			const edge: Edge | null = getNewEdge(connection, nodes, edges, mediums, logError);
+			const edge: SusiEdge | null = getNewEdge(connection, nodes, edges, mediums, logError);
 			if (edge === null) return;
 			setEdges((eds: any[]) => addEdge(edge, eds) as any[]);
 		},
@@ -104,7 +105,7 @@ const DnDFlow = () => {
 		}
 	};
 
-	const onEdgeContextMenu = (event: React.MouseEvent, edge: Edge): void => {
+	const onEdgeContextMenu = (event: React.MouseEvent, edge: SusiEdge): void => {
 		event.preventDefault();
 		setNodeContextMenu(null);
 		setPaneContextMenu(null);
@@ -145,15 +146,7 @@ const DnDFlow = () => {
 			<AppContext.Provider
 				value={{ mediums: mediums, setMediums: setMediums, setErrorMessages: setErrorMessages }}
 			>
-				<Sidebar
-					nodes={nodes}
-					setNodes={setNodes}
-					setEdges={setEdges}
-					edges={edges}
-					mediums={mediums}
-					setMediums={setMediums}
-					logError={logError}
-				/>
+				<Sidebar nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} logError={logError} />
 				<ReactFlow
 					nodes={nodes}
 					edges={edges}
