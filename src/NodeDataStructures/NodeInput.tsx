@@ -1,3 +1,5 @@
+import type { Medium } from './Medium';
+
 const NodeInputType = {
 	NUMBER: 'NUMBER',
 	STRING: 'STRING',
@@ -69,4 +71,15 @@ const createNodeInput = (
 	return nodeInput;
 };
 
-export { type NodeInput, createNodeInput, NodeInputType };
+const setNodeInputValue = (nodeInput: NodeInput, value: any, mediums: Medium[]): void => {
+	if (nodeInput.type === NodeInputType.MEDIUM) {
+		const mediumWithKey = mediums.find((m) => m.key === value);
+		if (mediumWithKey === undefined) {
+			const mediumWithName = mediums.find((m) => m.name === value);
+			value = mediumWithName?.key || 'UNDEFINED';
+		}
+	}
+	nodeInput.value = value;
+};
+
+export { type NodeInput, createNodeInput, NodeInputType, setNodeInputValue };

@@ -5,15 +5,9 @@ import MediumInputWidget from './MediumInputWidget';
 import { AppContext } from '../../Reactflow-Components/AppContext';
 import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
 import { NodeInputType } from '../../NodeDataStructures/NodeInput';
-import { getDefaultMediums } from './MediumUtils';
+import { getDefaultMediums, getRandomColor } from './MediumUtils';
 
 import _ from 'lodash';
-
-const getRandomColor = () => {
-	return `#${Math.floor(Math.random() * 0x1000000)
-		.toString(16)
-		.padStart(6, '0')}`;
-};
 
 export interface MediumMenuInput {
 	nodes: NodeWithSusiData[];

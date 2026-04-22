@@ -197,6 +197,15 @@ export function getNodeInputs(componentType: string, mediums: Medium[]): NodeInp
 			createNodeInput(NodeInputType.NUMBER, 'thermal_transmission_barrel', 'Thermal Transmission Barrel', 1.0),
 			createNodeInput(NodeInputType.NUMBER, 'thermal_transmission_bottom', 'Thermal Transmission Bottom', 1.0),
 		],
+		chpp: [
+			createNodeInput(NodeInputType.MEDIUM, 'm_fuel_in', 'm_fuel_in', 'm_c_g_natgas'),
+			createNodeInput(NodeInputType.MEDIUM, 'm_el_out', 'm_el_out', 'm_e_ac_230v'),
+			createNodeInput(NodeInputType.MEDIUM, 'm_heat_out', 'm_heat_out', 'm_h_w_ht1'),
+		],
+		seasonalthermalstorage: [
+			createNodeInput(NodeInputType.MEDIUM, 'm_heat_in', 'm_heat_in', 'm_h_w_ht1'),
+			createNodeInput(NodeInputType.MEDIUM, 'm_heat_out', 'm_heat_out', 'm_h_w_lt1'),
+		],
 	};
 	const nodeInputs = configs[normalizedType];
 	console.assert(nodeInputs !== undefined);

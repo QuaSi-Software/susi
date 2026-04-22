@@ -49,7 +49,9 @@ const getNewEdge = (
 	const sourceMediumKey = sourceMedium!.key;
 	const targetMediumKey = getMediumKey(connection.targetHandle!, targetNode!.data);
 	if (!mediumsMatch(sourceMediumKey, targetMediumKey)) {
-		setError('The mediums of these handles do not match or are undefined.');
+		setError(
+			`The mediums of handle ${connection.sourceHandle} on ${sourceNode?.data.content} and ${connection.targetHandle} on ${targetNode?.data.content} do not match or are undefined.`
+		);
 		return null;
 	}
 	/** Update Bus Data */

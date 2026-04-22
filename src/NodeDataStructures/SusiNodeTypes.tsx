@@ -10,7 +10,7 @@ export const NodeCategory = {
 	Other: 'Other',
 } as const;
 
-export type NodeCategory = typeof NodeCategory[keyof typeof NodeCategory];
+export type NodeCategory = (typeof NodeCategory)[keyof typeof NodeCategory];
 
 export interface NodeType {
 	type_name: string;
@@ -22,7 +22,7 @@ export interface NodeType {
 	category: NodeCategory;
 }
 
-export const allNodeTypes: NodeType[] = [
+const allNodeTypes: NodeType[] = [
 	{
 		type_name: 'Bus',
 		button_name: 'Bus',

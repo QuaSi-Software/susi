@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
 import type { Edge } from '@xyflow/react';
 import type { Medium } from '../../NodeDataStructures/Medium';
-import importState from './Import';
+import importState from './Import/Import';
 import exportState from './Export';
 
 export interface ImportExportMenuProps {
