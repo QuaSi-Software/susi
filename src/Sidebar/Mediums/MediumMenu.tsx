@@ -44,7 +44,7 @@ const MediumMenu = ({ nodes, setNodes, edges, setEdges }: MediumMenuProps) => {
 			});
 		});
 		setNodes(newNodes);
-		const newEdges = edges.filter((e) => mediumKeys.includes(e.data.mediumKey));
+		const newEdges = edges.filter((e) => !mediumKeys.includes(e.data.mediumKey));
 		setEdges(newEdges);
 	};
 	const onMediumDelete = (key: string) => {
