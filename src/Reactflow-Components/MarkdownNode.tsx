@@ -46,7 +46,7 @@ function MarkdownNode(susiData: SusiNodeData, sourcePosition: boolean, targetPos
 	function getHandleColor(handleName: string): string {
 		const medium = getMedium(handleName, susiData, mediums);
 		if (!medium) {
-			console.error(`Handle ${handleName} on Node ${susiData.content} has no medium defined.`);
+			console.debug(`Handle ${handleName} on Node ${susiData.content} has no medium defined.`);
 			return '#ffffff';
 		}
 		return medium.color;

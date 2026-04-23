@@ -6,6 +6,7 @@ import { useReactFlow } from '@xyflow/react';
 import createElkGraphLayout from '../ElkLayout';
 import { useEffect, useState } from 'react';
 import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
+import { flushSync } from 'react-dom';
 
 interface PaneContextMenuInput {
 	paneContextMenu: MenuPosition | null;
@@ -29,7 +30,7 @@ const PaneContextMenu = ({ paneContextMenu, setPaneContextMenu, nodes, setNodes,
 		if (layoutCalculated) return;
 		createElkGraphLayout(nodes, edges)
 			.then((layoutedNodes: Array<NodeWithSusiData>) => {
-				setNodes(layoutedNodes);
+				flushSync(() => setNodes(layoutedNodes));
 				fitView();
 				setLayoutCalculated(true);
 			})
