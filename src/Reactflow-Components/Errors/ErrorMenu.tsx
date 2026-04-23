@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type Dispatch, type SetStateAction } from 'react';
 import ErrorMessagePopup, { type ErrorMessage } from './ErrorMessage';
 import { Button } from 'react-bootstrap';
 
 interface ErrorLoggerProps {
 	messages: ErrorMessage[];
-	setMessages: (messages: ErrorMessage[]) => void;
+	setMessages: Dispatch<SetStateAction<ErrorMessage[]>>;
 }
 
 const ErrorMenu = ({ messages, setMessages }: ErrorLoggerProps) => {
@@ -16,8 +16,7 @@ const ErrorMenu = ({ messages, setMessages }: ErrorLoggerProps) => {
 	}, [messages]);
 
 	const removeMessage = (message: ErrorMessage) => {
-		const newMessages = messagesRef.current.filter((m) => m.key !== message.key);
-		setMessages(newMessages);
+		setMessages((prevMessages) => prevMessages.filter((m) => m.key !== message.key));
 	};
 	const clearErrorMenu = () => {
 		setMessages([]);
