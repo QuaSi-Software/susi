@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type Dispatch, type SetStateAction } from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/esm/ButtonGroup';
 
@@ -7,14 +7,15 @@ import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData
 import EditNodeModal from './EditNodeModal/EditNodeModal';
 import BusData from '../../NodeDataStructures/BusData';
 import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
+import { updateBusDataOnNodeDelete } from '../BusDataWidget/BusDataUtils';
 
 interface NodeContextMenuInput {
 	nodeContextMenu: NodeContextMenuData | null;
 	nodes: NodeWithSusiData[];
 	edges: SusiEdge[];
 	setNodeContextMenu: (NodeContextMenuData: NodeContextMenuData | null) => void;
-	setNodes: (nodes: NodeWithSusiData[]) => void;
-	setEdges: (edges: SusiEdge[]) => void;
+	setNodes: Dispatch<SetStateAction<NodeWithSusiData[]>>;
+	setEdges: Dispatch<SetStateAction<SusiEdge[]>>;
 }
 
 interface NodeContextMenuData {
@@ -54,7 +55,7 @@ const NodeContextMenu = ({
 			const updatedEdges = edges.filter(
 				(edge) => edge.source !== nodeContextMenu.node.id && edge.target !== nodeContextMenu.node.id
 			);
-			// updateBusDataOnNodeDelete(nodeContextMenu.node.id, nodes, edges);
+			updateBusDataOnNodeDelete(nodeContextMenu.node.id, nodes, edges);
 			setNodes(updatedNodes);
 			setEdges(updatedEdges);
 		}

@@ -4,37 +4,29 @@ import type { MenuPosition } from './Menus';
 import { updateBusDataOnEdgeDelete } from '../BusDataWidget/BusDataUtils';
 import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
 import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
+import type { Dispatch, SetStateAction } from 'react';
 
 interface EdgeContextMenuData {
 	edge: SusiEdge;
 	menuPosition: MenuPosition;
 }
 interface EdgeContextMenuInput {
-	nodes: NodeWithSusiData[];
-	setNodes: (nodes: NodeWithSusiData[]) => void;
+	setNodes: Dispatch<SetStateAction<NodeWithSusiData[]>>;
+	setEdges: Dispatch<SetStateAction<SusiEdge[]>>;
 	edgeContextMenuData: EdgeContextMenuData | null;
-	edges: SusiEdge[];
-	setEdges: (edges: SusiEdge[]) => void;
-	setEdgeContextMenu: (edgeContextMenuData: EdgeContextMenuData | null) => void;
+	setEdgeContextMenu: Dispatch<SetStateAction<EdgeContextMenuData | null>>;
 }
 
-const EdgeContextMenu = ({
-	nodes,
-	setNodes,
-	edgeContextMenuData,
-	edges,
-	setEdges,
-	setEdgeContextMenu,
-}: EdgeContextMenuInput) => {
+const EdgeContextMenu = ({ setNodes, edgeContextMenuData, setEdges, setEdgeContextMenu }: EdgeContextMenuInput) => {
 	const handleDeleteEdge = () => {
 		if (!edgeContextMenuData) return;
 		/** update bus data of connected nodes */
-		const updatedNodes: NodeWithSusiData[] = Object.assign([], nodes);
-		updateBusDataOnEdgeDelete(updatedNodes, edgeContextMenuData.edge);
-		setNodes(updatedNodes);
+		setNodes((nodes) => {
+			updateBusDataOnEdgeDelete(nodes, edgeContextMenuData.edge);
+			return nodes;
+		});
 		/** update edge list */
-		const updatedEdges = edges.filter((edge) => edge.id !== edgeContextMenuData.edge.id);
-		setEdges(updatedEdges);
+		setEdges((edges) => edges.filter((edge) => edge.id !== edgeContextMenuData.edge.id));
 		setEdgeContextMenu(null);
 	};
 
