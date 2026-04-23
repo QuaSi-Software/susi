@@ -9,7 +9,6 @@ import type { ComponentImportData, ImportData } from '../ExportDataStrucures';
 import { getComponentImportData } from './ImportData';
 import { isBusDataValid } from './ImportBusData';
 import BusData from '../../../NodeDataStructures/BusData';
-import { setNodeInputValue } from '../../../NodeDataStructures/NodeInput';
 import { min } from 'lodash';
 import getOutputRefs from './ImportOutputRefs';
 import type { SusiEdge } from '../../../NodeDataStructures/SusiEdgeData';
@@ -54,7 +53,7 @@ const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: Im
 		for (const nodeInput of nodeInputs) {
 			const value = nodeData[nodeInput.resieName];
 			if (value !== undefined) {
-				setNodeInputValue(nodeInput, value, mediums);
+				nodeInput.setNodeInputValue(value, mediums);
 				nodeInput.isIncluded = true;
 			} else {
 				nodeInput.isIncluded = false;

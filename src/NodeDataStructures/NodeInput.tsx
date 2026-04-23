@@ -12,21 +12,7 @@ const NodeInputType = {
 
 type NodeInputType = (typeof NodeInputType)[keyof typeof NodeInputType];
 
-const getNodeInputType = (value: any, dropdownOptions: string[]) => {
-	if (dropdownOptions.length > 0) return NodeInputType.DROPDOWN;
-	switch (typeof value) {
-		case 'string':
-			return NodeInputType.STRING;
-		case 'number':
-			return NodeInputType.NUMBER;
-		case 'boolean':
-			return NodeInputType.BOOLEAN;
-	}
-	console.error(`Node Input value has unsupported type: ${typeof value}`);
-	return NodeInputType.UNSET;
-};
-
-interface NodeInput {
+class NodeInput {
 	type: NodeInputType;
 	resieName: string;
 	displayName: string;
@@ -37,50 +23,61 @@ interface NodeInput {
 	isIncluded: boolean;
 	dropdownOptions: Array<string>;
 	dropdownOptionDisplayNames: Array<string>;
+
+	constructor(
+		type: NodeInputType | null,
+		resieName: string,
+		displayName: string,
+		value: any,
+		tooltip: string = '',
+		/** Different input types */
+		editable: boolean = true,
+		isRequired: boolean = true,
+		/** Dropdown Options */
+		dropdownOptions: Array<string> = [],
+		dropdownOptionDisplayNames: Array<string> = []
+	) {
+		if (!type) type = this.getNodeInputType(value, dropdownOptions);
+		if (dropdownOptions.length > 0) {
+			if (!dropdownOptions.includes(value)) value = dropdownOptions[0];
+		}
+
+		this.type = type;
+		this.resieName = resieName;
+		this.displayName = displayName;
+		this.value = value;
+		this.tooltip = tooltip;
+		this.editable = editable;
+		this.isRequired = isRequired;
+		this.isIncluded = true;
+		this.dropdownOptions = dropdownOptions;
+		this.dropdownOptionDisplayNames = dropdownOptionDisplayNames;
+	}
+
+	public setNodeInputValue = (value: any, mediums: Medium[]): void => {
+		if (this.type === NodeInputType.MEDIUM) {
+			const mediumWithKey = mediums.find((m) => m.key === value);
+			if (mediumWithKey === undefined) {
+				const mediumWithName = mediums.find((m) => m.name === value);
+				value = mediumWithName?.key || getUndefinedMedium().key;
+			}
+		}
+		this.value = value;
+	};
+
+	private getNodeInputType = (value: any, dropdownOptions: string[]) => {
+		if (dropdownOptions.length > 0) return NodeInputType.DROPDOWN;
+		switch (typeof value) {
+			case 'string':
+				return NodeInputType.STRING;
+			case 'number':
+				return NodeInputType.NUMBER;
+			case 'boolean':
+				return NodeInputType.BOOLEAN;
+		}
+		console.error(`Node Input value has unsupported type: ${typeof value}`);
+		return NodeInputType.UNSET;
+	};
 }
 
-const createNodeInput = (
-	type: NodeInputType | null,
-	resieName: string,
-	displayName: string,
-	value: any,
-	tooltip: string = '',
-	/** Different input types */
-	editable: boolean = true,
-	isRequired: boolean = true,
-	/** Dropdown Options */
-	dropdownOptions: Array<string> = [],
-	dropdownOptionDisplayNames: Array<string> = []
-) => {
-	if (!type) type = getNodeInputType(value, dropdownOptions);
-	if (dropdownOptions.length > 0) {
-		if (!dropdownOptions.includes(value)) value = dropdownOptions[0];
-	}
-
-	let nodeInput: NodeInput = {
-		type: type,
-		resieName: resieName,
-		displayName: displayName,
-		value: value,
-		tooltip: tooltip,
-		editable: editable,
-		isRequired: isRequired,
-		isIncluded: true,
-		dropdownOptions: dropdownOptions,
-		dropdownOptionDisplayNames: dropdownOptionDisplayNames,
-	};
-	return nodeInput;
-};
-
-const setNodeInputValue = (nodeInput: NodeInput, value: any, mediums: Medium[]): void => {
-	if (nodeInput.type === NodeInputType.MEDIUM) {
-		const mediumWithKey = mediums.find((m) => m.key === value);
-		if (mediumWithKey === undefined) {
-			const mediumWithName = mediums.find((m) => m.name === value);
-			value = mediumWithName?.key || getUndefinedMedium().key;
-		}
-	}
-	nodeInput.value = value;
-};
-
-export { type NodeInput, createNodeInput, NodeInputType, setNodeInputValue };
+export { NodeInput, NodeInputType };
