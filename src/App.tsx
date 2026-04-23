@@ -172,9 +172,7 @@ const DnDFlow = () => {
 				<EdgeContextMenu
 					edgeContextMenuData={edgeContextMenu}
 					setEdgeContextMenu={setEdgeContextMenu}
-					edges={edges}
 					setEdges={setEdges}
-					nodes={nodes}
 					setNodes={setNodes}
 				/>
 				<NodeContextMenu

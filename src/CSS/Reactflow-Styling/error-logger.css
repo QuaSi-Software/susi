@@ -1,5 +1,5 @@
 .error-menu-container {
-	position: fixed;
+	position: absolute;
 	top: 20px;
 	right: 20px;
 	z-index: 1000;
@@ -8,6 +8,9 @@
 	flex-direction: column;
 	gap: 10px;
 	max-width: 400px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	height: 90%;
 }
 
 .error-logger {
