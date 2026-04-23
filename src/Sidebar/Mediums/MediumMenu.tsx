@@ -8,6 +8,7 @@ import { NodeInputType } from '../../NodeDataStructures/NodeInput';
 import { getDefaultMediums, getRandomColor, getUndefinedMedium } from './MediumUtils';
 import _ from 'lodash';
 import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
+import { flushSync } from 'react-dom';
 
 export interface MediumMenuProps {
 	nodes: NodeWithSusiData[];
@@ -48,7 +49,9 @@ const MediumMenu = ({ nodes, setNodes, edges, setEdges }: MediumMenuProps) => {
 	};
 	const onMediumDelete = (key: string) => {
 		const newMediums = mediums.filter((m) => m.key !== key);
-		updateNodesAndEdgesOnMediumDelete([key]);
+		flushSync(() => {
+			updateNodesAndEdgesOnMediumDelete([key]);
+		});
 		setMediums(newMediums);
 	};
 	const addMedium = () => {
@@ -67,7 +70,8 @@ const MediumMenu = ({ nodes, setNodes, edges, setEdges }: MediumMenuProps) => {
 			const defaultMediumWithSameKey = defaultMediums.find((m) => m.key === oldMedium.key);
 			return defaultMediumWithSameKey === undefined;
 		});
-		updateNodesAndEdgesOnMediumDelete(mediumsToDelete.map((m) => m.key));
+		const mediumsKeys = mediumsToDelete.map((m) => m.key);
+		flushSync(() => updateNodesAndEdgesOnMediumDelete(mediumsKeys));
 		setMediums(defaultMediums);
 	};
 
