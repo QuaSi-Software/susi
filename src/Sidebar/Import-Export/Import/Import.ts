@@ -30,6 +30,10 @@ const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: Im
 		return;
 	}
 
+	if (!importDict.components || typeof importDict.components !== 'object' || Array.isArray(importDict.components)) {
+		logError('There is no dictionary of components defined in import file.');
+		return;
+	}
 	// Get or generate mediums
 	const mediums = getImportMediums(importDict);
 	setMediums(mediums);
