@@ -3,11 +3,12 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/esm/ButtonGroup';
 
 import type { MenuPosition } from './Menus';
-import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
+import { deepCloneNode, type NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
 import EditNodeModal from './EditNodeModal/EditNodeModal';
 import BusData from '../../NodeDataStructures/BusData';
 import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
 import { updateBusDataOnNodeDelete } from '../BusDataWidget/BusDataUtils';
+import _ from 'lodash';
 
 interface NodeContextMenuInput {
 	nodeContextMenu: NodeContextMenuData | null;
@@ -102,7 +103,7 @@ const NodeContextMenu = ({
 		const nodeToDuplicate: NodeWithSusiData | undefined = nodes.find((node) => node.id === nodeContextMenu.node.id);
 		console.assert(nodeToDuplicate != undefined);
 		if (!nodeToDuplicate) return;
-		const duplicateNode: NodeWithSusiData = JSON.parse(JSON.stringify(nodeToDuplicate));
+		const duplicateNode: NodeWithSusiData = deepCloneNode(nodeToDuplicate);
 		// move node towards bottom right and give it a unique ID
 		duplicateNode.position.x += 20;
 		duplicateNode.position.y += 20;

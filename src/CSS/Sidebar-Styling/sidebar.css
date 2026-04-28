@@ -20,6 +20,7 @@
 	overflow-y: auto;
 	min-width: fit-content;
 	width: 40%;
+	resize: horizontal;
 }
 
 .sidebar-heading {

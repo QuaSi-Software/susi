@@ -3,7 +3,7 @@ import { Button, Col } from 'react-bootstrap';
 import type { Medium } from '../../NodeDataStructures/Medium';
 import MediumInputWidget from './MediumInputWidget';
 import { AppContext } from '../../Reactflow-Components/AppContext';
-import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
+import { deepCloneNodes, type NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
 import { NodeInputType } from '../../NodeDataStructures/NodeInput';
 import { getDefaultMediums, getRandomColor, getUndefinedMedium } from './MediumUtils';
 import _ from 'lodash';
@@ -33,7 +33,7 @@ const MediumMenu = ({ nodes, setNodes, edges, setEdges }: MediumMenuProps) => {
 	const updateNodesAndEdgesOnMediumDelete = (mediumKeys: string[]) => {
 		/** set the the medium variables to undefined
 		 * that were previously one of the medium keys we're deleting */
-		const newNodes: NodeWithSusiData[] = _.cloneDeep(nodes);
+		const newNodes: NodeWithSusiData[] = deepCloneNodes(nodes);
 		mediumKeys.forEach((mediumKey) => {
 			newNodes.forEach((node) => {
 				node.data.nodeInputs.forEach((nodeInput) => {

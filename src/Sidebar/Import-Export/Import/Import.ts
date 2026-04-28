@@ -94,7 +94,7 @@ const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: Im
 
 			// Create the source and target handles the edge should connect to
 			//source
-			const importedConnectionHandles = inputNodeData.import_data?.connection_handles?.[inputNodeEdgeIndex];
+			const importedConnectionHandles = inputNodeData.import_data?.connection_handles?.[inputNodeId];
 			let sourceHandleIndex = importedConnectionHandles?.source;
 			if (sourceHandleIndex === undefined) {
 				sourceHandleIndex = min([inputNodeEdgeIndex, inputNode.data.sourceHandles - 1]);

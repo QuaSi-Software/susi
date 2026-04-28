@@ -1,6 +1,5 @@
 // import Elk from 'elkjs/lib/elk.bundled.js';
-import type { NodeWithSusiData } from '../NodeDataStructures/NodeWithSusiData';
-import _ from 'lodash';
+import { deepCloneNodes, type NodeWithSusiData } from '../NodeDataStructures/NodeWithSusiData';
 import type { SusiEdge } from '../NodeDataStructures/SusiEdgeData';
 
 const createElkGraphLayout = async (graphNodes: Array<NodeWithSusiData>, graphEdges: Array<SusiEdge>) => {
@@ -17,7 +16,7 @@ const createElkGraphLayout = async (graphNodes: Array<NodeWithSusiData>, graphEd
 	});
 
 	/** add sources and targets to edges, make a deep copy of the nodes */
-	const nodes: Array<NodeWithSusiData> = _.cloneDeep(graphNodes);
+	const nodes: Array<NodeWithSusiData> = deepCloneNodes(graphNodes);
 	const edges = graphEdges.map((e) => ({ ...e, sources: [e.source], targets: [e.target] }));
 
 	/** calculate new layout */

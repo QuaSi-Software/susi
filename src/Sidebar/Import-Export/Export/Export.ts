@@ -1,0 +1,131 @@
+import type { Medium } from '../../../NodeDataStructures/Medium';
+import type { NodeWithSusiData } from '../../../NodeDataStructures/NodeWithSusiData';
+import type { SusiEdge } from '../../../NodeDataStructures/SusiEdgeData';
+import type { NodeInput } from '../../../NodeDataStructures/NodeInput';
+import type { ComponentData, ConnectionHandles, Connections } from '../ExportDataStrucures';
+import { getUndefinedMedium } from '../../Mediums/MediumUtils';
+
+interface ExportProps {
+	nodes: NodeWithSusiData[];
+	edges: SusiEdge[];
+	mediums: Medium[];
+}
+
+function getNodeNameFromID(nodeID: string, nodes: NodeWithSusiData[]) {
+	return nodes.find((n) => n.id === nodeID)!.data.content;
+}
+
+/**
+ * Return a list of mediums as lists [name, color]
+ */
+const getMediumListForExport = (mediums: Medium[]): Array<[string, string]> => {
+	const nonUndefinedMedium = mediums.filter((m) => m.key !== getUndefinedMedium().key);
+	return nonUndefinedMedium.map((m) => [m.name, m.color]);
+};
+
+/**
+ * Get outputs of the given node as dictionaries mapping medium variable names to target node contents
+ */
+const getOutputs = (
+	nodeId: string,
+	nodes: NodeWithSusiData[],
+	edges: SusiEdge[]
+	// mediums: Medium[]
+): {
+	handles: Record<string, ConnectionHandles>;
+	outputs: Record<string, string>;
+} => {
+	const outgoing: Record<string, string> = {};
+	const handles: Record<string, ConnectionHandles> = {};
+	const nodeMap = new Map(nodes.map((n) => [n.id, n]));
+
+	const edgesFromNode = edges.filter((e) => e.source === nodeId);
+	for (const edge of edgesFromNode) {
+		const sourceNode = nodeMap.get(edge.source);
+		if (!sourceNode) continue;
+
+		// Parse handle indices from format like "source-0"
+		const sourceHandleIndex = parseInt(edge.sourceHandle?.split('-')[1] ?? '0');
+		const targetHandleIndex = parseInt(edge.targetHandle?.split('-')[1] ?? '0');
+		handles[nodeId] = { source: sourceHandleIndex, target: targetHandleIndex };
+
+		// Find medium associated with source handle
+		const sourceMediums = sourceNode.data.handleMediumDict.source;
+		const mediumVarName = sourceMediums[sourceHandleIndex];
+
+		// Get target node content
+		// const targetNode = nodeMap.get(edge.target);
+		const targetNodeName = getNodeNameFromID(edge.target, nodes);
+		outgoing[mediumVarName] = targetNodeName;
+	}
+
+	return { handles, outputs: outgoing };
+};
+
+/**
+ * Get bus connections (input_order, output_order, energy_flow)
+ */
+const getBusConnections = (node: NodeWithSusiData, nodes: NodeWithSusiData[]): Connections => {
+	if (!node.data.busData) {
+		console.error(`Bus ${node.data.content} has no bus data defined`);
+		return { input_order: [], output_order: [], energy_flow: [] };
+	}
+	const busData = node.data.busData;
+	const inputOrder = busData.inputOrder.map((id) => getNodeNameFromID(id, nodes));
+	const outputOrder = busData.outputOrder.map((id) => getNodeNameFromID(id, nodes));
+
+	return {
+		input_order: inputOrder,
+		output_order: outputOrder,
+		energy_flow: busData.energyFlow,
+	};
+};
+
+const addNodeInputsToObject = (nodeInputs: NodeInput[], obj: Record<string, any>, mediums: Medium[]) => {
+	nodeInputs.forEach((nodeInput) => {
+		if (!nodeInput.isIncluded && !nodeInput.isRequired) {
+			return;
+		}
+		console.log('In addNodeInputsToObject: ' + nodeInput.value);
+		obj[nodeInput.resieName] = nodeInput.getNodeInputExportValue(mediums);
+	});
+	return obj;
+};
+
+const exportState = ({ nodes, edges, mediums }: ExportProps): string => {
+	const exportDict: Record<string, unknown> = {
+		components: {},
+		mediums: getMediumListForExport(mediums),
+	};
+
+	// const nodeMap = new Map(nodes.map((n) => [n.id, n]));
+	const components: Record<string, ComponentData> = {};
+
+	nodes.forEach((node) => {
+		const compDict: ComponentData = { type: node.data.componentType };
+		addNodeInputsToObject(node.data.nodeInputs, compDict, mediums);
+
+		// Add import data
+		compDict.import_data = {
+			node_position: { x: node.position.x, y: node.position.y },
+			node_type: node.data.componentType,
+		};
+
+		// Set output_refs/connections
+		if (node.data.busData) {
+			compDict.connections = getBusConnections(node, nodes);
+		} else {
+			const { handles, outputs } = getOutputs(node.id, nodes, edges);
+			compDict.output_refs = outputs;
+			compDict.import_data.connection_handles = handles;
+		}
+
+		components[node.data.content] = compDict;
+	});
+
+	exportDict['components'] = components;
+
+	return JSON.stringify(exportDict, null, 2);
+};
+
+export default exportState;

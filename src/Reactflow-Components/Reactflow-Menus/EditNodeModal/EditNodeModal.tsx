@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import _ from 'lodash';
 
 import type { NodeWithSusiData } from '../../../NodeDataStructures/NodeWithSusiData';
 import type BusData from '../../../NodeDataStructures/BusData';
@@ -44,7 +45,7 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 	const changeNodeInput = (resieName: string, value: any, isValueChange: boolean) => {
 		//change node input
 		//if you don't make a copy, the change to the resie_data is applied to the nodes list, since editedNode is a reference, not a copy
-		const resieDataCopy: Array<NodeInput> = JSON.parse(JSON.stringify(editedNode.data.nodeInputs));
+		const resieDataCopy: Array<NodeInput> = Object.assign([], editedNode.data.nodeInputs);
 		let nodeInput = resieDataCopy.find((obj: NodeInput) => obj.resieName === resieName);
 		console.assert(nodeInput != undefined);
 		if (isValueChange) {

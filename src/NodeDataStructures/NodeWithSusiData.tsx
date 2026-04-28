@@ -4,6 +4,8 @@ import { Position } from '@xyflow/react';
 import { type SusiNodeData, createSusiNodeData } from './SusiNodeData';
 import type { Medium } from './Medium';
 
+import _ from 'lodash';
+
 /**
  * NodeWithSusiData is a normal ReactFlow Node, but with data replaced by the interface SusiNodeData for clarity
  * We want our data structures to be clear, so you can easily tell what data is where without a debugger
@@ -46,6 +48,15 @@ const createNodeFromType = (
 			width: 'auto',
 		} as React.CSSProperties,
 	};
+};
+
+export const deepCloneNode = (node: NodeWithSusiData): NodeWithSusiData => {
+	const newNode = _.cloneDeep(node);
+	newNode.data.nodeInputs = node.data.nodeInputs.map((input) => _.cloneDeep(input));
+	return newNode;
+};
+export const deepCloneNodes = (nodes: NodeWithSusiData[]): NodeWithSusiData[] => {
+	return nodes.map((n) => deepCloneNode(n));
 };
 
 export default createNodeFromType;

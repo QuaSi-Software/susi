@@ -29,5 +29,5 @@ export interface ComponentImportData {
 		y: number;
 	};
 	node_type: string;
-	connection_handles?: ConnectionHandles[];
+	connection_handles?: Record<string, ConnectionHandles>;
 }

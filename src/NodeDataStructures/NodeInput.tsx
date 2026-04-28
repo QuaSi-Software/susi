@@ -64,6 +64,16 @@ class NodeInput {
 		}
 		this.value = value;
 	};
+	public getNodeInputExportValue = (mediums: Medium[]): any => {
+		console.log('In getNodeInputExportValue: ' + this.value);
+		if (this.type === NodeInputType.MEDIUM) {
+			const mediumKey = this.value;
+			const medium = mediums.find((m) => m.key === mediumKey);
+			if (!medium) return 'UNDEFINED';
+			return medium.name;
+		}
+		return this.value;
+	};
 
 	private getNodeInputType = (value: any, dropdownOptions: string[]) => {
 		if (dropdownOptions.length > 0) return NodeInputType.DROPDOWN;

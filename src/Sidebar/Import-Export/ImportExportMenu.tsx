@@ -1,9 +1,8 @@
 import { useContext, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
-import type { Medium } from '../../NodeDataStructures/Medium';
 import importState from './Import/Import';
-import exportState from './Export';
+import exportState from './Export/Export';
 import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
 import { AppContext } from '../../Reactflow-Components/AppContext';
 
