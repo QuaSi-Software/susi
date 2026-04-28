@@ -74,6 +74,19 @@ class NodeInput {
 		}
 		return this.value;
 	};
+	public copy = (): NodeInput => {
+		return new NodeInput(
+			this.type,
+			this.resieName,
+			this.displayName,
+			this.value,
+			this.tooltip,
+			this.editable,
+			this.isRequired,
+			this.dropdownOptions,
+			this.dropdownOptionDisplayNames
+		);
+	};
 
 	private getNodeInputType = (value: any, dropdownOptions: string[]) => {
 		if (dropdownOptions.length > 0) return NodeInputType.DROPDOWN;

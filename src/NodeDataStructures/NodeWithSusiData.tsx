@@ -52,7 +52,7 @@ const createNodeFromType = (
 
 export const deepCloneNode = (node: NodeWithSusiData): NodeWithSusiData => {
 	const newNode = _.cloneDeep(node);
-	newNode.data.nodeInputs = node.data.nodeInputs.map((input) => _.cloneDeep(input));
+	newNode.data.nodeInputs = node.data.nodeInputs.map((input) => input.copy());
 	return newNode;
 };
 export const deepCloneNodes = (nodes: NodeWithSusiData[]): NodeWithSusiData[] => {
