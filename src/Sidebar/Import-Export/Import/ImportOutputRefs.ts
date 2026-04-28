@@ -29,12 +29,12 @@ export default function getOutputRefs(
 	/** Use the medium variable name (key in the output_refs dictionary)  and the nodes mediumHandleDict
 	 * to determine which handle its edge should connect to */
 	const outputRefArray = [];
-	const connectionHandles: ConnectionHandles[] = [];
+	const connectionHandles: Record<string, ConnectionHandles> = {};
 	// for each node in output_refs, find which handle it should be on given its specified medium variable
 	for (const [mediumVarName, nodeID] of Object.entries(outputRefs)) {
 		const handleIndex = node.data.handleMediumDict.source.findIndex((e) => e === mediumVarName);
 		outputRefArray.push(nodeID);
-		connectionHandles.push({ source: handleIndex });
+		connectionHandles[nodeID] = { source: handleIndex };
 	}
 	nodeData.import_data!.connection_handles = connectionHandles;
 	return outputRefArray;

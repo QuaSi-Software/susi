@@ -1,8 +1,13 @@
 import type { SusiNode } from '../../../NodeDataStructures/SusiNode';
 import type { ComponentData } from '../ExportDataStrucures';
 
+function getNodeIDFromName(nodeName: string, nodes: SusiNode[]) {
+	return nodes.find((n) => n.data.content === nodeName)!.id;
+}
+
 export function isBusDataValid(
 	node: SusiNode,
+	nodes: SusiNode[],
 	importedNodeData: ComponentData,
 	logError: (msg: string) => void
 ): boolean {
@@ -19,7 +24,8 @@ export function isBusDataValid(
 		logError(`Bus ${node.data.content} does not have an input_order.`);
 		return false;
 	}
-	if (isPermutation(connections.input_order, node.data.busData.inputOrder)) {
+	const importedInputOrderIDs = connections.input_order.map((name) => getNodeIDFromName(name, nodes));
+	if (!isPermutation(importedInputOrderIDs, node.data.busData.inputOrder)) {
 		logError(`Bus ${node.data.content} has an invalid input_order.`);
 		return false;
 	}
@@ -28,7 +34,8 @@ export function isBusDataValid(
 		logError(`Bus ${node.data.content} does not have an output_order.`);
 		return false;
 	}
-	if (isPermutation(connections.output_order, node.data.busData.outputOrder)) {
+	const importedOutputOrderIDs = connections.output_order.map((name) => getNodeIDFromName(name, nodes));
+	if (!isPermutation(importedOutputOrderIDs, node.data.busData.outputOrder)) {
 		logError(`Bus ${node.data.content} has an invalid output_order.`);
 		return false;
 	}
@@ -51,10 +58,15 @@ export function isBusDataValid(
 }
 
 function isPermutation(arr1: string[], arr2: string[]): boolean {
-	if (arr1.length !== arr2.length) return false;
+	if (arr1.length !== arr2.length) {
+		return false;
+	} else if (arr1.length === 0) {
+		return true;
+	}
 	const sorted1 = [...arr1].sort();
 	const sorted2 = [...arr2].sort();
-	return sorted1.every((val, idx) => val === sorted2[idx]);
+	const isSame = sorted1.every((val, idx) => val === sorted2[idx]);
+	return isSame;
 }
 
 function isValidMatrix(matrix: any[], numRows: number, numCols: number): boolean {

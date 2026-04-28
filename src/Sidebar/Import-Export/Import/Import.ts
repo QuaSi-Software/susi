@@ -94,7 +94,7 @@ const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: Im
 
 			// Create the source and target handles the edge should connect to
 			//source
-			const importedConnectionHandles = inputNodeData.import_data?.connection_handles?.[inputNodeId];
+			const importedConnectionHandles = inputNodeData.import_data?.connection_handles?.[outputNodeId];
 			let sourceHandleIndex = importedConnectionHandles?.source;
 			if (sourceHandleIndex === undefined) {
 				sourceHandleIndex = min([inputNodeEdgeIndex, inputNode.data.sourceHandles - 1]);
@@ -131,7 +131,7 @@ const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: Im
 	for (const [nodeId, nodeData] of Object.entries(importDict.components)) {
 		const node = nodeDict[nodeId];
 		if (node && node.data.busData) {
-			if (isBusDataValid(node, nodeData, logError)) {
+			if (isBusDataValid(node, nodeArray, nodeData, logError)) {
 				const connections = nodeData.connections;
 				node.data.busData = new BusData(
 					connections!.input_order,
