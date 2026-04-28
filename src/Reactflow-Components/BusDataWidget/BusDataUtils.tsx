@@ -1,5 +1,5 @@
 import type { SusiNode } from '../../NodeDataStructures/SusiNode';
-import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
+import type { SusiEdge } from '../../NodeDataStructures/SusiEdge';
 
 /**
  * Update input_order, output_order and energy_flow in node.data.bus_data with this new connection

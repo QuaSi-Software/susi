@@ -6,7 +6,7 @@ import type { MenuPosition } from './Menus';
 import { deepCloneNode, type SusiNode } from '../../NodeDataStructures/SusiNode';
 import EditNodeModal from './EditNodeModal/EditNodeModal';
 import BusData from '../../NodeDataStructures/BusData';
-import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
+import type { SusiEdge } from '../../NodeDataStructures/SusiEdge';
 import { updateBusDataOnNodeDelete } from '../BusDataWidget/BusDataUtils';
 import _ from 'lodash';
 

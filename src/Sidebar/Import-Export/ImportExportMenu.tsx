@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import type { SusiNode } from '../../NodeDataStructures/SusiNode';
 import importState from './Import/Import';
 import exportState from './Export/Export';
-import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
+import type { SusiEdge } from '../../NodeDataStructures/SusiEdge';
 import { AppContext } from '../../Reactflow-Components/AppContext';
 
 export interface ImportExportMenuProps {

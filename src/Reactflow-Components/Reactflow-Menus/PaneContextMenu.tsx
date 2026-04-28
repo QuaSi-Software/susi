@@ -5,7 +5,7 @@ import type { SusiNode } from '../../NodeDataStructures/SusiNode';
 import { useReactFlow } from '@xyflow/react';
 import createElkGraphLayout from '../ElkLayout';
 import { useEffect, useState } from 'react';
-import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
+import type { SusiEdge } from '../../NodeDataStructures/SusiEdge';
 import { flushSync } from 'react-dom';
 
 interface PaneContextMenuInput {

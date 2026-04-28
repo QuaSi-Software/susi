@@ -11,7 +11,7 @@ import { isBusDataValid } from './ImportBusData';
 import BusData from '../../../NodeDataStructures/BusData';
 import { min } from 'lodash';
 import getOutputRefs from './ImportOutputRefs';
-import type { SusiEdge } from '../../../NodeDataStructures/SusiEdgeData';
+import type { SusiEdge } from '../../../NodeDataStructures/SusiEdge';
 
 interface ImportStateProps {
 	stateJSON: string;

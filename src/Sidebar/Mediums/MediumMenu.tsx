@@ -7,7 +7,7 @@ import { deepCloneNodes, type SusiNode } from '../../NodeDataStructures/SusiNode
 import { NodeInputType } from '../../NodeDataStructures/NodeInput';
 import { getDefaultMediums, getRandomColor, getUndefinedMedium } from './MediumUtils';
 import _ from 'lodash';
-import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
+import type { SusiEdge } from '../../NodeDataStructures/SusiEdge';
 import { flushSync } from 'react-dom';
 
 export interface MediumMenuProps {

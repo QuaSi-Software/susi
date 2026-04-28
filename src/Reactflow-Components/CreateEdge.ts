@@ -3,7 +3,7 @@ import type { SusiNode } from '../NodeDataStructures/SusiNode';
 import { updateBusDataOnEdgeConnect } from './BusDataWidget/BusDataUtils';
 import { getMedium, getMediumKey, mediumsMatch } from '../Sidebar/Mediums/MediumUtils';
 import type { Medium } from '../NodeDataStructures/Medium';
-import type { SusiEdge } from '../NodeDataStructures/SusiEdgeData';
+import type { SusiEdge } from '../NodeDataStructures/SusiEdge';
 
 /**
  * Check if the source and target handle of the edge we are trying to connect are already taken

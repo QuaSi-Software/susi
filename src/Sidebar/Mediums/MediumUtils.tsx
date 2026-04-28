@@ -1,6 +1,6 @@
 import { createMedium, type Medium } from '../../NodeDataStructures/Medium';
 import type { SusiNode } from '../../NodeDataStructures/SusiNode';
-import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
+import type { SusiEdge } from '../../NodeDataStructures/SusiEdge';
 import type { SusiNodeData } from '../../NodeDataStructures/SusiNodeData';
 
 const HandleType = {

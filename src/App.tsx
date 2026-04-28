@@ -29,7 +29,7 @@ import { AppContext } from './Reactflow-Components/AppContext';
 import { getNewEdge } from './Reactflow-Components/CreateEdge';
 import ErrorMenu from './Reactflow-Components/Errors/ErrorMenu';
 import type { ErrorMessage } from './Reactflow-Components/Errors/ErrorMessage';
-import type { SusiEdge } from './NodeDataStructures/SusiEdgeData';
+import type { SusiEdge } from './NodeDataStructures/SusiEdge';
 
 const initialNodes: SusiNode[] = [];
 

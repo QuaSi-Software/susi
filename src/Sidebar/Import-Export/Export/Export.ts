@@ -1,6 +1,6 @@
 import type { Medium } from '../../../NodeDataStructures/Medium';
 import type { SusiNode } from '../../../NodeDataStructures/SusiNode';
-import type { SusiEdge } from '../../../NodeDataStructures/SusiEdgeData';
+import type { SusiEdge } from '../../../NodeDataStructures/SusiEdge';
 import type { NodeInput } from '../../../NodeDataStructures/NodeInput';
 import type { ComponentData, ConnectionHandles, Connections } from '../ExportDataStrucures';
 import { getUndefinedMedium } from '../../Mediums/MediumUtils';

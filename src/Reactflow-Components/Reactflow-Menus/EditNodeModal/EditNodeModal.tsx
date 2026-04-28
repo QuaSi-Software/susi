@@ -13,7 +13,7 @@ import type { NodeInput } from '../../../NodeDataStructures/NodeInput';
 import ResieInputMenu from './ResieInputMenu';
 import { getEdgesWithMediumMismatch } from '../../../Sidebar/Mediums/MediumUtils';
 import { updateBusDataOnEdgeDelete } from '../../BusDataWidget/BusDataUtils';
-import type { SusiEdge } from '../../../NodeDataStructures/SusiEdgeData';
+import type { SusiEdge } from '../../../NodeDataStructures/SusiEdge';
 
 interface EditNodeModalInputs {
 	show: boolean;
