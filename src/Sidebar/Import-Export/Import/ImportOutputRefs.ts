@@ -1,10 +1,10 @@
 import { NodeInputType } from '../../../NodeDataStructures/NodeInput';
-import type { NodeWithSusiData } from '../../../NodeDataStructures/NodeWithSusiData';
+import type { SusiNode } from '../../../NodeDataStructures/SusiNode';
 import type { ComponentData, ConnectionHandles } from '../ExportDataStrucures';
 
 export default function getOutputRefs(
 	nodeData: ComponentData,
-	node: NodeWithSusiData,
+	node: SusiNode,
 	logError: (errorMessage: string) => void
 ): string[] {
 	if (nodeData.import_data!.node_type!.toLowerCase() === 'bus') {

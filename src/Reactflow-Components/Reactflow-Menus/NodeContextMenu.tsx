@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/esm/ButtonGroup';
 
 import type { MenuPosition } from './Menus';
-import { deepCloneNode, type NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
+import { deepCloneNode, type SusiNode } from '../../NodeDataStructures/SusiNode';
 import EditNodeModal from './EditNodeModal/EditNodeModal';
 import BusData from '../../NodeDataStructures/BusData';
 import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
@@ -12,15 +12,15 @@ import _ from 'lodash';
 
 interface NodeContextMenuInput {
 	nodeContextMenu: NodeContextMenuData | null;
-	nodes: NodeWithSusiData[];
+	nodes: SusiNode[];
 	edges: SusiEdge[];
 	setNodeContextMenu: (NodeContextMenuData: NodeContextMenuData | null) => void;
-	setNodes: Dispatch<SetStateAction<NodeWithSusiData[]>>;
+	setNodes: Dispatch<SetStateAction<SusiNode[]>>;
 	setEdges: Dispatch<SetStateAction<SusiEdge[]>>;
 }
 
 interface NodeContextMenuData {
-	node: NodeWithSusiData;
+	node: SusiNode;
 	menuPosition: MenuPosition;
 }
 
@@ -70,14 +70,14 @@ const NodeContextMenu = ({
 	 * @param {*} nodes A list of all the nodes in the scene
 	 * @returns {string} The name for the duplicated node
 	 */
-	const findNameForDuplicate = (name: string, nodes: NodeWithSusiData[]) => {
+	const findNameForDuplicate = (name: string, nodes: SusiNode[]) => {
 		// divide the node name into a string part nameBase and whatever number is at the end of the name
 		// if there is no number, the nameBase will just be the name and the new number will be 1
 		const match = name.match(/^(.*?)(\d+)$/);
 		let nameBase = match ? match[1] : name;
 		let number = match ? parseInt(match[2]) + 1 : 1;
 		// increase number until the name 'nameBase + number' (with and without 0 padding) is not taken
-		while (nodes.find((node: NodeWithSusiData) => nameMatches(node.data.content, nameBase, number))) {
+		while (nodes.find((node: SusiNode) => nameMatches(node.data.content, nameBase, number))) {
 			number++;
 		}
 		return getPaddedName(nameBase, number);
@@ -100,10 +100,10 @@ const NodeContextMenu = ({
 	const handleDuplicateNode = () => {
 		if (!nodeContextMenu) return;
 		// duplicate node object
-		const nodeToDuplicate: NodeWithSusiData | undefined = nodes.find((node) => node.id === nodeContextMenu.node.id);
+		const nodeToDuplicate: SusiNode | undefined = nodes.find((node) => node.id === nodeContextMenu.node.id);
 		console.assert(nodeToDuplicate != undefined);
 		if (!nodeToDuplicate) return;
-		const duplicateNode: NodeWithSusiData = deepCloneNode(nodeToDuplicate);
+		const duplicateNode: SusiNode = deepCloneNode(nodeToDuplicate);
 		// move node towards bottom right and give it a unique ID
 		duplicateNode.position.x += 20;
 		duplicateNode.position.y += 20;

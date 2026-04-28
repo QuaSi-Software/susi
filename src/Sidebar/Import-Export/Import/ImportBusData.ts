@@ -1,8 +1,8 @@
-import type { NodeWithSusiData } from '../../../NodeDataStructures/NodeWithSusiData';
+import type { SusiNode } from '../../../NodeDataStructures/SusiNode';
 import type { ComponentData } from '../ExportDataStrucures';
 
 export function isBusDataValid(
-	node: NodeWithSusiData,
+	node: SusiNode,
 	importedNodeData: ComponentData,
 	logError: (msg: string) => void
 ): boolean {

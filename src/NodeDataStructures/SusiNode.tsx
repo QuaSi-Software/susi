@@ -7,19 +7,19 @@ import type { Medium } from './Medium';
 import _ from 'lodash';
 
 /**
- * NodeWithSusiData is a normal ReactFlow Node, but with data replaced by the interface SusiNodeData for clarity
+ * SusiNode is a normal ReactFlow Node, but with data replaced by the interface SusiNodeData for clarity
  * We want our data structures to be clear, so you can easily tell what data is where without a debugger
  */
-export type NodeWithSusiData = Node & { data: SusiNodeData };
+export type SusiNode = Node & { data: SusiNodeData };
 
 const createNodeFromType = (
-	nodes: NodeWithSusiData[],
+	nodes: SusiNode[],
 	nodeType: NodeType,
 	position: XYPosition,
 	mediums: Medium[],
 	content: string | null = null
 ) => {
-	const nodesWithType = nodes.filter((node: NodeWithSusiData) => node.data.componentType === nodeType.type_name);
+	const nodesWithType = nodes.filter((node: SusiNode) => node.data.componentType === nodeType.type_name);
 	const index = nodesWithType.length;
 	const timestamp = Date.now();
 	if (!content) {
@@ -50,12 +50,12 @@ const createNodeFromType = (
 	};
 };
 
-export const deepCloneNode = (node: NodeWithSusiData): NodeWithSusiData => {
+export const deepCloneNode = (node: SusiNode): SusiNode => {
 	const newNode = _.cloneDeep(node);
 	newNode.data.nodeInputs = node.data.nodeInputs.map((input) => input.copy());
 	return newNode;
 };
-export const deepCloneNodes = (nodes: NodeWithSusiData[]): NodeWithSusiData[] => {
+export const deepCloneNodes = (nodes: SusiNode[]): SusiNode[] => {
 	return nodes.map((n) => deepCloneNode(n));
 };
 

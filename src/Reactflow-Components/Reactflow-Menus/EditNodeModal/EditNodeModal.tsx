@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import _ from 'lodash';
 
-import type { NodeWithSusiData } from '../../../NodeDataStructures/NodeWithSusiData';
+import type { SusiNode } from '../../../NodeDataStructures/SusiNode';
 import type BusData from '../../../NodeDataStructures/BusData';
 import type { NodeInput } from '../../../NodeDataStructures/NodeInput';
 import ResieInputMenu from './ResieInputMenu';
@@ -17,9 +17,9 @@ import type { SusiEdge } from '../../../NodeDataStructures/SusiEdgeData';
 
 interface EditNodeModalInputs {
 	show: boolean;
-	node: NodeWithSusiData;
-	nodes: NodeWithSusiData[];
-	setNodes: (nodes: NodeWithSusiData[]) => void;
+	node: SusiNode;
+	nodes: SusiNode[];
+	setNodes: (nodes: SusiNode[]) => void;
 	edges: SusiEdge[];
 	setEdges: (edges: SusiEdge[]) => void;
 	handleClose: () => void;
@@ -30,7 +30,7 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 	const [edgesToDelete, setEdgesToDelete] = useState<string[]>([]);
 
 	const onNodeContentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setEditedNode((editedNode: NodeWithSusiData) => ({
+		setEditedNode((editedNode: SusiNode) => ({
 			...editedNode,
 			data: { ...editedNode.data, content: e.target.value },
 		}));
@@ -53,7 +53,7 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 		} else {
 			nodeInput!.isIncluded = value;
 		}
-		setEditedNode((editedNode: NodeWithSusiData) => ({
+		setEditedNode((editedNode: SusiNode) => ({
 			...editedNode,
 			data: { ...editedNode.data, nodeInputs: resieDataCopy },
 		}));
@@ -63,14 +63,14 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 		setEdgesToDelete(newEdgesToDelete);
 	};
 	const onNodeBusDataChange = (busData: BusData) => {
-		setEditedNode((editedNode: NodeWithSusiData) => ({
+		setEditedNode((editedNode: SusiNode) => ({
 			...editedNode,
 			data: { ...editedNode.data, busData: busData },
 		}));
 	};
 
 	const handleSaveChanges = () => {
-		let updatedNodes = nodes.map((n: NodeWithSusiData) => (n.id === editedNode.id ? editedNode : n));
+		let updatedNodes = nodes.map((n: SusiNode) => (n.id === editedNode.id ? editedNode : n));
 		edgesToDelete.forEach((edgeID) => {
 			const edge = edges.find((e) => e.id === edgeID);
 			updateBusDataOnEdgeDelete(updatedNodes, edge!);

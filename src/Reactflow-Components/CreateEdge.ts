@@ -1,5 +1,5 @@
 import type { Connection } from '@xyflow/react';
-import type { NodeWithSusiData } from '../NodeDataStructures/NodeWithSusiData';
+import type { SusiNode } from '../NodeDataStructures/SusiNode';
 import { updateBusDataOnEdgeConnect } from './BusDataWidget/BusDataUtils';
 import { getMedium, getMediumKey, mediumsMatch } from '../Sidebar/Mediums/MediumUtils';
 import type { Medium } from '../NodeDataStructures/Medium';
@@ -13,8 +13,8 @@ import type { SusiEdge } from '../NodeDataStructures/SusiEdgeData';
 function isHandleTaken(
 	sourceHandle: string,
 	targetHandle: string,
-	sourceNode: NodeWithSusiData,
-	targetNode: NodeWithSusiData,
+	sourceNode: SusiNode,
+	targetNode: SusiNode,
 	edges: SusiEdge[]
 ) {
 	// edge is valid if its target and source handle are not already taken unless the node is a bus
@@ -33,7 +33,7 @@ function isHandleTaken(
 
 const getNewEdge = (
 	connection: Connection,
-	nodes: NodeWithSusiData[],
+	nodes: SusiNode[],
 	edges: SusiEdge[],
 	mediums: Medium[],
 	setError: (errors: string) => void

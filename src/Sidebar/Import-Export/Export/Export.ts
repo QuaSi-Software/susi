@@ -1,17 +1,17 @@
 import type { Medium } from '../../../NodeDataStructures/Medium';
-import type { NodeWithSusiData } from '../../../NodeDataStructures/NodeWithSusiData';
+import type { SusiNode } from '../../../NodeDataStructures/SusiNode';
 import type { SusiEdge } from '../../../NodeDataStructures/SusiEdgeData';
 import type { NodeInput } from '../../../NodeDataStructures/NodeInput';
 import type { ComponentData, ConnectionHandles, Connections } from '../ExportDataStrucures';
 import { getUndefinedMedium } from '../../Mediums/MediumUtils';
 
 interface ExportProps {
-	nodes: NodeWithSusiData[];
+	nodes: SusiNode[];
 	edges: SusiEdge[];
 	mediums: Medium[];
 }
 
-function getNodeNameFromID(nodeID: string, nodes: NodeWithSusiData[]) {
+function getNodeNameFromID(nodeID: string, nodes: SusiNode[]) {
 	return nodes.find((n) => n.id === nodeID)!.data.content;
 }
 
@@ -28,7 +28,7 @@ const getMediumListForExport = (mediums: Medium[]): Array<[string, string]> => {
  */
 const getOutputs = (
 	nodeId: string,
-	nodes: NodeWithSusiData[],
+	nodes: SusiNode[],
 	edges: SusiEdge[]
 	// mediums: Medium[]
 ): {
@@ -65,7 +65,7 @@ const getOutputs = (
 /**
  * Get bus connections (input_order, output_order, energy_flow)
  */
-const getBusConnections = (node: NodeWithSusiData, nodes: NodeWithSusiData[]): Connections => {
+const getBusConnections = (node: SusiNode, nodes: SusiNode[]): Connections => {
 	if (!node.data.busData) {
 		console.error(`Bus ${node.data.content} has no bus data defined`);
 		return { input_order: [], output_order: [], energy_flow: [] };

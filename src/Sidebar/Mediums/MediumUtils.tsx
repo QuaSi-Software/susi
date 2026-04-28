@@ -1,5 +1,5 @@
 import { createMedium, type Medium } from '../../NodeDataStructures/Medium';
-import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
+import type { SusiNode } from '../../NodeDataStructures/SusiNode';
 import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
 import type { SusiNodeData } from '../../NodeDataStructures/SusiNodeData';
 
@@ -74,7 +74,7 @@ function getMedium(handleName: string, nodeData: SusiNodeData, mediums: Medium[]
  * @param {string} mediumVarName the name of the medium variable that was changed
  * @returns {List[string]} a list of all the edge IDs that need to be deleted as a result of the medium change
  */
-function getEdgesWithMediumMismatch(edges: SusiEdge[], node: NodeWithSusiData, mediumVarName: string) {
+function getEdgesWithMediumMismatch(edges: SusiEdge[], node: SusiNode, mediumVarName: string) {
 	// find all edges connected to this medium variables
 	let handleMediumDict = node.data.handleMediumDict;
 	let sourceEdgesToDelete = getEdgesToDelete(edges, node.id, mediumVarName, HandleType.source);

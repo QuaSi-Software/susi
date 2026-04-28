@@ -16,7 +16,7 @@ import { setMediumCSSVariables } from './Sidebar/Mediums/MediumCSSUtils';
 
 import Sidebar from './Sidebar/Sidebar';
 import { DnDProvider, useDnD } from './DnDContext';
-import createNodeFromType, { type NodeWithSusiData } from './NodeDataStructures/NodeWithSusiData';
+import createNodeFromType, { type SusiNode } from './NodeDataStructures/SusiNode';
 import MarkdownNode from './Reactflow-Components/MarkdownNode';
 import type { Connection } from '@xyflow/react';
 import { EdgeContextMenu, type EdgeContextMenuData } from './Reactflow-Components/Reactflow-Menus/EdgeContextMenu';
@@ -31,10 +31,10 @@ import ErrorMenu from './Reactflow-Components/Errors/ErrorMenu';
 import type { ErrorMessage } from './Reactflow-Components/Errors/ErrorMessage';
 import type { SusiEdge } from './NodeDataStructures/SusiEdgeData';
 
-const initialNodes: NodeWithSusiData[] = [];
+const initialNodes: SusiNode[] = [];
 
 const DnDFlow = () => {
-	const [nodes, setNodes, onNodesChange] = useNodesState<NodeWithSusiData>(initialNodes);
+	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>(initialNodes);
 	const [edges, setEdges, onEdgesChange] = useEdgesState<SusiEdge>([] as any);
 	const { screenToFlowPosition } = useReactFlow();
 	const [type] = useDnD();
@@ -116,7 +116,7 @@ const DnDFlow = () => {
 		};
 		setEdgeContextMenu(newEdgeContextMenuData);
 	};
-	const onNodeContextMenu = (event: React.MouseEvent, node: NodeWithSusiData): void => {
+	const onNodeContextMenu = (event: React.MouseEvent, node: SusiNode): void => {
 		event.preventDefault();
 		setPaneContextMenu(null);
 		setEdgeContextMenu(null);

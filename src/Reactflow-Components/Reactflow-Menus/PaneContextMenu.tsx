@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import type { MenuPosition } from './Menus';
-import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
+import type { SusiNode } from '../../NodeDataStructures/SusiNode';
 import { useReactFlow } from '@xyflow/react';
 import createElkGraphLayout from '../ElkLayout';
 import { useEffect, useState } from 'react';
@@ -11,8 +11,8 @@ import { flushSync } from 'react-dom';
 interface PaneContextMenuInput {
 	paneContextMenu: MenuPosition | null;
 	setPaneContextMenu: (NodeContextMenuData: MenuPosition | null) => void;
-	nodes: NodeWithSusiData[];
-	setNodes: (nodes: NodeWithSusiData[]) => void;
+	nodes: SusiNode[];
+	setNodes: (nodes: SusiNode[]) => void;
 	edges: SusiEdge[];
 }
 
@@ -29,7 +29,7 @@ const PaneContextMenu = ({ paneContextMenu, setPaneContextMenu, nodes, setNodes,
 	useEffect(() => {
 		if (layoutCalculated) return;
 		createElkGraphLayout(nodes, edges)
-			.then((layoutedNodes: Array<NodeWithSusiData>) => {
+			.then((layoutedNodes: Array<SusiNode>) => {
 				flushSync(() => setNodes(layoutedNodes));
 				fitView();
 				setLayoutCalculated(true);

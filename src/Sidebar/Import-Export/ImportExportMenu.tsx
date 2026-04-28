@@ -1,16 +1,16 @@
 import { useContext, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
+import type { SusiNode } from '../../NodeDataStructures/SusiNode';
 import importState from './Import/Import';
 import exportState from './Export/Export';
 import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
 import { AppContext } from '../../Reactflow-Components/AppContext';
 
 export interface ImportExportMenuProps {
-	setNodes: (nodes: NodeWithSusiData[]) => void;
+	setNodes: (nodes: SusiNode[]) => void;
 	setEdges: (edges: SusiEdge[]) => void;
 	logError: (errorMessage: string) => void;
-	nodes: NodeWithSusiData[];
+	nodes: SusiNode[];
 	edges: SusiEdge[];
 }
 

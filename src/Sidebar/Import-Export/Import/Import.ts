@@ -1,7 +1,7 @@
-import type { NodeWithSusiData } from '../../../NodeDataStructures/NodeWithSusiData';
+import type { SusiNode } from '../../../NodeDataStructures/SusiNode';
 import type { Medium } from '../../../NodeDataStructures/Medium';
 import { getNodeTypeWithName } from '../../../NodeDataStructures/SusiNodeTypes';
-import createNodeFromType from '../../../NodeDataStructures/NodeWithSusiData';
+import createNodeFromType from '../../../NodeDataStructures/SusiNode';
 import getNodeInputs from '../../../NodeDataStructures/NodeInputData';
 import { getNewEdge } from '../../../Reactflow-Components/CreateEdge';
 import getImportMediums from './ImportMediums';
@@ -15,7 +15,7 @@ import type { SusiEdge } from '../../../NodeDataStructures/SusiEdgeData';
 
 interface ImportStateProps {
 	stateJSON: string;
-	setNodes: (nodes: NodeWithSusiData[]) => void;
+	setNodes: (nodes: SusiNode[]) => void;
 	setEdges: (edges: SusiEdge[]) => void;
 	setMediums: (mediums: Medium[]) => void;
 	logError: (errorMessage: string) => void;
@@ -38,8 +38,8 @@ const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: Im
 	const mediums = getImportMediums(importDict);
 	setMediums(mediums);
 
-	const nodeDict: Record<string, NodeWithSusiData> = {};
-	const nodeArray: NodeWithSusiData[] = [];
+	const nodeDict: Record<string, SusiNode> = {};
+	const nodeArray: SusiNode[] = [];
 
 	// First pass: create all nodes
 	for (const [nodeId, nodeData] of Object.entries(importDict.components)) {

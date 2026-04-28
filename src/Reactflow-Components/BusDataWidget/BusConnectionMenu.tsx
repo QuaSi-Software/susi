@@ -4,11 +4,11 @@ import Modal from 'react-bootstrap/Modal';
 import EnergyFlowMatrix from './EnergyFlowMatrix';
 import type BusData from '../../NodeDataStructures/BusData';
 import React from 'react';
-import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
+import type { SusiNode } from '../../NodeDataStructures/SusiNode';
 
 interface BusConnectionMenuProps {
-	node: NodeWithSusiData;
-	nodes: NodeWithSusiData[];
+	node: SusiNode;
+	nodes: SusiNode[];
 	onBusDataChange: (busData: BusData) => void;
 }
 
@@ -18,7 +18,7 @@ interface BusConnectionMenuProps {
  * @param allNodes A list of all the nodes in the scene
  * @returns A list of node names (string)
  */
-function getNodeNamesFromIDs(nodeIDs: string[], allNodes: NodeWithSusiData[]): string[] {
+function getNodeNamesFromIDs(nodeIDs: string[], allNodes: SusiNode[]): string[] {
 	const nodes = nodeIDs.map((id) => allNodes.find((n) => n.id === id));
 	const nodeNames = nodes.map((node) => (node ? node.data.content : ''));
 	return nodeNames;
@@ -30,7 +30,7 @@ function getNodeNamesFromIDs(nodeIDs: string[], allNodes: NodeWithSusiData[]): s
  * @param allNodes A list of all nodes in the scene
  * @returns list of node IDs (string)
  */
-function getNodeIDsFromNames(names: string[], allNodes: NodeWithSusiData[]): string[] {
+function getNodeIDsFromNames(names: string[], allNodes: SusiNode[]): string[] {
 	return names.map((name) => {
 		const found = allNodes.find((node) => node.data.content === name);
 		return found ? found.id : '';

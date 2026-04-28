@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/esm/Button';
 import ButtonGroup from 'react-bootstrap/esm/ButtonGroup';
 import type { MenuPosition } from './Menus';
 import { updateBusDataOnEdgeDelete } from '../BusDataWidget/BusDataUtils';
-import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
+import type { SusiNode } from '../../NodeDataStructures/SusiNode';
 import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
 import type { Dispatch, SetStateAction } from 'react';
 
@@ -11,7 +11,7 @@ interface EdgeContextMenuData {
 	menuPosition: MenuPosition;
 }
 interface EdgeContextMenuInput {
-	setNodes: Dispatch<SetStateAction<NodeWithSusiData[]>>;
+	setNodes: Dispatch<SetStateAction<SusiNode[]>>;
 	setEdges: Dispatch<SetStateAction<SusiEdge[]>>;
 	edgeContextMenuData: EdgeContextMenuData | null;
 	setEdgeContextMenu: Dispatch<SetStateAction<EdgeContextMenuData | null>>;

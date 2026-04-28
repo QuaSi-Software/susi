@@ -1,4 +1,4 @@
-import type { NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
+import type { SusiNode } from '../../NodeDataStructures/SusiNode';
 import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
 
 /**
@@ -9,7 +9,7 @@ import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
  * @param {boolean} incoming is this an incoming (or outgoing) connection i.e. is node the target node
  * @returns
  */
-function updateBusDataOnEdgeConnect(node: NodeWithSusiData, connectedNodeID: string, incoming: boolean) {
+function updateBusDataOnEdgeConnect(node: SusiNode, connectedNodeID: string, incoming: boolean) {
 	if (node.data.componentType.toLowerCase() !== 'bus') return;
 	let busData = node.data.busData;
 	if (incoming) {
@@ -25,7 +25,7 @@ function updateBusDataOnEdgeConnect(node: NodeWithSusiData, connectedNodeID: str
  * @param {string} disconnectedNodeID the id of the node we're disconnecting from the bus
  * @param {boolean} incoming Is this an incoming connection i.e. is the bus the target
  */
-function removeBusConnection(node: NodeWithSusiData, disconnectedNodeID: string, incoming: boolean) {
+function removeBusConnection(node: SusiNode, disconnectedNodeID: string, incoming: boolean) {
 	if (!node.data.busData) return;
 	const busData = node.data.busData;
 	if (incoming) busData.removeFromInputOrder(disconnectedNodeID);
@@ -39,7 +39,7 @@ function removeBusConnection(node: NodeWithSusiData, disconnectedNodeID: string,
  * @param {List[Object]} nodes All the nodes in the scene
  * @param {List[Object]} edges All the edges in the scene
  */
-function updateBusDataOnNodeDelete(deletedNodeID: string, nodes: Array<NodeWithSusiData>, edges: Array<SusiEdge>) {
+function updateBusDataOnNodeDelete(deletedNodeID: string, nodes: Array<SusiNode>, edges: Array<SusiEdge>) {
 	const deletedEdges = edges.filter((edge) => edge.source === deletedNodeID || edge.target === deletedNodeID);
 	deletedEdges.forEach((edge) => {
 		let source = nodes.find((node) => node.id === edge.source);
@@ -51,7 +51,7 @@ function updateBusDataOnNodeDelete(deletedNodeID: string, nodes: Array<NodeWithS
 	});
 }
 
-function updateBusDataOnEdgeDelete(nodes: Array<NodeWithSusiData>, edge: SusiEdge) {
+function updateBusDataOnEdgeDelete(nodes: Array<SusiNode>, edge: SusiEdge) {
 	nodes.forEach((node) => {
 		if (edge.source === node.id) {
 			removeBusConnection(node, edge.target, false);

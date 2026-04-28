@@ -3,7 +3,7 @@ import { Button, Col } from 'react-bootstrap';
 import type { Medium } from '../../NodeDataStructures/Medium';
 import MediumInputWidget from './MediumInputWidget';
 import { AppContext } from '../../Reactflow-Components/AppContext';
-import { deepCloneNodes, type NodeWithSusiData } from '../../NodeDataStructures/NodeWithSusiData';
+import { deepCloneNodes, type SusiNode } from '../../NodeDataStructures/SusiNode';
 import { NodeInputType } from '../../NodeDataStructures/NodeInput';
 import { getDefaultMediums, getRandomColor, getUndefinedMedium } from './MediumUtils';
 import _ from 'lodash';
@@ -11,8 +11,8 @@ import type { SusiEdge } from '../../NodeDataStructures/SusiEdgeData';
 import { flushSync } from 'react-dom';
 
 export interface MediumMenuProps {
-	nodes: NodeWithSusiData[];
-	setNodes: (nodes: NodeWithSusiData[]) => void;
+	nodes: SusiNode[];
+	setNodes: (nodes: SusiNode[]) => void;
 	edges: SusiEdge[];
 	setEdges: (edges: SusiEdge[]) => void;
 }
@@ -33,7 +33,7 @@ const MediumMenu = ({ nodes, setNodes, edges, setEdges }: MediumMenuProps) => {
 	const updateNodesAndEdgesOnMediumDelete = (mediumKeys: string[]) => {
 		/** set the the medium variables to undefined
 		 * that were previously one of the medium keys we're deleting */
-		const newNodes: NodeWithSusiData[] = deepCloneNodes(nodes);
+		const newNodes: SusiNode[] = deepCloneNodes(nodes);
 		mediumKeys.forEach((mediumKey) => {
 			newNodes.forEach((node) => {
 				node.data.nodeInputs.forEach((nodeInput) => {

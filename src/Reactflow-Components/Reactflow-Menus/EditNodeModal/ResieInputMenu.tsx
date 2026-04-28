@@ -1,12 +1,12 @@
-import type { NodeWithSusiData } from '../../../NodeDataStructures/NodeWithSusiData';
+import type { SusiNode } from '../../../NodeDataStructures/SusiNode';
 import type BusData from '../../../NodeDataStructures/BusData';
 import RequiredInputMenu from './RequiredInputMenu';
 import OptionalInputMenu from './OptionalInputMenu';
 import BusConnectionMenu from '../../BusDataWidget/BusConnectionMenu';
 
 interface ResieInputMenuInput {
-	node: NodeWithSusiData;
-	nodes: NodeWithSusiData[];
+	node: SusiNode;
+	nodes: SusiNode[];
 	onValueChange: (key: string, value: any) => void;
 	onIncludedChange: (key: string, isIncluded: boolean) => void;
 	onBusDataChange: (busData: BusData) => void;

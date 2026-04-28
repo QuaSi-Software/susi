@@ -1,8 +1,8 @@
 // import Elk from 'elkjs/lib/elk.bundled.js';
-import { deepCloneNodes, type NodeWithSusiData } from '../NodeDataStructures/NodeWithSusiData';
+import { deepCloneNodes, type SusiNode } from '../NodeDataStructures/SusiNode';
 import type { SusiEdge } from '../NodeDataStructures/SusiEdgeData';
 
-const createElkGraphLayout = async (graphNodes: Array<NodeWithSusiData>, graphEdges: Array<SusiEdge>) => {
+const createElkGraphLayout = async (graphNodes: Array<SusiNode>, graphEdges: Array<SusiEdge>) => {
 	/** Set up Layout options */
 	// const elk = new Elk({
 	const elk = new (await import('elkjs')).default({
@@ -16,13 +16,13 @@ const createElkGraphLayout = async (graphNodes: Array<NodeWithSusiData>, graphEd
 	});
 
 	/** add sources and targets to edges, make a deep copy of the nodes */
-	const nodes: Array<NodeWithSusiData> = deepCloneNodes(graphNodes);
+	const nodes: Array<SusiNode> = deepCloneNodes(graphNodes);
 	const edges = graphEdges.map((e) => ({ ...e, sources: [e.source], targets: [e.target] }));
 
 	/** calculate new layout */
 	const newGraph = await elk.layout({
 		id: 'root',
-		children: nodes.map((node: NodeWithSusiData) => ({
+		children: nodes.map((node: SusiNode) => ({
 			...node,
 			width: node.measured?.width,
 			height: node.measured?.height,
