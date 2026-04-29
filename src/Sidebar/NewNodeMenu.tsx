@@ -16,7 +16,7 @@ export default () => {
 			<div className="sidebar-heading">Components </div>
 			{nodeCategories.map((category: string) => (
 				<div key={category}>
-					<div className="node-category-heading">{category}</div>
+					<div className="sidebar-subheading">{category}</div>
 					{getNodeTypesInCategory(category as NodeCategory).map((nodeType) => (
 						<div
 							key={nodeType.type_name}

@@ -4,15 +4,29 @@ import ImportExportMenu from './Import-Export/ImportExportMenu';
 import MediumMenu, { type MediumMenuProps } from './Mediums/MediumMenu';
 import NewNodeMenu from './NewNodeMenu';
 import { DropdownDivider } from 'react-bootstrap';
+import { NodeInput, NodeInputType } from '../NodeDataStructures/Nodes/NodeInput';
+import { InputMenu } from './NonComponentInputMenu/InputMenu';
 
-type MenuType = 'mediums' | 'nodes' | 'import-export';
+export const MenuType = {
+	NewNodeMenu: 'Add New Components',
+	MediumMenu: 'Medium Menu',
+	SimulationParameters: 'Simulation Parameters',
+	IO_Settings: 'IO Settings',
+	ImportExportMenu: 'Import/Export',
+} as const;
+
+export type MenuType = (typeof MenuType)[keyof typeof MenuType];
 
 const Sidebar = (menuProps: ImportExportMenuProps & MediumMenuProps) => {
-	const [selectedMenu, setSelectedMenu] = useState<MenuType>('nodes');
+	const [selectedMenu, setSelectedMenu] = useState<MenuType>(MenuType.NewNodeMenu);
+	const exampleInputs = [
+		new NodeInput(NodeInputType.STRING, 'example1', 'Example1', 'hello1'),
+		new NodeInput(NodeInputType.STRING, 'example2', 'Example2', 'hello2'),
+	];
 
 	const renderMenu = () => {
 		switch (selectedMenu) {
-			case 'mediums':
+			case MenuType.MediumMenu:
 				return (
 					<MediumMenu
 						nodes={menuProps.nodes}
@@ -21,10 +35,14 @@ const Sidebar = (menuProps: ImportExportMenuProps & MediumMenuProps) => {
 						setEdges={menuProps.setEdges}
 					/>
 				);
-			case 'nodes':
+			case MenuType.NewNodeMenu:
 				return <NewNodeMenu />;
-			case 'import-export':
+			case MenuType.ImportExportMenu:
 				return <ImportExportMenu {...menuProps} />;
+			case MenuType.SimulationParameters:
+				return <InputMenu menuName="Simulation Parameters" inputs={exampleInputs} setInputs={() => {}} />;
+			case MenuType.IO_Settings:
+				return <InputMenu menuName="IO Settings" inputs={exampleInputs} setInputs={() => {}} />;
 			default:
 				return null;
 		}
@@ -35,24 +53,14 @@ const Sidebar = (menuProps: ImportExportMenuProps & MediumMenuProps) => {
 			<div className="sidebar-menu-section">
 				<h3 className="sidebar-heading">Menus</h3>
 				<div className="sidebar-menu-buttons">
-					<button
-						className={`sidebar-menu-btn ${selectedMenu === 'nodes' ? 'active' : ''}`}
-						onClick={() => setSelectedMenu('nodes')}
-					>
-						Add New Components
-					</button>
-					<button
-						className={`sidebar-menu-btn ${selectedMenu === 'mediums' ? 'active' : ''}`}
-						onClick={() => setSelectedMenu('mediums')}
-					>
-						Mediums
-					</button>
-					<button
-						className={`sidebar-menu-btn ${selectedMenu === 'import-export' ? 'active' : ''}`}
-						onClick={() => setSelectedMenu('import-export')}
-					>
-						Import/Export
-					</button>
+					{Object.values(MenuType).map((menuType: MenuType) => (
+						<button
+							className={`sidebar-menu-btn ${selectedMenu === menuType ? 'active' : ''}`}
+							onClick={() => setSelectedMenu(menuType)}
+						>
+							{menuType as string}
+						</button>
+					))}
 				</div>
 			</div>
 

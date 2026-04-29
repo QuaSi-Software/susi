@@ -29,6 +29,10 @@
 	padding: 10px;
 	padding-left: 0px;
 }
+.sidebar-subheading {
+	font-size: 24px;
+	font-weight: 600;
+}
 
 /** Mediums */
 .medium-menu {
