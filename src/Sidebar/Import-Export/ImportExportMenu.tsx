@@ -1,10 +1,12 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useCallback } from 'react';
 import { Button } from 'react-bootstrap';
 import type { SusiNode } from '../../NodeDataStructures/SusiNode';
 import importState from './Import/Import';
 import exportState from './Export/Export';
 import type { SusiEdge } from '../../NodeDataStructures/SusiEdge';
 import { AppContext } from '../../Reactflow-Components/AppContext';
+import { useReactFlow } from '@xyflow/react';
+import { flushSync } from 'react-dom';
 
 export interface ImportExportMenuProps {
 	setNodes: (nodes: SusiNode[]) => void;
@@ -20,10 +22,26 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 	if (!context) return <></>;
 	const mediums = context.mediums;
 	const setMediums = context.setMediums;
+	const setLoadingMessage = context.setLoadingMessage;
+	const { fitView } = useReactFlow();
 
-	const handleImport = () => {
-		importState({ ...menuProps, stateJSON: textContent, setMediums: setMediums });
-	};
+	const handleImport = useCallback(async () => {
+		try {
+			flushSync(() => setLoadingMessage('Importing file...'));
+			// Wait for the import to complete before clearing the loading message
+			await new Promise<void>((resolve) => {
+				setTimeout(() => {
+					importState({ ...menuProps, stateJSON: textContent, setMediums: setMediums });
+					resolve();
+				}, 0);
+			});
+			setLoadingMessage(null);
+			fitView();
+		} catch (error) {
+			setLoadingMessage(null);
+			console.error('Import failed:', error);
+		}
+	}, [textContent, menuProps, setMediums, setLoadingMessage, fitView]);
 
 	const handleExport = () => {
 		const data = exportState({ ...menuProps, mediums: mediums });
