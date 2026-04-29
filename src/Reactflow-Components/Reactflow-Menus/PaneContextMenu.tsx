@@ -4,9 +4,10 @@ import type { MenuPosition } from './Menus';
 import type { SusiNode } from '../../NodeDataStructures/SusiNode';
 import { useReactFlow } from '@xyflow/react';
 import createElkGraphLayout from '../ElkLayout';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import type { SusiEdge } from '../../NodeDataStructures/SusiEdge';
 import { flushSync } from 'react-dom';
+import { AppContext } from '../AppContext';
 
 interface PaneContextMenuInput {
 	paneContextMenu: MenuPosition | null;
@@ -19,10 +20,12 @@ interface PaneContextMenuInput {
 const PaneContextMenu = ({ paneContextMenu, setPaneContextMenu, nodes, setNodes, edges }: PaneContextMenuInput) => {
 	const { fitView } = useReactFlow();
 	const [layoutCalculated, setLayoutCalculated] = useState(true);
+	const setLoadingMessage = useContext(AppContext)!.setLoadingMessage;
 
 	const handleLayoutReset = () => {
 		setPaneContextMenu(null);
 		setLayoutCalculated(false);
+		setLoadingMessage('Resetting Layout...');
 		setPaneContextMenu(null);
 	};
 
@@ -33,6 +36,7 @@ const PaneContextMenu = ({ paneContextMenu, setPaneContextMenu, nodes, setNodes,
 				flushSync(() => setNodes(layoutedNodes));
 				fitView();
 				setLayoutCalculated(true);
+				setLoadingMessage(null);
 			})
 			.catch((err: Error) => console.log(err));
 	}, [layoutCalculated]);

@@ -15,6 +15,7 @@
 
 /** Both */
 @import './bootstrap-buttons.css';
+@import './loading-overlay.css';
 
 #root {
 	width: 100vw;

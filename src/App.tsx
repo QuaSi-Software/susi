@@ -30,6 +30,7 @@ import { getNewEdge } from './Reactflow-Components/CreateEdge';
 import ErrorMenu from './Reactflow-Components/Errors/ErrorMenu';
 import type { ErrorMessage } from './Reactflow-Components/Errors/ErrorMessage';
 import type { SusiEdge } from './NodeDataStructures/SusiEdge';
+import LoadingOverlay from './Reactflow-Components/LoadingOverlay';
 
 const initialNodes: SusiNode[] = [];
 
@@ -45,6 +46,7 @@ const DnDFlow = () => {
 	const [paneContextMenu, setPaneContextMenu] = useState<MenuPosition | null>(null);
 	const [mediums, setMediums] = useState<Medium[]>(getDefaultMediums());
 	const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([]);
+	const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
 	const logError = (message: string) => {
 		setErrorMessages((prevMessages) => [
 			...prevMessages,
@@ -144,8 +146,14 @@ const DnDFlow = () => {
 	return (
 		<div className="dndflow">
 			<AppContext.Provider
-				value={{ mediums: mediums, setMediums: setMediums, setErrorMessages: setErrorMessages }}
+				value={{
+					mediums: mediums,
+					setMediums: setMediums,
+					setErrorMessages: setErrorMessages,
+					setLoadingMessage: setLoadingMessage,
+				}}
 			>
+				<LoadingOverlay message={loadingMessage} />
 				<Sidebar nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} logError={logError} />
 				<ReactFlow
 					nodes={nodes}

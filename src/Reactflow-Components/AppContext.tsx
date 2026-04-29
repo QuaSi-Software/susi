@@ -6,5 +6,6 @@ interface AppContextType {
 	mediums: Medium[];
 	setMediums: (mediums: Medium[]) => void;
 	setErrorMessages: (messages: ErrorMessage[]) => void;
+	setLoadingMessage: (isLoading: string | null) => void;
 }
 export const AppContext = createContext<AppContextType | null>(null);
