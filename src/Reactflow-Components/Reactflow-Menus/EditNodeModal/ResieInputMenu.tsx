@@ -1,5 +1,5 @@
-import type { SusiNode } from '../../../NodeDataStructures/SusiNode';
-import type BusData from '../../../NodeDataStructures/BusData';
+import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
+import type BusData from '../../../NodeDataStructures/Bus/BusData';
 import RequiredInputMenu from './RequiredInputMenu';
 import OptionalInputMenu from './OptionalInputMenu';
 import BusConnectionMenu from '../../BusDataWidget/BusConnectionMenu';

@@ -1,5 +1,5 @@
-import BusData from './BusData';
-import type { Medium } from './Medium';
+import BusData from '../Bus/BusData';
+import type { Medium } from '../Mediums/Medium';
 import { NodeInputType, type NodeInput } from './NodeInput';
 import getNodeInputs from './NodeInputData';
 import type { NodeCategory, NodeType } from './SusiNodeTypes';

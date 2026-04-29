@@ -1,6 +1,6 @@
 import { createContext } from 'react';
-import type { Medium } from '../NodeDataStructures/Medium';
-import type { ErrorMessage } from './Errors/ErrorMessage';
+import type { Medium } from './NodeDataStructures/Mediums/Medium';
+import type { ErrorMessage } from './Reactflow-Components/Errors/ErrorMessage';
 
 interface AppContextType {
 	mediums: Medium[];

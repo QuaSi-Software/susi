@@ -1,6 +1,6 @@
 // import { useContext } from 'react';
-import { getUndefinedMedium } from '../Sidebar/Mediums/MediumUtils';
-import type { Medium } from './Medium';
+import { getUndefinedMedium } from '../Mediums/MediumUtils';
+import type { Medium } from '../Mediums/Medium';
 import { NodeInput, NodeInputType } from './NodeInput';
 // import { AppContext } from '../Reactflow-Components/AppContext';
 

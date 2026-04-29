@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
-import type { Medium } from '../../NodeDataStructures/Medium';
+import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
 import { PopoverPicker } from './ColorPicker/PopoverPicker';
 
 interface MediumInputWidgetProps {

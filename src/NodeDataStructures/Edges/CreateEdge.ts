@@ -1,9 +1,9 @@
 import type { Connection } from '@xyflow/react';
-import type { SusiNode } from '../NodeDataStructures/SusiNode';
-import { updateBusDataOnEdgeConnect } from './BusDataWidget/BusDataUtils';
-import { getMedium, getMediumKey, mediumsMatch } from '../Sidebar/Mediums/MediumUtils';
-import type { Medium } from '../NodeDataStructures/Medium';
-import type { SusiEdge } from '../NodeDataStructures/SusiEdge';
+import type { SusiNode } from '../Nodes/SusiNode';
+import { updateBusDataOnEdgeConnect } from '../Bus/BusDataUtils';
+import { getMedium, getMediumKey, mediumsMatch } from '../Mediums/MediumUtils';
+import type { Medium } from '../Mediums/Medium';
+import type { SusiEdge } from './SusiEdge';
 
 /**
  * Check if the source and target handle of the edge we are trying to connect are already taken

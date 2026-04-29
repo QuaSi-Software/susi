@@ -1,5 +1,5 @@
-import BusData from '../../../NodeDataStructures/BusData';
-import type { SusiNode } from '../../../NodeDataStructures/SusiNode';
+import BusData from '../../../NodeDataStructures/Bus/BusData';
+import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type { ComponentData, Connections } from '../ExportDataStrucures';
 
 function getNodeIDFromName(nodeName: string, nodes: SusiNode[]) {

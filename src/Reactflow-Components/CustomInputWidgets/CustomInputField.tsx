@@ -2,10 +2,10 @@ import { useContext, useState } from 'react';
 import { Form, FloatingLabel } from 'react-bootstrap';
 import CustomDropdown from './CustomDropdown';
 // import { AppContext } from './../AppContext';
-import { NodeInputType, type NodeInput } from '../../NodeDataStructures/NodeInput';
+import { NodeInputType, type NodeInput } from '../../NodeDataStructures/Nodes/NodeInput';
 import React from 'react';
-import type { Medium } from '../../NodeDataStructures/Medium';
-import { AppContext } from '../AppContext';
+import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
+import { AppContext } from '../../AppContext';
 
 interface CustomInputFieldProps {
 	nodeInput: NodeInput;

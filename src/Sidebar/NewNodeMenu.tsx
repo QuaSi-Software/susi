@@ -1,6 +1,6 @@
 import React from 'react';
-import { useDnD } from '../DnDContext';
-import { getNodeTypesInCategory, NodeCategory, type NodeType } from '../NodeDataStructures/SusiNodeTypes';
+import { useDnD } from './DnDContext';
+import { getNodeTypesInCategory, NodeCategory, type NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
 
 export default () => {
 	const [_, setType] = useDnD();

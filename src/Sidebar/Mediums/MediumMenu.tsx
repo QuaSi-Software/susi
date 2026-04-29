@@ -1,14 +1,14 @@
 import { useContext } from 'react';
 import { Button, Col } from 'react-bootstrap';
-import type { Medium } from '../../NodeDataStructures/Medium';
+import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
 import MediumInputWidget from './MediumInputWidget';
-import { AppContext } from '../../Reactflow-Components/AppContext';
-import { deepCloneNodes, type SusiNode } from '../../NodeDataStructures/SusiNode';
-import { NodeInputType } from '../../NodeDataStructures/NodeInput';
-import { getDefaultMediums, getRandomColor, getUndefinedMedium } from './MediumUtils';
+import { deepCloneNodes, type SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
+import { NodeInputType } from '../../NodeDataStructures/Nodes/NodeInput';
+import { getDefaultMediums, getRandomColor, getUndefinedMedium } from '../../NodeDataStructures/Mediums/MediumUtils';
 import _ from 'lodash';
-import type { SusiEdge } from '../../NodeDataStructures/SusiEdge';
+import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import { flushSync } from 'react-dom';
+import { AppContext } from '../../AppContext';
 
 export interface MediumMenuProps {
 	nodes: SusiNode[];

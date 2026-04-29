@@ -1,13 +1,13 @@
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import type { MenuPosition } from './Menus';
-import type { SusiNode } from '../../NodeDataStructures/SusiNode';
+import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import { useReactFlow } from '@xyflow/react';
-import createElkGraphLayout from '../ElkLayout';
+import createElkGraphLayout from './ElkLayout';
 import { useContext, useEffect, useState } from 'react';
-import type { SusiEdge } from '../../NodeDataStructures/SusiEdge';
+import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import { flushSync } from 'react-dom';
-import { AppContext } from '../AppContext';
+import { AppContext } from '../../AppContext';
 
 interface PaneContextMenuInput {
 	paneContextMenu: MenuPosition | null;

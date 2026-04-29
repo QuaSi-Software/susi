@@ -1,7 +1,7 @@
 import { Row, Col } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import CustomInputField from '../../CustomInputWidgets/CustomInputField';
-import type { NodeInput } from '../../../NodeDataStructures/NodeInput';
+import type { NodeInput } from '../../../NodeDataStructures/Nodes/NodeInput';
 import React from 'react';
 
 interface RequiredInputMenuProps {

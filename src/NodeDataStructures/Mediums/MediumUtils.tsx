@@ -1,7 +1,7 @@
-import { createMedium, type Medium } from '../../NodeDataStructures/Medium';
-import type { SusiNode } from '../../NodeDataStructures/SusiNode';
-import type { SusiEdge } from '../../NodeDataStructures/SusiEdge';
-import type { SusiNodeData } from '../../NodeDataStructures/SusiNodeData';
+import { createMedium, type Medium } from './Medium';
+import type { SusiNode } from '../Nodes/SusiNode';
+import type { SusiEdge } from '../Edges/SusiEdge';
+import type { SusiNodeData } from '../Nodes/SusiNodeData';
 
 const HandleType = {
 	source: 'source',

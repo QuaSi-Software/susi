@@ -3,11 +3,11 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/esm/ButtonGroup';
 
 import type { MenuPosition } from './Menus';
-import { deepCloneNode, type SusiNode } from '../../NodeDataStructures/SusiNode';
+import { deepCloneNode, type SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import EditNodeModal from './EditNodeModal/EditNodeModal';
-import BusData from '../../NodeDataStructures/BusData';
-import type { SusiEdge } from '../../NodeDataStructures/SusiEdge';
-import { updateBusDataOnNodeDelete } from '../BusDataWidget/BusDataUtils';
+import BusData from '../../NodeDataStructures/Bus/BusData';
+import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
+import { updateBusDataOnNodeDelete } from '../../NodeDataStructures/Bus/BusDataUtils';
 import _ from 'lodash';
 
 interface NodeContextMenuInput {

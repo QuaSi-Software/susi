@@ -2,9 +2,9 @@ import DragAndDropMenu from './DragAndDropMenu';
 import { Col, Row } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import EnergyFlowMatrix from './EnergyFlowMatrix';
-import type BusData from '../../NodeDataStructures/BusData';
+import type BusData from '../../NodeDataStructures/Bus/BusData';
 import React from 'react';
-import type { SusiNode } from '../../NodeDataStructures/SusiNode';
+import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 
 interface BusConnectionMenuProps {
 	node: SusiNode;

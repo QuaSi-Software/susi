@@ -1,9 +1,9 @@
 import { memo, useContext } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import Markdown from 'react-markdown';
-import type { SusiNodeData } from '../NodeDataStructures/SusiNodeData';
-import { getMedium } from '../Sidebar/Mediums/MediumUtils';
-import { AppContext } from './AppContext';
+import type { SusiNodeData } from './SusiNodeData';
+import { AppContext } from '../../AppContext';
+import { getMedium } from '../Mediums/MediumUtils';
 
 const MemoizedMarkdown = memo(({ content }: { content: string }) => <Markdown>{content}</Markdown>);
 

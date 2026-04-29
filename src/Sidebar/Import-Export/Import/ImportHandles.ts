@@ -1,4 +1,4 @@
-import type { SusiNode } from '../../../NodeDataStructures/SusiNode';
+import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type { ComponentData } from '../ExportDataStrucures';
 
 /**

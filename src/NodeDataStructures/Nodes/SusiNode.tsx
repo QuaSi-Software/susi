@@ -2,7 +2,7 @@ import type { Node, XYPosition } from '@xyflow/react';
 import type { NodeType } from './SusiNodeTypes';
 import { Position } from '@xyflow/react';
 import { type SusiNodeData, createSusiNodeData } from './SusiNodeData';
-import type { Medium } from './Medium';
+import type { Medium } from '../Mediums/Medium';
 
 import _ from 'lodash';
 

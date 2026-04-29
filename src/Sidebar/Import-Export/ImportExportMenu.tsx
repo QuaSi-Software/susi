@@ -1,12 +1,12 @@
 import { useContext, useState, useCallback } from 'react';
 import { Button } from 'react-bootstrap';
-import type { SusiNode } from '../../NodeDataStructures/SusiNode';
+import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import importState from './Import/Import';
 import exportState from './Export/Export';
-import type { SusiEdge } from '../../NodeDataStructures/SusiEdge';
-import { AppContext } from '../../Reactflow-Components/AppContext';
+import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import { useReactFlow } from '@xyflow/react';
 import { flushSync } from 'react-dom';
+import { AppContext } from '../../AppContext';
 
 export interface ImportExportMenuProps {
 	setNodes: (nodes: SusiNode[]) => void;

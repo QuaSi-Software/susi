@@ -1,16 +1,16 @@
-import type { SusiNode } from '../../../NodeDataStructures/SusiNode';
-import type { Medium } from '../../../NodeDataStructures/Medium';
-import { getNodeTypeWithName } from '../../../NodeDataStructures/SusiNodeTypes';
-import createNodeFromType from '../../../NodeDataStructures/SusiNode';
-import getNodeInputs from '../../../NodeDataStructures/NodeInputData';
-import { getNewEdge } from '../../../Reactflow-Components/CreateEdge';
+import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
+import type { Medium } from '../../../NodeDataStructures/Mediums/Medium';
+import { getNodeTypeWithName } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
+import createNodeFromType from '../../../NodeDataStructures/Nodes/SusiNode';
+import getNodeInputs from '../../../NodeDataStructures/Nodes/NodeInputData';
 import getImportMediums from './ImportMediums';
 import type { ComponentData, ComponentImportData, ImportData } from '../ExportDataStrucures';
 import { getComponentImportData } from './ImportData';
 import { getBusDataFromConnections, isBusDataValid } from './ImportBusData';
 // import getOutputRefs from './ImportOutputRefs';
-import type { SusiEdge } from '../../../NodeDataStructures/SusiEdge';
+import type { SusiEdge } from '../../../NodeDataStructures/Edges/SusiEdge';
 import { createSourceHandleDict, findTargetHandle, initializeTakenHandles } from './ImportHandles';
+import { getNewEdge } from '../../../NodeDataStructures/Edges/CreateEdge';
 
 interface ImportStateProps {
 	stateJSON: string;

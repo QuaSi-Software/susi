@@ -1,6 +1,6 @@
 // import Elk from 'elkjs/lib/elk.bundled.js';
-import { deepCloneNodes, type SusiNode } from '../NodeDataStructures/SusiNode';
-import type { SusiEdge } from '../NodeDataStructures/SusiEdge';
+import { deepCloneNodes, type SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
+import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 
 const createElkGraphLayout = async (graphNodes: Array<SusiNode>, graphEdges: Array<SusiEdge>) => {
 	/** Set up Layout options */

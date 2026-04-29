@@ -1,4 +1,4 @@
-import type { Medium } from '../../NodeDataStructures/Medium';
+import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
 
 /**
  * Generate CSS variable rules for medium colors

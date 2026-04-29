@@ -1,5 +1,5 @@
-import { getUndefinedMedium } from '../Sidebar/Mediums/MediumUtils';
-import type { Medium } from './Medium';
+import { getUndefinedMedium } from '../Mediums/MediumUtils';
+import type { Medium } from '../Mediums/Medium';
 
 const NodeInputType = {
 	NUMBER: 'NUMBER',

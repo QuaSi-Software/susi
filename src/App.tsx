@@ -15,22 +15,22 @@ import './CSS/index.css';
 import { setMediumCSSVariables } from './Sidebar/Mediums/MediumCSSUtils';
 
 import Sidebar from './Sidebar/Sidebar';
-import { DnDProvider, useDnD } from './DnDContext';
-import createNodeFromType, { type SusiNode } from './NodeDataStructures/SusiNode';
-import MarkdownNode from './Reactflow-Components/MarkdownNode';
+import { DnDProvider, useDnD } from './Sidebar/DnDContext';
+import createNodeFromType, { type SusiNode } from './NodeDataStructures/Nodes/SusiNode';
+import MarkdownNode from './NodeDataStructures/Nodes/MarkdownNode';
 import type { Connection } from '@xyflow/react';
 import { EdgeContextMenu, type EdgeContextMenuData } from './Reactflow-Components/Reactflow-Menus/EdgeContextMenu';
 import { createMenuPosition, type MenuPosition } from './Reactflow-Components/Reactflow-Menus/Menus';
 import { NodeContextMenu, type NodeContextMenuData } from './Reactflow-Components/Reactflow-Menus/NodeContextMenu';
 import PaneContextMenu from './Reactflow-Components/Reactflow-Menus/PaneContextMenu';
-import { type Medium } from './NodeDataStructures/Medium';
-import { getDefaultMediums } from './Sidebar/Mediums/MediumUtils';
-import { AppContext } from './Reactflow-Components/AppContext';
-import { getNewEdge } from './Reactflow-Components/CreateEdge';
+import { type Medium } from './NodeDataStructures/Mediums/Medium';
+import { getDefaultMediums } from './NodeDataStructures/Mediums/MediumUtils';
+import { AppContext } from './AppContext';
 import ErrorMenu from './Reactflow-Components/Errors/ErrorMenu';
 import type { ErrorMessage } from './Reactflow-Components/Errors/ErrorMessage';
-import type { SusiEdge } from './NodeDataStructures/SusiEdge';
+import type { SusiEdge } from './NodeDataStructures/Edges/SusiEdge';
 import LoadingOverlay from './Reactflow-Components/LoadingOverlay';
+import { getNewEdge } from './NodeDataStructures/Edges/CreateEdge';
 
 const initialNodes: SusiNode[] = [];
 

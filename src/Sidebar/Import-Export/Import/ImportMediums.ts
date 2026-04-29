@@ -1,7 +1,7 @@
-import { createMedium, type Medium } from '../../../NodeDataStructures/Medium';
-import { NodeInputType } from '../../../NodeDataStructures/NodeInput';
-import getNodeInputs from '../../../NodeDataStructures/NodeInputData';
-import { getDefaultMediums, getRandomColor, getUndefinedMedium } from '../../Mediums/MediumUtils';
+import { createMedium, type Medium } from '../../../NodeDataStructures/Mediums/Medium';
+import { NodeInputType } from '../../../NodeDataStructures/Nodes/NodeInput';
+import getNodeInputs from '../../../NodeDataStructures/Nodes/NodeInputData';
+import { getDefaultMediums, getRandomColor, getUndefinedMedium } from '../../../NodeDataStructures/Mediums/MediumUtils';
 import type { ComponentData, ImportData } from '../ExportDataStrucures';
 import { getComponentImportData } from './ImportData';
 

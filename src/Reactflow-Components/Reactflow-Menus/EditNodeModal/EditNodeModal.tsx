@@ -7,13 +7,13 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import _ from 'lodash';
 
-import type { SusiNode } from '../../../NodeDataStructures/SusiNode';
-import type BusData from '../../../NodeDataStructures/BusData';
-import type { NodeInput } from '../../../NodeDataStructures/NodeInput';
+import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
+import type BusData from '../../../NodeDataStructures/Bus/BusData';
+import type { NodeInput } from '../../../NodeDataStructures/Nodes/NodeInput';
 import ResieInputMenu from './ResieInputMenu';
-import { getEdgesWithMediumMismatch } from '../../../Sidebar/Mediums/MediumUtils';
-import { updateBusDataOnEdgeDelete } from '../../BusDataWidget/BusDataUtils';
-import type { SusiEdge } from '../../../NodeDataStructures/SusiEdge';
+import { getEdgesWithMediumMismatch } from '../../../NodeDataStructures/Mediums/MediumUtils';
+import { updateBusDataOnEdgeDelete } from '../../../NodeDataStructures/Bus/BusDataUtils';
+import type { SusiEdge } from '../../../NodeDataStructures/Edges/SusiEdge';
 
 interface EditNodeModalInputs {
 	show: boolean;

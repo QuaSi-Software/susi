@@ -1,9 +1,9 @@
-import type { Medium } from '../../../NodeDataStructures/Medium';
-import type { SusiNode } from '../../../NodeDataStructures/SusiNode';
-import type { SusiEdge } from '../../../NodeDataStructures/SusiEdge';
-import type { NodeInput } from '../../../NodeDataStructures/NodeInput';
+import type { Medium } from '../../../NodeDataStructures/Mediums/Medium';
+import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
+import type { SusiEdge } from '../../../NodeDataStructures/Edges/SusiEdge';
+import type { NodeInput } from '../../../NodeDataStructures/Nodes/NodeInput';
 import type { ComponentData, Connections } from '../ExportDataStrucures';
-import { getUndefinedMedium } from '../../Mediums/MediumUtils';
+import { getUndefinedMedium } from '../../../NodeDataStructures/Mediums/MediumUtils';
 
 interface ExportProps {
 	nodes: SusiNode[];
