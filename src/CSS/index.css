@@ -4,6 +4,8 @@
 /** Custom Reactflow Styling */
 @import './Reactflow-Styling/node-styling.css';
 @import './Reactflow-Styling/error-logger.css';
+@import './Reactflow-Styling/edit-node-modal.css';
+@import './Reactflow-Styling/drag-drop-menu.css';
 
 /** Sidebar Styling */
 @import './Sidebar-Styling/sidebar.css';

@@ -11,7 +11,7 @@ ul {
 }
 
 :root {
-	--drag-drop-menu-color: rgb(231, 231, 231);
+	--drag-drop-menu-color: rgb(216, 216, 216);
 	--drag-drop-outline-color: #dbdbdb;
 }
 
@@ -47,4 +47,3 @@ li {
 td {
 	min-width: 100px;
 }
-

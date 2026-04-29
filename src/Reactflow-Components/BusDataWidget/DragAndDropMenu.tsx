@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useMotionValue, Reorder } from 'framer-motion';
 import { useRaisedShadow } from './use-raised-shadow';
-import './reorder-styles.css';
 import React from 'react';
 
 interface DragAndDropMenuProps {
