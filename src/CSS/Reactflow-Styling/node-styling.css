@@ -70,3 +70,11 @@
 	border-width: 2px !important;
 	border-color: var(--node-border-color) !important;
 }
+
+.bus-handle {
+	border-radius: 0;
+}
+
+path.react-flow__edge-path {
+	stroke-width: 2;
+}
