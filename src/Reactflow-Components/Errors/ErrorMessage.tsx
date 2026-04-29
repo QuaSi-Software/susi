@@ -28,9 +28,7 @@ const ErrorMessagePopup = ({ errorMessage, removeMessage }: ErrorMessagePopupPro
 		<div className="error-logger">
 			<div className="error-logger-content">
 				<i className="bi bi-exclamation-circle"></i>
-				<span>
-					{errorMessage.message} {errorMessage.key}
-				</span>
+				<span>{errorMessage.message}</span>
 			</div>
 		</div>
 	);

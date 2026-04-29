@@ -69,7 +69,7 @@ const DnDFlow = () => {
 			if (edge === null) return;
 			setEdges((eds: any[]) => addEdge(edge, eds) as any[]);
 		},
-		[setEdges, nodes]
+		[setEdges, nodes, edges, mediums]
 	);
 
 	const onDragOver = useCallback((event: ReactDragEvent<HTMLDivElement>) => {

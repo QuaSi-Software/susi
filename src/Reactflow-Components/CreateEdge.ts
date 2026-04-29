@@ -30,19 +30,36 @@ function isHandleTaken(
 	}
 	return false;
 }
+function nodesShareEdge(sourceNode: SusiNode, targetNode: SusiNode, edges: SusiEdge[]): boolean {
+	const sharedEdge = edges.find((edge) => edge.source === sourceNode.id && edge.target === targetNode.id);
+	return sharedEdge !== undefined;
+}
 
 const getNewEdge = (
 	connection: Connection,
 	nodes: SusiNode[],
 	edges: SusiEdge[],
 	mediums: Medium[],
-	setError: (errors: string) => void
+	logError: (error: string) => void
 ): SusiEdge | null => {
 	const sourceNode = nodes.find((e) => e.id === connection.source);
+	if (!sourceNode) {
+		console.error(`Node ${connection.source} not found.`);
+		return null;
+	}
 	const targetNode = nodes.find((e) => e.id === connection.target);
+	if (!targetNode) {
+		console.error(`Node ${connection.target} not found.`);
+		return null;
+	}
 	/** Check if handle is taken */
 	if (isHandleTaken(connection.sourceHandle!, connection.targetHandle!, sourceNode!, targetNode!, edges)) {
-		setError('Cannot attach two edges to the same Handle');
+		logError('Cannot attach two edges to the same Handle');
+		return null;
+	}
+	/** Check if the two nodes already share an edge */
+	if (nodesShareEdge(sourceNode, targetNode, edges)) {
+		logError(`${sourceNode.data.content} and ${targetNode.data.content} already share an edge.`);
 		return null;
 	}
 	/** Set Mediums */
@@ -50,7 +67,7 @@ const getNewEdge = (
 	const sourceMediumKey = sourceMedium!.key;
 	const targetMediumKey = getMediumKey(connection.targetHandle!, targetNode!.data);
 	if (!mediumsMatch(sourceMediumKey, targetMediumKey)) {
-		setError(
+		logError(
 			`The mediums of handle ${connection.sourceHandle} on ${sourceNode?.data.content} and ${connection.targetHandle} on ${targetNode?.data.content} do not match or are undefined.`
 		);
 		return null;
