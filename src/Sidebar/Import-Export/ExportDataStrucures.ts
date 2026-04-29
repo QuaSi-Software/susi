@@ -19,15 +19,10 @@ export interface ComponentData {
 	[key: string]: any;
 }
 
-export interface ConnectionHandles {
-	source: number;
-	// target?: number;
-}
 export interface ComponentImportData {
 	node_position: {
 		x: number;
 		y: number;
 	};
 	node_type: string;
-	connection_handles?: Record<string, ConnectionHandles>;
 }

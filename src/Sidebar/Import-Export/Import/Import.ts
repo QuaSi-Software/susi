@@ -5,13 +5,12 @@ import createNodeFromType from '../../../NodeDataStructures/SusiNode';
 import getNodeInputs from '../../../NodeDataStructures/NodeInputData';
 import { getNewEdge } from '../../../Reactflow-Components/CreateEdge';
 import getImportMediums from './ImportMediums';
-import type { ComponentImportData, ImportData } from '../ExportDataStrucures';
+import type { ComponentData, ComponentImportData, ImportData } from '../ExportDataStrucures';
 import { getComponentImportData } from './ImportData';
 import { getBusDataFromConnections, isBusDataValid } from './ImportBusData';
-import { min } from 'lodash';
-import getOutputRefs from './ImportOutputRefs';
+// import getOutputRefs from './ImportOutputRefs';
 import type { SusiEdge } from '../../../NodeDataStructures/SusiEdge';
-import { findTargetHandle, initializeTakenHandles } from './ImportHandles';
+import { createSourceHandleDict, findTargetHandle, initializeTakenHandles } from './ImportHandles';
 
 interface ImportStateProps {
 	stateJSON: string;
@@ -19,6 +18,19 @@ interface ImportStateProps {
 	setEdges: (edges: SusiEdge[]) => void;
 	setMediums: (mediums: Medium[]) => void;
 	logError: (errorMessage: string) => void;
+}
+
+function getOutputRefs(sourceNodeID: string, sourceNodeData: ComponentData): string[] {
+	if (sourceNodeData.type.toLowerCase() === 'bus') {
+		return sourceNodeData.connections?.output_order || [];
+	} else {
+		if (!Array.isArray(sourceNodeData.output_refs)) {
+			console.log(`output_refs on ${sourceNodeID} is a dictionary, but should already be a string[] here.`);
+			return [];
+		}
+		if (!sourceNodeData.output_refs) return [];
+		return sourceNodeData.output_refs;
+	}
 }
 
 const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: ImportStateProps): void => {
@@ -72,12 +84,13 @@ const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: Im
 	// Second pass: create edges
 	const edgeArray: SusiEdge[] = [];
 	const takenHandles: Record<string, Record<string, boolean[]>> = initializeTakenHandles(nodeArray);
+	const sourceHandlDict = createSourceHandleDict(nodeArray, importDict.components);
 
 	for (const [sourceNodeID, sourceNodeData] of Object.entries(importDict.components)) {
 		const sourceNode = nodeDict[sourceNodeID];
 		if (!sourceNode) continue;
 
-		const outputRefs = getOutputRefs(sourceNodeData, sourceNode, logError);
+		const outputRefs = getOutputRefs(sourceNodeID, sourceNodeData);
 
 		for (let inputNodeEdgeIndex = 0; inputNodeEdgeIndex < outputRefs.length; inputNodeEdgeIndex++) {
 			const targetNodeID = outputRefs[inputNodeEdgeIndex];
@@ -88,16 +101,9 @@ const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: Im
 				continue;
 			}
 
-			if (sourceNodeID === 'TST_ELY_01') {
-				console.log('Problem child');
-			}
 			// Create the source and target handles the edge should connect to
 			//source
-			const importedConnectionHandles = sourceNodeData.import_data?.connection_handles?.[targetNode.data.content];
-			let sourceHandleIndex = importedConnectionHandles?.source;
-			if (sourceHandleIndex === undefined) {
-				sourceHandleIndex = min([inputNodeEdgeIndex, sourceNode.data.sourceHandles - 1]);
-			}
+			const sourceHandleIndex: number = sourceHandlDict[sourceNodeID][targetNodeID];
 			const sourceHandle = `source-${sourceHandleIndex}`;
 			// target
 			let targetHandleIndex = findTargetHandle(sourceNode, sourceHandleIndex, targetNode, takenHandles, logError);
