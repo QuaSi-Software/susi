@@ -7,11 +7,11 @@ import { getNewEdge } from '../../../Reactflow-Components/CreateEdge';
 import getImportMediums from './ImportMediums';
 import type { ComponentImportData, ImportData } from '../ExportDataStrucures';
 import { getComponentImportData } from './ImportData';
-import { isBusDataValid } from './ImportBusData';
-import BusData from '../../../NodeDataStructures/BusData';
+import { getBusDataFromConnections, isBusDataValid } from './ImportBusData';
 import { min } from 'lodash';
 import getOutputRefs from './ImportOutputRefs';
 import type { SusiEdge } from '../../../NodeDataStructures/SusiEdge';
+import { findTargetHandle, initializeTakenHandles } from './ImportHandles';
 
 interface ImportStateProps {
 	stateJSON: string;
@@ -71,48 +71,45 @@ const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: Im
 
 	// Second pass: create edges
 	const edgeArray: SusiEdge[] = [];
-	const numIncomingEdgesPerNode: Record<string, number> = {};
+	const takenHandles: Record<string, Record<string, boolean[]>> = initializeTakenHandles(nodeArray);
 
-	for (const [inputNodeId, inputNodeData] of Object.entries(importDict.components)) {
-		const inputNode = nodeDict[inputNodeId];
-		if (!inputNode) continue;
+	for (const [sourceNodeID, sourceNodeData] of Object.entries(importDict.components)) {
+		const sourceNode = nodeDict[sourceNodeID];
+		if (!sourceNode) continue;
 
-		const outputRefs = getOutputRefs(inputNodeData, inputNode, logError);
+		const outputRefs = getOutputRefs(sourceNodeData, sourceNode, logError);
 
 		for (let inputNodeEdgeIndex = 0; inputNodeEdgeIndex < outputRefs.length; inputNodeEdgeIndex++) {
-			const outputNodeId = outputRefs[inputNodeEdgeIndex];
-			const outputNode = nodeDict[outputNodeId];
+			const targetNodeID = outputRefs[inputNodeEdgeIndex];
+			const targetNode = nodeDict[targetNodeID];
 
-			if (!outputNode) {
-				logError(`Node ${outputNodeId} is not defined in components.`);
+			if (!targetNode) {
+				logError(`Node ${targetNodeID} is not defined in components.`);
 				continue;
 			}
 
-			// Count incoming edges to target node
-			const outputNodeIncomingEdges = numIncomingEdgesPerNode[outputNodeId] || 0;
-			numIncomingEdgesPerNode[outputNodeId] = outputNodeIncomingEdges + 1;
-
+			if (sourceNodeID === 'TST_ELY_01') {
+				console.log('Problem child');
+			}
 			// Create the source and target handles the edge should connect to
 			//source
-			const importedConnectionHandles = inputNodeData.import_data?.connection_handles?.[outputNodeId];
+			const importedConnectionHandles = sourceNodeData.import_data?.connection_handles?.[targetNode.data.content];
 			let sourceHandleIndex = importedConnectionHandles?.source;
 			if (sourceHandleIndex === undefined) {
-				sourceHandleIndex = min([inputNodeEdgeIndex, inputNode.data.sourceHandles - 1]);
+				sourceHandleIndex = min([inputNodeEdgeIndex, sourceNode.data.sourceHandles - 1]);
 			}
 			const sourceHandle = `source-${sourceHandleIndex}`;
 			// target
-			let targetHandleIndex = importedConnectionHandles?.target;
-			if (targetHandleIndex === undefined) {
-				targetHandleIndex = min([outputNodeIncomingEdges, outputNode.data.targetHandles - 1]);
-			}
+			let targetHandleIndex = findTargetHandle(sourceNode, sourceHandleIndex, targetNode, takenHandles, logError);
+			if (targetHandleIndex === -1) continue;
 			const targetHandle = `target-${targetHandleIndex}`;
 
 			// Create edge
 			const newEdge = getNewEdge(
 				{
-					source: nodeDict[inputNodeId].id,
+					source: nodeDict[sourceNodeID].id,
 					sourceHandle: sourceHandle,
-					target: nodeDict[outputNodeId].id,
+					target: nodeDict[targetNodeID].id,
 					targetHandle: targetHandle,
 				},
 				nodeArray,
@@ -132,12 +129,8 @@ const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: Im
 		const node = nodeDict[nodeId];
 		if (node && node.data.busData) {
 			if (isBusDataValid(node, nodeArray, nodeData, logError)) {
-				const connections = nodeData.connections;
-				node.data.busData = new BusData(
-					connections!.input_order,
-					connections!.output_order,
-					connections!.energy_flow
-				);
+				const busData = getBusDataFromConnections(nodeData.connections!, nodeArray);
+				node.data.busData = busData;
 			}
 		}
 	}

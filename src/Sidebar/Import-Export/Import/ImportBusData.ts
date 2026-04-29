@@ -1,8 +1,17 @@
+import BusData from '../../../NodeDataStructures/BusData';
 import type { SusiNode } from '../../../NodeDataStructures/SusiNode';
-import type { ComponentData } from '../ExportDataStrucures';
+import type { ComponentData, Connections } from '../ExportDataStrucures';
 
 function getNodeIDFromName(nodeName: string, nodes: SusiNode[]) {
 	return nodes.find((n) => n.data.content === nodeName)!.id;
+}
+
+export function getBusDataFromConnections(connections: Connections, nodes: SusiNode[]): BusData {
+	return new BusData(
+		connections!.input_order.map((name) => getNodeIDFromName(name, nodes)),
+		connections!.output_order.map((name) => getNodeIDFromName(name, nodes)),
+		connections!.energy_flow
+	);
 }
 
 export function isBusDataValid(

@@ -21,7 +21,7 @@ export interface ComponentData {
 
 export interface ConnectionHandles {
 	source: number;
-	target?: number;
+	// target?: number;
 }
 export interface ComponentImportData {
 	node_position: {

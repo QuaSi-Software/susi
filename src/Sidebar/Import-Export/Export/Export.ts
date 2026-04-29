@@ -2,7 +2,7 @@ import type { Medium } from '../../../NodeDataStructures/Medium';
 import type { SusiNode } from '../../../NodeDataStructures/SusiNode';
 import type { SusiEdge } from '../../../NodeDataStructures/SusiEdge';
 import type { NodeInput } from '../../../NodeDataStructures/NodeInput';
-import type { ComponentData, ConnectionHandles, Connections } from '../ExportDataStrucures';
+import type { ComponentData, Connections } from '../ExportDataStrucures';
 import { getUndefinedMedium } from '../../Mediums/MediumUtils';
 
 interface ExportProps {
@@ -26,40 +26,30 @@ const getMediumListForExport = (mediums: Medium[]): Array<[string, string]> => {
 /**
  * Get outputs of the given node as dictionaries mapping medium variable names to target node contents
  */
-const getOutputs = (
+const getOutputRefs = (
 	nodeId: string,
 	nodes: SusiNode[],
 	edges: SusiEdge[]
 	// mediums: Medium[]
-): {
-	handles: Record<string, ConnectionHandles>;
-	outputs: Record<string, string>;
-} => {
-	const outgoing: Record<string, string> = {};
-	const handles: Record<string, ConnectionHandles> = {};
-	const nodeMap = new Map(nodes.map((n) => [n.id, n]));
-
+): Record<string, string> => {
+	const output_refs: Record<string, string> = {};
 	const edgesFromNode = edges.filter((e) => e.source === nodeId);
 	for (const edge of edgesFromNode) {
-		const sourceNode = nodeMap.get(edge.source);
+		const sourceNode = nodes.find((n) => n.id === edge.source);
 		if (!sourceNode) continue;
 
 		// Parse handle indices from format like "source-0"
 		const sourceHandleIndex = parseInt(edge.sourceHandle?.split('-')[1] ?? '0');
-		const targetHandleIndex = parseInt(edge.targetHandle?.split('-')[1] ?? '0');
-		handles[nodeId] = { source: sourceHandleIndex, target: targetHandleIndex };
-
 		// Find medium associated with source handle
 		const sourceMediums = sourceNode.data.handleMediumDict.source;
 		const mediumVarName = sourceMediums[sourceHandleIndex];
 
 		// Get target node content
-		// const targetNode = nodeMap.get(edge.target);
 		const targetNodeName = getNodeNameFromID(edge.target, nodes);
-		outgoing[mediumVarName] = targetNodeName;
+		output_refs[mediumVarName] = targetNodeName;
 	}
 
-	return { handles, outputs: outgoing };
+	return output_refs;
 };
 
 /**
@@ -115,11 +105,9 @@ const exportState = ({ nodes, edges, mediums }: ExportProps): string => {
 		if (node.data.busData) {
 			compDict.connections = getBusConnections(node, nodes);
 		} else {
-			const { handles, outputs } = getOutputs(node.id, nodes, edges);
-			compDict.output_refs = outputs;
-			compDict.import_data.connection_handles = handles;
+			const outputRefs = getOutputRefs(node.id, nodes, edges);
+			compDict.output_refs = outputRefs;
 		}
-
 		components[node.data.content] = compDict;
 	});
 
