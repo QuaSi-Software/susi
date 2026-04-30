@@ -71,7 +71,6 @@ const OptionalInputField: React.FC<OptionalInputFieldProps> = ({
 					checked={isIncluded}
 					id={resieName}
 					label="include?"
-					defaultChecked={isIncluded}
 					onChange={onSwitchClicked}
 				/>
 			</Col>

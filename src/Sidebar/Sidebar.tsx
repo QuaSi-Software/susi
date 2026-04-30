@@ -22,6 +22,8 @@ const Sidebar = (menuProps: ImportExportMenuProps & MediumMenuProps) => {
 	const exampleInputs = [
 		new NodeInput(NodeInputType.STRING, 'example1', 'Example1', 'hello1'),
 		new NodeInput(NodeInputType.STRING, 'example2', 'Example2', 'hello2'),
+		new NodeInput(NodeInputType.STRING, 'example3', 'Example3', 'hello3', '', true, false),
+		new NodeInput(NodeInputType.STRING, 'example4', 'Example4', 'hello4', '', true, false),
 	];
 
 	const renderMenu = () => {
@@ -55,6 +57,7 @@ const Sidebar = (menuProps: ImportExportMenuProps & MediumMenuProps) => {
 				<div className="sidebar-menu-buttons">
 					{Object.values(MenuType).map((menuType: MenuType) => (
 						<button
+							key={`sidebar-menu-button-${menuType}`}
 							className={`sidebar-menu-btn ${selectedMenu === menuType ? 'active' : ''}`}
 							onClick={() => setSelectedMenu(menuType)}
 						>

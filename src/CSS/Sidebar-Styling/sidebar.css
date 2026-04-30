@@ -23,6 +23,20 @@
 	resize: horizontal;
 }
 
+.dndflow aside .form-floating > textarea:focus ~ label::after,
+.dndflow aside .form-floating > textarea:not(:placeholder-shown) ~ label::after {
+	background: none;
+}
+
+.form-floating > {
+	padding-top: 24px;
+	overflow: visible;
+}
+.form-floating > label {
+	font-size: 18px;
+	padding-top: 16px;
+}
+
 .sidebar-heading {
 	font-size: 32px;
 	font-weight: 600;
