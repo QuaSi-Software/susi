@@ -22,8 +22,8 @@ const Sidebar = (menuProps: ImportExportMenuProps & MediumMenuProps) => {
 	const exampleInputs = [
 		new NodeInput(NodeInputType.STRING, 'example1', 'Example1', 'hello1'),
 		new NodeInput(NodeInputType.STRING, 'example2', 'Example2', 'hello2'),
-		new NodeInput(NodeInputType.STRING, 'example3', 'Example3', 'hello3', '', true, false),
-		new NodeInput(NodeInputType.STRING, 'example4', 'Example4', 'hello4', '', true, false),
+		new NodeInput(NodeInputType.INT, 'example3', 'Example3', 5, '', true, false),
+		new NodeInput(NodeInputType.BOOLEAN, 'example4', 'Example4', true, '', true, false),
 	];
 
 	const renderMenu = () => {

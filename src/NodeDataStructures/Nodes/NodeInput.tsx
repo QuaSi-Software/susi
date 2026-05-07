@@ -2,11 +2,13 @@ import { getUndefinedMedium } from '../Mediums/MediumUtils';
 import type { Medium } from '../Mediums/Medium';
 
 const NodeInputType = {
-	NUMBER: 'NUMBER',
+	INT: 'INT',
+	FLOAT: 'FLOAT',
 	STRING: 'STRING',
 	DROPDOWN: 'DROPDOWN',
 	MEDIUM: 'MEDIUM',
 	BOOLEAN: 'BOOLEAN',
+	MULTISELECT: 'MULTISELECT',
 	UNSET: 'UNSET',
 } as const;
 
@@ -94,7 +96,7 @@ class NodeInput {
 			case 'string':
 				return NodeInputType.STRING;
 			case 'number':
-				return NodeInputType.NUMBER;
+				return NodeInputType.INT;
 			case 'boolean':
 				return NodeInputType.BOOLEAN;
 		}

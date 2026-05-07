@@ -48,7 +48,8 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 						/>
 					</FloatingLabel>
 				);
-			case NodeInputType.NUMBER:
+			case NodeInputType.INT:
+			case NodeInputType.FLOAT:
 				return (
 					<FloatingLabel controlId="floatingInput" label={displayName}>
 						<Form.Control
