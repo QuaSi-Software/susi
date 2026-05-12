@@ -1,5 +1,6 @@
 @import 'bootstrap/dist/css/bootstrap.css';
 @import '@xyflow/react/dist/style.css';
+@import 'primereact/resources/themes/md-light-indigo/theme.css';
 
 /** Custom Reactflow Styling */
 @import './Reactflow-Styling/node-styling.css';
@@ -37,4 +38,13 @@ body {
 	margin-bottom: 10px;
 	flex-grow: 1;
 	height: 100%;
+}
+
+.p-float-label .p-inputwrapper-filled ~ #multiselect-label {
+	top: 0rem !important;
+	background-color: #fff0;
+	padding: 5px;
+	padding-top: 10px;
+	margin-left: -4px;
+	margin-top: 0;
 }

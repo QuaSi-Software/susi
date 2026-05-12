@@ -45,17 +45,18 @@ export const Multiselect: React.FC<CustomMultiSelectProps> = ({
 	};
 
 	return (
-		// <></>
-		<FloatLabel>
+		<FloatLabel className="p-fluid">
 			<MultiSelect
 				value={selectedOptions || []}
 				onChange={(e) => onChange(e.value || [])}
 				options={options}
 				optionLabel="label"
 				optionValue="value"
-				className="w-full"
+				id="floatingMultiSelect"
 			/>
-			<label htmlFor="ms-cities">{displayName}</label>
+			<label htmlFor="floatingMultiSelect" id="multiselect-label">
+				{displayName}
+			</label>
 		</FloatLabel>
 	);
 };
