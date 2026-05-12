@@ -14,6 +14,14 @@ const NodeInputType = {
 
 type NodeInputType = (typeof NodeInputType)[keyof typeof NodeInputType];
 
+const isSubsetOf = (arr: any[], subset: any[]) => {
+	for (let i = 0; i < subset.length; i++) {
+		const element = subset[i];
+		if (!arr.includes(element)) return false;
+	}
+	return true;
+};
+
 class NodeInput {
 	type: NodeInputType;
 	resieName: string;
@@ -40,8 +48,19 @@ class NodeInput {
 		dropdownOptionDisplayNames: Array<string> = []
 	) {
 		if (!type) type = this.getNodeInputType(value, dropdownOptions);
-		if (dropdownOptions.length > 0) {
+		if (type === NodeInputType.DROPDOWN) {
 			if (!dropdownOptions.includes(value)) value = dropdownOptions[0];
+		} else if (type === NodeInputType.MULTISELECT) {
+			if (!Array.isArray(value)) {
+				console.error(`For MultiSelect Inputs, the starting value should be an array.`);
+				value = [];
+			}
+			if (!isSubsetOf(dropdownOptions, value)) {
+				console.error(
+					`The starting value of ${displayName} MultiSelect is ${value}, which is not a subset of the options: ${dropdownOptions}`
+				);
+				value = [];
+			}
 		}
 
 		this.type = type;

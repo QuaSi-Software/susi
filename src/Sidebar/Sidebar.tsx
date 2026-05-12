@@ -30,7 +30,7 @@ const Sidebar = (menuProps: ImportExportMenuProps & MediumMenuProps) => {
 			NodeInputType.MULTISELECT,
 			'example5',
 			'Example5',
-			'a',
+			['a'],
 			'',
 			true,
 			false,

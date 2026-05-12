@@ -6,10 +6,11 @@ import { NodeInputType, type NodeInput } from '../../NodeDataStructures/Nodes/No
 import React from 'react';
 import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
 import { AppContext } from '../../AppContext';
+import { Multiselect } from './MultiSelect';
 
 interface CustomInputFieldProps {
 	nodeInput: NodeInput;
-	onEdit: (resieName: string, newValue: string | number | boolean) => void;
+	onEdit: (resieName: string, newValue: any) => void;
 }
 
 const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }) => {
@@ -23,7 +24,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 	// Create a mutable copy for dropdown options
 	const nodeInputCopy = { ...nodeInput };
 
-	const onInputChanged = (newInput: string | number | boolean): void => {
+	const onInputChanged = (newInput: any): void => {
 		let finalValue: string | number | boolean = newInput;
 		if (nodeInput.type === NodeInputType.BOOLEAN) {
 			finalValue = !inputValue;
@@ -87,6 +88,16 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 						startValue={startValue}
 						dropdown_options={mediums.map((m: Medium) => m.key)}
 						dropdown_options_display_names={mediums.map((m: Medium) => m.name)}
+						onEdit={onInputChanged}
+					/>
+				);
+			case NodeInputType.MULTISELECT:
+				return (
+					<Multiselect
+						displayName={displayName}
+						startValues={startValue}
+						dropdown_options={nodeInputCopy.dropdownOptions}
+						dropdown_options_display_names={nodeInputCopy.dropdownOptionDisplayNames}
 						onEdit={onInputChanged}
 					/>
 				);
