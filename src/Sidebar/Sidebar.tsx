@@ -6,6 +6,7 @@ import NewNodeMenu from './NewNodeMenu';
 import { DropdownDivider } from 'react-bootstrap';
 import { NodeInput, NodeInputType } from '../NodeDataStructures/Nodes/NodeInput';
 import { InputMenu } from './NonComponentInputMenu/InputMenu';
+import { InstructionMenu } from './Instructions';
 
 export const MenuType = {
 	NewNodeMenu: 'Add New Components',
@@ -13,6 +14,7 @@ export const MenuType = {
 	SimulationParameters: 'Simulation Parameters',
 	IO_Settings: 'IO Settings',
 	ImportExportMenu: 'Import/Export',
+	Instructions: 'Instructions',
 } as const;
 
 export type MenuType = (typeof MenuType)[keyof typeof MenuType];
@@ -24,6 +26,17 @@ const Sidebar = (menuProps: ImportExportMenuProps & MediumMenuProps) => {
 		new NodeInput(NodeInputType.STRING, 'example2', 'Example2', 'hello2'),
 		new NodeInput(NodeInputType.INT, 'example3', 'Example3', 5, '', true, false),
 		new NodeInput(NodeInputType.BOOLEAN, 'example4', 'Example4', true, '', true, false),
+		new NodeInput(
+			NodeInputType.MULTISELECT,
+			'example5',
+			'Example5',
+			'a',
+			'',
+			true,
+			false,
+			['a', 'b', 'c'],
+			['A', 'B', 'C']
+		),
 	];
 
 	const renderMenu = () => {
@@ -45,6 +58,8 @@ const Sidebar = (menuProps: ImportExportMenuProps & MediumMenuProps) => {
 				return <InputMenu menuName="Simulation Parameters" inputs={exampleInputs} setInputs={() => {}} />;
 			case MenuType.IO_Settings:
 				return <InputMenu menuName="IO Settings" inputs={exampleInputs} setInputs={() => {}} />;
+			case MenuType.Instructions:
+				return <InstructionMenu />;
 			default:
 				return null;
 		}

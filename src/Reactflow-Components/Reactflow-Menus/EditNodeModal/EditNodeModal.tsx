@@ -85,12 +85,12 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 		<>
 			<Modal show={show} onHide={handleClose} onExited={handleClose}>
 				<Modal.Header closeButton style={{ padding: '20px 10%' }}>
-					<Modal.Title>Edit Node</Modal.Title>
+					<Modal.Title>Edit Component</Modal.Title>
 				</Modal.Header>
 				<Modal.Body className="side-padded-menu">
 					<Row className="g-2">
 						<Col md>
-							<FloatingLabel controlId="floatingInput" label="Node Content">
+							<FloatingLabel controlId="floatingInput" label="Component Name">
 								<Form.Control
 									type="text"
 									as="textarea"
