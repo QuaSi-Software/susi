@@ -7,13 +7,14 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import _ from 'lodash';
 
-import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
-import type BusData from '../../../NodeDataStructures/Bus/BusData';
-import type { NodeInput } from '../../../NodeDataStructures/Nodes/NodeInput';
-import ResieInputMenu from './ResieInputMenu';
-import { getEdgesWithMediumMismatch } from '../../../NodeDataStructures/Mediums/MediumUtils';
-import { updateBusDataOnEdgeDelete } from '../../../NodeDataStructures/Bus/BusDataUtils';
-import type { SusiEdge } from '../../../NodeDataStructures/Edges/SusiEdge';
+import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
+import type BusData from '../../NodeDataStructures/Bus/BusData';
+import type { NodeInput } from '../../NodeDataStructures/Nodes/NodeInput';
+import { getEdgesWithMediumMismatch } from '../../NodeDataStructures/Mediums/MediumUtils';
+import { updateBusDataOnEdgeDelete } from '../../NodeDataStructures/Bus/BusDataUtils';
+import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
+import InputMenu from '../CustomInputWidgets/InputMenu';
+import BusConnectionMenu from '../BusDataWidget/BusConnectionMenu';
 
 interface EditNodeModalInputs {
 	show: boolean;
@@ -104,13 +105,14 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 						</Col>
 					</Row>
 				</Modal.Body>
-				<ResieInputMenu
-					node={editedNode}
-					nodes={nodes}
+				<InputMenu
+					title="Component Inputs"
+					inputs={editedNode.data.nodeInputs}
 					onValueChange={onNodeInputValueChange}
 					onIncludedChange={onNodeInputIncludedChange}
-					onBusDataChange={onNodeBusDataChange}
+					numberOfColumns={2}
 				/>
+				<BusConnectionMenu node={node} nodes={nodes} onBusDataChange={onNodeBusDataChange} />
 				<Modal.Footer>
 					<Button variant="secondary" onClick={handleClose}>
 						Close

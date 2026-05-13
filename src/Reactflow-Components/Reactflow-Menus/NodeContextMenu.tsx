@@ -4,7 +4,7 @@ import ButtonGroup from 'react-bootstrap/esm/ButtonGroup';
 
 import type { MenuPosition } from './Menus';
 import { deepCloneNode, type SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
-import EditNodeModal from './EditNodeModal/EditNodeModal';
+import EditNodeModal from './EditNodeModal';
 import BusData from '../../NodeDataStructures/Bus/BusData';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import { updateBusDataOnNodeDelete } from '../../NodeDataStructures/Bus/BusDataUtils';

@@ -1,8 +1,8 @@
 import { Row, Col, Form } from 'react-bootstrap';
-import CustomInputField from '../../CustomInputWidgets/CustomInputField';
+import CustomInputField from './CustomInputField';
 import { useState } from 'react';
-import type { NodeInput } from '../../../NodeDataStructures/Nodes/NodeInput';
 import React from 'react';
+import type { NodeInput } from '../../NodeDataStructures/Nodes/NodeInput';
 
 interface OptionalInputFieldProps {
 	nodeInput: NodeInput;

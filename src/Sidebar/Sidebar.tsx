@@ -9,7 +9,7 @@ import { DropdownDivider } from 'react-bootstrap';
 import { NodeInput, NodeInputType } from '../NodeDataStructures/Nodes/NodeInput';
 import { InstructionMenu } from './Instructions';
 import { SettingsMenu, type SettingsMenuProps } from './SettingsMenu';
-import InputMenu from '../Reactflow-Components/Reactflow-Menus/EditNodeModal/InputMenu';
+import InputMenu from '../Reactflow-Components/CustomInputWidgets/InputMenu';
 
 export const MenuType = {
 	NewNodeMenu: 'Add New Components',
