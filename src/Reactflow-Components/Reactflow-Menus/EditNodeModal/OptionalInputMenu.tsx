@@ -57,10 +57,10 @@ const OptionalInputField: React.FC<OptionalInputFieldProps> = ({
 		onIncludedChange(resieName, !isIncluded);
 	};
 
-	const onValueFieldEdit = (newValue: string | number | boolean): void => {
+	const onValueFieldEdit = (key: string, newValue: string | number | boolean): void => {
 		setIncluded(true);
 		onIncludedChange(resieName, true);
-		onValueChange(resieName, newValue);
+		onValueChange(key, newValue);
 	};
 
 	return (
