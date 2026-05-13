@@ -9,6 +9,8 @@ const NodeInputType = {
 	MEDIUM: 'MEDIUM',
 	BOOLEAN: 'BOOLEAN',
 	MULTISELECT: 'MULTISELECT',
+	VECTOR_FLOAT: 'VECTOR_FLOAT',
+	VECTOR_STRING: 'VECTOR_STRING',
 	UNSET: 'UNSET',
 } as const;
 
@@ -35,7 +37,7 @@ class NodeInput {
 	dropdownOptionDisplayNames: Array<string>;
 
 	constructor(
-		type: NodeInputType | null,
+		type: NodeInputType,
 		resieName: string,
 		displayName: string,
 		value: any,
@@ -47,23 +49,8 @@ class NodeInput {
 		dropdownOptions: Array<string> = [],
 		dropdownOptionDisplayNames: Array<string> = []
 	) {
-		if (!type) type = this.getNodeInputType(value, dropdownOptions);
-		if (type === NodeInputType.DROPDOWN) {
-			if (!dropdownOptions.includes(value)) value = dropdownOptions[0];
-		} else if (type === NodeInputType.MULTISELECT) {
-			if (!Array.isArray(value)) {
-				console.error(`For MultiSelect Inputs, the starting value should be an array.`);
-				value = [];
-			}
-			if (!isSubsetOf(dropdownOptions, value)) {
-				console.error(
-					`The starting value of ${displayName} MultiSelect is ${value}, which is not a subset of the options: ${dropdownOptions}`
-				);
-				value = [];
-			}
-		}
-
 		this.type = type;
+
 		this.resieName = resieName;
 		this.displayName = displayName;
 		this.value = value;
@@ -73,6 +60,23 @@ class NodeInput {
 		this.isIncluded = true;
 		this.dropdownOptions = dropdownOptions;
 		this.dropdownOptionDisplayNames = dropdownOptionDisplayNames;
+
+		if (this.value === null && !this.isRequired) this.isIncluded = false;
+
+		if (this.type === NodeInputType.DROPDOWN) {
+			if (!this.dropdownOptions.includes(this.value)) this.value = this.dropdownOptions[0];
+		} else if (this.type === NodeInputType.MULTISELECT) {
+			if (!Array.isArray(this.value)) {
+				console.error(`For MultiSelect Inputs, the starting value should be an array.`);
+				this.value = [];
+			}
+			if (!isSubsetOf(this.dropdownOptions, this.value)) {
+				console.error(
+					`The starting value of ${this.displayName} MultiSelect is ${this.value}, which is not a subset of the options: ${this.dropdownOptions}`
+				);
+				this.value = [];
+			}
+		}
 	}
 
 	public setNodeInputValue = (value: any, mediums: Medium[]): void => {
@@ -107,20 +111,6 @@ class NodeInput {
 			this.dropdownOptions,
 			this.dropdownOptionDisplayNames
 		);
-	};
-
-	private getNodeInputType = (value: any, dropdownOptions: string[]) => {
-		if (dropdownOptions.length > 0) return NodeInputType.DROPDOWN;
-		switch (typeof value) {
-			case 'string':
-				return NodeInputType.STRING;
-			case 'number':
-				return NodeInputType.INT;
-			case 'boolean':
-				return NodeInputType.BOOLEAN;
-		}
-		console.error(`Node Input value has unsupported type: ${typeof value}`);
-		return NodeInputType.UNSET;
 	};
 }
 

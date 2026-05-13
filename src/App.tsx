@@ -31,6 +31,7 @@ import type { ErrorMessage } from './Reactflow-Components/Errors/ErrorMessage';
 import type { SusiEdge } from './NodeDataStructures/Edges/SusiEdge';
 import LoadingOverlay from './Reactflow-Components/LoadingOverlay';
 import { getNewEdge } from './NodeDataStructures/Edges/CreateEdge';
+import { getComponentTypes } from './FetchSusiData';
 
 const initialNodes: SusiNode[] = [];
 
@@ -47,6 +48,7 @@ const DnDFlow = () => {
 	const [mediums, setMediums] = useState<Medium[]>(getDefaultMediums());
 	const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([]);
 	const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
+	const components = getComponentTypes(mediums);
 	const logError = (message: string) => {
 		setErrorMessages((prevMessages) => [
 			...prevMessages,

@@ -11,6 +11,15 @@ export default defineConfig({
 			},
 		},
 	},
+	server: {
+		proxy: {
+			'/parameters': {
+				target: 'http://vm-siz-sim-001.stzegs.ads:5000',
+				changeOrigin: true,
+				rewrite: (path) => path.replace(/^\/parameters/, '/parameters'),
+			},
+		},
+	},
 	build: {
 		rollupOptions: {
 			external: ['web-worker'],
