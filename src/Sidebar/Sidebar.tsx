@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Accordion, AccordionTab } from 'primereact/accordion';
+
 import type { ImportExportMenuProps } from './Import-Export/ImportExportMenu';
 import ImportExportMenu from './Import-Export/ImportExportMenu';
 import MediumMenu, { type MediumMenuProps } from './Mediums/MediumMenu';
@@ -77,18 +79,21 @@ const Sidebar = (menuProps: ImportExportMenuProps & MediumMenuProps & SettingsMe
 	return (
 		<aside>
 			<div className="sidebar-menu-section">
-				<h3 className="sidebar-heading">Menus</h3>
-				<div className="sidebar-menu-buttons">
-					{Object.values(MenuType).map((menuType: MenuType) => (
-						<button
-							key={`sidebar-menu-button-${menuType}`}
-							className={`sidebar-menu-btn ${selectedMenu === menuType ? 'active' : ''}`}
-							onClick={() => setSelectedMenu(menuType)}
-						>
-							{menuType as string}
-						</button>
-					))}
-				</div>
+				<Accordion activeIndex={0}>
+					<AccordionTab style={{ color: '#000' }} header="Menus" className="sidebar-heading">
+						<div className="sidebar-menu-buttons">
+							{Object.values(MenuType).map((menuType: MenuType) => (
+								<button
+									key={`sidebar-menu-button-${menuType}`}
+									className={`sidebar-menu-btn ${selectedMenu === menuType ? 'active' : ''}`}
+									onClick={() => setSelectedMenu(menuType)}
+								>
+									{menuType as string}
+								</button>
+							))}
+						</div>
+					</AccordionTab>
+				</Accordion>
 			</div>
 
 			<DropdownDivider />

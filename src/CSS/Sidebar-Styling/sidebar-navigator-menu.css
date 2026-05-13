@@ -47,3 +47,13 @@
 	flex: 1;
 	overflow-y: auto;
 }
+.p-accordion * {
+	background: #a6c3e3;
+	text-decoration: none;
+}
+.p-accordion-header-text {
+	color: var(--text-color);
+}
+.p-accordion-toggle-icon {
+	color: #0d2152;
+}
