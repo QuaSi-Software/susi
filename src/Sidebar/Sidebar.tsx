@@ -7,9 +7,9 @@ import MediumMenu, { type MediumMenuProps } from './Mediums/MediumMenu';
 import NewNodeMenu from './NewNodeMenu';
 import { DropdownDivider } from 'react-bootstrap';
 import { NodeInput, NodeInputType } from '../NodeDataStructures/Nodes/NodeInput';
-import { InputMenu } from './NonComponentInputMenu/InputMenu';
 import { InstructionMenu } from './Instructions';
 import { SettingsMenu, type SettingsMenuProps } from './SettingsMenu';
+import InputMenu from '../Reactflow-Components/Reactflow-Menus/EditNodeModal/InputMenu';
 
 export const MenuType = {
 	NewNodeMenu: 'Add New Components',
@@ -59,9 +59,25 @@ const Sidebar = (menuProps: ImportExportMenuProps & MediumMenuProps & SettingsMe
 			case MenuType.ImportExportMenu:
 				return <ImportExportMenu {...menuProps} />;
 			case MenuType.SimulationParameters:
-				return <InputMenu menuName="Simulation Parameters" inputs={exampleInputs} setInputs={() => {}} />;
+				return (
+					<InputMenu
+						title="Simulation Parameters"
+						inputs={exampleInputs}
+						onValueChange={() => {}}
+						onIncludedChange={() => {}}
+						numberOfColumns={1}
+					/>
+				);
 			case MenuType.IO_Settings:
-				return <InputMenu menuName="IO Settings" inputs={exampleInputs} setInputs={() => {}} />;
+				return (
+					<InputMenu
+						title="IO Settings"
+						inputs={exampleInputs}
+						onValueChange={() => {}}
+						onIncludedChange={() => {}}
+						numberOfColumns={1}
+					/>
+				);
 			case MenuType.Instructions:
 				return <InstructionMenu />;
 			case MenuType.Settings:

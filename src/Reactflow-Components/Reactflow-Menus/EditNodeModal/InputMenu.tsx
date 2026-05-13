@@ -10,6 +10,7 @@ interface InputMenuProps {
 	inputs: NodeInput[];
 	onValueChange: (resieName: string, newValue: string | number | boolean) => void;
 	onIncludedChange: (resieName: string, isIncluded: boolean) => void;
+	numberOfColumns: number;
 }
 
 /**
@@ -34,9 +35,9 @@ const chunk_into_rows = (inputs: NodeInput[], items_per_row: number): Array<Arra
 	return rows;
 };
 
-const InputMenu: React.FC<InputMenuProps> = ({ title, inputs, onValueChange, onIncludedChange }) => {
+const InputMenu: React.FC<InputMenuProps> = ({ title, inputs, onValueChange, onIncludedChange, numberOfColumns }) => {
 	if (inputs.length === 0) return <></>;
-	const rows = chunk_into_rows(inputs, 2);
+	const rows = chunk_into_rows(inputs, numberOfColumns);
 
 	return (
 		<>

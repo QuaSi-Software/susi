@@ -21,6 +21,7 @@ function ResieInputMenu({ node, nodes, onValueChange, onIncludedChange, onBusDat
 				inputs={nodeInputObjects}
 				onValueChange={onValueChange}
 				onIncludedChange={onIncludedChange}
+				numberOfColumns={2}
 			/>
 			<BusConnectionMenu node={node} nodes={nodes} onBusDataChange={onBusDataChange} />
 		</>
