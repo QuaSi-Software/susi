@@ -1,8 +1,7 @@
 import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type BusData from '../../../NodeDataStructures/Bus/BusData';
-import RequiredInputMenu from './RequiredInputMenu';
-import OptionalInputMenu from './OptionalInputMenu';
 import BusConnectionMenu from '../../BusDataWidget/BusConnectionMenu';
+import InputMenu from './InputMenu';
 
 interface ResieInputMenuInput {
 	node: SusiNode;
@@ -14,14 +13,12 @@ interface ResieInputMenuInput {
 
 function ResieInputMenu({ node, nodes, onValueChange, onIncludedChange, onBusDataChange }: ResieInputMenuInput) {
 	let nodeInputObjects = node.data.nodeInputs;
-	let requiredInputs = nodeInputObjects.filter((obj) => obj.isRequired);
-	let optionalInputs = nodeInputObjects.filter((obj) => !obj.isRequired);
 
 	return (
 		<>
-			<RequiredInputMenu requiredInputObjects={requiredInputs} onEdit={onValueChange} />
-			<OptionalInputMenu
-				optionalInputObjects={optionalInputs}
+			<InputMenu
+				title="Component Inputs"
+				inputs={nodeInputObjects}
 				onValueChange={onValueChange}
 				onIncludedChange={onIncludedChange}
 			/>

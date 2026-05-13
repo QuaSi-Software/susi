@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { NodeInput } from '../../NodeDataStructures/Nodes/NodeInput';
-import RequiredInputMenu from '../../Reactflow-Components/Reactflow-Menus/EditNodeModal/RequiredInputMenu';
-import OptionalInputMenu from '../../Reactflow-Components/Reactflow-Menus/EditNodeModal/OptionalInputMenu';
+import RequiredInputMenu from '../../Reactflow-Components/Reactflow-Menus/EditNodeModal/InputMenu';
+import OptionalInputMenu from '../../Reactflow-Components/Reactflow-Menus/EditNodeModal/OptionalInputField';
 
 interface InputMenuProps {
 	menuName: string;
