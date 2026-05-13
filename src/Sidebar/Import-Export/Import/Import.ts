@@ -54,7 +54,7 @@ const importState = ({
 		return;
 	}
 	// Get or generate mediums
-	const mediums = getImportMediums(importDict);
+	const mediums = getImportMediums(importDict, getNodeInputs);
 	setMediums(mediums);
 
 	const nodeDict: Record<string, SusiNode> = {};
