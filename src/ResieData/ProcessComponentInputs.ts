@@ -1,6 +1,6 @@
-import type { Medium } from './NodeDataStructures/Mediums/Medium';
-import { getUndefinedMedium } from './NodeDataStructures/Mediums/MediumUtils';
-import { NodeInput, NodeInputType } from './NodeDataStructures/Nodes/NodeInput';
+import type { Medium } from '../NodeDataStructures/Mediums/Medium';
+import { getUndefinedMedium } from '../NodeDataStructures/Mediums/MediumUtils';
+import { NodeInput, NodeInputType } from '../NodeDataStructures/Nodes/NodeInput';
 
 export interface APIComponentInput {
 	conditionals: string[][];
@@ -21,8 +21,10 @@ function getNodeInputType(inputName: string, apiInput: APIComponentInput) {
 		else return NodeInputType.DROPDOWN;
 	}
 	/** Mediums */
+	if (inputName === 'medium') return NodeInputType.MEDIUM;
 	const varNameParts = inputName.split('_');
-	if (varNameParts.length === 3 && varNameParts[0] === 'm' && (varNameParts[2] === 'in' || varNameParts[2] === 'out'))
+	const l = varNameParts.length;
+	if (l >= 3 && varNameParts[0] === 'm' && (varNameParts[l - 1] === 'in' || varNameParts[l - 1] === 'out'))
 		return NodeInputType.MEDIUM;
 	/** Primitives */
 	switch (apiInput.json_type) {
@@ -59,32 +61,22 @@ function getNodeInputFromAPIComponentInput(inputName: string, apiInput: APICompo
 	);
 }
 
-export async function getComponentTypes(mediums: Medium[]) {
-	return new Promise((resolve, reject) => {
-		fetch('/parameters')
-			.then((response) => response.json())
-			.then((data) => {
-				console.log(data);
-				const apiComponents: Record<string, Record<string, APIComponentInput>> = data.components;
-				const componentTypes: Record<string, NodeInput[]> = {};
-				for (const [componentType, inputList] of Object.entries(apiComponents)) {
-					const nodeInputs = [];
-					for (const [nodeInputName, inputAttributes] of Object.entries(inputList)) {
-						const newInput = getNodeInputFromAPIComponentInput(nodeInputName, inputAttributes);
-						if (newInput.type === NodeInputType.MEDIUM) {
-							const medium = mediums.find((m) => m.name === newInput.value);
-							newInput.value = medium !== undefined ? medium!.key : getUndefinedMedium().key;
-						}
-						nodeInputs.push(newInput);
-					}
-					componentTypes[componentType] = nodeInputs;
-				}
-				console.log(componentTypes);
-				resolve(componentTypes);
-			})
-			.catch((error) => {
-				reject(error);
-				console.log('Error:', error);
-			});
-	});
+export function getComponentInputs(
+	apiComponents: Record<string, Record<string, APIComponentInput>>,
+	mediums: Medium[]
+): Record<string, NodeInput[]> {
+	const componentInputs: Record<string, NodeInput[]> = {};
+	for (const [componentType, inputList] of Object.entries(apiComponents)) {
+		const nodeInputs = [];
+		for (const [nodeInputName, inputAttributes] of Object.entries(inputList)) {
+			const newInput = getNodeInputFromAPIComponentInput(nodeInputName, inputAttributes);
+			if (newInput.type === NodeInputType.MEDIUM) {
+				const medium = mediums.find((m) => m.name === newInput.value);
+				newInput.value = medium !== undefined ? medium!.key : getUndefinedMedium().key;
+			}
+			nodeInputs.push(newInput);
+		}
+		componentInputs[componentType.toLowerCase()] = nodeInputs;
+	}
+	return componentInputs;
 }

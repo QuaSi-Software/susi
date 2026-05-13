@@ -2,9 +2,9 @@ import type { Node, XYPosition } from '@xyflow/react';
 import type { NodeType } from './SusiNodeTypes';
 import { Position } from '@xyflow/react';
 import { type SusiNodeData, createSusiNodeData } from './SusiNodeData';
-import type { Medium } from '../Mediums/Medium';
 
 import _ from 'lodash';
+import type { NodeInput } from './NodeInput';
 
 /**
  * SusiNode is a normal ReactFlow Node, but with data replaced by the interface SusiNodeData for clarity
@@ -16,7 +16,7 @@ const createNodeFromType = (
 	nodes: SusiNode[],
 	nodeType: NodeType,
 	position: XYPosition,
-	mediums: Medium[],
+	getNodeInputs: (componentType: string) => NodeInput[],
 	content: string | null = null
 ) => {
 	const nodesWithType = nodes.filter((node: SusiNode) => node.data.componentType === nodeType.type_name);
@@ -25,7 +25,7 @@ const createNodeFromType = (
 	if (!content) {
 		content = 'TST_' + nodeType.segment + '_' + index;
 	}
-	const susiNodeData = createSusiNodeData(nodeType, content, mediums);
+	const susiNodeData = createSusiNodeData(nodeType, content, getNodeInputs);
 	return {
 		id: `${content}_${timestamp}`,
 		position: position,

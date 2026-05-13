@@ -31,7 +31,8 @@ import type { ErrorMessage } from './Reactflow-Components/Errors/ErrorMessage';
 import type { SusiEdge } from './NodeDataStructures/Edges/SusiEdge';
 import LoadingOverlay from './Reactflow-Components/LoadingOverlay';
 import { getNewEdge } from './NodeDataStructures/Edges/CreateEdge';
-import { getComponentTypes } from './FetchSusiData';
+import { fetchComponentInputs, getNodeInputsFromAPI } from './ResieData/HandleAPICalls';
+import type { NodeInput } from './NodeDataStructures/Nodes/NodeInput';
 
 const initialNodes: SusiNode[] = [];
 
@@ -48,7 +49,13 @@ const DnDFlow = () => {
 	const [mediums, setMediums] = useState<Medium[]>(getDefaultMediums());
 	const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([]);
 	const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
-	const components = getComponentTypes(mediums);
+	/** Component Inputs */
+	const [componentInputsByType, setComponentInputs] = useState<Record<string, NodeInput[]> | null>(null);
+	fetchComponentInputs(setLoadingMessage, mediums, componentInputsByType, setComponentInputs);
+	const getNodeInputs = (componentType: string) => {
+		return getNodeInputsFromAPI(componentType, componentInputsByType);
+	};
+	/** Log error */
 	const logError = (message: string) => {
 		setErrorMessages((prevMessages) => [
 			...prevMessages,
@@ -95,7 +102,7 @@ const DnDFlow = () => {
 				x: event.clientX,
 				y: event.clientY,
 			});
-			const newNode = createNodeFromType(nodes, type, position, mediums);
+			const newNode = createNodeFromType(nodes, type, position, getNodeInputs);
 
 			setNodes((nds) => nds.concat(newNode));
 		},
@@ -153,6 +160,7 @@ const DnDFlow = () => {
 					setMediums: setMediums,
 					setErrorMessages: setErrorMessages,
 					setLoadingMessage: setLoadingMessage,
+					getNodeInputs: getNodeInputs,
 				}}
 			>
 				<LoadingOverlay message={loadingMessage} />

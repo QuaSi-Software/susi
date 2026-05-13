@@ -2,15 +2,14 @@ import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type { Medium } from '../../../NodeDataStructures/Mediums/Medium';
 import { getNodeTypeWithName } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 import createNodeFromType from '../../../NodeDataStructures/Nodes/SusiNode';
-import getNodeInputs from '../../../NodeDataStructures/Nodes/NodeInputData';
 import getImportMediums from './ImportMediums';
 import type { ComponentData, ComponentImportData, ImportData } from '../ExportDataStrucures';
 import { getComponentImportData } from './ImportData';
 import { getBusDataFromConnections, isBusDataValid } from './ImportBusData';
-// import getOutputRefs from './ImportOutputRefs';
 import type { SusiEdge } from '../../../NodeDataStructures/Edges/SusiEdge';
 import { createSourceHandleDict, findTargetHandle, initializeTakenHandles } from './ImportHandles';
 import { getNewEdge } from '../../../NodeDataStructures/Edges/CreateEdge';
+import type { NodeInput } from '../../../NodeDataStructures/Nodes/NodeInput';
 
 interface ImportStateProps {
 	stateJSON: string;
@@ -18,6 +17,7 @@ interface ImportStateProps {
 	setEdges: (edges: SusiEdge[]) => void;
 	setMediums: (mediums: Medium[]) => void;
 	logError: (errorMessage: string) => void;
+	getNodeInputs: (componentType: string) => NodeInput[];
 }
 
 function getOutputRefs(sourceNodeID: string, sourceNodeData: ComponentData): string[] {
@@ -33,7 +33,14 @@ function getOutputRefs(sourceNodeID: string, sourceNodeData: ComponentData): str
 	}
 }
 
-const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: ImportStateProps): void => {
+const importState = ({
+	stateJSON,
+	setNodes,
+	setEdges,
+	setMediums,
+	logError,
+	getNodeInputs,
+}: ImportStateProps): void => {
 	let importDict: ImportData;
 	try {
 		importDict = JSON.parse(stateJSON);
@@ -62,10 +69,10 @@ const importState = ({ stateJSON, setNodes, setEdges, setMediums, logError }: Im
 			logError(`Node ${nodeId} has unknown component type: ${nodeData.type}`);
 			continue;
 		}
-		const newNode = createNodeFromType(nodeArray, nodeType, importData.node_position, mediums, nodeId);
+		const newNode = createNodeFromType(nodeArray, nodeType, importData.node_position, getNodeInputs, nodeId);
 
 		// Fill in node inputs from import data
-		const nodeInputs = getNodeInputs(nodeType.type_name, mediums);
+		const nodeInputs = getNodeInputs(nodeType.type_name);
 		for (const nodeInput of nodeInputs) {
 			const value = nodeData[nodeInput.resieName];
 			if (value !== undefined) {

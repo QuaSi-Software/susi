@@ -1,9 +1,10 @@
 import { createMedium, type Medium } from '../../../NodeDataStructures/Mediums/Medium';
 import { NodeInputType } from '../../../NodeDataStructures/Nodes/NodeInput';
-import getNodeInputs from '../../../NodeDataStructures/Nodes/NodeInputData';
 import { getDefaultMediums, getRandomColor, getUndefinedMedium } from '../../../NodeDataStructures/Mediums/MediumUtils';
 import type { ComponentData, ImportData } from '../ExportDataStrucures';
 import { getComponentImportData } from './ImportData';
+import { useContext } from 'react';
+import { AppContext } from '../../../AppContext';
 
 export default function getImportMediums(importDict: ImportData) {
 	let mediums: Medium[] = [getUndefinedMedium()];
@@ -28,12 +29,14 @@ const createMediumFromImport = (name: string, color: string | null) => {
 
 function generateMediumListFromComponents(components: Record<string, ComponentData>): Array<[string, string | null]> {
 	const mediums: string[] = [];
+	const getNodeInputs = useContext(AppContext)!.getNodeInputs;
 
 	for (const [_, nodeData] of Object.entries(components)) {
 		nodeData.import_data = getComponentImportData(nodeData);
 		const typeName = nodeData.import_data.node_type;
-		const nodeInputs = getNodeInputs(typeName, []);
+		const nodeInputs = getNodeInputs(typeName);
 
+		if (nodeInputs === null) return []; /** TODO */
 		const mediumInputs = nodeInputs.filter((input) => input.type === NodeInputType.MEDIUM);
 
 		for (const mediumInput of mediumInputs) {

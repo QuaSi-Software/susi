@@ -1,7 +1,5 @@
 import BusData from '../Bus/BusData';
-import type { Medium } from '../Mediums/Medium';
 import { NodeInputType, type NodeInput } from './NodeInput';
-import getNodeInputs from './NodeInputData';
 import type { NodeCategory, NodeType } from './SusiNodeTypes';
 
 interface MediumHandleDict {
@@ -57,8 +55,12 @@ function getMediumHandleDict(nodeInputs: NodeInput[], sourceHandles: number, tar
 	}
 }
 
-export function createSusiNodeData(nodeType: NodeType, content: string = '', mediums: Medium[]): SusiNodeData {
-	const nodeInputs = getNodeInputs(nodeType.type_name, mediums);
+export function createSusiNodeData(
+	nodeType: NodeType,
+	content: string = '',
+	getNodeInputs: (componentType: string) => NodeInput[]
+): SusiNodeData {
+	const nodeInputs = getNodeInputs(nodeType.type_name);
 	const componentType = nodeType.type_name;
 	const busData = componentType.toLowerCase() === 'bus' ? new BusData() : null;
 	const handleMediumDict = getMediumHandleDict(nodeInputs, nodeType.nr_outputs, nodeType.nr_inputs);
