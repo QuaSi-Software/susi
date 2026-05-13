@@ -17,13 +17,15 @@ const createNodeFromType = (
 	nodeType: NodeType,
 	position: XYPosition,
 	getNodeInputs: (componentType: string) => NodeInput[],
+	nodeNamePrefix: string,
 	content: string | null = null
 ) => {
 	const nodesWithType = nodes.filter((node: SusiNode) => node.data.componentType === nodeType.type_name);
 	const index = nodesWithType.length;
 	const timestamp = Date.now();
 	if (!content) {
-		content = 'TST_' + nodeType.segment + '_' + index;
+		if (nodeNamePrefix !== '') nodeNamePrefix += '_';
+		content = nodeNamePrefix + nodeType.segment + '_' + index;
 	}
 	const susiNodeData = createSusiNodeData(nodeType, content, getNodeInputs);
 	return {

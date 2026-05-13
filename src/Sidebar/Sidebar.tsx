@@ -7,6 +7,7 @@ import { DropdownDivider } from 'react-bootstrap';
 import { NodeInput, NodeInputType } from '../NodeDataStructures/Nodes/NodeInput';
 import { InputMenu } from './NonComponentInputMenu/InputMenu';
 import { InstructionMenu } from './Instructions';
+import { SettingsMenu, type SettingsMenuProps } from './SettingsMenu';
 
 export const MenuType = {
 	NewNodeMenu: 'Add New Components',
@@ -15,11 +16,12 @@ export const MenuType = {
 	IO_Settings: 'IO Settings',
 	ImportExportMenu: 'Import/Export',
 	Instructions: 'Instructions',
+	Settings: 'Settings',
 } as const;
 
 export type MenuType = (typeof MenuType)[keyof typeof MenuType];
 
-const Sidebar = (menuProps: ImportExportMenuProps & MediumMenuProps) => {
+const Sidebar = (menuProps: ImportExportMenuProps & MediumMenuProps & SettingsMenuProps) => {
 	const [selectedMenu, setSelectedMenu] = useState<MenuType>(MenuType.NewNodeMenu);
 	const exampleInputs = [
 		new NodeInput(NodeInputType.STRING, 'example1', 'Example1', 'hello1'),
@@ -60,6 +62,13 @@ const Sidebar = (menuProps: ImportExportMenuProps & MediumMenuProps) => {
 				return <InputMenu menuName="IO Settings" inputs={exampleInputs} setInputs={() => {}} />;
 			case MenuType.Instructions:
 				return <InstructionMenu />;
+			case MenuType.Settings:
+				return (
+					<SettingsMenu
+						nodeNamePrefix={menuProps.nodeNamePrefix}
+						setNodeNamePrefix={menuProps.setNodeNamePrefix}
+					/>
+				);
 			default:
 				return null;
 		}

@@ -31,7 +31,12 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 			// Wait for the import to complete before clearing the loading message
 			await new Promise<void>((resolve) => {
 				setTimeout(() => {
-					importState({ ...menuProps, stateJSON: textContent, setMediums: setMediums });
+					importState({
+						...menuProps,
+						stateJSON: textContent,
+						setMediums: setMediums,
+						getNodeInputs: context.getNodeInputs,
+					});
 					resolve();
 				}, 0);
 			});

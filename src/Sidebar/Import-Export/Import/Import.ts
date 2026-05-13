@@ -69,7 +69,7 @@ const importState = ({
 			logError(`Node ${nodeId} has unknown component type: ${nodeData.type}`);
 			continue;
 		}
-		const newNode = createNodeFromType(nodeArray, nodeType, importData.node_position, getNodeInputs, nodeId);
+		const newNode = createNodeFromType(nodeArray, nodeType, importData.node_position, getNodeInputs, '', nodeId);
 
 		// Fill in node inputs from import data
 		const nodeInputs = getNodeInputs(nodeType.type_name);

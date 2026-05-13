@@ -43,12 +43,16 @@ const DnDFlow = () => {
 	const [type] = useDnD();
 	const ref = useRef<HTMLInputElement>(null);
 
+	/** Context Menus */
 	const [edgeContextMenu, setEdgeContextMenu] = useState<EdgeContextMenuData | null>(null);
 	const [nodeContextMenu, setNodeContextMenu] = useState<NodeContextMenuData | null>(null);
 	const [paneContextMenu, setPaneContextMenu] = useState<MenuPosition | null>(null);
+
+	/**  */
 	const [mediums, setMediums] = useState<Medium[]>(getDefaultMediums());
 	const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([]);
 	const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
+	const [nodeNamePrefix, setNodeNamePrefix] = useState<string>('TST');
 	/** Component Inputs */
 	const [componentInputsByType, setComponentInputs] = useState<Record<string, NodeInput[]> | null>(null);
 	fetchComponentInputs(setLoadingMessage, mediums, componentInputsByType, setComponentInputs);
@@ -102,11 +106,11 @@ const DnDFlow = () => {
 				x: event.clientX,
 				y: event.clientY,
 			});
-			const newNode = createNodeFromType(nodes, type, position, getNodeInputs);
+			const newNode = createNodeFromType(nodes, type, position, getNodeInputs, nodeNamePrefix);
 
 			setNodes((nds) => nds.concat(newNode));
 		},
-		[screenToFlowPosition, type, setNodes, nodes]
+		[screenToFlowPosition, type, setNodes, nodes, nodeNamePrefix]
 	);
 
 	const onDragStart = (event: ReactDragEvent<HTMLDivElement>) => {
@@ -164,7 +168,15 @@ const DnDFlow = () => {
 				}}
 			>
 				<LoadingOverlay message={loadingMessage} />
-				<Sidebar nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} logError={logError} />
+				<Sidebar
+					nodes={nodes}
+					setNodes={setNodes}
+					edges={edges}
+					setEdges={setEdges}
+					logError={logError}
+					nodeNamePrefix={nodeNamePrefix}
+					setNodeNamePrefix={setNodeNamePrefix}
+				/>
 				<ReactFlow
 					nodes={nodes}
 					edges={edges}
