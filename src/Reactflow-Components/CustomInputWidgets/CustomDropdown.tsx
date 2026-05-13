@@ -31,9 +31,10 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
 				id="floatingSelect"
 				defaultValue={String(selectedOption)}
 				aria-label="Floating label select"
+				onChange={(e) => onOptionSelected(e.target.value)}
 			>
 				{dropdown_options.map((option, index) => (
-					<option key={option} onClick={() => onOptionSelected(option)} value={option}>
+					<option key={option} value={option}>
 						{displayNames[index]}
 					</option>
 				))}
