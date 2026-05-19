@@ -26,6 +26,7 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 	const context = useContext(AppContext);
 	if (!context) return <></>;
 	const mediums = context.mediums;
+	const setCheckState = context.setCheckState;
 	const setMediums = context.setMediums;
 	const setLoadingMessage = context.setLoadingMessage;
 	const { fitView } = useReactFlow();
@@ -46,7 +47,9 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 				}, 0);
 			});
 			setLoadingMessage(null);
+			setCheckState(true);
 			fitView();
+			setTextContent('');
 		} catch (error) {
 			setLoadingMessage(null);
 			console.error('Import failed:', error);
