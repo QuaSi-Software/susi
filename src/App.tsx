@@ -31,7 +31,7 @@ import type { ErrorMessage } from './Reactflow-Components/Errors/ErrorMessage';
 import type { SusiEdge } from './NodeDataStructures/Edges/SusiEdge';
 import LoadingOverlay from './Reactflow-Components/LoadingOverlay';
 import { getNewEdge } from './NodeDataStructures/Edges/CreateEdge';
-import { fetchComponentInputs, getNodeInputsFromAPI } from './ResieData/HandleAPICalls';
+import { fetchComponentInputs, getNodeInputsFromAPI } from './FetchingApiData/HandleAPICalls';
 import type { NodeInput } from './NodeDataStructures/Nodes/NodeInput';
 
 const initialNodes: SusiNode[] = [];

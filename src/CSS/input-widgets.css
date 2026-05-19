@@ -1,0 +1,25 @@
+/** Optional Input rows*/
+.optional-input-row {
+	/* Row already has display: flex from Bootstrap */
+	align-items: center;
+	border-style: solid;
+	border-color: #e6e6e6;
+	border-radius: 6px;
+	border-width: 2px;
+	margin: 2px;
+	padding: 2px;
+	height: 100%;
+}
+
+.optional-input-checkbox {
+	flex: 0 0 auto !important; /* Don't grow, use content width */
+	width: auto !important;
+	padding: 10px;
+	margin: 2px;
+}
+
+.optional-input-input-field {
+	flex: 1 1 0 !important; /* Grow to fill remaining space */
+	width: 0 !important; /* Required for flex to work properly */
+	margin: 2px;
+}

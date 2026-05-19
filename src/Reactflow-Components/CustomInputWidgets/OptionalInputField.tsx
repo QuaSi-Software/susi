@@ -42,7 +42,7 @@ const OptionalInputField: React.FC<OptionalInputFieldProps> = ({
 					onChange={onSwitchClicked}
 				/>
 			</Col>
-			<Col className="optonal-input-input-field">
+			<Col className="optional-input-input-field">
 				<CustomInputField nodeInput={nodeInput} onEdit={onValueFieldEdit} />
 			</Col>
 		</Row>
