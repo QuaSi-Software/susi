@@ -23,12 +23,7 @@ export const MenuType = {
 
 export type MenuType = (typeof MenuType)[keyof typeof MenuType];
 
-type SidebarProps = ImportExportMenuProps &
-	MediumMenuProps &
-	SettingsMenuProps & {
-		setIOSettings: Dispatch<SetStateAction<NodeInput[]>>;
-		setSimulationParameters: Dispatch<SetStateAction<NodeInput[]>>;
-	};
+type SidebarProps = ImportExportMenuProps & MediumMenuProps & SettingsMenuProps;
 
 const Sidebar = (menuProps: SidebarProps) => {
 	const [selectedMenu, setSelectedMenu] = useState<MenuType>(MenuType.NewNodeMenu);

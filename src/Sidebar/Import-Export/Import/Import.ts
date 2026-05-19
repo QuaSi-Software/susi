@@ -10,6 +10,7 @@ import type { SusiEdge } from '../../../NodeDataStructures/Edges/SusiEdge';
 import { createSourceHandleDict, findTargetHandle, initializeTakenHandles } from './ImportHandles';
 import { getNewEdge } from '../../../NodeDataStructures/Edges/CreateEdge';
 import type { NodeInput } from '../../../NodeDataStructures/Nodes/NodeInput';
+import type { Dispatch, SetStateAction } from 'react';
 
 interface ImportStateProps {
 	stateJSON: string;
@@ -18,6 +19,9 @@ interface ImportStateProps {
 	setMediums: (mediums: Medium[]) => void;
 	logError: (errorMessage: string) => void;
 	getNodeInputs: (componentType: string) => NodeInput[];
+	/** io settings and simulation parameters */
+	setIOSettings: Dispatch<SetStateAction<NodeInput[]>>;
+	setSimulationParameters: Dispatch<SetStateAction<NodeInput[]>>;
 }
 
 function getOutputRefs(sourceNodeID: string, sourceNodeData: ComponentData): string[] {
@@ -33,6 +37,20 @@ function getOutputRefs(sourceNodeID: string, sourceNodeData: ComponentData): str
 	}
 }
 
+function setListOfInputs(setter: Dispatch<SetStateAction<NodeInput[]>>, importedValues: Record<string, any>) {
+	setter((inputs) => {
+		inputs.forEach((input) => {
+			const importedValue = importedValues[input.resieName];
+			if (importedValue === undefined) {
+				input.isIncluded = false;
+			} else {
+				input.value = importedValue;
+			}
+		});
+		return inputs;
+	});
+}
+
 const importState = ({
 	stateJSON,
 	setNodes,
@@ -40,6 +58,8 @@ const importState = ({
 	setMediums,
 	logError,
 	getNodeInputs,
+	setIOSettings,
+	setSimulationParameters,
 }: ImportStateProps): void => {
 	let importDict: ImportData;
 	try {
@@ -52,6 +72,12 @@ const importState = ({
 	if (!importDict.components || typeof importDict.components !== 'object' || Array.isArray(importDict.components)) {
 		logError('There is no dictionary of components defined in import file.');
 		return;
+	}
+	if (importDict.io_settings) {
+		setListOfInputs(setIOSettings, importDict.io_settings);
+	}
+	if (importDict.simulation_parameters) {
+		setListOfInputs(setSimulationParameters, importDict.simulation_parameters);
 	}
 	// Get or generate mediums
 	const mediums = getImportMediums(importDict, getNodeInputs);

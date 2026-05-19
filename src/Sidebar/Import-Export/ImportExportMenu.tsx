@@ -1,4 +1,4 @@
-import { useContext, useState, useCallback } from 'react';
+import { useContext, useState, useCallback, type Dispatch, type SetStateAction } from 'react';
 import { Button } from 'react-bootstrap';
 import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import importState from './Import/Import';
@@ -17,6 +17,8 @@ export interface ImportExportMenuProps {
 	edges: SusiEdge[];
 	simulationParametersList: NodeInput[];
 	ioSettingsList: NodeInput[];
+	setIOSettings: Dispatch<SetStateAction<NodeInput[]>>;
+	setSimulationParameters: Dispatch<SetStateAction<NodeInput[]>>;
 }
 
 const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
