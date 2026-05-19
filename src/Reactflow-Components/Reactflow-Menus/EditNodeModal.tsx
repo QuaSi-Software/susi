@@ -102,7 +102,6 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 									style={{ height: '100px' }}
 									placeholder="nodeContent"
 									value={editedNode.data.content}
-									autoFocus
 									onChange={onNodeContentChange}
 								/>
 							</FloatingLabel>

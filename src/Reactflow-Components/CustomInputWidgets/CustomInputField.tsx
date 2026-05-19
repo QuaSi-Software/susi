@@ -44,7 +44,6 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 							style={{ height: '60px' }}
 							placeholder={displayName}
 							value={String(inputValue)}
-							autoFocus
 							onChange={(e) => onInputChanged(e.target.value)}
 						/>
 					</FloatingLabel>

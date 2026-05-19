@@ -50,7 +50,7 @@ const InputMenu: React.FC<InputMenuProps> = ({ title, inputs, onValueChange, onI
 								{input.isRequired && <CustomInputField nodeInput={input} onEdit={onValueChange} />}
 								{!input.isRequired && (
 									<OptionalInputField
-										key={input.resieName + Math.random()}
+										key={input.resieName}
 										nodeInput={input}
 										onValueChange={onValueChange}
 										startIncluded={input.isIncluded}
