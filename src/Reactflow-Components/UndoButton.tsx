@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState, type Dispatch, type SetStateAction } from 'react';
-import type { SusiEdge } from './NodeDataStructures/Edges/SusiEdge';
-import { type SusiNode } from './NodeDataStructures/Nodes/SusiNode';
+import type { SusiEdge } from '../NodeDataStructures/Edges/SusiEdge';
+import { type SusiNode } from '../NodeDataStructures/Nodes/SusiNode';
 import * as jsondiffpatch from 'jsondiffpatch';
-import { AppContext } from './AppContext';
+import { AppContext } from '../AppContext';
 import { Button } from 'react-bootstrap';
 import _ from 'lodash';
 
@@ -57,7 +57,7 @@ export function UndoButton({ nodes, setNodes, edges, setEdges, checkState }: Und
 				onClick={undoAction}
 				disabled={stateHistory.length === 0}
 			>
-				<i className="bi bi-tools"></i> Undo Action
+				<i className="bi bi-arrow-clockwise"></i> Undo Action
 			</Button>
 		</>
 	);

@@ -33,7 +33,7 @@ import LoadingOverlay from './Reactflow-Components/LoadingOverlay';
 import { getNewEdge } from './NodeDataStructures/Edges/CreateEdge';
 import { fetchComponentInputs, getNodeInputsFromAPI } from './FetchingApiData/HandleAPICalls';
 import type { NodeInput } from './NodeDataStructures/Nodes/NodeInput';
-import { UndoButton } from './StateHistory';
+import { UndoButton } from './Reactflow-Components/UndoButton';
 
 const initialNodes: SusiNode[] = [];
 
@@ -220,14 +220,14 @@ const DnDFlow = () => {
 				>
 					<Controls />
 					<Background />
+					<UndoButton
+						nodes={nodes}
+						edges={edges}
+						checkState={checkState}
+						setNodes={setNodes}
+						setEdges={setEdges}
+					/>
 				</ReactFlow>
-				<UndoButton
-					nodes={nodes}
-					edges={edges}
-					checkState={checkState}
-					setNodes={setNodes}
-					setEdges={setEdges}
-				/>
 				<EdgeContextMenu
 					edgeContextMenuData={edgeContextMenu}
 					setEdgeContextMenu={setEdgeContextMenu}
