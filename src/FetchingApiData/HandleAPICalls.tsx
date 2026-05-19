@@ -41,8 +41,8 @@ export function fetchComponentInputs(
 				const apiComponents: Record<string, Record<string, APIComponentInput>> = data.components;
 				const componentInputs = getComponentInputs(apiComponents, mediums);
 				setComponentInputs(componentInputs);
-				setIOSettings(_.cloneDeep(exampleInputs));
-				setSimulationParametersList(_.cloneDeep(exampleInputs));
+				setIOSettings(exampleInputs.map((input) => input.copy()));
+				setSimulationParametersList(exampleInputs.map((input) => input.copy()));
 				setLoadingMessage(null);
 			})
 			.catch((error) => {
