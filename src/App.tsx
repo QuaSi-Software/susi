@@ -221,7 +221,13 @@ const DnDFlow = () => {
 					<Controls />
 					<Background />
 				</ReactFlow>
-				<UndoButton nodes={nodes} edges={edges} checkState={checkState} />
+				<UndoButton
+					nodes={nodes}
+					edges={edges}
+					checkState={checkState}
+					setNodes={setNodes}
+					setEdges={setEdges}
+				/>
 				<EdgeContextMenu
 					edgeContextMenuData={edgeContextMenu}
 					setEdgeContextMenu={setEdgeContextMenu}

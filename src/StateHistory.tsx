@@ -1,17 +1,27 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import type { SusiEdge } from './NodeDataStructures/Edges/SusiEdge';
 import { type SusiNode } from './NodeDataStructures/Nodes/SusiNode';
 import * as jsondiffpatch from 'jsondiffpatch';
 import { AppContext } from './AppContext';
+import { Button } from 'react-bootstrap';
+import _ from 'lodash';
 
+type Delta = jsondiffpatch.Delta;
 interface SusiState {
 	nodes: SusiNode[];
 	edges: SusiEdge[];
 }
+interface UndoButtonProps {
+	nodes: SusiNode[];
+	setNodes: Dispatch<SetStateAction<SusiNode[]>>;
+	edges: SusiEdge[];
+	setEdges: Dispatch<SetStateAction<SusiEdge[]>>;
+	checkState: boolean;
+}
 
-export function UndoButton({ nodes, edges, checkState }: SusiState & { checkState: boolean }) {
-	const [stateHistory, setStateHistory] = useState<Object[]>([]);
-	const [prevState, setPrevState] = useState<SusiState>({ nodes: [], edges: [] });
+export function UndoButton({ nodes, setNodes, edges, setEdges, checkState }: UndoButtonProps) {
+	const [stateHistory, setStateHistory] = useState<Delta[]>([]);
+	const [currentState, setCurrentState] = useState<SusiState>({ nodes: [], edges: [] });
 	const setCheckState = useContext(AppContext)!.setCheckState;
 
 	useEffect(() => {
@@ -20,15 +30,35 @@ export function UndoButton({ nodes, edges, checkState }: SusiState & { checkStat
 			nodes,
 			edges,
 		};
-		const patcher = jsondiffpatch.create();
-		const delta = patcher.diff(prevState, newState);
+		const delta: Delta = jsondiffpatch.diff(currentState, newState);
 		if (delta === undefined) return;
-		console.log(`Delta: ${JSON.stringify(delta)}`);
 		stateHistory.push(delta);
 		setStateHistory(stateHistory);
-		setPrevState(newState);
+		setCurrentState(newState);
 		setCheckState(false);
 	}, [nodes, edges, checkState]);
 
-	return <></>;
+	function undoAction() {
+		const delta = stateHistory.pop();
+		if (delta === undefined) return;
+		const prevState = _.cloneDeep(currentState);
+		jsondiffpatch.unpatch(prevState, delta);
+		setNodes(prevState.nodes);
+		setEdges(prevState.edges);
+		setStateHistory(stateHistory);
+		setCurrentState(prevState);
+	}
+
+	return (
+		<>
+			<Button
+				className="undo-button"
+				variant="outline-primary"
+				onClick={undoAction}
+				disabled={stateHistory.length === 0}
+			>
+				<i className="bi bi-tools"></i> Undo Action
+			</Button>
+		</>
+	);
 }
