@@ -1,16 +1,16 @@
 import { useEffect, type Dispatch, type SetStateAction } from 'react';
 import type { Medium } from '../NodeDataStructures/Mediums/Medium';
-import { NodeInput, NodeInputType } from '../NodeDataStructures/Nodes/NodeInput';
+import { InputObject, InputObjectType } from '../NodeDataStructures/Nodes/NodeInput';
 import { getComponentInputs, type APIComponentInput } from './ProcessComponentInputs';
 import _ from 'lodash';
 
 const exampleInputs = [
-	new NodeInput(NodeInputType.STRING, 'example1', 'Example1', 'hello1'),
-	new NodeInput(NodeInputType.STRING, 'example2', 'Example2', 'hello2'),
-	new NodeInput(NodeInputType.INT, 'example3', 'Example3', 5, '', true, false),
-	new NodeInput(NodeInputType.BOOLEAN, 'example4', 'Example4', true, '', true, false),
-	new NodeInput(
-		NodeInputType.MULTISELECT,
+	new InputObject(InputObjectType.STRING, 'example1', 'Example1', 'hello1'),
+	new InputObject(InputObjectType.STRING, 'example2', 'Example2', 'hello2'),
+	new InputObject(InputObjectType.INT, 'example3', 'Example3', 5, '', true, false),
+	new InputObject(InputObjectType.BOOLEAN, 'example4', 'Example4', true, '', true, false),
+	new InputObject(
+		InputObjectType.MULTISELECT,
 		'example5',
 		'Example5',
 		['a'],
@@ -25,10 +25,10 @@ const exampleInputs = [
 export function fetchComponentInputs(
 	setLoadingMessage: (isLoading: string | null) => void,
 	mediums: Medium[],
-	componentInputsByType: Record<string, NodeInput[]> | null,
-	setComponentInputs: Dispatch<SetStateAction<Record<string, NodeInput[]> | null>>,
-	setIOSettings: Dispatch<SetStateAction<NodeInput[]>>,
-	setSimulationParametersList: Dispatch<SetStateAction<NodeInput[]>>
+	componentInputsByType: Record<string, InputObject[]> | null,
+	setComponentInputs: Dispatch<SetStateAction<Record<string, InputObject[]> | null>>,
+	setIOSettings: Dispatch<SetStateAction<InputObject[]>>,
+	setSimulationParametersList: Dispatch<SetStateAction<InputObject[]>>
 ) {
 	useEffect(() => {
 		if (componentInputsByType !== null) {
@@ -58,8 +58,8 @@ export function fetchComponentInputs(
  */
 export function getNodeInputsFromAPI(
 	componentType: string,
-	componentInputsByType: Record<string, NodeInput[]> | null
-): NodeInput[] {
+	componentInputsByType: Record<string, InputObject[]> | null
+): InputObject[] {
 	if (componentInputsByType === null) {
 		console.warn("You shouldn't be able to call getNodeInputsFromAPI if componentInputsByType is null");
 		return [];

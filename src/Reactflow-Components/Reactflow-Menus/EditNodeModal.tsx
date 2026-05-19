@@ -9,7 +9,7 @@ import _ from 'lodash';
 
 import { deepCloneNode, deepCloneNodes, type SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import type BusData from '../../NodeDataStructures/Bus/BusData';
-import type { NodeInput } from '../../NodeDataStructures/Nodes/NodeInput';
+import type { InputObject } from '../../NodeDataStructures/Nodes/NodeInput';
 import { getEdgesWithMediumMismatch } from '../../NodeDataStructures/Mediums/MediumUtils';
 import { updateBusDataOnEdgeDelete } from '../../NodeDataStructures/Bus/BusDataUtils';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
@@ -48,8 +48,8 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 	const changeNodeInput = (resieName: string, value: any, isValueChange: boolean) => {
 		//change node input
 		//if you don't make a copy, the change to the resie_data is applied to the nodes list, since editedNode is a reference, not a copy
-		const resieDataCopy: Array<NodeInput> = Object.assign([], editedNode.data.nodeInputs);
-		let nodeInput = resieDataCopy.find((obj: NodeInput) => obj.resieName === resieName);
+		const resieDataCopy: Array<InputObject> = Object.assign([], editedNode.data.nodeInputs);
+		let nodeInput = resieDataCopy.find((obj: InputObject) => obj.resieName === resieName);
 		console.assert(nodeInput != undefined);
 		if (isValueChange) {
 			nodeInput!.value = value;

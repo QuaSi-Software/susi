@@ -1,6 +1,6 @@
 import type { Medium } from '../NodeDataStructures/Mediums/Medium';
 import { getUndefinedMedium } from '../NodeDataStructures/Mediums/MediumUtils';
-import { NodeInput, NodeInputType } from '../NodeDataStructures/Nodes/NodeInput';
+import { InputObject, InputObjectType } from '../NodeDataStructures/Nodes/NodeInput';
 
 export interface APIComponentInput {
 	conditionals: string[][];
@@ -17,38 +17,38 @@ export interface APIComponentInput {
 function getNodeInputType(inputName: string, apiInput: APIComponentInput) {
 	/** Dropdown and multiselect */
 	if (apiInput.options && apiInput.options.length > 0) {
-		if (Array.isArray(apiInput.default)) return NodeInputType.MULTISELECT;
-		else return NodeInputType.DROPDOWN;
+		if (Array.isArray(apiInput.default)) return InputObjectType.MULTISELECT;
+		else return InputObjectType.DROPDOWN;
 	}
 	/** Mediums */
-	if (inputName === 'medium') return NodeInputType.MEDIUM;
+	if (inputName === 'medium') return InputObjectType.MEDIUM;
 	const varNameParts = inputName.split('_');
 	const l = varNameParts.length;
 	if (l >= 3 && varNameParts[0] === 'm' && (varNameParts[l - 1] === 'in' || varNameParts[l - 1] === 'out'))
-		return NodeInputType.MEDIUM;
+		return InputObjectType.MEDIUM;
 	/** Primitives */
 	switch (apiInput.json_type) {
 		case 'string':
-			return NodeInputType.STRING;
+			return InputObjectType.STRING;
 		case 'number':
-			return NodeInputType.FLOAT;
+			return InputObjectType.FLOAT;
 		case 'integer':
-			return NodeInputType.INT;
+			return InputObjectType.INT;
 		case 'boolean':
-			return NodeInputType.BOOLEAN;
+			return InputObjectType.BOOLEAN;
 		case 'array':
-			if (apiInput.type === 'Vector{String}') return NodeInputType.VECTOR_STRING;
+			if (apiInput.type === 'Vector{String}') return InputObjectType.VECTOR_STRING;
 			else if (apiInput.type === 'Vector{Float64}' || apiInput.type === 'Vector{Union{Nothing, Float64}}')
-				return NodeInputType.VECTOR_FLOAT;
+				return InputObjectType.VECTOR_FLOAT;
 	}
 	console.error(`Node Input value ${inputName} has unsupported type: ${apiInput.json_type} \n`, apiInput);
-	return NodeInputType.UNSET;
+	return InputObjectType.UNSET;
 }
 
 function getNodeInputFromAPIComponentInput(inputName: string, apiInput: APIComponentInput) {
 	if (Array.isArray(apiInput.default) && apiInput.default.length > 0 && apiInput.default[0] === null)
 		apiInput.default = null;
-	return new NodeInput(
+	return new InputObject(
 		getNodeInputType(inputName, apiInput),
 		inputName,
 		apiInput.display_name,
@@ -64,13 +64,13 @@ function getNodeInputFromAPIComponentInput(inputName: string, apiInput: APICompo
 export function getComponentInputs(
 	apiComponents: Record<string, Record<string, APIComponentInput>>,
 	mediums: Medium[]
-): Record<string, NodeInput[]> {
-	const componentInputs: Record<string, NodeInput[]> = {};
+): Record<string, InputObject[]> {
+	const componentInputs: Record<string, InputObject[]> = {};
 	for (const [componentType, inputList] of Object.entries(apiComponents)) {
 		const nodeInputs = [];
 		for (const [nodeInputName, inputAttributes] of Object.entries(inputList)) {
 			const newInput = getNodeInputFromAPIComponentInput(nodeInputName, inputAttributes);
-			if (newInput.type === NodeInputType.MEDIUM) {
+			if (newInput.type === InputObjectType.MEDIUM) {
 				const medium = mediums.find((m) => m.name === newInput.value);
 				newInput.value = medium !== undefined ? medium!.key : getUndefinedMedium().key;
 			}

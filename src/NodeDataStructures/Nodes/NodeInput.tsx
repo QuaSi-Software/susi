@@ -1,7 +1,7 @@
 import { getUndefinedMedium } from '../Mediums/MediumUtils';
 import type { Medium } from '../Mediums/Medium';
 
-const NodeInputType = {
+const InputObjectType = {
 	INT: 'INT',
 	FLOAT: 'FLOAT',
 	STRING: 'STRING',
@@ -14,7 +14,7 @@ const NodeInputType = {
 	UNSET: 'UNSET',
 } as const;
 
-type NodeInputType = (typeof NodeInputType)[keyof typeof NodeInputType];
+type InputObjectType = (typeof InputObjectType)[keyof typeof InputObjectType];
 
 const isSubsetOf = (arr: any[], subset: any[]) => {
 	for (let i = 0; i < subset.length; i++) {
@@ -24,8 +24,8 @@ const isSubsetOf = (arr: any[], subset: any[]) => {
 	return true;
 };
 
-class NodeInput {
-	type: NodeInputType;
+class InputObject {
+	type: InputObjectType;
 	resieName: string;
 	displayName: string;
 	value: any;
@@ -37,7 +37,7 @@ class NodeInput {
 	dropdownOptionDisplayNames: Array<string>;
 
 	constructor(
-		type: NodeInputType,
+		type: InputObjectType,
 		resieName: string,
 		displayName: string,
 		value: any,
@@ -63,9 +63,9 @@ class NodeInput {
 
 		if (this.value === null && !this.isRequired) this.isIncluded = false;
 
-		if (this.type === NodeInputType.DROPDOWN) {
+		if (this.type === InputObjectType.DROPDOWN) {
 			if (!this.dropdownOptions.includes(this.value)) this.value = this.dropdownOptions[0];
-		} else if (this.type === NodeInputType.MULTISELECT) {
+		} else if (this.type === InputObjectType.MULTISELECT) {
 			if (!Array.isArray(this.value)) {
 				console.error(`For MultiSelect Inputs, the starting value should be an array.`);
 				this.value = [];
@@ -80,7 +80,7 @@ class NodeInput {
 	}
 
 	public setNodeInputValue(value: any, mediums: Medium[]): void {
-		if (this.type === NodeInputType.MEDIUM) {
+		if (this.type === InputObjectType.MEDIUM) {
 			const mediumWithKey = mediums.find((m) => m.key === value);
 			if (mediumWithKey === undefined) {
 				const mediumWithName = mediums.find((m) => m.name === value);
@@ -90,7 +90,7 @@ class NodeInput {
 		this.value = value;
 	}
 	public getNodeInputExportValue(mediums: Medium[]): any {
-		if (this.type === NodeInputType.MEDIUM) {
+		if (this.type === InputObjectType.MEDIUM) {
 			const mediumKey = this.value;
 			const medium = mediums.find((m) => m.key === mediumKey);
 			if (!medium) return 'UNDEFINED';
@@ -98,8 +98,8 @@ class NodeInput {
 		}
 		return this.value;
 	}
-	public copy(): NodeInput {
-		return new NodeInput(
+	public copy(): InputObject {
+		return new InputObject(
 			this.type,
 			this.resieName,
 			this.displayName,
@@ -113,4 +113,4 @@ class NodeInput {
 	}
 }
 
-export { NodeInput, NodeInputType };
+export { InputObject, InputObjectType };

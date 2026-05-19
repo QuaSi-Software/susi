@@ -2,10 +2,10 @@ import { Row, Col, Form } from 'react-bootstrap';
 import CustomInputField from './CustomInputField';
 import { useState } from 'react';
 import React from 'react';
-import type { NodeInput } from '../../NodeDataStructures/Nodes/NodeInput';
+import type { InputObject } from '../../NodeDataStructures/Nodes/NodeInput';
 
 interface OptionalInputFieldProps {
-	nodeInput: NodeInput;
+	nodeInput: InputObject;
 	onValueChange: (resieName: string, newValue: string | number | boolean) => void;
 	startIncluded: boolean;
 	onIncludedChange: (resieName: string, isIncluded: boolean) => void;

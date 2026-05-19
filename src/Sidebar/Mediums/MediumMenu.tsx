@@ -3,7 +3,7 @@ import { Button, Col } from 'react-bootstrap';
 import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
 import MediumInputWidget from './MediumInputWidget';
 import { deepCloneNodes, type SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
-import { NodeInputType } from '../../NodeDataStructures/Nodes/NodeInput';
+import { InputObjectType } from '../../NodeDataStructures/Nodes/NodeInput';
 import { getDefaultMediums, getRandomColor, getUndefinedMedium } from '../../NodeDataStructures/Mediums/MediumUtils';
 import _ from 'lodash';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
@@ -37,7 +37,7 @@ const MediumMenu = ({ nodes, setNodes, edges, setEdges }: MediumMenuProps) => {
 		mediumKeys.forEach((mediumKey) => {
 			newNodes.forEach((node) => {
 				node.data.nodeInputs.forEach((nodeInput) => {
-					if (nodeInput.type === NodeInputType.MEDIUM && nodeInput.value === mediumKey) {
+					if (nodeInput.type === InputObjectType.MEDIUM && nodeInput.value === mediumKey) {
 						nodeInput.value = getUndefinedMedium().key;
 					}
 				});

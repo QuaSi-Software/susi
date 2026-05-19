@@ -1,13 +1,13 @@
 import { Row, Col } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import CustomInputField from './CustomInputField';
-import type { NodeInput } from '../../NodeDataStructures/Nodes/NodeInput';
+import type { InputObject } from '../../NodeDataStructures/Nodes/NodeInput';
 import React from 'react';
 import OptionalInputField from './OptionalInputField';
 
 interface InputMenuProps {
 	title: string;
-	inputs: NodeInput[];
+	inputs: InputObject[];
 	onValueChange: (resieName: string, newValue: string | number | boolean) => void;
 	onIncludedChange: (resieName: string, isIncluded: boolean) => void;
 	numberOfColumns: number;
@@ -18,9 +18,9 @@ interface InputMenuProps {
  * @param items_per_row how many input fields should there be in each row
  * @returns List of rows, each containing NodeInput items
  */
-const chunk_into_rows = (inputs: NodeInput[], items_per_row: number): Array<Array<NodeInput>> => {
-	const rows: NodeInput[][] = [];
-	let current_row: Array<NodeInput> = [];
+const chunk_into_rows = (inputs: InputObject[], items_per_row: number): Array<Array<InputObject>> => {
+	const rows: InputObject[][] = [];
+	let current_row: Array<InputObject> = [];
 	inputs.forEach((node_input) => {
 		if (!node_input.editable) return;
 		current_row.push(node_input);

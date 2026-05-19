@@ -32,7 +32,7 @@ import type { SusiEdge } from './NodeDataStructures/Edges/SusiEdge';
 import LoadingOverlay from './Reactflow-Components/LoadingOverlay';
 import { getNewEdge } from './NodeDataStructures/Edges/CreateEdge';
 import { fetchComponentInputs, getNodeInputsFromAPI } from './FetchingApiData/HandleAPICalls';
-import type { NodeInput } from './NodeDataStructures/Nodes/NodeInput';
+import type { InputObject } from './NodeDataStructures/Nodes/NodeInput';
 import { UndoButton } from './Reactflow-Components/UndoButton';
 
 const initialNodes: SusiNode[] = [];
@@ -57,9 +57,9 @@ const DnDFlow = () => {
 	const [checkState, setCheckState] = useState<boolean>(false);
 
 	/** Component Inputs */
-	const [componentInputsByType, setComponentInputs] = useState<Record<string, NodeInput[]> | null>(null);
-	const [ioSettingsList, setIOSettingsList] = useState<NodeInput[]>([]);
-	const [simulationParametersList, setSimulationParametersList] = useState<NodeInput[]>([]);
+	const [componentInputsByType, setComponentInputs] = useState<Record<string, InputObject[]> | null>(null);
+	const [ioSettingsList, setIOSettingsList] = useState<InputObject[]>([]);
+	const [simulationParametersList, setSimulationParametersList] = useState<InputObject[]>([]);
 
 	fetchComponentInputs(
 		setLoadingMessage,

@@ -9,7 +9,7 @@ import { DropdownDivider } from 'react-bootstrap';
 import { InstructionMenu } from './Instructions';
 import { SettingsMenu, type SettingsMenuProps } from './SettingsMenu';
 import InputMenu from '../Reactflow-Components/CustomInputWidgets/InputMenu';
-import { NodeInput } from '../NodeDataStructures/Nodes/NodeInput';
+import { InputObject } from '../NodeDataStructures/Nodes/NodeInput';
 
 export const MenuType = {
 	NewNodeMenu: 'Add New Components',
@@ -31,7 +31,7 @@ const Sidebar = (menuProps: SidebarProps) => {
 	function changeInputListElement(
 		key: string,
 		value: any,
-		setInputList: Dispatch<SetStateAction<NodeInput[]>>,
+		setInputList: Dispatch<SetStateAction<InputObject[]>>,
 		isIncludedChange: boolean
 	) {
 		setInputList((list) => {

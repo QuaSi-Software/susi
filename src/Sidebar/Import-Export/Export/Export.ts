@@ -1,7 +1,7 @@
 import type { Medium } from '../../../NodeDataStructures/Mediums/Medium';
 import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type { SusiEdge } from '../../../NodeDataStructures/Edges/SusiEdge';
-import type { NodeInput } from '../../../NodeDataStructures/Nodes/NodeInput';
+import type { InputObject } from '../../../NodeDataStructures/Nodes/NodeInput';
 import type { ComponentData, Connections, ImportData } from '../ExportDataStrucures';
 import { getUndefinedMedium } from '../../../NodeDataStructures/Mediums/MediumUtils';
 
@@ -9,8 +9,8 @@ interface ExportProps {
 	nodes: SusiNode[];
 	edges: SusiEdge[];
 	mediums: Medium[];
-	simulationParametersList: NodeInput[];
-	ioSettingsList: NodeInput[];
+	simulationParametersList: InputObject[];
+	ioSettingsList: InputObject[];
 }
 
 function getNodeNameFromID(nodeID: string, nodes: SusiNode[]) {
@@ -68,7 +68,7 @@ const getBusConnections = (node: SusiNode, nodes: SusiNode[]): Connections => {
 	};
 };
 
-const addNodeInputsToObject = (nodeInputs: NodeInput[], obj: Record<string, any>, mediums: Medium[]) => {
+const addNodeInputsToObject = (nodeInputs: InputObject[], obj: Record<string, any>, mediums: Medium[]) => {
 	nodeInputs.forEach((nodeInput) => {
 		if (!nodeInput.isIncluded && !nodeInput.isRequired) {
 			return;

@@ -7,7 +7,7 @@ import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import { useReactFlow } from '@xyflow/react';
 import { flushSync } from 'react-dom';
 import { AppContext } from '../../AppContext';
-import type { NodeInput } from '../../NodeDataStructures/Nodes/NodeInput';
+import type { InputObject } from '../../NodeDataStructures/Nodes/NodeInput';
 
 export interface ImportExportMenuProps {
 	setNodes: (nodes: SusiNode[]) => void;
@@ -15,10 +15,10 @@ export interface ImportExportMenuProps {
 	logError: (errorMessage: string) => void;
 	nodes: SusiNode[];
 	edges: SusiEdge[];
-	simulationParametersList: NodeInput[];
-	ioSettingsList: NodeInput[];
-	setIOSettings: Dispatch<SetStateAction<NodeInput[]>>;
-	setSimulationParameters: Dispatch<SetStateAction<NodeInput[]>>;
+	simulationParametersList: InputObject[];
+	ioSettingsList: InputObject[];
+	setIOSettings: Dispatch<SetStateAction<InputObject[]>>;
+	setSimulationParameters: Dispatch<SetStateAction<InputObject[]>>;
 }
 
 const ImportExportMenu = (menuProps: ImportExportMenuProps) => {

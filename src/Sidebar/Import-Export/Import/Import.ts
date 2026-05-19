@@ -9,7 +9,7 @@ import { getBusDataFromConnections, isBusDataValid } from './ImportBusData';
 import type { SusiEdge } from '../../../NodeDataStructures/Edges/SusiEdge';
 import { createSourceHandleDict, findTargetHandle, initializeTakenHandles } from './ImportHandles';
 import { getNewEdge } from '../../../NodeDataStructures/Edges/CreateEdge';
-import type { NodeInput } from '../../../NodeDataStructures/Nodes/NodeInput';
+import type { InputObject } from '../../../NodeDataStructures/Nodes/NodeInput';
 import type { Dispatch, SetStateAction } from 'react';
 
 interface ImportStateProps {
@@ -18,10 +18,10 @@ interface ImportStateProps {
 	setEdges: (edges: SusiEdge[]) => void;
 	setMediums: (mediums: Medium[]) => void;
 	logError: (errorMessage: string) => void;
-	getNodeInputs: (componentType: string) => NodeInput[];
+	getNodeInputs: (componentType: string) => InputObject[];
 	/** io settings and simulation parameters */
-	setIOSettings: Dispatch<SetStateAction<NodeInput[]>>;
-	setSimulationParameters: Dispatch<SetStateAction<NodeInput[]>>;
+	setIOSettings: Dispatch<SetStateAction<InputObject[]>>;
+	setSimulationParameters: Dispatch<SetStateAction<InputObject[]>>;
 }
 
 function getOutputRefs(sourceNodeID: string, sourceNodeData: ComponentData): string[] {
@@ -37,7 +37,7 @@ function getOutputRefs(sourceNodeID: string, sourceNodeData: ComponentData): str
 	}
 }
 
-function setListOfInputs(setter: Dispatch<SetStateAction<NodeInput[]>>, importedValues: Record<string, any>) {
+function setListOfInputs(setter: Dispatch<SetStateAction<InputObject[]>>, importedValues: Record<string, any>) {
 	setter((inputs) => {
 		inputs.forEach((input) => {
 			const importedValue = importedValues[input.resieName];

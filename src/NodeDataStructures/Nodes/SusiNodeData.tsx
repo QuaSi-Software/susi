@@ -1,5 +1,5 @@
 import BusData from '../Bus/BusData';
-import { NodeInputType, type NodeInput } from './NodeInput';
+import { InputObjectType, type InputObject } from './NodeInput';
 import type { NodeCategory, NodeType } from './SusiNodeTypes';
 
 interface MediumHandleDict {
@@ -10,7 +10,7 @@ interface MediumHandleDict {
 export interface SusiNodeData extends Record<string, unknown> {
 	content: string;
 	componentType: string;
-	nodeInputs: Array<NodeInput>;
+	nodeInputs: Array<InputObject>;
 	handleMediumDict: MediumHandleDict;
 	busData: BusData | null;
 	nodeCategory: NodeCategory;
@@ -18,8 +18,12 @@ export interface SusiNodeData extends Record<string, unknown> {
 	targetHandles: number;
 }
 
-function getMediumHandleDict(nodeInputs: NodeInput[], sourceHandles: number, targetHandles: number): MediumHandleDict {
-	const mediumVariables = nodeInputs.filter((x) => x.type === NodeInputType.MEDIUM);
+function getMediumHandleDict(
+	nodeInputs: InputObject[],
+	sourceHandles: number,
+	targetHandles: number
+): MediumHandleDict {
+	const mediumVariables = nodeInputs.filter((x) => x.type === InputObjectType.MEDIUM);
 
 	if (mediumVariables.length === 1) {
 		// all handles are mapped to that variable name
@@ -58,7 +62,7 @@ function getMediumHandleDict(nodeInputs: NodeInput[], sourceHandles: number, tar
 export function createSusiNodeData(
 	nodeType: NodeType,
 	content: string = '',
-	getNodeInputs: (componentType: string) => NodeInput[]
+	getNodeInputs: (componentType: string) => InputObject[]
 ): SusiNodeData {
 	const nodeInputs = getNodeInputs(nodeType.type_name);
 	const componentType = nodeType.type_name;
