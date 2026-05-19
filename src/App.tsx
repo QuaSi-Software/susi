@@ -33,6 +33,7 @@ import LoadingOverlay from './Reactflow-Components/LoadingOverlay';
 import { getNewEdge } from './NodeDataStructures/Edges/CreateEdge';
 import { fetchComponentInputs, getNodeInputsFromAPI } from './FetchingApiData/HandleAPICalls';
 import type { NodeInput } from './NodeDataStructures/Nodes/NodeInput';
+import { UndoButton } from './StateHistory';
 
 const initialNodes: SusiNode[] = [];
 
@@ -53,6 +54,8 @@ const DnDFlow = () => {
 	const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([]);
 	const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
 	const [nodeNamePrefix, setNodeNamePrefix] = useState<string>('TST');
+	const [checkState, setCheckState] = useState<boolean>(false);
+
 	/** Component Inputs */
 	const [componentInputsByType, setComponentInputs] = useState<Record<string, NodeInput[]> | null>(null);
 	const [ioSettingsList, setIOSettingsList] = useState<NodeInput[]>([]);
@@ -90,6 +93,7 @@ const DnDFlow = () => {
 			const edge: SusiEdge | null = getNewEdge(connection, nodes, edges, mediums, logError);
 			if (edge === null) return;
 			setEdges((eds: any[]) => addEdge(edge, eds) as any[]);
+			setCheckState(true);
 		},
 		[setEdges, nodes, edges, mediums]
 	);
@@ -118,6 +122,7 @@ const DnDFlow = () => {
 			const newNode = createNodeFromType(nodes, type, position, getNodeInputs, nodeNamePrefix);
 
 			setNodes((nds) => nds.concat(newNode));
+			setCheckState(true);
 		},
 		[screenToFlowPosition, type, setNodes, nodes, nodeNamePrefix]
 	);
@@ -174,6 +179,7 @@ const DnDFlow = () => {
 					setErrorMessages: setErrorMessages,
 					setLoadingMessage: setLoadingMessage,
 					getNodeInputs: getNodeInputs,
+					setCheckState: setCheckState,
 				}}
 			>
 				<LoadingOverlay message={loadingMessage} />
@@ -199,6 +205,9 @@ const DnDFlow = () => {
 					onDrop={onDrop}
 					onDragStart={onDragStart}
 					onDragOver={onDragOver}
+					onNodeDragStop={() => {
+						setCheckState(true);
+					}}
 					fitView
 					nodeOrigin={[0.5, 0.5]}
 					nodeTypes={{ default: MarkdownNode }}
@@ -212,6 +221,7 @@ const DnDFlow = () => {
 					<Controls />
 					<Background />
 				</ReactFlow>
+				<UndoButton nodes={nodes} edges={edges} checkState={checkState} />
 				<EdgeContextMenu
 					edgeContextMenuData={edgeContextMenu}
 					setEdgeContextMenu={setEdgeContextMenu}

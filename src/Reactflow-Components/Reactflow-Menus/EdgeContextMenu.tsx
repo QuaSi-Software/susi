@@ -4,7 +4,8 @@ import type { MenuPosition } from './Menus';
 import { updateBusDataOnEdgeDelete } from '../../NodeDataStructures/Bus/BusDataUtils';
 import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
-import type { Dispatch, SetStateAction } from 'react';
+import { useContext, type Dispatch, type SetStateAction } from 'react';
+import { AppContext } from '../../AppContext';
 
 interface EdgeContextMenuData {
 	edge: SusiEdge;
@@ -18,6 +19,7 @@ interface EdgeContextMenuInput {
 }
 
 const EdgeContextMenu = ({ setNodes, edgeContextMenuData, setEdges, setEdgeContextMenu }: EdgeContextMenuInput) => {
+	const setCheckState = useContext(AppContext)!.setCheckState;
 	const handleDeleteEdge = () => {
 		if (!edgeContextMenuData) return;
 		/** update bus data of connected nodes */
@@ -28,6 +30,7 @@ const EdgeContextMenu = ({ setNodes, edgeContextMenuData, setEdges, setEdgeConte
 		/** update edge list */
 		setEdges((edges) => edges.filter((edge) => edge.id !== edgeContextMenuData.edge.id));
 		setEdgeContextMenu(null);
+		setCheckState(true);
 	};
 
 	if (edgeContextMenuData == null) return <></>;

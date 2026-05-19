@@ -21,6 +21,7 @@ const PaneContextMenu = ({ paneContextMenu, setPaneContextMenu, nodes, setNodes,
 	const { fitView } = useReactFlow();
 	const [layoutCalculated, setLayoutCalculated] = useState(true);
 	const setLoadingMessage = useContext(AppContext)!.setLoadingMessage;
+	const setCheckState = useContext(AppContext)!.setCheckState;
 
 	const handleLayoutReset = () => {
 		setPaneContextMenu(null);
@@ -37,6 +38,7 @@ const PaneContextMenu = ({ paneContextMenu, setPaneContextMenu, nodes, setNodes,
 				fitView();
 				setLayoutCalculated(true);
 				setLoadingMessage(null);
+				setCheckState(true);
 			})
 			.catch((err: Error) => console.log(err));
 	}, [layoutCalculated]);

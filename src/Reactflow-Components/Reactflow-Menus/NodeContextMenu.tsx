@@ -1,4 +1,4 @@
-import { useState, useEffect, type Dispatch, type SetStateAction } from 'react';
+import { useState, useEffect, type Dispatch, type SetStateAction, useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/esm/ButtonGroup';
 
@@ -9,6 +9,7 @@ import BusData from '../../NodeDataStructures/Bus/BusData';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import { updateBusDataOnNodeDelete } from '../../NodeDataStructures/Bus/BusDataUtils';
 import _ from 'lodash';
+import { AppContext } from '../../AppContext';
 
 interface NodeContextMenuInput {
 	nodeContextMenu: NodeContextMenuData | null;
@@ -33,6 +34,7 @@ const NodeContextMenu = ({
 	setEdges,
 }: NodeContextMenuInput) => {
 	const [showModal, setShowModal] = useState(false);
+	const setCheckState = useContext(AppContext)!.setCheckState;
 
 	// Check if the node still exists and if it was deleted somehow, close the context menu
 	// This can happen if the user clicked 'Clear Graph' while the context menu was open
@@ -59,6 +61,7 @@ const NodeContextMenu = ({
 			updateBusDataOnNodeDelete(nodeContextMenu.node.id, nodes, edges);
 			setNodes(updatedNodes);
 			setEdges(updatedEdges);
+			setCheckState(true);
 		}
 		setNodeContextMenu(null);
 	};
@@ -116,6 +119,7 @@ const NodeContextMenu = ({
 		let updatedNodes = [...nodes, duplicateNode];
 		setNodes(updatedNodes);
 		setNodeContextMenu(null);
+		setCheckState(true);
 	};
 
 	if (!nodeContextMenu) return <></>;

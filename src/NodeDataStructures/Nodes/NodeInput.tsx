@@ -79,7 +79,7 @@ class NodeInput {
 		}
 	}
 
-	public setNodeInputValue = (value: any, mediums: Medium[]): void => {
+	public setNodeInputValue(value: any, mediums: Medium[]): void {
 		if (this.type === NodeInputType.MEDIUM) {
 			const mediumWithKey = mediums.find((m) => m.key === value);
 			if (mediumWithKey === undefined) {
@@ -88,8 +88,8 @@ class NodeInput {
 			}
 		}
 		this.value = value;
-	};
-	public getNodeInputExportValue = (mediums: Medium[]): any => {
+	}
+	public getNodeInputExportValue(mediums: Medium[]): any {
 		if (this.type === NodeInputType.MEDIUM) {
 			const mediumKey = this.value;
 			const medium = mediums.find((m) => m.key === mediumKey);
@@ -97,8 +97,8 @@ class NodeInput {
 			return medium.name;
 		}
 		return this.value;
-	};
-	public copy = (): NodeInput => {
+	}
+	public copy(): NodeInput {
 		return new NodeInput(
 			this.type,
 			this.resieName,
@@ -110,7 +110,7 @@ class NodeInput {
 			this.dropdownOptions,
 			this.dropdownOptionDisplayNames
 		);
-	};
+	}
 }
 
 export { NodeInput, NodeInputType };

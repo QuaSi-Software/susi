@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import _ from 'lodash';
 
-import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
+import { deepCloneNode, deepCloneNodes, type SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import type BusData from '../../NodeDataStructures/Bus/BusData';
 import type { NodeInput } from '../../NodeDataStructures/Nodes/NodeInput';
 import { getEdgesWithMediumMismatch } from '../../NodeDataStructures/Mediums/MediumUtils';
@@ -15,6 +15,7 @@ import { updateBusDataOnEdgeDelete } from '../../NodeDataStructures/Bus/BusDataU
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import InputMenu from '../CustomInputWidgets/InputMenu';
 import BusConnectionMenu from '../BusDataWidget/BusConnectionMenu';
+import { AppContext } from '../../AppContext';
 
 interface EditNodeModalInputs {
 	show: boolean;
@@ -27,8 +28,9 @@ interface EditNodeModalInputs {
 }
 
 const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edges }: EditNodeModalInputs) => {
-	const [editedNode, setEditedNode] = useState(node);
+	const [editedNode, setEditedNode] = useState(deepCloneNode(node));
 	const [edgesToDelete, setEdgesToDelete] = useState<string[]>([]);
+	const setCheckState = useContext(AppContext)!.setCheckState;
 
 	const onNodeContentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setEditedNode((editedNode: SusiNode) => ({
@@ -71,7 +73,8 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 	};
 
 	const handleSaveChanges = () => {
-		let updatedNodes = nodes.map((n: SusiNode) => (n.id === editedNode.id ? editedNode : n));
+		let updatedNodes = deepCloneNodes(nodes);
+		updatedNodes = updatedNodes.map((n: SusiNode) => (n.id === editedNode.id ? editedNode : n));
 		edgesToDelete.forEach((edgeID) => {
 			const edge = edges.find((e) => e.id === edgeID);
 			updateBusDataOnEdgeDelete(updatedNodes, edge!);
@@ -79,6 +82,7 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 		setNodes(updatedNodes);
 		const updatedEdges = edges.filter((edge: SusiEdge) => edgesToDelete.findIndex((e) => e === edge.id) === -1);
 		setEdges(updatedEdges);
+		setCheckState(true);
 		handleClose();
 	};
 
