@@ -1,7 +1,7 @@
 import type { Medium } from '../../../NodeDataStructures/Mediums/Medium';
 import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type { SusiEdge } from '../../../NodeDataStructures/Edges/SusiEdge';
-import type { InputObject } from '../../../NodeDataStructures/Nodes/NodeInput';
+import type { InputObject } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { ComponentData, Connections, ImportData } from '../ExportDataStrucures';
 import { getUndefinedMedium } from '../../../NodeDataStructures/Mediums/MediumUtils';
 

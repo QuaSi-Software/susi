@@ -1,7 +1,7 @@
 import { createContext, type Dispatch, type SetStateAction } from 'react';
 import type { Medium } from './NodeDataStructures/Mediums/Medium';
 import type { ErrorMessage } from './Reactflow-Components/Errors/ErrorMessage';
-import type { InputObject } from './NodeDataStructures/Nodes/NodeInput';
+import type { InputObject } from './Reactflow-Components/CustomInputWidgets/InputObject';
 
 interface AppContextType {
 	mediums: Medium[];

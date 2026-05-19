@@ -4,7 +4,7 @@ import { Position } from '@xyflow/react';
 import { type SusiNodeData, createSusiNodeData } from './SusiNodeData';
 
 import _ from 'lodash';
-import type { InputObject } from './NodeInput';
+import type { InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
 
 /**
  * SusiNode is a normal ReactFlow Node, but with data replaced by the interface SusiNodeData for clarity

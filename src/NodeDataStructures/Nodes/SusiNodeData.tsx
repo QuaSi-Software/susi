@@ -1,5 +1,5 @@
 import BusData from '../Bus/BusData';
-import { InputObjectType, type InputObject } from './NodeInput';
+import { InputObjectType, type InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { NodeCategory, NodeType } from './SusiNodeTypes';
 
 interface MediumHandleDict {

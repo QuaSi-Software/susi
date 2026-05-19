@@ -1,6 +1,6 @@
 import type { Medium } from '../NodeDataStructures/Mediums/Medium';
 import { getUndefinedMedium } from '../NodeDataStructures/Mediums/MediumUtils';
-import { InputObject, InputObjectType } from '../NodeDataStructures/Nodes/NodeInput';
+import { InputObject, InputObjectType } from '../Reactflow-Components/CustomInputWidgets/InputObject';
 
 export interface APIComponentInput {
 	conditionals: string[][];

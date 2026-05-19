@@ -1,5 +1,5 @@
-import { getUndefinedMedium } from '../Mediums/MediumUtils';
-import type { Medium } from '../Mediums/Medium';
+import { getUndefinedMedium } from '../../NodeDataStructures/Mediums/MediumUtils';
+import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
 
 const InputObjectType = {
 	INT: 'INT',

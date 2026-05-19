@@ -9,7 +9,7 @@ import { getBusDataFromConnections, isBusDataValid } from './ImportBusData';
 import type { SusiEdge } from '../../../NodeDataStructures/Edges/SusiEdge';
 import { createSourceHandleDict, findTargetHandle, initializeTakenHandles } from './ImportHandles';
 import { getNewEdge } from '../../../NodeDataStructures/Edges/CreateEdge';
-import type { InputObject } from '../../../NodeDataStructures/Nodes/NodeInput';
+import type { InputObject } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { Dispatch, SetStateAction } from 'react';
 
 interface ImportStateProps {

@@ -3,7 +3,7 @@ import { Button, Col } from 'react-bootstrap';
 import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
 import MediumInputWidget from './MediumInputWidget';
 import { deepCloneNodes, type SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
-import { InputObjectType } from '../../NodeDataStructures/Nodes/NodeInput';
+import { InputObjectType } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
 import { getDefaultMediums, getRandomColor, getUndefinedMedium } from '../../NodeDataStructures/Mediums/MediumUtils';
 import _ from 'lodash';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';

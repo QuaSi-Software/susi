@@ -9,7 +9,7 @@ import _ from 'lodash';
 
 import { deepCloneNode, deepCloneNodes, type SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import type BusData from '../../NodeDataStructures/Bus/BusData';
-import type { InputObject } from '../../NodeDataStructures/Nodes/NodeInput';
+import type { InputObject } from '../CustomInputWidgets/InputObject';
 import { getEdgesWithMediumMismatch } from '../../NodeDataStructures/Mediums/MediumUtils';
 import { updateBusDataOnEdgeDelete } from '../../NodeDataStructures/Bus/BusDataUtils';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';

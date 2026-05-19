@@ -1,5 +1,5 @@
 import { createMedium, type Medium } from '../../../NodeDataStructures/Mediums/Medium';
-import { InputObject, InputObjectType } from '../../../NodeDataStructures/Nodes/NodeInput';
+import { InputObject, InputObjectType } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
 import { getDefaultMediums, getRandomColor, getUndefinedMedium } from '../../../NodeDataStructures/Mediums/MediumUtils';
 import type { ComponentData, ImportData } from '../ExportDataStrucures';
 import { getComponentImportData } from './ImportData';

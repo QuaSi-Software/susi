@@ -1,7 +1,7 @@
 import { Row, Col } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import CustomInputField from './CustomInputField';
-import type { InputObject } from '../../NodeDataStructures/Nodes/NodeInput';
+import type { InputObject } from './InputObject';
 import React from 'react';
 import OptionalInputField from './OptionalInputField';
 

@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { Form, FloatingLabel } from 'react-bootstrap';
 import CustomDropdown from './CustomDropdown';
 // import { AppContext } from './../AppContext';
-import { InputObjectType, type InputObject } from '../../NodeDataStructures/Nodes/NodeInput';
+import { InputObjectType, type InputObject } from './InputObject';
 import React from 'react';
 import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
 import { AppContext } from '../../AppContext';

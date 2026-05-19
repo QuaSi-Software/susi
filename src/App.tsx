@@ -32,7 +32,7 @@ import type { SusiEdge } from './NodeDataStructures/Edges/SusiEdge';
 import LoadingOverlay from './Reactflow-Components/LoadingOverlay';
 import { getNewEdge } from './NodeDataStructures/Edges/CreateEdge';
 import { fetchComponentInputs, getNodeInputsFromAPI } from './FetchingApiData/HandleAPICalls';
-import type { InputObject } from './NodeDataStructures/Nodes/NodeInput';
+import type { InputObject } from './Reactflow-Components/CustomInputWidgets/InputObject';
 import { UndoButton } from './Reactflow-Components/UndoButton';
 
 const initialNodes: SusiNode[] = [];

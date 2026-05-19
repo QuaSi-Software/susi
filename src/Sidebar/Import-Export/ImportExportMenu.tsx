@@ -7,7 +7,7 @@ import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import { useReactFlow } from '@xyflow/react';
 import { flushSync } from 'react-dom';
 import { AppContext } from '../../AppContext';
-import type { InputObject } from '../../NodeDataStructures/Nodes/NodeInput';
+import type { InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
 
 export interface ImportExportMenuProps {
 	setNodes: (nodes: SusiNode[]) => void;
