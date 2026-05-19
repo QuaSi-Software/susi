@@ -87,7 +87,6 @@ const DnDFlow = () => {
 
 	const onConnect = useCallback(
 		(connection: Connection): void => {
-			console.log('Edge connect');
 			const edge: SusiEdge | null = getNewEdge(connection, nodes, edges, mediums, logError);
 			if (edge === null) return;
 			setEdges((eds: any[]) => addEdge(edge, eds) as any[]);

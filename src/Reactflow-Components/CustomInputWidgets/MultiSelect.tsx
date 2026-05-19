@@ -39,7 +39,6 @@ export const Multiselect: React.FC<CustomMultiSelectProps> = ({
 	}
 
 	const onChange = (newValues: string[]) => {
-		console.log(`new values: ${newValues}`);
 		setInputValue(newValues);
 		onEdit(newValues);
 	};

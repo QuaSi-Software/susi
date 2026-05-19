@@ -90,7 +90,6 @@ class NodeInput {
 		this.value = value;
 	};
 	public getNodeInputExportValue = (mediums: Medium[]): any => {
-		console.log('In getNodeInputExportValue: ' + this.value);
 		if (this.type === NodeInputType.MEDIUM) {
 			const mediumKey = this.value;
 			const medium = mediums.find((m) => m.key === mediumKey);

@@ -73,7 +73,6 @@ const addNodeInputsToObject = (nodeInputs: NodeInput[], obj: Record<string, any>
 		if (!nodeInput.isIncluded && !nodeInput.isRequired) {
 			return;
 		}
-		console.log('In addNodeInputsToObject: ' + nodeInput.value);
 		obj[nodeInput.resieName] = nodeInput.getNodeInputExportValue(mediums);
 	});
 	return obj;

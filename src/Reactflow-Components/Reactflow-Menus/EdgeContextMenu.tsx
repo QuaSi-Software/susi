@@ -31,7 +31,6 @@ const EdgeContextMenu = ({ setNodes, edgeContextMenuData, setEdges, setEdgeConte
 	};
 
 	if (edgeContextMenuData == null) return <></>;
-	console.log('Showing edge menu at ' + JSON.stringify(edgeContextMenuData));
 	return (
 		<>
 			<div
