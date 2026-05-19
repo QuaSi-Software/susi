@@ -2,6 +2,7 @@ import { useEffect, type Dispatch, type SetStateAction } from 'react';
 import type { Medium } from '../NodeDataStructures/Mediums/Medium';
 import { NodeInput, NodeInputType } from '../NodeDataStructures/Nodes/NodeInput';
 import { getComponentInputs, type APIComponentInput } from './ProcessComponentInputs';
+import _ from 'lodash';
 
 const exampleInputs = [
 	new NodeInput(NodeInputType.STRING, 'example1', 'Example1', 'hello1'),
@@ -40,8 +41,8 @@ export function fetchComponentInputs(
 				const apiComponents: Record<string, Record<string, APIComponentInput>> = data.components;
 				const componentInputs = getComponentInputs(apiComponents, mediums);
 				setComponentInputs(componentInputs);
-				setIOSettings(exampleInputs);
-				setSimulationParametersList(exampleInputs);
+				setIOSettings(_.cloneDeep(exampleInputs));
+				setSimulationParametersList(_.cloneDeep(exampleInputs));
 				setLoadingMessage(null);
 			})
 			.catch((error) => {

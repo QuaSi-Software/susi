@@ -187,7 +187,9 @@ const DnDFlow = () => {
 					nodeNamePrefix={nodeNamePrefix}
 					setNodeNamePrefix={setNodeNamePrefix}
 					ioSettingsList={ioSettingsList}
+					setIOSettings={setIOSettingsList}
 					simulationParametersList={simulationParametersList}
+					setSimulationParameters={setSimulationParametersList}
 				/>
 				<ReactFlow
 					nodes={nodes}

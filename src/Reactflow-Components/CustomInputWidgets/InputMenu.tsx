@@ -41,7 +41,7 @@ const InputMenu: React.FC<InputMenuProps> = ({ title, inputs, onValueChange, onI
 
 	return (
 		<>
-			<Modal.Body className="side-padded-menu">
+			<Modal.Body className="side-padded-menu" key={title}>
 				<Modal.Header>{title}</Modal.Header>
 				{rows.map((pair, pairIndex) => (
 					<Row key={pairIndex} className="g-2 mt-1 mt-md-0">
@@ -50,7 +50,7 @@ const InputMenu: React.FC<InputMenuProps> = ({ title, inputs, onValueChange, onI
 								{input.isRequired && <CustomInputField nodeInput={input} onEdit={onValueChange} />}
 								{!input.isRequired && (
 									<OptionalInputField
-										key={input.resieName}
+										key={input.resieName + Math.random()}
 										nodeInput={input}
 										onValueChange={onValueChange}
 										startIncluded={input.isIncluded}

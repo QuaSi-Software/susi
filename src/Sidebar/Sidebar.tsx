@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type Dispatch, type SetStateAction } from 'react';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 
 import type { ImportExportMenuProps } from './Import-Export/ImportExportMenu';
@@ -9,7 +9,7 @@ import { DropdownDivider } from 'react-bootstrap';
 import { InstructionMenu } from './Instructions';
 import { SettingsMenu, type SettingsMenuProps } from './SettingsMenu';
 import InputMenu from '../Reactflow-Components/CustomInputWidgets/InputMenu';
-import type { NodeInput } from '../NodeDataStructures/Nodes/NodeInput';
+import { NodeInput } from '../NodeDataStructures/Nodes/NodeInput';
 
 export const MenuType = {
 	NewNodeMenu: 'Add New Components',
@@ -25,10 +25,28 @@ export type MenuType = (typeof MenuType)[keyof typeof MenuType];
 
 type SidebarProps = ImportExportMenuProps &
 	MediumMenuProps &
-	SettingsMenuProps & { ioSettingsList: NodeInput[]; simulationParametersList: NodeInput[] };
+	SettingsMenuProps & {
+		setIOSettings: Dispatch<SetStateAction<NodeInput[]>>;
+		setSimulationParameters: Dispatch<SetStateAction<NodeInput[]>>;
+	};
 
 const Sidebar = (menuProps: SidebarProps) => {
 	const [selectedMenu, setSelectedMenu] = useState<MenuType>(MenuType.NewNodeMenu);
+
+	function changeInputListElement(
+		key: string,
+		value: any,
+		setInputList: Dispatch<SetStateAction<NodeInput[]>>,
+		isIncludedChange: boolean
+	) {
+		setInputList((list) => {
+			const input = list.find((e) => e.resieName === key);
+			if (!input) console.error(`Input with key ${key} should not be undefined in list ${list}`);
+			if (isIncludedChange) input!.isIncluded = value;
+			else input!.value = value;
+			return list;
+		});
+	}
 
 	const renderMenu = () => {
 		switch (selectedMenu) {
@@ -50,8 +68,12 @@ const Sidebar = (menuProps: SidebarProps) => {
 					<InputMenu
 						title="Simulation Parameters"
 						inputs={menuProps.simulationParametersList}
-						onValueChange={() => {}}
-						onIncludedChange={() => {}}
+						onValueChange={(key, value) =>
+							changeInputListElement(key, value, menuProps.setSimulationParameters, false)
+						}
+						onIncludedChange={(key, value) =>
+							changeInputListElement(key, value, menuProps.setSimulationParameters, true)
+						}
 						numberOfColumns={1}
 					/>
 				);
@@ -60,8 +82,12 @@ const Sidebar = (menuProps: SidebarProps) => {
 					<InputMenu
 						title="IO Settings"
 						inputs={menuProps.ioSettingsList}
-						onValueChange={() => {}}
-						onIncludedChange={() => {}}
+						onValueChange={(key, value) =>
+							changeInputListElement(key, value, menuProps.setIOSettings, false)
+						}
+						onIncludedChange={(key, value) =>
+							changeInputListElement(key, value, menuProps.setIOSettings, true)
+						}
 						numberOfColumns={1}
 					/>
 				);

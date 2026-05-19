@@ -2,13 +2,15 @@ import type { Medium } from '../../../NodeDataStructures/Mediums/Medium';
 import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type { SusiEdge } from '../../../NodeDataStructures/Edges/SusiEdge';
 import type { NodeInput } from '../../../NodeDataStructures/Nodes/NodeInput';
-import type { ComponentData, Connections } from '../ExportDataStrucures';
+import type { ComponentData, Connections, ImportData } from '../ExportDataStrucures';
 import { getUndefinedMedium } from '../../../NodeDataStructures/Mediums/MediumUtils';
 
 interface ExportProps {
 	nodes: SusiNode[];
 	edges: SusiEdge[];
 	mediums: Medium[];
+	simulationParametersList: NodeInput[];
+	ioSettingsList: NodeInput[];
 }
 
 function getNodeNameFromID(nodeID: string, nodes: SusiNode[]) {
@@ -26,12 +28,7 @@ const getMediumListForExport = (mediums: Medium[]): Array<[string, string]> => {
 /**
  * Get outputs of the given node as dictionaries mapping medium variable names to target node contents
  */
-const getOutputRefs = (
-	nodeId: string,
-	nodes: SusiNode[],
-	edges: SusiEdge[]
-	// mediums: Medium[]
-): Record<string, string> => {
+const getOutputRefs = (nodeId: string, nodes: SusiNode[], edges: SusiEdge[]): Record<string, string> => {
 	const output_refs: Record<string, string> = {};
 	const edgesFromNode = edges.filter((e) => e.source === nodeId);
 	for (const edge of edgesFromNode) {
@@ -82,13 +79,19 @@ const addNodeInputsToObject = (nodeInputs: NodeInput[], obj: Record<string, any>
 	return obj;
 };
 
-const exportState = ({ nodes, edges, mediums }: ExportProps): string => {
-	const exportDict: Record<string, unknown> = {
+const exportState = ({ nodes, edges, mediums, ioSettingsList, simulationParametersList }: ExportProps): string => {
+	/** adding these node inputs doesn't really require the mediums, since they should not include medium inputs  */
+	const simulationParameterDict = {};
+	addNodeInputsToObject(simulationParametersList, simulationParameterDict, []);
+	const ioSettingsDict = {};
+	addNodeInputsToObject(ioSettingsList, ioSettingsDict, []);
+	const exportDict: ImportData = {
 		components: {},
 		mediums: getMediumListForExport(mediums),
+		io_settings: ioSettingsDict,
+		simulation_parameters: simulationParameterDict,
 	};
 
-	// const nodeMap = new Map(nodes.map((n) => [n.id, n]));
 	const components: Record<string, ComponentData> = {};
 
 	nodes.forEach((node) => {
