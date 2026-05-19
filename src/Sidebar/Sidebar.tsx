@@ -6,10 +6,10 @@ import ImportExportMenu from './Import-Export/ImportExportMenu';
 import MediumMenu, { type MediumMenuProps } from './Mediums/MediumMenu';
 import NewNodeMenu from './NewNodeMenu';
 import { DropdownDivider } from 'react-bootstrap';
-import { NodeInput, NodeInputType } from '../NodeDataStructures/Nodes/NodeInput';
 import { InstructionMenu } from './Instructions';
 import { SettingsMenu, type SettingsMenuProps } from './SettingsMenu';
 import InputMenu from '../Reactflow-Components/CustomInputWidgets/InputMenu';
+import type { NodeInput } from '../NodeDataStructures/Nodes/NodeInput';
 
 export const MenuType = {
 	NewNodeMenu: 'Add New Components',
@@ -23,25 +23,12 @@ export const MenuType = {
 
 export type MenuType = (typeof MenuType)[keyof typeof MenuType];
 
-const Sidebar = (menuProps: ImportExportMenuProps & MediumMenuProps & SettingsMenuProps) => {
+type SidebarProps = ImportExportMenuProps &
+	MediumMenuProps &
+	SettingsMenuProps & { ioSettingsList: NodeInput[]; simulationParametersList: NodeInput[] };
+
+const Sidebar = (menuProps: SidebarProps) => {
 	const [selectedMenu, setSelectedMenu] = useState<MenuType>(MenuType.NewNodeMenu);
-	const exampleInputs = [
-		new NodeInput(NodeInputType.STRING, 'example1', 'Example1', 'hello1'),
-		new NodeInput(NodeInputType.STRING, 'example2', 'Example2', 'hello2'),
-		new NodeInput(NodeInputType.INT, 'example3', 'Example3', 5, '', true, false),
-		new NodeInput(NodeInputType.BOOLEAN, 'example4', 'Example4', true, '', true, false),
-		new NodeInput(
-			NodeInputType.MULTISELECT,
-			'example5',
-			'Example5',
-			['a'],
-			'',
-			true,
-			false,
-			['a', 'b', 'c'],
-			['A', 'B', 'C']
-		),
-	];
 
 	const renderMenu = () => {
 		switch (selectedMenu) {
@@ -62,7 +49,7 @@ const Sidebar = (menuProps: ImportExportMenuProps & MediumMenuProps & SettingsMe
 				return (
 					<InputMenu
 						title="Simulation Parameters"
-						inputs={exampleInputs}
+						inputs={menuProps.simulationParametersList}
 						onValueChange={() => {}}
 						onIncludedChange={() => {}}
 						numberOfColumns={1}
@@ -72,7 +59,7 @@ const Sidebar = (menuProps: ImportExportMenuProps & MediumMenuProps & SettingsMe
 				return (
 					<InputMenu
 						title="IO Settings"
-						inputs={exampleInputs}
+						inputs={menuProps.ioSettingsList}
 						onValueChange={() => {}}
 						onIncludedChange={() => {}}
 						numberOfColumns={1}

@@ -55,7 +55,17 @@ const DnDFlow = () => {
 	const [nodeNamePrefix, setNodeNamePrefix] = useState<string>('TST');
 	/** Component Inputs */
 	const [componentInputsByType, setComponentInputs] = useState<Record<string, NodeInput[]> | null>(null);
-	fetchComponentInputs(setLoadingMessage, mediums, componentInputsByType, setComponentInputs);
+	const [ioSettingsList, setIOSettingsList] = useState<NodeInput[]>([]);
+	const [simulationParametersList, setSimulationParametersList] = useState<NodeInput[]>([]);
+
+	fetchComponentInputs(
+		setLoadingMessage,
+		mediums,
+		componentInputsByType,
+		setComponentInputs,
+		setIOSettingsList,
+		setSimulationParametersList
+	);
 	const getNodeInputs = (componentType: string) => {
 		return getNodeInputsFromAPI(componentType, componentInputsByType);
 	};
@@ -176,6 +186,8 @@ const DnDFlow = () => {
 					logError={logError}
 					nodeNamePrefix={nodeNamePrefix}
 					setNodeNamePrefix={setNodeNamePrefix}
+					ioSettingsList={ioSettingsList}
+					simulationParametersList={simulationParametersList}
 				/>
 				<ReactFlow
 					nodes={nodes}
