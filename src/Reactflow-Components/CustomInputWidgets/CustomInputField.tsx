@@ -3,6 +3,7 @@ import { useContext, useState } from 'react';
 import { Form, FloatingLabel } from 'react-bootstrap';
 import { InputNumber } from 'primereact/inputnumber';
 import { Calendar } from 'primereact/calendar';
+import { addLocale } from 'primereact/api';
 
 import { AppContext } from '../../AppContext';
 import CustomDropdown from './CustomDropdown';
@@ -11,6 +12,11 @@ import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
 import { Multiselect } from './MultiSelect';
 import { FloatLabel } from 'primereact/floatlabel';
 import { Locale } from '../../Sidebar/SettingsMenu';
+
+import { de } from 'primelocale/js/de.js';
+import { en } from 'primelocale/js/en.js';
+addLocale('de-DE', de);
+addLocale('en-US', en);
 
 interface CustomInputFieldProps {
 	nodeInput: InputObject;
@@ -135,7 +141,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 							onChange={(e) => onInputChanged(e.value)}
 							showIcon
 							showTime
-							locale="en"
+							locale={locale}
 						/>
 						<label htmlFor="intInputWidget" id="floating-label">
 							{displayName}

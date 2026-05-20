@@ -14,7 +14,6 @@ export interface SettingsMenuProps {
 export const Locale = {
 	US: 'en-US',
 	DE: 'de-DE',
-	IN: 'en-IN',
 } as const;
 
 export type Locale = (typeof Locale)[keyof typeof Locale];
@@ -48,12 +47,17 @@ export function SettingsMenu({ nodeNamePrefix, setNodeNamePrefix, theme, setThem
 					onEdit={(value) => setTheme(value)}
 				/>
 			</div>
-			<div className="input-menu-row">
+			<div
+				className="input-menu-row"
+				data-toggle="tooltip"
+				data-placement="top"
+				title="Locale for number inputs and date formatting"
+			>
 				<CustomDropdown<Locale>
-					displayName="Locale (for number formatting)"
+					displayName="Locale"
 					startValue={locale}
-					dropdown_options={[Locale.DE, Locale.US, Locale.IN]}
-					dropdown_options_display_names={['DE', 'US', 'IN']}
+					dropdown_options={[Locale.DE, Locale.US]}
+					dropdown_options_display_names={['DE', 'US']}
 					onEdit={(value) => setLocale(value)}
 				/>
 			</div>
