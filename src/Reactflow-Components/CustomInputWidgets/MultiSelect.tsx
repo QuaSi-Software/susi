@@ -53,7 +53,7 @@ export const Multiselect: React.FC<CustomMultiSelectProps> = ({
 				optionValue="value"
 				id="floatingMultiSelect"
 			/>
-			<label htmlFor="floatingMultiSelect" id="multiselect-label">
+			<label htmlFor="floatingMultiSelect" id="floating-label">
 				{displayName}
 			</label>
 		</FloatLabel>

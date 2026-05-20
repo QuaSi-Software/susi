@@ -1,12 +1,14 @@
+import React from 'react';
 import { useContext, useState } from 'react';
 import { Form, FloatingLabel } from 'react-bootstrap';
-import CustomDropdown from './CustomDropdown';
-// import { AppContext } from './../AppContext';
-import { InputObjectType, type InputObject } from './InputObject';
-import React from 'react';
-import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
+import { InputNumber } from 'primereact/inputnumber';
+
 import { AppContext } from '../../AppContext';
+import CustomDropdown from './CustomDropdown';
+import { InputObjectType, type InputObject } from './InputObject';
+import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
 import { Multiselect } from './MultiSelect';
+import { FloatLabel } from 'primereact/floatlabel';
 
 interface CustomInputFieldProps {
 	nodeInput: InputObject;
@@ -49,16 +51,34 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 					</FloatingLabel>
 				);
 			case InputObjectType.INT:
+				return (
+					<FloatLabel className="p-fluid">
+						<InputNumber
+							value={inputValue}
+							onValueChange={(e) => onInputChanged(e.value)}
+							showButtons
+							id="intInputWidget"
+						/>
+						<label htmlFor="intInputWidget" id="floating-label">
+							{displayName}
+						</label>
+					</FloatLabel>
+				);
+
 			case InputObjectType.FLOAT:
 				return (
-					<FloatingLabel controlId="floatingInput" label={displayName}>
-						<Form.Control
-							type="number"
-							placeholder={displayName}
-							value={String(inputValue)}
-							onChange={(e) => onInputChanged(e.target.value)}
+					<FloatLabel className="p-fluid">
+						<InputNumber
+							value={inputValue}
+							onValueChange={(e) => onInputChanged(e.value)}
+							mode="decimal"
+							maxFractionDigits={20}
+							id="intInputWidget"
 						/>
-					</FloatingLabel>
+						<label htmlFor="intInputWidget" id="floating-label">
+							{displayName}
+						</label>
+					</FloatLabel>
 				);
 			case InputObjectType.BOOLEAN:
 				return (

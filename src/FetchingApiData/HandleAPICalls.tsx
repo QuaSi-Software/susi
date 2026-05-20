@@ -8,6 +8,7 @@ const exampleInputs = [
 	new InputObject(InputObjectType.STRING, 'example1', 'Example1', 'hello1'),
 	new InputObject(InputObjectType.STRING, 'example2', 'Example2', 'hello2'),
 	new InputObject(InputObjectType.INT, 'example3', 'Example3', 5, '', true, false),
+	new InputObject(InputObjectType.FLOAT, 'example7', 'Example7', 5.87, '', true, false),
 	new InputObject(InputObjectType.BOOLEAN, 'example4', 'Example4', true, '', true, false),
 	new InputObject(
 		InputObjectType.MULTISELECT,
