@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
@@ -31,6 +31,14 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 	const [editedNode, setEditedNode] = useState(deepCloneNode(node));
 	const [edgesToDelete, setEdgesToDelete] = useState<string[]>([]);
 	const setCheckState = useContext(AppContext)!.setCheckState;
+
+	// Sync the edited node and reset edges to delete whenever the node prop changes or modal opens
+	useEffect(() => {
+		if (show) {
+			setEditedNode(deepCloneNode(node));
+			setEdgesToDelete([]);
+		}
+	}, [show, node.id]);
 
 	const onNodeContentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setEditedNode((editedNode: SusiNode) => ({
