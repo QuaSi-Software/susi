@@ -36,6 +36,12 @@ const exampleInputs: InputObject[] = [
 		dropdownOptions: ['a', 'b', 'c'],
 		dropdownOptionDisplayNames: ['A', 'B', 'C'],
 	}),
+	new InputObject({
+		type: InputObjectType.DATE,
+		resieName: 'example8',
+		displayName: 'Example8',
+		value: '03/03/2003',
+	}),
 ];
 
 export function fetchComponentInputs(

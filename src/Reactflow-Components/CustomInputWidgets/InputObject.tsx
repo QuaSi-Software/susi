@@ -11,6 +11,7 @@ const InputObjectType = {
 	MULTISELECT: 'MULTISELECT',
 	VECTOR_FLOAT: 'VECTOR_FLOAT',
 	VECTOR_STRING: 'VECTOR_STRING',
+	DATE: 'DATE',
 	UNSET: 'UNSET',
 } as const;
 
@@ -63,6 +64,9 @@ class InputObject implements InputObjectProps {
 		this.isIncluded = true;
 
 		if (this.value === null && !this.isRequired) this.isIncluded = false;
+		if (this.type === InputObjectType.DATE) {
+			this.value = new Date(this.value);
+		}
 
 		if (this.type === InputObjectType.DROPDOWN) {
 			if (!this.dropdownOptions.includes(this.value)) this.value = this.dropdownOptions[0];

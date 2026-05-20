@@ -2,6 +2,7 @@ import React from 'react';
 import { useContext, useState } from 'react';
 import { Form, FloatingLabel } from 'react-bootstrap';
 import { InputNumber } from 'primereact/inputnumber';
+import { Calendar } from 'primereact/calendar';
 
 import { AppContext } from '../../AppContext';
 import CustomDropdown from './CustomDropdown';
@@ -125,6 +126,21 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 						dropdown_options_display_names={nodeInputCopy.dropdownOptionDisplayNames}
 						onEdit={onInputChanged}
 					/>
+				);
+			case InputObjectType.DATE:
+				return (
+					<FloatLabel className="p-fluid">
+						<Calendar
+							value={startValue}
+							onChange={(e) => onInputChanged(e.value)}
+							showIcon
+							showTime
+							locale="en"
+						/>
+						<label htmlFor="intInputWidget" id="floating-label">
+							{displayName}
+						</label>
+					</FloatLabel>
 				);
 			default:
 				console.log('Input ' + displayName + ' has type that is not defined yet.');
