@@ -48,17 +48,17 @@ function getNodeInputType(inputName: string, apiInput: APIComponentInput) {
 function getNodeInputFromAPIComponentInput(inputName: string, apiInput: APIComponentInput) {
 	if (Array.isArray(apiInput.default) && apiInput.default.length > 0 && apiInput.default[0] === null)
 		apiInput.default = null;
-	return new InputObject(
-		getNodeInputType(inputName, apiInput),
-		inputName,
-		apiInput.display_name,
-		apiInput.default,
-		apiInput.description,
-		true,
-		apiInput.required,
-		apiInput.options,
-		apiInput.options
-	);
+	return new InputObject({
+		type: getNodeInputType(inputName, apiInput),
+		resieName: inputName,
+		displayName: apiInput.display_name,
+		value: apiInput.default,
+		tooltip: apiInput.description,
+		unit: apiInput.unit,
+		isRequired: apiInput.required,
+		dropdownOptions: apiInput.options,
+		dropdownOptionDisplayNames: apiInput.options,
+	});
 }
 
 export function getComponentInputs(

@@ -4,23 +4,38 @@ import { InputObject, InputObjectType } from '../Reactflow-Components/CustomInpu
 import { getComponentInputs, type APIComponentInput } from './ProcessComponentInputs';
 import _ from 'lodash';
 
-const exampleInputs = [
-	new InputObject(InputObjectType.STRING, 'example1', 'Example1', 'hello1'),
-	new InputObject(InputObjectType.STRING, 'example2', 'Example2', 'hello2'),
-	new InputObject(InputObjectType.INT, 'example3', 'Example3', 5, '', true, false),
-	new InputObject(InputObjectType.FLOAT, 'example7', 'Example7', 5.87, '', true, false),
-	new InputObject(InputObjectType.BOOLEAN, 'example4', 'Example4', true, '', true, false),
-	new InputObject(
-		InputObjectType.MULTISELECT,
-		'example5',
-		'Example5',
-		['a'],
-		'',
-		true,
-		false,
-		['a', 'b', 'c'],
-		['A', 'B', 'C']
-	),
+const exampleInputs: InputObject[] = [
+	new InputObject({ type: InputObjectType.STRING, resieName: 'example1', displayName: 'Example1', value: 'hello1' }),
+	new InputObject({ type: InputObjectType.STRING, resieName: 'example2', displayName: 'Example2', value: 'hello2' }),
+	new InputObject({
+		type: InputObjectType.INT,
+		resieName: 'example3',
+		displayName: 'Example3',
+		value: 5,
+		isRequired: false,
+	}),
+	new InputObject({
+		type: InputObjectType.FLOAT,
+		resieName: 'example7',
+		displayName: 'Example7',
+		value: 5.87,
+		isRequired: false,
+	}),
+	new InputObject({
+		type: InputObjectType.BOOLEAN,
+		resieName: 'example4',
+		displayName: 'Example4',
+		value: true,
+		isRequired: false,
+	}),
+	new InputObject({
+		type: InputObjectType.MULTISELECT,
+		resieName: 'example5',
+		displayName: 'Example5',
+		value: ['a'],
+		dropdownOptions: ['a', 'b', 'c'],
+		dropdownOptionDisplayNames: ['A', 'B', 'C'],
+	}),
 ];
 
 export function fetchComponentInputs(

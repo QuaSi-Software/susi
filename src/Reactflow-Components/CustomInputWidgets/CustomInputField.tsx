@@ -61,6 +61,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 							showButtons
 							id="intInputWidget"
 							locale={locale}
+							suffix={` ${nodeInput.unit}`}
 						/>
 						<label htmlFor="intInputWidget" id="floating-label">
 							{displayName}
@@ -78,6 +79,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 							maxFractionDigits={20}
 							id="intInputWidget"
 							locale={locale}
+							suffix={` ${nodeInput.unit}`}
 						/>
 						<label htmlFor="intInputWidget" id="floating-label">
 							{displayName}

@@ -22,7 +22,6 @@ const chunk_into_rows = (inputs: InputObject[], items_per_row: number): Array<Ar
 	const rows: InputObject[][] = [];
 	let current_row: Array<InputObject> = [];
 	inputs.forEach((node_input) => {
-		if (!node_input.editable) return;
 		current_row.push(node_input);
 		if (current_row.length === items_per_row) {
 			rows.push(current_row);

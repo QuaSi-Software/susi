@@ -24,42 +24,43 @@ const isSubsetOf = (arr: any[], subset: any[]) => {
 	return true;
 };
 
-class InputObject {
+export interface InputObjectProps {
 	type: InputObjectType;
 	resieName: string;
 	displayName: string;
 	value: any;
-	tooltip: string;
-	editable: boolean;
-	isRequired: boolean;
-	isIncluded: boolean;
-	dropdownOptions: Array<string>;
-	dropdownOptionDisplayNames: Array<string>;
+	tooltip?: string;
+	unit?: string;
+	isRequired?: boolean;
+	isIncluded?: boolean;
+	dropdownOptions?: Array<string>;
+	dropdownOptionDisplayNames?: Array<string>;
+}
 
-	constructor(
-		type: InputObjectType,
-		resieName: string,
-		displayName: string,
-		value: any,
-		tooltip: string = '',
-		/** Different input types */
-		editable: boolean = true,
-		isRequired: boolean = true,
-		/** Dropdown Options */
-		dropdownOptions: Array<string> = [],
-		dropdownOptionDisplayNames: Array<string> = []
-	) {
-		this.type = type;
+class InputObject implements InputObjectProps {
+	type: InputObjectType;
+	resieName: string;
+	displayName: string;
+	value: any;
+	tooltip: string = '';
+	isRequired: boolean = true;
+	isIncluded: boolean = true;
+	dropdownOptions: Array<string> = [];
+	dropdownOptionDisplayNames: Array<string> = [];
+	unit: string = '';
 
-		this.resieName = resieName;
-		this.displayName = displayName;
-		this.value = value;
-		this.tooltip = tooltip;
-		this.editable = editable;
-		this.isRequired = isRequired;
+	constructor(props: InputObjectProps) {
+		this.type = props.type;
+
+		this.resieName = props.resieName;
+		this.displayName = props.displayName;
+		this.value = props.value;
+		if (props.tooltip) this.tooltip = props.tooltip;
+		if (props.unit) this.unit = props.unit;
+		if (props.isRequired) this.isRequired = props.isRequired;
+		if (props.dropdownOptions) this.dropdownOptions = props.dropdownOptions;
+		if (props.dropdownOptionDisplayNames) this.dropdownOptionDisplayNames = props.dropdownOptionDisplayNames;
 		this.isIncluded = true;
-		this.dropdownOptions = dropdownOptions;
-		this.dropdownOptionDisplayNames = dropdownOptionDisplayNames;
 
 		if (this.value === null && !this.isRequired) this.isIncluded = false;
 
@@ -99,17 +100,7 @@ class InputObject {
 		return this.value;
 	}
 	public copy(): InputObject {
-		return new InputObject(
-			this.type,
-			this.resieName,
-			this.displayName,
-			this.value,
-			this.tooltip,
-			this.editable,
-			this.isRequired,
-			this.dropdownOptions,
-			this.dropdownOptionDisplayNames
-		);
+		return new InputObject(this);
 	}
 }
 
