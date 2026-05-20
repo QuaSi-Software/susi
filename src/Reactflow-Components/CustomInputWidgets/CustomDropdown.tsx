@@ -1,25 +1,25 @@
 import { useState } from 'react';
-import React from 'react';
 
-interface CustomDropdownProps {
+interface CustomDropdownProps<T> {
 	displayName: string;
-	startValue: string | number | boolean;
-	dropdown_options: string[];
+	startValue: T;
+	dropdown_options: T[];
 	dropdown_options_display_names?: string[];
-	onEdit: (value: string | number | boolean) => void;
+	onEdit: (value: T) => void;
 }
 
-const CustomDropdown: React.FC<CustomDropdownProps> = ({
+const CustomDropdown = <T extends string | number>({
 	displayName,
 	startValue,
 	dropdown_options,
 	dropdown_options_display_names,
 	onEdit,
-}) => {
-	const [selectedOption, setInputValue] = useState<string | number | boolean>(startValue);
+}: CustomDropdownProps<T>) => {
+	const [selectedOption, setInputValue] = useState<T>(startValue);
 	const displayNames = dropdown_options_display_names || dropdown_options;
 
-	const onOptionSelected = (value: string): void => {
+	const onOptionSelected = (value: T): void => {
+		console.log(`Dropdown value selected: ${value}`);
 		setInputValue(value);
 		onEdit(value);
 	};
@@ -31,7 +31,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
 				id="floatingSelect"
 				defaultValue={String(selectedOption)}
 				aria-label="Floating label select"
-				onChange={(e) => onOptionSelected(e.target.value)}
+				onChange={(e) => onOptionSelected(e.target.value as T)}
 			>
 				{dropdown_options.map((option, index) => (
 					<option key={option} value={option}>

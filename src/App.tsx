@@ -55,11 +55,13 @@ const DnDFlow = () => {
 	const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
 	const [nodeNamePrefix, setNodeNamePrefix] = useState<string>('TST');
 	const [checkState, setCheckState] = useState<boolean>(false);
-
+	const [theme, setTheme] = useState<'dark' | 'light'>('light');
 	/** Component Inputs */
 	const [componentInputsByType, setComponentInputs] = useState<Record<string, InputObject[]> | null>(null);
 	const [ioSettingsList, setIOSettingsList] = useState<InputObject[]>([]);
 	const [simulationParametersList, setSimulationParametersList] = useState<InputObject[]>([]);
+
+	document.documentElement.setAttribute('data-theme', theme);
 
 	fetchComponentInputs(
 		setLoadingMessage,
@@ -195,6 +197,8 @@ const DnDFlow = () => {
 					setIOSettings={setIOSettingsList}
 					simulationParametersList={simulationParametersList}
 					setSimulationParameters={setSimulationParametersList}
+					theme={theme}
+					setTheme={setTheme}
 				/>
 				<ReactFlow
 					nodes={nodes}
@@ -211,7 +215,7 @@ const DnDFlow = () => {
 					fitView
 					nodeOrigin={[0.5, 0.5]}
 					nodeTypes={{ default: MarkdownNode }}
-					colorMode="system"
+					colorMode={theme}
 					ref={ref}
 					onEdgeContextMenu={onEdgeContextMenu}
 					onNodeContextMenu={onNodeContextMenu}

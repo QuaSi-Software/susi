@@ -82,7 +82,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 				);
 			case InputObjectType.MEDIUM:
 				return (
-					<CustomDropdown
+					<CustomDropdown<string>
 						displayName={displayName}
 						startValue={startValue}
 						dropdown_options={mediums.map((m: Medium) => m.key)}

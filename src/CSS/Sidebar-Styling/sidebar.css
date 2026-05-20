@@ -3,12 +3,10 @@
 	--sidebar-outline-color: #000000;
 	--sidebar-text-color: #000000;
 }
-@media (prefers-color-scheme: dark) {
-	:root {
-		--sidebar-bg-color: #0e132b;
-		--sidebar-outline-color: #fcfcfc;
-		--sidebar-text-color: #fcfcfc;
-	}
+[data-theme='dark'] {
+	--sidebar-bg-color: #0e132b;
+	--sidebar-outline-color: #fcfcfc;
+	--sidebar-text-color: #fcfcfc;
 }
 
 .dndflow aside {

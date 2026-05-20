@@ -1,14 +1,16 @@
 :root {
 	--text-color: #000000;
 	--unselected-text-color: #424242;
+	--accordion-toggle-color: #0d2152;
+	--menu-background-color: #a6c3e3;
 	--button-text-size: 24px;
 	--selected-button-text-size: 28px;
 }
-@media (prefers-color-scheme: dark) {
-	:root {
-		--text-color: #fff;
-		--unselected-text-color: #cfcfcf;
-	}
+[data-theme='dark'] {
+	--text-color: #fff;
+	--unselected-text-color: #cfcfcf;
+	--accordion-toggle-color: #c3cbdd;
+	--menu-background-color: #022449;
 }
 .sidebar-menu-section {
 	padding: 20px;
@@ -48,12 +50,12 @@
 	overflow-y: auto;
 }
 .p-accordion * {
-	background: #a6c3e3;
+	background: var(--menu-background-color);
 	text-decoration: none;
 }
 .p-accordion-header-text {
 	color: var(--text-color);
 }
 .p-accordion-toggle-icon {
-	color: #0d2152;
+	color: var(--accordion-toggle-color);
 }

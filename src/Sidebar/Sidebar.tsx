@@ -93,6 +93,8 @@ const Sidebar = (menuProps: SidebarProps) => {
 					<SettingsMenu
 						nodeNamePrefix={menuProps.nodeNamePrefix}
 						setNodeNamePrefix={menuProps.setNodeNamePrefix}
+						theme={menuProps.theme}
+						setTheme={menuProps.setTheme}
 					/>
 				);
 			default:

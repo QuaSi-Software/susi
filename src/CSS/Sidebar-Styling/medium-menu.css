@@ -1,11 +1,11 @@
 :root {
 	--color-picker-size: 60px;
 	--button-disabled-bg: #8b8b8b;
+	--button-disabled-border-color: #888888;
 }
-@media (prefers-color-scheme: dark) {
-	:root {
-		--button-disabled-bg: #636363;
-	}
+[data-theme='dark'] {
+	--button-disabled-bg: #636363;
+	--button-disabled-border-color: #939393;
 }
 
 .medium-menu-button-section {
@@ -48,4 +48,5 @@
 .medium-menu-button:disabled {
 	text-decoration: line-through;
 	background-color: var(--button-disabled-bg);
+	border-color: var(--button-disabled-border-color);
 }

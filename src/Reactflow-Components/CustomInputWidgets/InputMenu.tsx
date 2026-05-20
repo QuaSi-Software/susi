@@ -44,7 +44,7 @@ const InputMenu: React.FC<InputMenuProps> = ({ title, inputs, onValueChange, onI
 			<Modal.Body className="side-padded-menu" key={title}>
 				<Modal.Header>{title}</Modal.Header>
 				{rows.map((pair, pairIndex) => (
-					<Row key={pairIndex} className="g-2 mt-1 mt-md-0">
+					<Row key={pairIndex} className="g-2 mt-1 mt-md-0 input-menu-row">
 						{pair.map((input) => (
 							<Col key={input.resieName} md>
 								{input.isRequired && <CustomInputField nodeInput={input} onEdit={onValueChange} />}

@@ -2,11 +2,9 @@
 	--swatch-border-color: #0c0c0c;
 	--swatch-border-thickness: 1px;
 }
-@media (prefers-color-scheme: dark) {
-	:root {
-		--swatch-border-color: #ffffff;
-		--swatch-border-thickness: 2px;
-	}
+[data-theme='dark'] :root {
+	--swatch-border-color: #ffffff;
+	--swatch-border-thickness: 2px;
 }
 .picker {
 	position: relative;

@@ -57,9 +57,7 @@
 	}
 }
 
-@media (prefers-color-scheme: dark) {
-	.error-logger-content {
-		background-color: rgba(220, 53, 69, 0.2);
-		border-color: rgba(220, 53, 69, 0.4);
-	}
+[data-theme='dark'] .error-logger-content {
+	background-color: rgba(220, 53, 69, 0.2);
+	border-color: rgba(220, 53, 69, 0.4);
 }
