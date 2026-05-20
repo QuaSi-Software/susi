@@ -34,6 +34,7 @@ import { getNewEdge } from './NodeDataStructures/Edges/CreateEdge';
 import { fetchComponentInputs, getNodeInputsFromAPI } from './FetchingApiData/HandleAPICalls';
 import type { InputObject } from './Reactflow-Components/CustomInputWidgets/InputObject';
 import { UndoButton } from './Reactflow-Components/UndoButton';
+import { Locale } from './Sidebar/SettingsMenu';
 
 const initialNodes: SusiNode[] = [];
 
@@ -56,6 +57,8 @@ const DnDFlow = () => {
 	const [nodeNamePrefix, setNodeNamePrefix] = useState<string>('TST');
 	const [checkState, setCheckState] = useState<boolean>(false);
 	const [theme, setTheme] = useState<'dark' | 'light'>('light');
+	const [locale, setLocale] = useState<Locale>(Locale.US);
+
 	/** Component Inputs */
 	const [componentInputsByType, setComponentInputs] = useState<Record<string, InputObject[]> | null>(null);
 	const [ioSettingsList, setIOSettingsList] = useState<InputObject[]>([]);
@@ -182,6 +185,7 @@ const DnDFlow = () => {
 					setLoadingMessage: setLoadingMessage,
 					getNodeInputs: getNodeInputs,
 					setCheckState: setCheckState,
+					locale: locale,
 				}}
 			>
 				<LoadingOverlay message={loadingMessage} />
@@ -199,6 +203,7 @@ const DnDFlow = () => {
 					setSimulationParameters={setSimulationParametersList}
 					theme={theme}
 					setTheme={setTheme}
+					setLocale={setLocale}
 				/>
 				<ReactFlow
 					nodes={nodes}

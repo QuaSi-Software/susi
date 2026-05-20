@@ -89,14 +89,7 @@ const Sidebar = (menuProps: SidebarProps) => {
 			case MenuType.Instructions:
 				return <InstructionMenu />;
 			case MenuType.Settings:
-				return (
-					<SettingsMenu
-						nodeNamePrefix={menuProps.nodeNamePrefix}
-						setNodeNamePrefix={menuProps.setNodeNamePrefix}
-						theme={menuProps.theme}
-						setTheme={menuProps.setTheme}
-					/>
-				);
+				return <SettingsMenu {...menuProps} />;
 			default:
 				return null;
 		}

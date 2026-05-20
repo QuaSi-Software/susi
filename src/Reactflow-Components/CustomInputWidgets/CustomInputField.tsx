@@ -9,6 +9,7 @@ import { InputObjectType, type InputObject } from './InputObject';
 import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
 import { Multiselect } from './MultiSelect';
 import { FloatLabel } from 'primereact/floatlabel';
+import { Locale } from '../../Sidebar/SettingsMenu';
 
 interface CustomInputFieldProps {
 	nodeInput: InputObject;
@@ -22,6 +23,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 	const [inputValue, setInputValue] = useState<any>(startValue);
 	const appContext = useContext(AppContext);
 	const mediums = appContext?.mediums || [];
+	const locale = appContext?.locale || Locale.US;
 
 	// Create a mutable copy for dropdown options
 	const nodeInputCopy = { ...nodeInput };
@@ -58,6 +60,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 							onValueChange={(e) => onInputChanged(e.value)}
 							showButtons
 							id="intInputWidget"
+							locale={locale}
 						/>
 						<label htmlFor="intInputWidget" id="floating-label">
 							{displayName}
@@ -74,6 +77,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 							mode="decimal"
 							maxFractionDigits={20}
 							id="intInputWidget"
+							locale={locale}
 						/>
 						<label htmlFor="intInputWidget" id="floating-label">
 							{displayName}
