@@ -227,7 +227,7 @@ const DnDFlow = () => {
 					onPaneContextMenu={onPaneContextMenu}
 					onPaneClick={clearAllMenus}
 				>
-					<Controls />
+					<Controls showInteractive={false} />
 					<Background />
 					<UndoButton
 						nodes={nodes}

@@ -56,11 +56,12 @@ class InputObject implements InputObjectProps {
 		this.resieName = props.resieName;
 		this.displayName = props.displayName;
 		this.value = props.value;
-		if (props.tooltip) this.tooltip = props.tooltip;
-		if (props.unit) this.unit = props.unit;
-		if (props.isRequired) this.isRequired = props.isRequired;
-		if (props.dropdownOptions) this.dropdownOptions = props.dropdownOptions;
-		if (props.dropdownOptionDisplayNames) this.dropdownOptionDisplayNames = props.dropdownOptionDisplayNames;
+		if (props.tooltip !== undefined) this.tooltip = props.tooltip;
+		if (props.unit !== undefined) this.unit = props.unit;
+		if (props.isRequired !== undefined) this.isRequired = props.isRequired;
+		if (props.dropdownOptions !== undefined) this.dropdownOptions = props.dropdownOptions;
+		if (props.dropdownOptionDisplayNames !== undefined)
+			this.dropdownOptionDisplayNames = props.dropdownOptionDisplayNames;
 		this.isIncluded = true;
 
 		if (this.value === null && !this.isRequired) this.isIncluded = false;

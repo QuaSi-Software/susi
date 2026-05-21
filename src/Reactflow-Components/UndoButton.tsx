@@ -57,7 +57,7 @@ export function UndoButton({ nodes, setNodes, edges, setEdges, checkState }: Und
 				onClick={undoAction}
 				disabled={stateHistory.length === 0}
 			>
-				<i className="bi bi-arrow-clockwise"></i> Undo Action
+				<i className="bi bi-arrow-clockwise"></i> Undo
 			</Button>
 		</>
 	);
