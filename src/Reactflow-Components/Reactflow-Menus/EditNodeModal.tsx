@@ -95,6 +95,7 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 		handleClose();
 	};
 
+	const allInputsValid = editedNode.data.nodeInputs.every((input) => input.isValid || !input.isIncluded);
 	return (
 		<>
 			<Modal show={show} onHide={handleClose} onExited={handleClose}>
@@ -129,7 +130,7 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 					<Button variant="secondary" onClick={handleClose}>
 						Close
 					</Button>
-					<Button variant="primary" onClick={handleSaveChanges}>
+					<Button variant="primary" onClick={handleSaveChanges} disabled={!allInputsValid}>
 						Save Changes
 					</Button>
 				</Modal.Footer>

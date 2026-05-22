@@ -21,10 +21,18 @@
 	/** disabled */
 	border-width: 1px;
 }
-.btn-outline-primary {
+.btn-outline-primary,
+.btn-primary {
 	--bs-btn-disabled-color: #727272;
 	--bs-btn-disabled-border-color: #727272;
 }
+.btn-primary {
+	--bs-btn-disabled-bg: #eee;
+}
+.btn:disabled {
+	text-decoration: line-through;
+}
+
 .undo-button {
 	position: absolute;
 	top: 20px;
