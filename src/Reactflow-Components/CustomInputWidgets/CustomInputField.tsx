@@ -1,7 +1,6 @@
 import React from 'react';
 import { useContext, useState } from 'react';
 import { Form, FloatingLabel } from 'react-bootstrap';
-import { InputNumber } from 'primereact/inputnumber';
 import { Calendar } from 'primereact/calendar';
 import { addLocale } from 'primereact/api';
 
@@ -61,39 +60,37 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 				);
 			case InputObjectType.INT:
 				return (
-					<FloatLabel className="p-fluid">
-						<InputNumber
-							value={inputValue}
-							onValueChange={(e) => onInputChanged(e.value)}
-							showButtons
-							id="intInputWidget"
-							locale={locale}
-							suffix={` ${nodeInput.unit}`}
-							invalid={!nodeInput.isValid && nodeInput.isIncluded}
+					<FloatingLabel controlId="floatingInput" label={displayName}>
+						<Form.Control
+							type="number"
+							pattern="[0-9*]"
+							placeholder={displayName}
+							value={String(inputValue)}
+							onChange={(e) => onInputChanged(e.target.value)}
+							step="1"
+							isInvalid={!nodeInput.isValid && nodeInput.isIncluded}
 						/>
-						<label htmlFor="intInputWidget" id="floating-label">
-							{displayName}
+						<label htmlFor="floatingInput" id="unit-label">
+							{nodeInput.unit}
 						</label>
-					</FloatLabel>
+					</FloatingLabel>
 				);
-
 			case InputObjectType.FLOAT:
 				return (
-					<FloatLabel className="p-fluid">
-						<InputNumber
-							value={inputValue}
-							onValueChange={(e) => onInputChanged(e.value)}
-							mode="decimal"
-							maxFractionDigits={20}
-							id="intInputWidget"
-							locale={locale}
-							suffix={` ${nodeInput.unit}`}
-							invalid={!nodeInput.isValid && nodeInput.isIncluded}
+					<FloatingLabel controlId="floatingInput" label={displayName}>
+						<Form.Control
+							type="number"
+							pattern="[0-9*]"
+							placeholder={displayName}
+							value={String(inputValue)}
+							onChange={(e) => onInputChanged(e.target.value)}
+							step="0.01"
+							isInvalid={!nodeInput.isValid && nodeInput.isIncluded}
 						/>
-						<label htmlFor="intInputWidget" id="floating-label">
-							{displayName}
+						<label htmlFor="floatingInput" id="unit-label">
+							{nodeInput.unit}
 						</label>
-					</FloatLabel>
+					</FloatingLabel>
 				);
 			case InputObjectType.BOOLEAN:
 				return (

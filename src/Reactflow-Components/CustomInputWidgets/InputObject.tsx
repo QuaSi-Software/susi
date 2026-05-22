@@ -121,6 +121,13 @@ class InputObject implements InputObjectProps {
 	 */
 	public checkInputValid(otherInputs: InputObject[]): boolean {
 		if (this.type !== InputObjectType.FLOAT && this.type !== InputObjectType.INT) return true;
+		const parsedValue = Number.parseFloat(this.value);
+		if (Number.isNaN(parsedValue)) {
+			this.isValid = false;
+			this.validationMessages.push(`${this.value} must be a number`);
+			console.log(`Checked that node input ${this.resieName}'s value of ${this.value} is valid: ${this.isValid}`);
+			return this.isValid;
+		}
 		this.validationMessages = [];
 		this.isValid = true;
 		this.validations.forEach((validation) => {

@@ -1,7 +1,3 @@
-.input-menu-row {
-	margin: 6px 2px;
-}
-
 /** Optional Input rows*/
 .optional-input-row {
 	/* Row already has display: flex from Bootstrap */

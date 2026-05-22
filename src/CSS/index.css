@@ -16,10 +16,13 @@
 @import './Sidebar-Styling/sidebar-new-node-menu.css';
 @import './Sidebar-Styling/medium-menu.css';
 
+/** Input Widget Styling */
+@import './Input-Widgets/input-widgets.css';
+@import './Input-Widgets/optional-input-rows.css';
+
 /** Both */
 @import './bootstrap-buttons.css';
 @import './loading-overlay.css';
-@import './input-widgets.css';
 
 #root {
 	width: 100vw;
@@ -39,13 +42,4 @@ body {
 	margin-bottom: 10px;
 	flex-grow: 1;
 	height: 100%;
-}
-
-#floating-label {
-	top: 0rem !important;
-	background-color: #fff0;
-	padding: 5px;
-	padding-top: 10px;
-	margin-left: -4px;
-	margin-top: 3px;
 }

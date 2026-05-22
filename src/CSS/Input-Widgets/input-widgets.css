@@ -1,0 +1,23 @@
+.input-menu-row {
+	margin: 6px 2px;
+}
+#unit-label {
+	position: absolute;
+	right: 3rem;
+	left: unset;
+	top: 50% !important;
+	background-color: #fff0;
+	color: #979797;
+	padding: 12px;
+	transform: translate(0%, -50%);
+	margin: 0;
+}
+
+#floating-label {
+	top: 0rem !important;
+	background-color: #fff0;
+	padding: 5px;
+	padding-top: 10px;
+	margin-left: -4px;
+	margin-top: 3px;
+}
