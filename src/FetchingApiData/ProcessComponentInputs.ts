@@ -1,6 +1,7 @@
 import type { Medium } from '../NodeDataStructures/Mediums/Medium';
 import { getUndefinedMedium } from '../NodeDataStructures/Mediums/MediumUtils';
 import { InputObject, InputObjectType } from '../Reactflow-Components/CustomInputWidgets/InputObject';
+import { importValidation } from '../Reactflow-Components/CustomInputWidgets/InputValidation';
 
 export interface APIComponentInput {
 	conditionals: string[][];
@@ -12,6 +13,7 @@ export interface APIComponentInput {
 	type: string;
 	unit: string;
 	options: string[];
+	validations: Array<Array<string | number>>;
 }
 
 function getNodeInputType(inputName: string, apiInput: APIComponentInput) {
@@ -46,6 +48,9 @@ function getNodeInputType(inputName: string, apiInput: APIComponentInput) {
 }
 
 function getNodeInputFromAPIComponentInput(inputName: string, apiInput: APIComponentInput) {
+	if (inputName === 'power_losses_factor') {
+		console.log('problem child');
+	}
 	if (Array.isArray(apiInput.default) && apiInput.default.length > 0 && apiInput.default[0] === null)
 		apiInput.default = null;
 	return new InputObject({
@@ -58,6 +63,7 @@ function getNodeInputFromAPIComponentInput(inputName: string, apiInput: APICompo
 		isRequired: apiInput.required,
 		dropdownOptions: apiInput.options,
 		dropdownOptionDisplayNames: apiInput.options,
+		validations: apiInput.validations === undefined ? [] : apiInput.validations.map((x) => importValidation(x)),
 	});
 }
 

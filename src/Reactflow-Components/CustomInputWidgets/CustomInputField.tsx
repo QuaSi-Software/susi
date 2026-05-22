@@ -69,6 +69,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 							id="intInputWidget"
 							locale={locale}
 							suffix={` ${nodeInput.unit}`}
+							invalid={!nodeInput.isValid && nodeInput.isIncluded}
 						/>
 						<label htmlFor="intInputWidget" id="floating-label">
 							{displayName}
@@ -87,6 +88,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 							id="intInputWidget"
 							locale={locale}
 							suffix={` ${nodeInput.unit}`}
+							invalid={!nodeInput.isValid && nodeInput.isIncluded}
 						/>
 						<label htmlFor="intInputWidget" id="floating-label">
 							{displayName}

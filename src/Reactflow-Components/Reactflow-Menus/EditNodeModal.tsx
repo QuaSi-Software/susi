@@ -61,6 +61,7 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 		console.assert(nodeInput != undefined);
 		if (isValueChange) {
 			nodeInput!.value = value;
+			nodeInput!.checkInputValid(resieDataCopy);
 		} else {
 			nodeInput!.isIncluded = value;
 		}

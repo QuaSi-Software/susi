@@ -1,5 +1,6 @@
 import { getUndefinedMedium } from '../../NodeDataStructures/Mediums/MediumUtils';
 import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
+import { getValidationMessage, isValid, type Validation } from './InputValidation';
 
 const InputObjectType = {
 	INT: 'INT',
@@ -36,6 +37,8 @@ export interface InputObjectProps {
 	isIncluded?: boolean;
 	dropdownOptions?: Array<string>;
 	dropdownOptionDisplayNames?: Array<string>;
+	validations?: Array<Validation>;
+	isValid?: boolean;
 }
 
 class InputObject implements InputObjectProps {
@@ -49,6 +52,9 @@ class InputObject implements InputObjectProps {
 	dropdownOptions: Array<string> = [];
 	dropdownOptionDisplayNames: Array<string> = [];
 	unit: string = '';
+	validations: Array<Validation> = [];
+	validationMessages: string[] = [];
+	isValid: boolean = true;
 
 	constructor(props: InputObjectProps) {
 		this.type = props.type;
@@ -62,6 +68,7 @@ class InputObject implements InputObjectProps {
 		if (props.dropdownOptions !== undefined) this.dropdownOptions = props.dropdownOptions;
 		if (props.dropdownOptionDisplayNames !== undefined)
 			this.dropdownOptionDisplayNames = props.dropdownOptionDisplayNames;
+		if (props.validations !== undefined) this.validations = props.validations;
 		this.isIncluded = true;
 
 		if (this.value === null && !this.isRequired) this.isIncluded = false;
@@ -106,6 +113,24 @@ class InputObject implements InputObjectProps {
 	}
 	public copy(): InputObject {
 		return new InputObject(this);
+	}
+
+	/**
+	 * checks if input is valid using the input's validations.
+	 * Sets the validationMessages that can be displayed as error messages to the user
+	 */
+	public checkInputValid(otherInputs: InputObject[]): boolean {
+		if (this.type !== InputObjectType.FLOAT && this.type !== InputObjectType.INT) return true;
+		this.validationMessages = [];
+		this.isValid = true;
+		this.validations.forEach((validation) => {
+			if (!isValid(this.value, validation, otherInputs)) {
+				this.isValid = false;
+				this.validationMessages.push(getValidationMessage(validation));
+			}
+		});
+		console.log(`Checked that node input ${this.resieName}'s value of ${this.value} is valid: ${this.isValid}`);
+		return this.isValid;
 	}
 }
 
