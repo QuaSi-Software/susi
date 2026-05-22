@@ -63,11 +63,11 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 					<FloatingLabel controlId="floatingInput" label={displayName}>
 						<Form.Control
 							type="number"
-							pattern="[0-9*]"
 							placeholder={displayName}
 							value={String(inputValue)}
 							onChange={(e) => onInputChanged(e.target.value)}
 							step="1"
+							lang={locale}
 							isInvalid={!nodeInput.isValid && nodeInput.isIncluded}
 						/>
 						<label htmlFor="floatingInput" id="unit-label">
@@ -80,11 +80,11 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 					<FloatingLabel controlId="floatingInput" label={displayName}>
 						<Form.Control
 							type="number"
-							pattern="[0-9*]"
 							placeholder={displayName}
 							value={String(inputValue)}
 							onChange={(e) => onInputChanged(e.target.value)}
 							step="0.01"
+							lang={locale}
 							isInvalid={!nodeInput.isValid && nodeInput.isIncluded}
 						/>
 						<label htmlFor="floatingInput" id="unit-label">
