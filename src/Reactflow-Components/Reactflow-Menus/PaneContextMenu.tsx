@@ -23,6 +23,8 @@ const PaneContextMenu = ({ paneContextMenu, setPaneContextMenu, nodes, setNodes,
 	const setLoadingMessage = useContext(AppContext)!.setLoadingMessage;
 	const setCheckState = useContext(AppContext)!.setCheckState;
 
+	const nodeWithIssues = nodes.find((n) => !n.data.hasValidInputs);
+
 	const handleLayoutReset = () => {
 		setPaneContextMenu(null);
 		setLayoutCalculated(false);
@@ -62,6 +64,17 @@ const PaneContextMenu = ({ paneContextMenu, setPaneContextMenu, nodes, setNodes,
 					<ButtonGroup vertical>
 						<Button className="contextMenu" variant="outline-success" onClick={handleLayoutReset}>
 							<i className="bi bi-arrow-clockwise"></i> Reset Layout
+						</Button>
+						<Button
+							className="contextMenu"
+							variant="outline-primary"
+							onClick={() => {
+								setPaneContextMenu(null);
+								fitView({ nodes: [nodeWithIssues!] });
+							}}
+							disabled={nodeWithIssues === undefined}
+						>
+							<i className="bi bi-search"></i> Find Issue
 						</Button>
 					</ButtonGroup>
 				}
