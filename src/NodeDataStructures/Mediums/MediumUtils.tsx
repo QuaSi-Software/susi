@@ -121,6 +121,18 @@ const getRandomColor = () => {
 		.padStart(6, '0')}`;
 };
 
+const checkForDuplicateNames = (mediums: Medium[]) => {
+	const duplicateNameMediums = mediums.filter((m1) => {
+		return mediums.find((m2) => m2.key !== m1.key && m2.name === m1.name);
+	});
+	mediums.forEach((m) => {
+		m.valid = true;
+	});
+	duplicateNameMediums.forEach((m) => {
+		m.valid = false;
+	});
+};
+
 export {
 	getDefaultMediums,
 	getMedium,
@@ -129,4 +141,5 @@ export {
 	getEdgesWithMediumMismatch,
 	getRandomColor,
 	getUndefinedMedium,
+	checkForDuplicateNames,
 };

@@ -30,6 +30,7 @@ const MediumInputWidget: React.FC<MediumInputWidgetProps> = ({ medium, onMediumC
 					placeholder="Medium name"
 					value={medium.name}
 					onChange={(e) => onMediumNameChange(e.target.value)}
+					isInvalid={!medium.valid}
 				/>
 			</Col>
 			<Col xs="auto">

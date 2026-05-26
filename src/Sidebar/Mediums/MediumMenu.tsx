@@ -4,7 +4,12 @@ import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
 import MediumInputWidget from './MediumInputWidget';
 import { deepCloneNodes, type SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import { InputObjectType } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
-import { getDefaultMediums, getRandomColor, getUndefinedMedium } from '../../NodeDataStructures/Mediums/MediumUtils';
+import {
+	checkForDuplicateNames,
+	getDefaultMediums,
+	getRandomColor,
+	getUndefinedMedium,
+} from '../../NodeDataStructures/Mediums/MediumUtils';
 import _ from 'lodash';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import { flushSync } from 'react-dom';
@@ -27,6 +32,7 @@ const MediumMenu = ({ nodes, setNodes, edges, setEdges }: MediumMenuProps) => {
 		const mediumIndex = mediums.findIndex((m) => m.key === medium.key);
 		const newMediums = JSON.parse(JSON.stringify(mediums));
 		newMediums[mediumIndex] = medium;
+		checkForDuplicateNames(newMediums);
 		setMediums(newMediums);
 	};
 
@@ -52,16 +58,20 @@ const MediumMenu = ({ nodes, setNodes, edges, setEdges }: MediumMenuProps) => {
 		flushSync(() => {
 			updateNodesAndEdgesOnMediumDelete([key]);
 		});
+		checkForDuplicateNames(newMediums);
 		setMediums(newMediums);
 	};
 	const addMedium = () => {
+		const mediumNameDuplicate = mediums.find((m) => m.name === 'm_untitled') !== undefined;
 		const newMedium: Medium = {
 			name: 'm_untitled',
 			key: `m_${new Date().getTime()}`,
 			color: getRandomColor(),
+			valid: mediumNameDuplicate,
 		};
 		const newMediums = Object.assign([], mediums);
 		newMediums.push(newMedium);
+		checkForDuplicateNames(newMediums);
 		setMediums(newMediums);
 	};
 	const resetMenu = () => {

@@ -61,6 +61,7 @@ class InputObject implements InputObjectProps {
 		this.resieName = props.resieName;
 		this.displayName = props.displayName;
 		Object.assign(this, props);
+		if (this.value === undefined) this.value = null;
 
 		if (this.value === null && !this.isRequired) {
 			if (this.type === InputObjectType.STRING) this.value = '';
