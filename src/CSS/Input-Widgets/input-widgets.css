@@ -21,3 +21,8 @@
 	margin-left: -4px;
 	margin-top: 3px;
 }
+
+.input-warning-message {
+	color: #f00;
+	font-size: medium;
+}

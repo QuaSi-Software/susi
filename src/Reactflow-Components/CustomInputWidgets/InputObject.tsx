@@ -114,15 +114,20 @@ class InputObject implements InputObjectProps {
 	 * checks if input is valid using the input's validations.
 	 * Sets the validationMessages that can be displayed as error messages to the user
 	 */
-	public checkInputValid(otherInputs: InputObject[]): boolean {
-		if (this.type !== InputObjectType.FLOAT && this.type !== InputObjectType.INT) return true;
+	public checkInputValid(otherInputs: InputObject[]): void {
+		if (this.type !== InputObjectType.FLOAT && this.type !== InputObjectType.INT) return;
 		this.validationMessages = [];
 		const parsedValue = Number.parseFloat(this.value);
 		if (Number.isNaN(parsedValue)) {
 			this.isValid = false;
-			this.validationMessages.push(`${this.value} must be a number`);
+			this.validationMessages.push(`${this.value} is not a number`);
 			console.log(`Checked that node input ${this.resieName}'s value of ${this.value} is valid: ${this.isValid}`);
-			return this.isValid;
+			return;
+		}
+		if (this.type === InputObjectType.INT && !Number.isInteger(parsedValue)) {
+			this.isValid = false;
+			this.validationMessages.push(`${this.value} is not an integer`);
+			return;
 		}
 		this.isValid = true;
 		this.validations.forEach((validation) => {
@@ -132,7 +137,6 @@ class InputObject implements InputObjectProps {
 			}
 		});
 		console.log(`Checked that node input ${this.resieName}'s value of ${this.value} is valid: ${this.isValid}`);
-		return this.isValid;
 	}
 }
 
