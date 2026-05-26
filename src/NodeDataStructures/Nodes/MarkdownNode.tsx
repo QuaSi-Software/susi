@@ -89,6 +89,12 @@ function MarkdownNode(susiData: SusiNodeData, sourcePosition: boolean, targetPos
 						/>
 					))}
 			</div>
+			{!susiData.hasValidInputs && (
+				<div className="invalid-input-warning-icon">
+					⚠️
+					{/* <i className="bi bi-tools"></i> */}
+				</div>
+			)}
 		</>
 	);
 }

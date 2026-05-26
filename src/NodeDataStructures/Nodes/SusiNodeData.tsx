@@ -16,6 +16,7 @@ export interface SusiNodeData extends Record<string, unknown> {
 	nodeCategory: NodeCategory;
 	sourceHandles: number;
 	targetHandles: number;
+	hasValidInputs: boolean;
 }
 
 function getMediumHandleDict(
@@ -68,6 +69,7 @@ export function createSusiNodeData(
 	nodeInputs.forEach((input) => {
 		input.checkInputValid(nodeInputs);
 	});
+	const hasValidInputs = nodeInputs.every((input) => input.isValid || !input.isIncluded);
 	const componentType = nodeType.type_name;
 	const busData = componentType.toLowerCase() === 'bus' ? new BusData() : null;
 	const handleMediumDict = getMediumHandleDict(nodeInputs, nodeType.nr_outputs, nodeType.nr_inputs);
@@ -80,5 +82,6 @@ export function createSusiNodeData(
 		nodeCategory: nodeType.category,
 		sourceHandles: nodeType.nr_outputs,
 		targetHandles: nodeType.nr_inputs,
+		hasValidInputs: hasValidInputs,
 	};
 }

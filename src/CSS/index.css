@@ -7,6 +7,7 @@
 @import './Reactflow-Styling/error-logger.css';
 @import './Reactflow-Styling/edit-node-modal.css';
 @import './Reactflow-Styling/drag-drop-menu.css';
+@import './Reactflow-Styling/node-warning-icon.css';
 
 /** Sidebar Styling */
 @import './Sidebar-Styling/sidebar.css';

@@ -108,6 +108,9 @@ const importState = ({
 				nodeInput.isIncluded = false;
 			}
 		}
+		for (const nodeInput of nodeInputs) {
+			nodeInput.checkInputValid(nodeInputs);
+		}
 		newNode.data.nodeInputs = nodeInputs;
 
 		nodeArray.push(newNode);

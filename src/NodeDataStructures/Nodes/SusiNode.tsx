@@ -47,6 +47,7 @@ const createNodeFromType = (
 		focusable: true,
 		style: {
 			'--category': susiNodeData.nodeCategory.toLowerCase(),
+			'--valid-inputs': susiNodeData.hasValidInputs,
 			width: 'auto',
 		} as React.CSSProperties,
 	};

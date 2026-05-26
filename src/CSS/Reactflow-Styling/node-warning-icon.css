@@ -1,0 +1,7 @@
+.invalid-input-warning-icon {
+	position: absolute;
+	right: 0;
+	top: 0;
+	font-size: large;
+	transform: translate(50%, -50%);
+}
