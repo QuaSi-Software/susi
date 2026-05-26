@@ -1,4 +1,4 @@
-import { useState, type Dispatch, type SetStateAction } from 'react';
+import { useContext, useState, type Dispatch, type SetStateAction } from 'react';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 
 import type { ImportExportMenuProps } from './Import-Export/ImportExportMenu';
@@ -10,6 +10,7 @@ import { InstructionMenu } from './Instructions';
 import { SettingsMenu, type SettingsMenuProps } from './SettingsMenu';
 import InputMenu from '../Reactflow-Components/CustomInputWidgets/InputMenu';
 import { InputObject } from '../Reactflow-Components/CustomInputWidgets/InputObject';
+import { AppContext } from '../AppContext';
 
 export const MenuType = {
 	NewNodeMenu: 'Add New Components',
@@ -27,6 +28,8 @@ type SidebarProps = ImportExportMenuProps & MediumMenuProps & SettingsMenuProps;
 
 const Sidebar = (menuProps: SidebarProps) => {
 	const [selectedMenu, setSelectedMenu] = useState<MenuType>(MenuType.NewNodeMenu);
+	const mediums = useContext(AppContext)!.mediums;
+	const allMediumsValid = mediums.every((m) => m.valid);
 
 	function changeInputListElement(
 		key: string,
@@ -108,6 +111,7 @@ const Sidebar = (menuProps: SidebarProps) => {
 									onClick={() => setSelectedMenu(menuType)}
 								>
 									{menuType as string}
+									{menuType === MenuType.MediumMenu && !allMediumsValid && <> ⚠️</>}
 								</button>
 							))}
 						</div>
