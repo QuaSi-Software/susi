@@ -58,20 +58,14 @@ class InputObject implements InputObjectProps {
 
 	constructor(props: InputObjectProps) {
 		this.type = props.type;
-
 		this.resieName = props.resieName;
 		this.displayName = props.displayName;
-		this.value = props.value;
-		if (props.tooltip !== undefined) this.tooltip = props.tooltip;
-		if (props.unit !== undefined) this.unit = props.unit;
-		if (props.isRequired !== undefined) this.isRequired = props.isRequired;
-		if (props.dropdownOptions !== undefined) this.dropdownOptions = props.dropdownOptions;
-		if (props.dropdownOptionDisplayNames !== undefined)
-			this.dropdownOptionDisplayNames = props.dropdownOptionDisplayNames;
-		if (props.validations !== undefined) this.validations = props.validations;
-		this.isIncluded = true;
+		Object.assign(this, props);
 
-		if (this.value === null && !this.isRequired) this.isIncluded = false;
+		if (this.value === null && !this.isRequired) {
+			if (this.type === InputObjectType.STRING) this.value = '';
+			this.isIncluded = false;
+		}
 		if (this.type === InputObjectType.DATE) {
 			this.value = new Date(this.value);
 		}
@@ -121,6 +115,7 @@ class InputObject implements InputObjectProps {
 	 */
 	public checkInputValid(otherInputs: InputObject[]): boolean {
 		if (this.type !== InputObjectType.FLOAT && this.type !== InputObjectType.INT) return true;
+		this.validationMessages = [];
 		const parsedValue = Number.parseFloat(this.value);
 		if (Number.isNaN(parsedValue)) {
 			this.isValid = false;
@@ -128,7 +123,6 @@ class InputObject implements InputObjectProps {
 			console.log(`Checked that node input ${this.resieName}'s value of ${this.value} is valid: ${this.isValid}`);
 			return this.isValid;
 		}
-		this.validationMessages = [];
 		this.isValid = true;
 		this.validations.forEach((validation) => {
 			if (!isValid(this.value, validation, otherInputs)) {
