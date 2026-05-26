@@ -30,6 +30,7 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 	const setMediums = context.setMediums;
 	const setLoadingMessage = context.setLoadingMessage;
 	const { fitView } = useReactFlow();
+	/** Check if all nodes and the medium menu have valid inputs */
 
 	const handleImport = useCallback(async () => {
 		try {
@@ -61,14 +62,24 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 		setTextContent(data);
 	};
 
+	const canExport = (): boolean => {
+		const mediumsValid = mediums.every((m) => m.valid);
+		if (!mediumsValid) return false;
+		const nodeInputsValid = menuProps.nodes.every((n) => n.data.hasValidInputs);
+		if (!nodeInputsValid) return false;
+
+		return true;
+	};
+
+	const exportDisabled = !canExport();
 	return (
 		<div className="import-export-menu">
 			<div className="sidebar-heading">Import & Export</div>
 			<div className="import-export-buttons">
-				<Button variant="primary" onClick={handleImport}>
+				<Button variant="primary" onClick={handleImport} disabled={textContent === ''}>
 					Import
 				</Button>
-				<Button variant="primary" onClick={handleExport}>
+				<Button variant="primary" onClick={handleExport} disabled={exportDisabled}>
 					Export
 				</Button>
 			</div>
