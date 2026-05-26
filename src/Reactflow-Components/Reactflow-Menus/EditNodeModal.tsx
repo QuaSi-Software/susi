@@ -83,6 +83,7 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 
 	const handleSaveChanges = () => {
 		let updatedNodes = deepCloneNodes(nodes);
+		editedNode.data.hasValidInputs = true;
 		updatedNodes = updatedNodes.map((n: SusiNode) => (n.id === editedNode.id ? editedNode : n));
 		edgesToDelete.forEach((edgeID) => {
 			const edge = edges.find((e) => e.id === edgeID);
