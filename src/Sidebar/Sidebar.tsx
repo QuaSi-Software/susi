@@ -29,7 +29,6 @@ type SidebarProps = ImportExportMenuProps & MediumMenuProps & SettingsMenuProps;
 const Sidebar = (menuProps: SidebarProps) => {
 	const [selectedMenu, setSelectedMenu] = useState<MenuType>(MenuType.NewNodeMenu);
 	const mediums = useContext(AppContext)!.mediums;
-	const allMediumsValid = mediums.every((m) => m.valid);
 
 	function changeInputListElement(
 		key: string,
@@ -42,7 +41,10 @@ const Sidebar = (menuProps: SidebarProps) => {
 			if (!input) console.error(`Input with key ${key} should not be undefined in list ${list}`);
 			if (isIncludedChange) input!.isIncluded = value;
 			else input!.value = value;
-			return list;
+			list.forEach((e) => {
+				e.checkInputValid(list);
+			});
+			return [...list];
 		});
 	}
 
@@ -98,6 +100,22 @@ const Sidebar = (menuProps: SidebarProps) => {
 		}
 	};
 
+	function menuHasWarning(menuType: MenuType) {
+		switch (menuType) {
+			case MenuType.MediumMenu:
+				const allMediumsValid = mediums.every((m) => m.valid);
+				return !allMediumsValid;
+			case MenuType.SimulationParameters:
+				const simulationParamsValid = menuProps.simulationParametersList.every((input) => input.isValid);
+				return !simulationParamsValid;
+			case MenuType.IO_Settings:
+				const ioSettingsValid = menuProps.ioSettingsList.every((input) => input.isValid);
+				return !ioSettingsValid;
+			default:
+				return false;
+		}
+	}
+
 	return (
 		<aside>
 			<div className="sidebar-menu-section">
@@ -111,7 +129,7 @@ const Sidebar = (menuProps: SidebarProps) => {
 									onClick={() => setSelectedMenu(menuType)}
 								>
 									{menuType as string}
-									{menuType === MenuType.MediumMenu && !allMediumsValid && <> ⚠️</>}
+									{menuHasWarning(menuType) && <> ⚠️</>}
 								</button>
 							))}
 						</div>
