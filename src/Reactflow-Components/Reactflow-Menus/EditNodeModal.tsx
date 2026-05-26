@@ -95,6 +95,8 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 		handleClose();
 	};
 
+	const nameIsDuplicate =
+		nodes.find((node) => node.id !== editedNode.id && node.data.content === editedNode.data.content) !== undefined;
 	const allInputsValid = editedNode.data.nodeInputs.every((input) => input.isValid || !input.isIncluded);
 	return (
 		<>
@@ -110,9 +112,10 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 									type="text"
 									as="textarea"
 									style={{ height: '100px' }}
-									placeholder="nodeContent"
+									placeholder="Component Name"
 									value={editedNode.data.content}
 									onChange={onNodeContentChange}
+									isInvalid={nameIsDuplicate}
 								/>
 							</FloatingLabel>
 						</Col>
@@ -130,7 +133,7 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 					<Button variant="secondary" onClick={handleClose}>
 						Close
 					</Button>
-					<Button variant="primary" onClick={handleSaveChanges} disabled={!allInputsValid}>
+					<Button variant="primary" onClick={handleSaveChanges} disabled={!allInputsValid || nameIsDuplicate}>
 						Save Changes
 					</Button>
 				</Modal.Footer>
