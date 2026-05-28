@@ -51,18 +51,23 @@ const InputMenu: React.FC<InputMenuProps> = ({ title, inputs, onValueChange, onI
 					<Row key={pairIndex} className="g-2 mt-1 mt-md-0 input-menu-row">
 						{pair.map((input) => (
 							<Col key={input.resieName} md>
-								{input.isRequired && input.allConditionalsTrue && (
-									<CustomInputField nodeInput={input} onEdit={onValueChange} />
-								)}
-								{!input.isRequired && input.allConditionalsTrue && (
-									<OptionalInputField
-										key={input.resieName}
-										nodeInput={input}
-										onValueChange={onValueChange}
-										startIncluded={input.isIncluded}
-										onIncludedChange={onIncludedChange}
-									/>
-								)}
+								<div
+									style={{
+										visibility: input.allConditionalsTrue ? 'visible' : 'hidden',
+										height: '100%',
+									}}
+								>
+									{input.isRequired && <CustomInputField nodeInput={input} onEdit={onValueChange} />}
+									{!input.isRequired && (
+										<OptionalInputField
+											key={input.resieName}
+											nodeInput={input}
+											onValueChange={onValueChange}
+											startIncluded={input.isIncluded}
+											onIncludedChange={onIncludedChange}
+										/>
+									)}
+								</div>
 							</Col>
 						))}
 					</Row>

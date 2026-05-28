@@ -63,8 +63,8 @@ function checkConditional(conditional: Conditional, inputs: InputObject[]): bool
 		case ConditionalOperator.is_nothing:
 			return targetValue === null || targetValue === undefined || !targetParameter!.isIncluded;
 		case ConditionalOperator.is_one_of:
-			console.assert(Array.isArray(targetValue));
-			return targetValue.find((x: any) => x === conditional.value) !== undefined;
+			console.assert(Array.isArray(conditional.value));
+			return conditional.value.find((x: any) => x === targetValue) !== undefined;
 		default:
 			console.error(`Conditional ${conditional.operator} has no relevant case`);
 			return false;
