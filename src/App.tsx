@@ -56,7 +56,7 @@ const DnDFlow = () => {
 	const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([]);
 	const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
 	const [overlayErrorMessage, setOverlayErrorMessage] = useState<string | null>(null);
-	const [nodeNamePrefix, setNodeNamePrefix] = useState<string>('TST');
+	const [nodeNamePrefix, setNodeNamePrefix] = useState<string>('');
 	const [checkState, setCheckState] = useState<boolean>(false);
 	const [theme, setTheme] = useState<'dark' | 'light'>('light');
 	const [locale, setLocale] = useState<Locale>(Locale.US);

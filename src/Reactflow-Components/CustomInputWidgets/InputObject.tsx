@@ -147,6 +147,7 @@ class InputObject implements InputObjectProps {
 
 	public checkConditionals(inputs: InputObject[]) {
 		this.allConditionalsTrue = checkAllConditionals(this.conditionals, inputs);
+		if (!this.allConditionalsTrue && !this.isRequired) this.isIncluded = false;
 	}
 }
 

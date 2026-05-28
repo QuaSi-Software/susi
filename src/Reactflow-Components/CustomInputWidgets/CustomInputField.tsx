@@ -160,11 +160,12 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 
 	return (
 		<>
-			{nodeInput.validationMessages.map((message) => (
-				<div key={message} className="input-warning-message">
-					{message}
-				</div>
-			))}
+			{nodeInput.isIncluded &&
+				nodeInput.validationMessages.map((message) => (
+					<div key={message} className="input-warning-message">
+						{message}
+					</div>
+				))}
 			<div data-toggle="tooltip" data-placement="top" title={nodeInput.tooltip}>
 				{getInputFieldByType()}
 			</div>
