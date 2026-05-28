@@ -40,6 +40,7 @@ const OptionalInputField: React.FC<OptionalInputFieldProps> = ({
 					id={resieName}
 					label="include?"
 					onChange={onSwitchClicked}
+					disabled={nodeInput.disabledByMutex}
 				/>
 			</Col>
 			<Col className="optional-input-input-field">

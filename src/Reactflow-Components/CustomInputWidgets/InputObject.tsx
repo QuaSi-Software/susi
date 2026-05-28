@@ -42,6 +42,7 @@ export interface InputObjectProps {
 	isValid?: boolean;
 	conditionals?: Conditional[];
 	allConditionalsTrue?: boolean;
+	disabledByMutex?: boolean;
 }
 
 class InputObject implements InputObjectProps {
@@ -60,6 +61,7 @@ class InputObject implements InputObjectProps {
 	isValid: boolean = true;
 	conditionals: Conditional[] = [];
 	allConditionalsTrue: boolean = true;
+	disabledByMutex: boolean = false;
 
 	constructor(props: InputObjectProps) {
 		this.type = props.type;
@@ -125,13 +127,12 @@ class InputObject implements InputObjectProps {
 		const parsedValue = Number.parseFloat(this.value);
 		if (Number.isNaN(parsedValue)) {
 			this.isValid = false;
-			this.validationMessages.push(`${this.value} is not a number`);
-			console.log(`Checked that node input ${this.resieName}'s value of ${this.value} is valid: ${this.isValid}`);
+			this.validationMessages.push(`Value must be a number`);
 			return;
 		}
 		if (this.type === InputObjectType.INT && !Number.isInteger(parsedValue)) {
 			this.isValid = false;
-			this.validationMessages.push(`${this.value} is not an integer`);
+			this.validationMessages.push(`Value must be an integer`);
 			return;
 		}
 		this.isValid = true;

@@ -55,6 +55,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 							placeholder={displayName}
 							value={String(inputValue)}
 							onChange={(e) => onInputChanged(e.target.value)}
+							disabled={nodeInput.disabledByMutex}
 						/>
 					</FloatingLabel>
 				);
@@ -68,7 +69,8 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 							onChange={(e) => onInputChanged(e.target.value)}
 							step="1"
 							lang={locale}
-							isInvalid={!nodeInput.isValid && nodeInput.isIncluded}
+							isInvalid={!nodeInput.isValid && nodeInput.isIncluded && !nodeInput.disabledByMutex}
+							disabled={nodeInput.disabledByMutex}
 						/>
 						<label htmlFor="floatingInput" id="unit-label">
 							{nodeInput.unit}
@@ -85,7 +87,8 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 							onChange={(e) => onInputChanged(e.target.value)}
 							step="0.01"
 							lang={locale}
-							isInvalid={!nodeInput.isValid && nodeInput.isIncluded}
+							isInvalid={!nodeInput.isValid && nodeInput.isIncluded && !nodeInput.disabledByMutex}
+							disabled={nodeInput.disabledByMutex}
 						/>
 						<label htmlFor="floatingInput" id="unit-label">
 							{nodeInput.unit}
@@ -100,6 +103,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 						label={displayName}
 						defaultChecked={Boolean(inputValue)}
 						onChange={(e) => onInputChanged(e.target.checked)}
+						disabled={nodeInput.disabledByMutex}
 					/>
 				);
 			case InputObjectType.DROPDOWN:
@@ -141,6 +145,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 							showIcon
 							showTime
 							locale={locale}
+							disabled={nodeInput.disabledByMutex}
 						/>
 						<label htmlFor="intInputWidget" id="floating-label">
 							{displayName}
