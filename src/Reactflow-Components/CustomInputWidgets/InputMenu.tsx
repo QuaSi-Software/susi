@@ -38,6 +38,11 @@ const InputMenu: React.FC<InputMenuProps> = ({ title, inputs, onValueChange, onI
 	if (inputs.length === 0) return <></>;
 	const rows = chunk_into_rows(inputs, numberOfColumns);
 
+	/**
+	 * allConditionalsTrue is checked inside column, so the space where this input would be is reserved
+	 * for it. Otherwise, all the inputs will move each time conditionals are enabled or disabled, causing
+	 * a confusing experience.
+	 */
 	return (
 		<>
 			<Modal.Body className="side-padded-menu" key={title}>
@@ -46,8 +51,10 @@ const InputMenu: React.FC<InputMenuProps> = ({ title, inputs, onValueChange, onI
 					<Row key={pairIndex} className="g-2 mt-1 mt-md-0 input-menu-row">
 						{pair.map((input) => (
 							<Col key={input.resieName} md>
-								{input.isRequired && <CustomInputField nodeInput={input} onEdit={onValueChange} />}
-								{!input.isRequired && (
+								{input.isRequired && input.allConditionalsTrue && (
+									<CustomInputField nodeInput={input} onEdit={onValueChange} />
+								)}
+								{!input.isRequired && input.allConditionalsTrue && (
 									<OptionalInputField
 										key={input.resieName}
 										nodeInput={input}

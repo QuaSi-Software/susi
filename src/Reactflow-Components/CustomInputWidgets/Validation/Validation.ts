@@ -1,4 +1,4 @@
-import type { InputObject } from './InputObject';
+import type { InputObject } from '../InputObject';
 
 const ValidationTarget = {
 	SELF: 'self',

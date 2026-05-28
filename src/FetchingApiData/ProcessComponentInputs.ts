@@ -1,7 +1,8 @@
 import type { Medium } from '../NodeDataStructures/Mediums/Medium';
 import { getUndefinedMedium } from '../NodeDataStructures/Mediums/MediumUtils';
 import { InputObject, InputObjectType } from '../Reactflow-Components/CustomInputWidgets/InputObject';
-import { importValidation } from '../Reactflow-Components/CustomInputWidgets/InputValidation';
+import { importConditional } from '../Reactflow-Components/CustomInputWidgets/Validation/Conditionals';
+import { importValidation } from '../Reactflow-Components/CustomInputWidgets/Validation/Validation';
 
 export interface APIComponentInput {
 	conditionals: string[][];
@@ -64,6 +65,7 @@ function getNodeInputFromAPIComponentInput(inputName: string, apiInput: APICompo
 		dropdownOptions: apiInput.options,
 		dropdownOptionDisplayNames: apiInput.options,
 		validations: apiInput.validations === undefined ? [] : apiInput.validations.map((x) => importValidation(x)),
+		conditionals: apiInput.conditionals === undefined ? [] : apiInput.conditionals.map((x) => importConditional(x)),
 	});
 }
 

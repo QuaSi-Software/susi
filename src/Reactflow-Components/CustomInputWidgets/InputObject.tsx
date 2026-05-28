@@ -1,6 +1,7 @@
 import { getUndefinedMedium } from '../../NodeDataStructures/Mediums/MediumUtils';
 import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
-import { getValidationMessage, isValid, type Validation } from './InputValidation';
+import { getValidationMessage, isValid, type Validation } from './Validation/Validation';
+import { checkAllConditionals, type Conditional } from './Validation/Conditionals';
 
 const InputObjectType = {
 	INT: 'INT',
@@ -39,6 +40,8 @@ export interface InputObjectProps {
 	dropdownOptionDisplayNames?: Array<string>;
 	validations?: Array<Validation>;
 	isValid?: boolean;
+	conditionals?: Conditional[];
+	allConditionalsTrue?: boolean;
 }
 
 class InputObject implements InputObjectProps {
@@ -55,6 +58,8 @@ class InputObject implements InputObjectProps {
 	validations: Array<Validation> = [];
 	validationMessages: string[] = [];
 	isValid: boolean = true;
+	conditionals: Conditional[] = [];
+	allConditionalsTrue: boolean = true;
 
 	constructor(props: InputObjectProps) {
 		this.type = props.type;
@@ -137,6 +142,10 @@ class InputObject implements InputObjectProps {
 			}
 		});
 		console.log(`Checked that node input ${this.resieName}'s value of ${this.value} is valid: ${this.isValid}`);
+	}
+
+	public checkConditionals(inputs: InputObject[]) {
+		this.allConditionalsTrue = checkAllConditionals(this.conditionals, inputs);
 	}
 }
 

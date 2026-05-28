@@ -65,6 +65,10 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 		} else {
 			nodeInput!.isIncluded = value;
 		}
+		/** check all conditionals */
+		resieDataCopy.forEach((input) => {
+			input.checkConditionals(resieDataCopy);
+		});
 		setEditedNode((editedNode: SusiNode) => ({
 			...editedNode,
 			data: { ...editedNode.data, nodeInputs: resieDataCopy },
