@@ -50,7 +50,8 @@ export function fetchComponentInputs(
 	componentInputsByType: Record<string, InputObject[]> | null,
 	setComponentInputs: Dispatch<SetStateAction<Record<string, InputObject[]> | null>>,
 	setIOSettings: Dispatch<SetStateAction<InputObject[]>>,
-	setSimulationParametersList: Dispatch<SetStateAction<InputObject[]>>
+	setSimulationParametersList: Dispatch<SetStateAction<InputObject[]>>,
+	setOverlayError: Dispatch<SetStateAction<string | null>>
 ) {
 	useEffect(() => {
 		if (componentInputsByType !== null) {
@@ -72,6 +73,8 @@ export function fetchComponentInputs(
 			})
 			.catch((error) => {
 				console.error('Error:', error);
+				setLoadingMessage(null);
+				setOverlayError(`An unexpected error occured. Please check your internet connection and try again.`);
 			});
 	});
 }
