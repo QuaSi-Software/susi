@@ -164,15 +164,15 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 	const showWarningIcon: boolean =
 		nodeInput.issue.issueType === InputIssueType.AtLeastOne ||
 		nodeInput.issue.issueType === InputIssueType.Validity;
+	const showMutexInfo: boolean = nodeInput.issue.issueType === InputIssueType.Mutex;
 	return (
 		<>
-			<span title={warningMessage} className="input-warning-message">
-				<i
-					className="bi bi-exclamation-circle"
-					style={{ visibility: showWarningIcon ? 'visible' : 'hidden' }}
-				/>
+			<span title={warningMessage} className={showWarningIcon ? 'input-warning-message' : 'mutex-warning'}>
+				{showWarningIcon && <i className="bi bi-exclamation-circle" />}
+				{showMutexInfo && <i className="bi bi-info-circle-fill" />}
 				<span> </span>
 				{warningMessage}
+				<span style={{ visibility: 'hidden' }}>Placeholder</span>
 			</span>
 
 			<div data-toggle="tooltip" data-placement="top" title={nodeInput.tooltip}>

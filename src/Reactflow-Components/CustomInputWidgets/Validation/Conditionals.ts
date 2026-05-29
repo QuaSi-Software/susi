@@ -97,4 +97,4 @@ function importConditional(importConditional: any): Conditional {
 	};
 }
 
-export { type Conditional, checkAllConditionals, importConditional };
+export { type Conditional, ConditionalOperator, checkAllConditionals, importConditional };

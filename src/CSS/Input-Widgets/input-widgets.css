@@ -28,12 +28,19 @@
 	margin-top: 3px;
 }
 
-.input-warning-message {
-	color: #f00;
+.input-warning-message,
+.mutex-warning {
 	font-size: medium;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	width: 100%;
 	display: block;
+}
+
+.input-warning-message {
+	color: #f00;
+}
+.mutex-warning {
+	color: #505050;
 }
