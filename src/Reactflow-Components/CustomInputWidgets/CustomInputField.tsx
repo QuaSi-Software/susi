@@ -161,11 +161,20 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 	};
 
 	let warningMessage = nodeInput.inputIssue.warningMessage;
+	const showWarningIcon: boolean =
+		nodeInput.inputIssue.issueType === InputIssueType.AtLeastOne ||
+		nodeInput.inputIssue.issueType === InputIssueType.Validity;
 	return (
 		<>
-			<div key={`warningMessage-${nodeInput.resieName}`} className="input-warning-message">
+			<span title={warningMessage} className="input-warning-message">
+				<i
+					className="bi bi-exclamation-circle"
+					style={{ visibility: showWarningIcon ? 'visible' : 'hidden' }}
+				/>
+				<span> </span>
 				{warningMessage}
-			</div>
+			</span>
+
 			<div data-toggle="tooltip" data-placement="top" title={nodeInput.tooltip}>
 				{getInputFieldByType()}
 			</div>
