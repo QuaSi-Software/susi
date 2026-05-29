@@ -39,13 +39,13 @@ function checkNumberValidation(input: InputObject, otherInputs: InputObject[]): 
 	if (isNumberInput && Number.isNaN(parsedValue)) {
 		return {
 			issueType: InputIssueType.Validity,
-			warningMessage: `Value must be a number`,
+			message: `Value must be a number`,
 		};
 	}
 	if (input.type === InputObjectType.INT && !Number.isInteger(parsedValue)) {
 		return {
 			issueType: InputIssueType.Validity,
-			warningMessage: `Value must be an integer`,
+			message: `Value must be an integer`,
 		};
 	}
 	for (let i = 0; i < input.validations.length; i++) {
@@ -53,7 +53,7 @@ function checkNumberValidation(input: InputObject, otherInputs: InputObject[]): 
 		if (!isValid(input.value, validation, otherInputs)) {
 			return {
 				issueType: InputIssueType.Validity,
-				warningMessage: getValidationMessage(validation),
+				message: getValidationMessage(validation),
 			};
 		}
 	}

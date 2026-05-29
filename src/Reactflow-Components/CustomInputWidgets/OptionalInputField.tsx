@@ -3,6 +3,7 @@ import CustomInputField from './CustomInputField';
 import { useState } from 'react';
 import React from 'react';
 import type { InputObject } from './InputObject';
+import { InputIssueType } from './Validation/InputChecking';
 
 interface OptionalInputFieldProps {
 	nodeInput: InputObject;
@@ -40,7 +41,8 @@ const OptionalInputField: React.FC<OptionalInputFieldProps> = ({
 					id={resieName}
 					label="include?"
 					onChange={onSwitchClicked}
-					disabled={nodeInput.disabledByMutex}
+					isInvalid={nodeInput.inputIssue.issueType === InputIssueType.AtLeastOne}
+					disabled={nodeInput.inputIssue.issueType === InputIssueType.Mutex}
 				/>
 			</Col>
 			<Col className="optional-input-input-field">

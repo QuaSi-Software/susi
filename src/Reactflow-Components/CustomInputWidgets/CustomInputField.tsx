@@ -160,7 +160,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 		}
 	};
 
-	let warningMessage = nodeInput.inputIssue.warningMessage;
+	let warningMessage = nodeInput.inputIssue.message;
 	const showWarningIcon: boolean =
 		nodeInput.inputIssue.issueType === InputIssueType.AtLeastOne ||
 		nodeInput.inputIssue.issueType === InputIssueType.Validity;

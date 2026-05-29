@@ -46,7 +46,7 @@ function checkAllConditionals(conditionals: Conditional[], inputs: InputObject[]
 		}
 		operation = ConditionalOperator.AND;
 	});
-	return allConditionsMet ? null : { issueType: InputIssueType.Conditional, warningMessage: '' };
+	return allConditionsMet ? null : { issueType: InputIssueType.Conditional, message: '' };
 }
 
 function checkConditional(conditional: Conditional, inputs: InputObject[]): boolean {

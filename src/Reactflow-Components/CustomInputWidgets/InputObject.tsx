@@ -58,7 +58,7 @@ class InputObject implements InputObjectProps {
 	validations: Array<Validation> = [];
 	validationMessages: string[] = [];
 	conditionals: Conditional[] = [];
-	inputIssue: InputIssue = { issueType: InputIssueType.None, warningMessage: '' };
+	inputIssue: InputIssue = { issueType: InputIssueType.None, message: '' };
 
 	constructor(props: InputObjectProps) {
 		this.type = props.type;
@@ -121,7 +121,7 @@ class InputObject implements InputObjectProps {
 	 */
 	public checkInputValid(otherInputs: InputObject[]): void {
 		this.inputIssue = checkForInputIssues(this, otherInputs);
-		console.assert(this.inputIssue.warningMessage !== undefined, {
+		console.assert(this.inputIssue.message !== undefined, {
 			errorMsg: `input warning is undefined on input ${JSON.stringify(this)}`,
 		});
 	}

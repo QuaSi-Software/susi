@@ -14,7 +14,7 @@ function checkAtLeastOne(validation: Validation, otherInputs: InputObject[]): In
 	const message = `At least one of the following parameters must be included: ${JSON.stringify(parameters.map((x) => x.displayName))}`;
 	return {
 		issueType: InputIssueType.AtLeastOne,
-		warningMessage: message,
+		message: message,
 	};
 }
 

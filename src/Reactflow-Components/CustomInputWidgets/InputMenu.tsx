@@ -5,6 +5,7 @@ import type { InputObject } from './InputObject';
 import React from 'react';
 import OptionalInputField from './OptionalInputField';
 import { InputIssueType } from './Validation/InputChecking';
+import { uniqueId } from 'lodash';
 
 interface InputMenuProps {
 	title: string;
@@ -19,9 +20,9 @@ interface InputMenuProps {
  * @param items_per_row how many input fields should there be in each row
  * @returns List of rows, each containing NodeInput items
  */
-const chunk_into_rows = (inputs: InputObject[], items_per_row: number): Array<Array<InputObject>> => {
-	const rows: InputObject[][] = [];
-	let current_row: Array<InputObject> = [];
+const chunk_into_rows = (inputs: InputObject[], items_per_row: number): (InputObject | null)[][] => {
+	const rows: (InputObject | null)[][] = [];
+	let current_row: Array<InputObject | null> = [];
 	inputs.forEach((node_input) => {
 		current_row.push(node_input);
 		if (current_row.length === items_per_row) {
@@ -29,9 +30,10 @@ const chunk_into_rows = (inputs: InputObject[], items_per_row: number): Array<Ar
 			current_row = [];
 		}
 	});
-	if (current_row.length > 0) {
-		rows.push(current_row);
+	while (current_row.length < items_per_row) {
+		current_row.push(null);
 	}
+	rows.push(current_row);
 	return rows;
 };
 
@@ -51,27 +53,31 @@ const InputMenu: React.FC<InputMenuProps> = ({ title, inputs, onValueChange, onI
 				{rows.map((pair, pairIndex) => (
 					<Row key={pairIndex} className="g-2 mt-1 mt-md-0 input-menu-row">
 						{pair.map((input) => (
-							<Col key={input.resieName} md>
-								<div
-									style={{
-										visibility:
-											input.inputIssue.issueType === InputIssueType.Conditional
-												? 'hidden'
-												: 'visible',
-										height: '100%',
-									}}
-								>
-									{input.isRequired && <CustomInputField nodeInput={input} onEdit={onValueChange} />}
-									{!input.isRequired && (
-										<OptionalInputField
-											key={input.resieName}
-											nodeInput={input}
-											onValueChange={onValueChange}
-											startIncluded={input.isIncluded}
-											onIncludedChange={onIncludedChange}
-										/>
-									)}
-								</div>
+							<Col key={uniqueId(input?.resieName || '')} md>
+								{input !== null && (
+									<div
+										style={{
+											visibility:
+												input.inputIssue.issueType === InputIssueType.Conditional
+													? 'hidden'
+													: 'visible',
+											height: '100%',
+										}}
+									>
+										{input.isRequired && (
+											<CustomInputField nodeInput={input} onEdit={onValueChange} />
+										)}
+										{!input.isRequired && (
+											<OptionalInputField
+												key={input.resieName}
+												nodeInput={input}
+												onValueChange={onValueChange}
+												startIncluded={input.isIncluded}
+												onIncludedChange={onIncludedChange}
+											/>
+										)}
+									</div>
+								)}
 							</Col>
 						))}
 					</Row>

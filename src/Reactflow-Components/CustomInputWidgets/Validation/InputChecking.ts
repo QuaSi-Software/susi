@@ -15,7 +15,7 @@ type InputIssueType = (typeof InputIssueType)[keyof typeof InputIssueType];
 
 interface InputIssue {
 	issueType: InputIssueType;
-	warningMessage: string;
+	message: string;
 }
 
 function checkForInputIssues(input: InputObject, otherInputs: InputObject[]): InputIssue {
@@ -35,7 +35,7 @@ function checkForInputIssues(input: InputObject, otherInputs: InputObject[]): In
 	const numberIssue = checkNumberValidation(input, otherInputs);
 	if (numberIssue) return numberIssue;
 	/** if no issues were found, return null */
-	return { issueType: InputIssueType.None, warningMessage: '' };
+	return { issueType: InputIssueType.None, message: '' };
 }
 
 export { type InputIssue, InputIssueType, checkForInputIssues };
