@@ -1,6 +1,12 @@
 .input-menu-row {
 	margin: 6px 2px;
 }
+.input-menu-column {
+	border-style: solid;
+	border-color: #e6e6e6;
+	border-radius: 6px;
+	border-width: 2px;
+}
 #unit-label {
 	position: absolute;
 	right: 3rem;

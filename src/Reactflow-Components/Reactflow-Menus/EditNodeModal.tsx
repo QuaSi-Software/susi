@@ -101,7 +101,7 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 
 	const nameIsDuplicate =
 		nodes.find((node) => node.id !== editedNode.id && node.data.content === editedNode.data.content) !== undefined;
-	const allInputsValid = editedNode.data.nodeInputs.every((input) => input.isValid() || !input.isIncluded);
+	const allInputsValid = editedNode.data.nodeInputs.every((input) => input.isValid());
 	return (
 		<>
 			<Modal show={show} onHide={handleClose} onExited={handleClose}>

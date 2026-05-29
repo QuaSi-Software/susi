@@ -127,7 +127,10 @@ class InputObject implements InputObjectProps {
 	}
 
 	public isValid() {
-		return this.inputIssue.issueType === InputIssueType.None;
+		return (
+			this.inputIssue.issueType !== InputIssueType.Validity &&
+			this.inputIssue.issueType !== InputIssueType.AtLeastOne
+		);
 	}
 }
 

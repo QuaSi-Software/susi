@@ -63,6 +63,7 @@ const InputMenu: React.FC<InputMenuProps> = ({ title, inputs, onValueChange, onI
 													: 'visible',
 											height: '100%',
 										}}
+										className="input-menu-column"
 									>
 										{input.isRequired && (
 											<CustomInputField nodeInput={input} onEdit={onValueChange} />

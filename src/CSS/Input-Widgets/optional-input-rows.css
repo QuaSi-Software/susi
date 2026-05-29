@@ -2,10 +2,10 @@
 .optional-input-row {
 	/* Row already has display: flex from Bootstrap */
 	align-items: center;
-	border-style: solid;
+	/* border-style: solid;
 	border-color: #e6e6e6;
 	border-radius: 6px;
-	border-width: 2px;
+	border-width: 2px; */
 	margin: 2px;
 	padding: 2px;
 	height: 100%;
