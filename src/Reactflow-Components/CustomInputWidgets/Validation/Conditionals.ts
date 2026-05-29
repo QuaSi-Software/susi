@@ -21,10 +21,10 @@ interface Conditional {
 	value?: any;
 }
 
-function checkAllConditionals(conditionals: Conditional[], inputs: InputObject[]): InputIssue | null {
+function checkAllConditionals(input: InputObject, inputs: InputObject[]): InputIssue | null {
 	let allConditionsMet = true;
 	let operation: ConditionalOperator = ConditionalOperator.AND;
-	conditionals.forEach((conditional) => {
+	input.conditionals.forEach((conditional) => {
 		if (conditional.operator === ConditionalOperator.AND) {
 			operation = ConditionalOperator.AND;
 			return;
@@ -33,7 +33,7 @@ function checkAllConditionals(conditionals: Conditional[], inputs: InputObject[]
 			operation = ConditionalOperator.OR;
 			return;
 		}
-		const conditionMet = checkConditional(conditional, inputs);
+		const conditionMet = checkConditional(conditional, inputs, input.resieName);
 		switch (operation) {
 			case ConditionalOperator.AND:
 				allConditionsMet = allConditionsMet && conditionMet;
@@ -49,9 +49,12 @@ function checkAllConditionals(conditionals: Conditional[], inputs: InputObject[]
 	return allConditionsMet ? null : { issueType: InputIssueType.Conditional, message: '' };
 }
 
-function checkConditional(conditional: Conditional, inputs: InputObject[]): boolean {
+function checkConditional(conditional: Conditional, inputs: InputObject[], inputName: string = ''): boolean {
 	const targetParameter = inputs.find((input) => input.resieName === conditional.targetParameterName);
-	console.assert(targetParameter !== undefined);
+	console.assert(
+		targetParameter !== undefined,
+		`Conditional can't find parameter ${conditional.targetParameterName} on input ${inputName}`
+	);
 	const targetValue = targetParameter!.value;
 	switch (conditional.operator) {
 		case ConditionalOperator.is:
@@ -65,7 +68,10 @@ function checkConditional(conditional: Conditional, inputs: InputObject[]): bool
 		case ConditionalOperator.is_nothing:
 			return targetValue === null || targetValue === undefined || !targetParameter!.isIncluded;
 		case ConditionalOperator.is_one_of:
-			console.assert(Array.isArray(conditional.value));
+			console.assert(
+				Array.isArray(conditional.value),
+				`Conditional operator is 'is_one_of', but its value is not an array: ${conditional.value}`
+			);
 			return conditional.value.find((x: any) => x === targetValue) !== undefined;
 		case ConditionalOperator.mutex:
 			return true;
@@ -75,16 +81,19 @@ function checkConditional(conditional: Conditional, inputs: InputObject[]): bool
 	}
 }
 
-function importConditional(array: any[]): Conditional {
-	if (array.length === 1) {
-		const operator = array[0] as ConditionalOperator;
-		console.assert(operator === ConditionalOperator.AND || operator === ConditionalOperator.OR);
+function importConditional(importConditional: any): Conditional {
+	if (!Array.isArray(importConditional)) {
+		const operator = importConditional as ConditionalOperator;
+		console.assert(
+			operator === ConditionalOperator.AND || operator === ConditionalOperator.OR,
+			`conditional import is not an array, but its value is not 'AND' or 'OR': ${importConditional}`
+		);
 		return { operator: operator };
 	}
 	return {
-		targetParameterName: array[0],
-		operator: array[1] as ConditionalOperator,
-		value: array.length >= 3 ? array[2] : undefined,
+		targetParameterName: importConditional[0],
+		operator: importConditional[1] as ConditionalOperator,
+		value: importConditional.length >= 3 ? importConditional[2] : undefined,
 	};
 }
 

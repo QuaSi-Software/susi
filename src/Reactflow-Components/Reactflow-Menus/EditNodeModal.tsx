@@ -58,7 +58,10 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 		//if you don't make a copy, the change to the resie_data is applied to the nodes list, since editedNode is a reference, not a copy
 		const resieDataCopy: Array<InputObject> = Object.assign([], editedNode.data.nodeInputs);
 		let nodeInput = resieDataCopy.find((obj: InputObject) => obj.resieName === resieName);
-		console.assert(nodeInput != undefined);
+		console.assert(
+			nodeInput != undefined,
+			`Node Input with name ${resieName} was not found on node ${node.data.content}`
+		);
 		if (isValueChange) {
 			nodeInput!.value = value;
 		} else {

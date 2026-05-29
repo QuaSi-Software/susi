@@ -104,7 +104,7 @@ const NodeContextMenu = ({
 		if (!nodeContextMenu) return;
 		// duplicate node object
 		const nodeToDuplicate: SusiNode | undefined = nodes.find((node) => node.id === nodeContextMenu.node.id);
-		console.assert(nodeToDuplicate != undefined);
+		console.assert(nodeToDuplicate != undefined, `Trying to duplicate a node that doesn't exist`);
 		if (!nodeToDuplicate) return;
 		const duplicateNode: SusiNode = deepCloneNode(nodeToDuplicate);
 		// move node towards bottom right and give it a unique ID

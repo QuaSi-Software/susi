@@ -20,7 +20,7 @@ interface InputIssue {
 
 function checkForInputIssues(input: InputObject, otherInputs: InputObject[]): InputIssue {
 	/** First: check for conditionals not being met */
-	const conditionalsMet = checkAllConditionals(input.conditionals, otherInputs);
+	const conditionalsMet = checkAllConditionals(input, otherInputs);
 	if (conditionalsMet) {
 		if (!input.isRequired) input.isIncluded = false;
 		return conditionalsMet;

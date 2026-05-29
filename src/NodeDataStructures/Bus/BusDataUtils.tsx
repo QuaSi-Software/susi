@@ -44,8 +44,8 @@ function updateBusDataOnNodeDelete(deletedNodeID: string, nodes: Array<SusiNode>
 	deletedEdges.forEach((edge) => {
 		let source = nodes.find((node) => node.id === edge.source);
 		let target = nodes.find((node) => node.id === edge.target);
-		console.assert(source != undefined);
-		console.assert(target != undefined);
+		console.assert(source != undefined, `source node with id ${edge.source} is undefined.`);
+		console.assert(target != undefined, `target node with id ${edge.target} is undefined.`);
 		removeBusConnection(source!, edge.target, false);
 		removeBusConnection(target!, edge.source, true);
 	});

@@ -121,9 +121,10 @@ class InputObject implements InputObjectProps {
 	 */
 	public checkInputValid(otherInputs: InputObject[]): void {
 		this.inputIssue = checkForInputIssues(this, otherInputs);
-		console.assert(this.inputIssue.message !== undefined, {
-			errorMsg: `input warning is undefined on input ${JSON.stringify(this)}`,
-		});
+		console.assert(
+			this.inputIssue.message !== undefined,
+			`input warning is undefined on input ${JSON.stringify(this)}`
+		);
 	}
 
 	public isValid() {

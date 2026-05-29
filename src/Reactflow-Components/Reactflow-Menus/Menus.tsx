@@ -10,7 +10,7 @@ const createMenuPosition = (
 	ref: React.RefObject<HTMLInputElement | null>
 ) => {
 	const pane = ref.current?.getBoundingClientRect();
-	console.assert(pane != undefined);
+	console.assert(pane != undefined, `Pane should not be undefined`);
 	if (pane == undefined) {
 		//** Return zero MenuPosition */
 		return {
