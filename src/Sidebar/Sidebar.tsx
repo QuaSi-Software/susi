@@ -106,10 +106,10 @@ const Sidebar = (menuProps: SidebarProps) => {
 				const allMediumsValid = mediums.every((m) => m.valid);
 				return !allMediumsValid;
 			case MenuType.SimulationParameters:
-				const simulationParamsValid = menuProps.simulationParametersList.every((input) => input.isValid);
+				const simulationParamsValid = menuProps.simulationParametersList.every((input) => input.isValid());
 				return !simulationParamsValid;
 			case MenuType.IO_Settings:
-				const ioSettingsValid = menuProps.ioSettingsList.every((input) => input.isValid);
+				const ioSettingsValid = menuProps.ioSettingsList.every((input) => input.isValid());
 				return !ioSettingsValid;
 			default:
 				return false;

@@ -14,6 +14,7 @@ import { Locale } from '../../Sidebar/SettingsMenu';
 
 import { de } from 'primelocale/js/de.js';
 import { en } from 'primelocale/js/en.js';
+import { InputIssueType } from './Validation/InputChecking';
 addLocale('de-DE', de);
 addLocale('en-US', en);
 
@@ -44,6 +45,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 	};
 
 	const getInputFieldByType = (): React.ReactNode => {
+		const disabledByMutex = nodeInput.inputIssue.issueType === InputIssueType.Mutex;
 		switch (js_type) {
 			case InputObjectType.STRING:
 				return (
@@ -55,7 +57,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 							placeholder={displayName}
 							value={String(inputValue)}
 							onChange={(e) => onInputChanged(e.target.value)}
-							disabled={nodeInput.disabledByMutex}
+							disabled={disabledByMutex}
 						/>
 					</FloatingLabel>
 				);
@@ -69,8 +71,8 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 							onChange={(e) => onInputChanged(e.target.value)}
 							step="1"
 							lang={locale}
-							isInvalid={!nodeInput.isValid && nodeInput.isIncluded && !nodeInput.disabledByMutex}
-							disabled={nodeInput.disabledByMutex}
+							isInvalid={!nodeInput.isValid() && nodeInput.isIncluded && !disabledByMutex}
+							disabled={disabledByMutex}
 						/>
 						<label htmlFor="floatingInput" id="unit-label">
 							{nodeInput.unit}
@@ -87,8 +89,8 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 							onChange={(e) => onInputChanged(e.target.value)}
 							step="0.01"
 							lang={locale}
-							isInvalid={!nodeInput.isValid && nodeInput.isIncluded && !nodeInput.disabledByMutex}
-							disabled={nodeInput.disabledByMutex}
+							isInvalid={!nodeInput.isValid() && nodeInput.isIncluded && !disabledByMutex}
+							disabled={disabledByMutex}
 						/>
 						<label htmlFor="floatingInput" id="unit-label">
 							{nodeInput.unit}
@@ -103,7 +105,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 						label={displayName}
 						defaultChecked={Boolean(inputValue)}
 						onChange={(e) => onInputChanged(e.target.checked)}
-						disabled={nodeInput.disabledByMutex}
+						disabled={disabledByMutex}
 					/>
 				);
 			case InputObjectType.DROPDOWN:
@@ -145,7 +147,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 							showIcon
 							showTime
 							locale={locale}
-							disabled={nodeInput.disabledByMutex}
+							disabled={disabledByMutex}
 						/>
 						<label htmlFor="intInputWidget" id="floating-label">
 							{displayName}
@@ -158,14 +160,12 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 		}
 	};
 
+	let warningMessage = nodeInput.inputIssue.warningMessage;
 	return (
 		<>
-			{nodeInput.isIncluded &&
-				nodeInput.validationMessages.map((message) => (
-					<div key={message} className="input-warning-message">
-						{message}
-					</div>
-				))}
+			<div key={`warningMessage-${nodeInput.resieName}`} className="input-warning-message">
+				{warningMessage}
+			</div>
 			<div data-toggle="tooltip" data-placement="top" title={nodeInput.tooltip}>
 				{getInputFieldByType()}
 			</div>

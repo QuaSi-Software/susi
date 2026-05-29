@@ -4,6 +4,7 @@ import CustomInputField from './CustomInputField';
 import type { InputObject } from './InputObject';
 import React from 'react';
 import OptionalInputField from './OptionalInputField';
+import { InputIssueType } from './Validation/InputChecking';
 
 interface InputMenuProps {
 	title: string;
@@ -53,7 +54,10 @@ const InputMenu: React.FC<InputMenuProps> = ({ title, inputs, onValueChange, onI
 							<Col key={input.resieName} md>
 								<div
 									style={{
-										visibility: input.allConditionalsTrue ? 'visible' : 'hidden',
+										visibility:
+											input.inputIssue.issueType === InputIssueType.Conditional
+												? 'hidden'
+												: 'visible',
 										height: '100%',
 									}}
 								>

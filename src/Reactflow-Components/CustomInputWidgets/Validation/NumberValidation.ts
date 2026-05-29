@@ -1,4 +1,5 @@
-import type { InputObject } from '../InputObject';
+import { InputObjectType, type InputObject } from '../InputObject';
+import { InputIssueType, type InputIssue } from './InputChecking';
 
 const ValidationTarget = {
 	SELF: 'self',
@@ -7,7 +8,6 @@ const ValidationTarget = {
 type ValidationTarget = (typeof ValidationTarget)[keyof typeof ValidationTarget];
 
 const ValidationOperator = {
-	GREATER_EQUAL_ONE: 'at_least_one',
 	LESS_THAN: 'value_lt_num',
 	LESS_OR_EQUAL_THAN: 'value_lte_num',
 	LESS_THAN_OR_NULL: 'value_lt_num_or_nothing',
@@ -29,7 +29,37 @@ interface Validation {
 	operator: ValidationOperator;
 	value?: number;
 	otherInputName?: string;
+	otherParameterNames?: string[];
 }
+
+function checkNumberValidation(input: InputObject, otherInputs: InputObject[]): InputIssue | null {
+	if (!input.isIncluded) return null;
+	const isNumberInput = input.type === InputObjectType.FLOAT || input.type === InputObjectType.INT;
+	const parsedValue = Number.parseFloat(input.value);
+	if (isNumberInput && Number.isNaN(parsedValue)) {
+		return {
+			issueType: InputIssueType.Validity,
+			warningMessage: `Value must be a number`,
+		};
+	}
+	if (input.type === InputObjectType.INT && !Number.isInteger(parsedValue)) {
+		return {
+			issueType: InputIssueType.Validity,
+			warningMessage: `Value must be an integer`,
+		};
+	}
+	for (let i = 0; i < input.validations.length; i++) {
+		const validation = input.validations[i];
+		if (!isValid(input.value, validation, otherInputs)) {
+			return {
+				issueType: InputIssueType.Validity,
+				warningMessage: getValidationMessage(validation),
+			};
+		}
+	}
+	return null;
+}
+
 function getValidationComparisonValue(validation: Validation, otherInputs: InputObject[]) {
 	switch (validation.operator) {
 		case ValidationOperator.LESS_THAN_OTHER_INPUT:
@@ -38,8 +68,6 @@ function getValidationComparisonValue(validation: Validation, otherInputs: Input
 		case ValidationOperator.GREATER_EQUAL_THAN_OTHER_INPUT:
 			const otherInput = otherInputs.find((input) => input.resieName === validation.otherInputName);
 			return otherInput?.value;
-		case ValidationOperator.GREATER_EQUAL_ONE:
-			return 1;
 		default:
 			return validation.value;
 	}
@@ -47,8 +75,6 @@ function getValidationComparisonValue(validation: Validation, otherInputs: Input
 function isValid(value: number, validation: Validation, otherInputs: InputObject[]): boolean {
 	const other = getValidationComparisonValue(validation, otherInputs);
 	switch (validation.operator) {
-		case ValidationOperator.GREATER_EQUAL_ONE:
-			return value >= 1;
 		case ValidationOperator.LESS_THAN:
 		case ValidationOperator.LESS_THAN_OR_NULL:
 		case ValidationOperator.LESS_THAN_OTHER_INPUT:
@@ -65,13 +91,13 @@ function isValid(value: number, validation: Validation, otherInputs: InputObject
 		case ValidationOperator.GREATER_EQUAL_OR_NULL:
 		case ValidationOperator.GREATER_EQUAL_THAN_OTHER_INPUT:
 			return value >= other;
+		default:
+			return true;
 	}
 }
-function getValidationMessage(validation: Validation) {
+function getValidationMessage(validation: Validation): string {
 	let message = '';
 	switch (validation.operator) {
-		case ValidationOperator.GREATER_EQUAL_ONE:
-			return 'Value must be greater than 1.';
 		case ValidationOperator.LESS_THAN:
 		case ValidationOperator.LESS_THAN_OR_NULL:
 		case ValidationOperator.LESS_THAN_OTHER_INPUT:
@@ -107,13 +133,16 @@ function importValidation(importValidation: (string | number)[]): Validation {
 	const target: ValidationTarget = importValidation[0] as ValidationTarget;
 	const operator: ValidationOperator = importValidation[1] as ValidationOperator;
 	const value: number | string = importValidation[2];
-	const isNumber = typeof value === 'number';
-	return {
+	const result: Validation = {
 		target,
 		operator,
-		value: isNumber ? value : undefined,
-		otherInputName: !isNumber ? value : undefined,
 	};
+	if (target === ValidationTarget.AT_LEAST_ONE) {
+		result.otherParameterNames = importValidation.slice(1).map((x) => String(x));
+	}
+	if (typeof value === 'number') result.value = value;
+	else result.otherInputName = value;
+	return result;
 }
 
-export { type Validation, ValidationOperator, ValidationTarget, importValidation, isValid, getValidationMessage };
+export { type Validation as Validation, ValidationOperator, ValidationTarget, importValidation, checkNumberValidation };

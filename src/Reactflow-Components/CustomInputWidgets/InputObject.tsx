@@ -1,7 +1,8 @@
 import { getUndefinedMedium } from '../../NodeDataStructures/Mediums/MediumUtils';
 import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
-import { getValidationMessage, isValid, type Validation } from './Validation/Validation';
-import { checkAllConditionals, type Conditional } from './Validation/Conditionals';
+import { type Validation } from './Validation/NumberValidation';
+import { type Conditional } from './Validation/Conditionals';
+import { checkForInputIssues, InputIssueType, type InputIssue } from './Validation/InputChecking';
 
 const InputObjectType = {
 	INT: 'INT',
@@ -39,10 +40,8 @@ export interface InputObjectProps {
 	dropdownOptions?: Array<string>;
 	dropdownOptionDisplayNames?: Array<string>;
 	validations?: Array<Validation>;
-	isValid?: boolean;
 	conditionals?: Conditional[];
-	allConditionalsTrue?: boolean;
-	disabledByMutex?: boolean;
+	inputIssue?: InputIssue;
 }
 
 class InputObject implements InputObjectProps {
@@ -58,17 +57,16 @@ class InputObject implements InputObjectProps {
 	unit: string = '';
 	validations: Array<Validation> = [];
 	validationMessages: string[] = [];
-	isValid: boolean = true;
 	conditionals: Conditional[] = [];
-	allConditionalsTrue: boolean = true;
-	disabledByMutex: boolean = false;
+	inputIssue: InputIssue = { issueType: InputIssueType.None, warningMessage: '' };
 
 	constructor(props: InputObjectProps) {
 		this.type = props.type;
 		this.resieName = props.resieName;
 		this.displayName = props.displayName;
 		Object.assign(this, props);
-		if (this.value === undefined) this.value = null;
+
+		if (this.inputIssue === undefined) if (this.value === undefined) this.value = null;
 
 		if (this.value === null && !this.isRequired) {
 			if (this.type === InputObjectType.STRING) this.value = '';
@@ -122,32 +120,11 @@ class InputObject implements InputObjectProps {
 	 * Sets the validationMessages that can be displayed as error messages to the user
 	 */
 	public checkInputValid(otherInputs: InputObject[]): void {
-		if (this.type !== InputObjectType.FLOAT && this.type !== InputObjectType.INT) return;
-		this.validationMessages = [];
-		const parsedValue = Number.parseFloat(this.value);
-		if (Number.isNaN(parsedValue)) {
-			this.isValid = false;
-			this.validationMessages.push(`Value must be a number`);
-			return;
-		}
-		if (this.type === InputObjectType.INT && !Number.isInteger(parsedValue)) {
-			this.isValid = false;
-			this.validationMessages.push(`Value must be an integer`);
-			return;
-		}
-		this.isValid = true;
-		this.validations.forEach((validation) => {
-			if (!isValid(this.value, validation, otherInputs)) {
-				this.isValid = false;
-				this.validationMessages.push(getValidationMessage(validation));
-			}
-		});
-		console.log(`Checked that node input ${this.resieName}'s value of ${this.value} is valid: ${this.isValid}`);
+		this.inputIssue = checkForInputIssues(this, otherInputs);
 	}
 
-	public checkConditionals(inputs: InputObject[]) {
-		this.allConditionalsTrue = checkAllConditionals(this.conditionals, inputs);
-		if (!this.allConditionalsTrue && !this.isRequired) this.isIncluded = false;
+	public isValid() {
+		return this.inputIssue.issueType === InputIssueType.None;
 	}
 }
 

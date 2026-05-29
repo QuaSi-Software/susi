@@ -1,4 +1,5 @@
 import type { InputObject } from '../InputObject';
+import { InputIssueType, type InputIssue } from './InputChecking';
 
 const ConditionalOperator = {
 	is: 'is',
@@ -9,6 +10,7 @@ const ConditionalOperator = {
 	is_one_of: 'is_one_of',
 	AND: 'AND',
 	OR: 'OR',
+	mutex: 'mutex',
 } as const;
 
 type ConditionalOperator = (typeof ConditionalOperator)[keyof typeof ConditionalOperator];
@@ -19,8 +21,8 @@ interface Conditional {
 	value?: any;
 }
 
-function checkAllConditionals(conditionals: Conditional[], inputs: InputObject[]) {
-	let result = true;
+function checkAllConditionals(conditionals: Conditional[], inputs: InputObject[]): InputIssue | null {
+	let allConditionsMet = true;
 	let operation: ConditionalOperator = ConditionalOperator.AND;
 	conditionals.forEach((conditional) => {
 		if (conditional.operator === ConditionalOperator.AND) {
@@ -34,17 +36,17 @@ function checkAllConditionals(conditionals: Conditional[], inputs: InputObject[]
 		const conditionMet = checkConditional(conditional, inputs);
 		switch (operation) {
 			case ConditionalOperator.AND:
-				result = result && conditionMet;
+				allConditionsMet = allConditionsMet && conditionMet;
 				break;
 			case ConditionalOperator.OR:
-				result = result || conditionMet;
+				allConditionsMet = allConditionsMet || conditionMet;
 				break;
 			default:
 				console.error('operation should be only AND or OR');
 		}
 		operation = ConditionalOperator.AND;
 	});
-	return result;
+	return allConditionsMet ? null : { issueType: InputIssueType.Conditional, warningMessage: '' };
 }
 
 function checkConditional(conditional: Conditional, inputs: InputObject[]): boolean {
@@ -65,6 +67,8 @@ function checkConditional(conditional: Conditional, inputs: InputObject[]): bool
 		case ConditionalOperator.is_one_of:
 			console.assert(Array.isArray(conditional.value));
 			return conditional.value.find((x: any) => x === targetValue) !== undefined;
+		case ConditionalOperator.mutex:
+			return true;
 		default:
 			console.error(`Conditional ${conditional.operator} has no relevant case`);
 			return false;

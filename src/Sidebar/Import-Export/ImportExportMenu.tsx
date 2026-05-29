@@ -67,9 +67,9 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 		if (!mediumsValid) return false;
 		const nodeInputsValid = menuProps.nodes.every((n) => n.data.hasValidInputs);
 		if (!nodeInputsValid) return false;
-		const simulationParamsValid = menuProps.simulationParametersList.every((input) => input.isValid);
+		const simulationParamsValid = menuProps.simulationParametersList.every((input) => input.isValid());
 		if (!simulationParamsValid) return false;
-		const ioSettingsValid = menuProps.ioSettingsList.every((input) => input.isValid);
+		const ioSettingsValid = menuProps.ioSettingsList.every((input) => input.isValid());
 		if (!ioSettingsValid) return false;
 
 		return true;
