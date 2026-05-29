@@ -41,8 +41,8 @@ const OptionalInputField: React.FC<OptionalInputFieldProps> = ({
 					id={resieName}
 					label="include?"
 					onChange={onSwitchClicked}
-					isInvalid={nodeInput.inputIssue.issueType === InputIssueType.AtLeastOne}
-					disabled={nodeInput.inputIssue.issueType === InputIssueType.Mutex}
+					isInvalid={nodeInput.issue.issueType === InputIssueType.AtLeastOne}
+					disabled={nodeInput.issue.issueType === InputIssueType.Mutex}
 				/>
 			</Col>
 			<Col className="optional-input-input-field">

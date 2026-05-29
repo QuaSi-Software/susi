@@ -58,7 +58,7 @@ const InputMenu: React.FC<InputMenuProps> = ({ title, inputs, onValueChange, onI
 									<div
 										style={{
 											visibility:
-												input.inputIssue.issueType === InputIssueType.Conditional
+												input.issue.issueType === InputIssueType.Conditional
 													? 'hidden'
 													: 'visible',
 											height: '100%',

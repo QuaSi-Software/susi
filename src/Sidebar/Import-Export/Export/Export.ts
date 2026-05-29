@@ -4,6 +4,7 @@ import type { SusiEdge } from '../../../NodeDataStructures/Edges/SusiEdge';
 import type { InputObject } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { ComponentData, Connections, ImportData } from '../ExportDataStrucures';
 import { getUndefinedMedium } from '../../../NodeDataStructures/Mediums/MediumUtils';
+import { InputIssueType } from '../../../Reactflow-Components/CustomInputWidgets/Validation/InputChecking';
 
 interface ExportProps {
 	nodes: SusiNode[];
@@ -73,6 +74,8 @@ const addNodeInputsToObject = (nodeInputs: InputObject[], obj: Record<string, an
 		if (!nodeInput.isIncluded && !nodeInput.isRequired) {
 			return;
 		}
+		const issueType = nodeInput.issue.issueType;
+		if (issueType === InputIssueType.Conditional || issueType === InputIssueType.Mutex) return;
 		obj[nodeInput.resieName] = nodeInput.getNodeInputExportValue(mediums);
 	});
 	return obj;

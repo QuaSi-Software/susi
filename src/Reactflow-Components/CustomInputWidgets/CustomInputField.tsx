@@ -45,7 +45,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 	};
 
 	const getInputFieldByType = (): React.ReactNode => {
-		const disabledByMutex = nodeInput.inputIssue.issueType === InputIssueType.Mutex;
+		const disabledByMutex = nodeInput.issue.issueType === InputIssueType.Mutex;
 		switch (js_type) {
 			case InputObjectType.STRING:
 				return (
@@ -160,10 +160,10 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 		}
 	};
 
-	let warningMessage = nodeInput.inputIssue.message;
+	let warningMessage = nodeInput.issue.message;
 	const showWarningIcon: boolean =
-		nodeInput.inputIssue.issueType === InputIssueType.AtLeastOne ||
-		nodeInput.inputIssue.issueType === InputIssueType.Validity;
+		nodeInput.issue.issueType === InputIssueType.AtLeastOne ||
+		nodeInput.issue.issueType === InputIssueType.Validity;
 	return (
 		<>
 			<span title={warningMessage} className="input-warning-message">

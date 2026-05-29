@@ -41,7 +41,7 @@ export interface InputObjectProps {
 	dropdownOptionDisplayNames?: Array<string>;
 	validations?: Array<Validation>;
 	conditionals?: Conditional[];
-	inputIssue?: InputIssue;
+	issue?: InputIssue;
 }
 
 class InputObject implements InputObjectProps {
@@ -58,7 +58,7 @@ class InputObject implements InputObjectProps {
 	validations: Array<Validation> = [];
 	validationMessages: string[] = [];
 	conditionals: Conditional[] = [];
-	inputIssue: InputIssue = { issueType: InputIssueType.None, message: '' };
+	issue: InputIssue = { issueType: InputIssueType.None, message: '' };
 
 	constructor(props: InputObjectProps) {
 		this.type = props.type;
@@ -66,7 +66,7 @@ class InputObject implements InputObjectProps {
 		this.displayName = props.displayName;
 		Object.assign(this, props);
 
-		if (this.inputIssue === undefined) if (this.value === undefined) this.value = null;
+		if (this.issue === undefined) if (this.value === undefined) this.value = null;
 
 		if (this.value === null && !this.isRequired) {
 			if (this.type === InputObjectType.STRING) this.value = '';
@@ -120,18 +120,12 @@ class InputObject implements InputObjectProps {
 	 * Sets the validationMessages that can be displayed as error messages to the user
 	 */
 	public checkInputValid(otherInputs: InputObject[]): void {
-		this.inputIssue = checkForInputIssues(this, otherInputs);
-		console.assert(
-			this.inputIssue.message !== undefined,
-			`input warning is undefined on input ${JSON.stringify(this)}`
-		);
+		this.issue = checkForInputIssues(this, otherInputs);
+		console.assert(this.issue.message !== undefined, `input warning is undefined on input ${JSON.stringify(this)}`);
 	}
 
 	public isValid() {
-		return (
-			this.inputIssue.issueType !== InputIssueType.Validity &&
-			this.inputIssue.issueType !== InputIssueType.AtLeastOne
-		);
+		return this.issue.issueType !== InputIssueType.Validity && this.issue.issueType !== InputIssueType.AtLeastOne;
 	}
 }
 
