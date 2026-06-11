@@ -145,4 +145,4 @@ function importValidation(importValidation: (string | number)[]): Validation {
 	return result;
 }
 
-export { type Validation as Validation, ValidationOperator, ValidationTarget, importValidation, checkNumberValidation };
+export { type Validation, ValidationOperator, ValidationTarget, importValidation, checkNumberValidation };

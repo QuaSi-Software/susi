@@ -8,6 +8,7 @@ import { useReactFlow } from '@xyflow/react';
 import { flushSync } from 'react-dom';
 import { AppContext } from '../../AppContext';
 import type { InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
+import type { NodeType } from '../../NodeDataStructures/Nodes/SusiNodeTypes';
 
 export interface ImportExportMenuProps {
 	setNodes: (nodes: SusiNode[]) => void;
@@ -19,12 +20,13 @@ export interface ImportExportMenuProps {
 	ioSettingsList: InputObject[];
 	setIOSettings: Dispatch<SetStateAction<InputObject[]>>;
 	setSimulationParameters: Dispatch<SetStateAction<InputObject[]>>;
+	nodeTypes: Record<string, NodeType> | null;
 }
 
 const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 	const [textContent, setTextContent] = useState('');
 	const context = useContext(AppContext);
-	if (!context) return <></>;
+	if (!context || menuProps.nodeTypes === null) return <></>;
 	const mediums = context.mediums;
 	const setCheckState = context.setCheckState;
 	const setMediums = context.setMediums;
@@ -42,7 +44,7 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 						...menuProps,
 						stateJSON: textContent,
 						setMediums: setMediums,
-						getNodeInputs: context.getNodeInputs,
+						nodeTypes: menuProps.nodeTypes!,
 					});
 					resolve();
 				}, 0);
@@ -79,6 +81,12 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 	return (
 		<div className="import-export-menu">
 			<div className="sidebar-heading">Import & Export</div>
+			{exportDisabled && (
+				<div className="input-warning-message">
+					⚠️ There are issues in your project that prevent exporting. Please check the Sidebar Menus and the
+					Components for warning signs
+				</div>
+			)}
 			<div className="import-export-buttons">
 				<Button variant="primary" onClick={handleImport} disabled={textContent === ''}>
 					Import

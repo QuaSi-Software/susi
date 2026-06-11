@@ -14,7 +14,9 @@ export const InstructionMenu = () => {
 				Mediums are defined and can be edited in the Mediums menu. You can edit the components' medium for each
 				of its connections inside the Edit Component Menu.
 			</div>
-			<div className="sidebar-subheading">Import/Exort </div>
+			<div className="sidebar-subheading">Warnings </div>
+			<div>You may see a warning sign: ⚠️ in the Sidebar next to a menu or on the corner of a component </div>
+			<div className="sidebar-subheading">Import/Export </div>
 			<div>
 				To import a file, paste the text into the text field in the Import/Export Menu and click import.
 				<br />
@@ -23,6 +25,8 @@ export const InstructionMenu = () => {
 				a layout for the components.
 				<br />
 				To export, click export and the export file will show up in the text field.
+				<br />
+				You will not be able to export if there are issues in your Project.
 			</div>
 		</>
 	);

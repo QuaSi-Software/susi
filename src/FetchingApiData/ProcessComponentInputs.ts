@@ -3,21 +3,10 @@ import { getUndefinedMedium } from '../NodeDataStructures/Mediums/MediumUtils';
 import { InputObject, InputObjectType } from '../Reactflow-Components/CustomInputWidgets/InputObject';
 import { importConditional } from '../Reactflow-Components/CustomInputWidgets/Validation/Conditionals';
 import { importValidation } from '../Reactflow-Components/CustomInputWidgets/Validation/NumberValidation';
+import type { ApiCategory, ApiComponent, APIParameter } from './ApiData';
+import { type NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
 
-export interface APIComponentInput {
-	conditionals: string[][];
-	default: any;
-	description: string;
-	display_name: string;
-	json_type: string;
-	required: false;
-	type: string;
-	unit: string;
-	options: string[];
-	validations: Array<Array<string | number>>;
-}
-
-function getNodeInputType(inputName: string, apiInput: APIComponentInput) {
+function getNodeInputType(inputName: string, apiInput: APIParameter) {
 	/** Dropdown and multiselect */
 	if (apiInput.options && apiInput.options.length > 0) {
 		if (Array.isArray(apiInput.default)) return InputObjectType.MULTISELECT;
@@ -48,7 +37,7 @@ function getNodeInputType(inputName: string, apiInput: APIComponentInput) {
 	return InputObjectType.UNSET;
 }
 
-function getNodeInputFromAPIComponentInput(inputName: string, apiInput: APIComponentInput) {
+function getNodeInputFromAPIComponentInput(inputName: string, apiInput: APIParameter) {
 	if (Array.isArray(apiInput.default) && apiInput.default.length > 0 && apiInput.default[0] === null)
 		apiInput.default = null;
 	return new InputObject({
@@ -66,14 +55,15 @@ function getNodeInputFromAPIComponentInput(inputName: string, apiInput: APICompo
 	});
 }
 
-export function getComponentInputs(
-	apiComponents: Record<string, Record<string, APIComponentInput>>,
+export function getComponentTypes(
+	apiComponents: Record<string, ApiComponent>,
+	typeCategories: ApiCategory[],
 	mediums: Medium[]
-): Record<string, InputObject[]> {
-	const componentInputs: Record<string, InputObject[]> = {};
-	for (const [componentType, inputList] of Object.entries(apiComponents)) {
+): Record<string, NodeType> {
+	const nodeTypes: Record<string, NodeType> = {};
+	for (const [componentType, component] of Object.entries(apiComponents)) {
 		const nodeInputs = [];
-		for (const [nodeInputName, inputAttributes] of Object.entries(inputList)) {
+		for (const [nodeInputName, inputAttributes] of Object.entries(component.parameters)) {
 			const newInput = getNodeInputFromAPIComponentInput(nodeInputName, inputAttributes);
 			if (newInput.type === InputObjectType.MEDIUM) {
 				const medium = mediums.find((m) => m.name === newInput.value);
@@ -81,7 +71,19 @@ export function getComponentInputs(
 			}
 			nodeInputs.push(newInput);
 		}
-		componentInputs[componentType.toLowerCase()] = nodeInputs;
+
+		let category = typeCategories.find((category) => category.types!.includes(componentType));
+		console.assert(category !== undefined, `Component ${componentType} is not assigned a category`);
+		const nodeType: NodeType = {
+			type_name: componentType,
+			button_name: component.display_name,
+			nr_inputs: component.nr_inputs,
+			nr_outputs: component.nr_outputs,
+			segment: component.segment,
+			category: category !== undefined ? category.heading : 'Other',
+			inputs: nodeInputs,
+		};
+		nodeTypes[nodeType.type_name] = nodeType;
 	}
-	return componentInputs;
+	return nodeTypes;
 }

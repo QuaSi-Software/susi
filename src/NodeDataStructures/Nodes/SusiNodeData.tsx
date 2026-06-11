@@ -1,6 +1,6 @@
 import BusData from '../Bus/BusData';
 import { InputObjectType, type InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
-import type { NodeCategory, NodeType } from './SusiNodeTypes';
+import type { NodeType } from './SusiNodeTypes';
 
 interface MediumHandleDict {
 	source: string[];
@@ -13,7 +13,7 @@ export interface SusiNodeData extends Record<string, unknown> {
 	nodeInputs: Array<InputObject>;
 	handleMediumDict: MediumHandleDict;
 	busData: BusData | null;
-	nodeCategory: NodeCategory;
+	nodeCategory: string;
 	sourceHandles: number;
 	targetHandles: number;
 	hasValidInputs: boolean;
@@ -60,12 +60,8 @@ function getMediumHandleDict(
 	}
 }
 
-export function createSusiNodeData(
-	nodeType: NodeType,
-	content: string = '',
-	getNodeInputs: (componentType: string) => InputObject[]
-): SusiNodeData {
-	const nodeInputs = getNodeInputs(nodeType.type_name);
+export function createSusiNodeData(nodeType: NodeType, content: string = ''): SusiNodeData {
+	const nodeInputs = nodeType.inputs;
 	nodeInputs.forEach((input) => {
 		input.checkInputValid(nodeInputs);
 	});

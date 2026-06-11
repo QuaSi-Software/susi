@@ -1,6 +1,5 @@
 import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type { Medium } from '../../../NodeDataStructures/Mediums/Medium';
-import { getNodeTypeWithName } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 import createNodeFromType from '../../../NodeDataStructures/Nodes/SusiNode';
 import getImportMediums from './ImportMediums';
 import type { ComponentData, ComponentImportData, ImportData } from '../ExportDataStrucures';
@@ -11,6 +10,7 @@ import { createSourceHandleDict, findTargetHandle, initializeTakenHandles } from
 import { getNewEdge } from '../../../NodeDataStructures/Edges/CreateEdge';
 import type { InputObject } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { Dispatch, SetStateAction } from 'react';
+import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 
 interface ImportStateProps {
 	stateJSON: string;
@@ -18,10 +18,10 @@ interface ImportStateProps {
 	setEdges: (edges: SusiEdge[]) => void;
 	setMediums: (mediums: Medium[]) => void;
 	logError: (errorMessage: string) => void;
-	getNodeInputs: (componentType: string) => InputObject[];
 	/** io settings and simulation parameters */
 	setIOSettings: Dispatch<SetStateAction<InputObject[]>>;
 	setSimulationParameters: Dispatch<SetStateAction<InputObject[]>>;
+	nodeTypes: Record<string, NodeType>;
 }
 
 function getOutputRefs(sourceNodeID: string, sourceNodeData: ComponentData): string[] {
@@ -57,9 +57,9 @@ const importState = ({
 	setEdges,
 	setMediums,
 	logError,
-	getNodeInputs,
 	setIOSettings,
 	setSimulationParameters,
+	nodeTypes,
 }: ImportStateProps): void => {
 	let importDict: ImportData;
 	try {
@@ -80,7 +80,7 @@ const importState = ({
 		setListOfInputs(setSimulationParameters, importDict.simulation_parameters);
 	}
 	// Get or generate mediums
-	const mediums = getImportMediums(importDict, getNodeInputs);
+	const mediums = getImportMediums(importDict, nodeTypes);
 	setMediums(mediums);
 
 	const nodeDict: Record<string, SusiNode> = {};
@@ -89,16 +89,16 @@ const importState = ({
 	// First pass: create all nodes
 	for (const [nodeId, nodeData] of Object.entries(importDict.components)) {
 		const importData: ComponentImportData = getComponentImportData(nodeData);
-		const nodeType = getNodeTypeWithName(importData.node_type);
+		const nodeType = nodeTypes[importData.node_type];
 
 		if (!nodeType) {
-			logError(`Node ${nodeId} has unknown component type: ${nodeData.type}`);
+			logError(`Node ${nodeId} has unknown component type: ${importData.node_type}`);
 			continue;
 		}
-		const newNode = createNodeFromType(nodeArray, nodeType, importData.node_position, getNodeInputs, '', nodeId);
+		const newNode = createNodeFromType(nodeArray, nodeType, importData.node_position, '', nodeId);
 
 		// Fill in node inputs from import data
-		const nodeInputs = getNodeInputs(nodeType.type_name);
+		const nodeInputs = nodeTypes[nodeType.type_name].inputs;
 		for (const nodeInput of nodeInputs) {
 			const value = nodeData[nodeInput.resieName];
 			if (value !== undefined) {

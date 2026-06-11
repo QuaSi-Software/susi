@@ -4,7 +4,6 @@ import { Position } from '@xyflow/react';
 import { type SusiNodeData, createSusiNodeData } from './SusiNodeData';
 
 import _ from 'lodash';
-import type { InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
 
 /**
  * SusiNode is a normal ReactFlow Node, but with data replaced by the interface SusiNodeData for clarity
@@ -16,7 +15,6 @@ const createNodeFromType = (
 	nodes: SusiNode[],
 	nodeType: NodeType,
 	position: XYPosition,
-	getNodeInputs: (componentType: string) => InputObject[],
 	nodeNamePrefix: string,
 	content: string | null = null
 ) => {
@@ -27,7 +25,7 @@ const createNodeFromType = (
 		if (nodeNamePrefix !== '') nodeNamePrefix += '_';
 		content = nodeNamePrefix + nodeType.segment + '_' + index;
 	}
-	const susiNodeData = createSusiNodeData(nodeType, content, getNodeInputs);
+	const susiNodeData = createSusiNodeData(nodeType, content);
 	return {
 		id: `${content}_${timestamp}`,
 		position: position,

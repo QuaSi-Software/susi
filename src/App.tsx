@@ -36,6 +36,8 @@ import type { InputObject } from './Reactflow-Components/CustomInputWidgets/Inpu
 import { UndoButton } from './Reactflow-Components/UndoButton';
 import { Locale } from './Sidebar/SettingsMenu';
 import ErrorOverlay from './Reactflow-Components/ErrorScreenOverlay';
+import type { NodeType } from './NodeDataStructures/Nodes/SusiNodeTypes';
+import { type ApiCategory } from './FetchingApiData/ApiData';
 
 const initialNodes: SusiNode[] = [];
 
@@ -62,7 +64,8 @@ const DnDFlow = () => {
 	const [locale, setLocale] = useState<Locale>(Locale.US);
 
 	/** Component Inputs */
-	const [componentInputsByType, setComponentInputs] = useState<Record<string, InputObject[]> | null>(null);
+	const [componentTypes, setComponentTypes] = useState<Record<string, NodeType> | null>(null);
+	const [componentCategories, setComponentCategories] = useState<ApiCategory[]>([]);
 	const [ioSettingsList, setIOSettingsList] = useState<InputObject[]>([]);
 	const [simulationParametersList, setSimulationParametersList] = useState<InputObject[]>([]);
 
@@ -71,14 +74,15 @@ const DnDFlow = () => {
 	fetchComponentInputs(
 		setLoadingMessage,
 		mediums,
-		componentInputsByType,
-		setComponentInputs,
+		componentTypes,
+		setComponentTypes,
+		setComponentCategories,
 		setIOSettingsList,
 		setSimulationParametersList,
 		setOverlayErrorMessage
 	);
 	const getNodeInputs = (componentType: string) => {
-		return getNodeInputsFromAPI(componentType, componentInputsByType);
+		return getNodeInputsFromAPI(componentType, componentTypes);
 	};
 	/** Log error */
 	const logError = (message: string) => {
@@ -127,7 +131,7 @@ const DnDFlow = () => {
 				x: event.clientX,
 				y: event.clientY,
 			});
-			const newNode = createNodeFromType(nodes, type, position, getNodeInputs, nodeNamePrefix);
+			const newNode = createNodeFromType(nodes, type, position, nodeNamePrefix);
 
 			setNodes((nds) => nds.concat(newNode));
 			setCheckState(true);
@@ -209,6 +213,8 @@ const DnDFlow = () => {
 					theme={theme}
 					setTheme={setTheme}
 					setLocale={setLocale}
+					nodeTypes={componentTypes}
+					categories={componentCategories}
 				/>
 				<ReactFlow
 					nodes={nodes}

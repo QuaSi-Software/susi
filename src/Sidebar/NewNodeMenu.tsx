@@ -1,8 +1,15 @@
 import React from 'react';
 import { useDnD } from './DnDContext';
-import { getNodeTypesInCategory, NodeCategory, type NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
+import { type NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
+import type { ApiCategory } from '../FetchingApiData/ApiData';
 
-export default () => {
+export interface NewNodeMenuProps {
+	categories: ApiCategory[];
+	nodeTypes: Record<string, NodeType> | null;
+}
+
+export default function NewNodeMenu({ categories, nodeTypes }: NewNodeMenuProps) {
+	if (nodeTypes === null) return <></>;
 	const [_, setType] = useDnD();
 
 	const onDragStart = (event: React.DragEvent<HTMLDivElement>, nodeType: NodeType) => {
@@ -10,26 +17,26 @@ export default () => {
 		event.dataTransfer.effectAllowed = 'move';
 	};
 
-	const nodeCategories = Object.values(NodeCategory);
+	categories = categories.sort((a, b) => a.index - b.index);
 	return (
 		<>
 			<div className="sidebar-heading">Components </div>
-			{nodeCategories.map((category: string) => (
-				<div key={category}>
-					<div className="sidebar-subheading">{category}</div>
-					{getNodeTypesInCategory(category as NodeCategory).map((nodeType) => (
+			{categories.map((category: ApiCategory) => (
+				<div key={category.heading}>
+					<div className="sidebar-subheading">{category.heading}</div>
+					{category.types!.map((nodeTypeName) => (
 						<div
-							key={nodeType.type_name}
+							key={nodeTypes[nodeTypeName].type_name}
 							className="dndnode"
-							onDragStart={(event) => onDragStart(event, nodeType)}
+							onDragStart={(event) => onDragStart(event, nodeTypes[nodeTypeName])}
 							draggable
-							style={{ '--category': category.toLowerCase() } as React.CSSProperties}
+							style={{ '--category': category.heading.toLowerCase() } as React.CSSProperties}
 						>
-							{nodeType.button_name}
+							{nodeTypes[nodeTypeName].button_name}
 						</div>
 					))}
 				</div>
 			))}
 		</>
 	);
-};
+}

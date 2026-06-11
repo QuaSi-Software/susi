@@ -1,16 +1,13 @@
 import { createMedium, type Medium } from '../../../NodeDataStructures/Mediums/Medium';
-import { InputObject, InputObjectType } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
+import { InputObjectType } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
 import { getDefaultMediums, getRandomColor, getUndefinedMedium } from '../../../NodeDataStructures/Mediums/MediumUtils';
 import type { ComponentData, ImportData } from '../ExportDataStrucures';
 import { getComponentImportData } from './ImportData';
+import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 
-export default function getImportMediums(
-	importDict: ImportData,
-	getNodeInputs: (componentType: string) => InputObject[]
-) {
+export default function getImportMediums(importDict: ImportData, nodeTypes: Record<string, NodeType>) {
 	let mediums: Medium[] = [getUndefinedMedium()];
-	const importedMediums =
-		importDict.mediums || generateMediumListFromComponents(importDict.components, getNodeInputs);
+	const importedMediums = importDict.mediums || generateMediumListFromComponents(importDict.components, nodeTypes);
 
 	for (const [name, color] of importedMediums) {
 		mediums.push(createMediumFromImport(name, color));
@@ -31,14 +28,14 @@ const createMediumFromImport = (name: string, color: string | null) => {
 
 function generateMediumListFromComponents(
 	components: Record<string, ComponentData>,
-	getNodeInputs: (componentType: string) => InputObject[]
+	nodeTypes: Record<string, NodeType>
 ): Array<[string, string | null]> {
 	const mediums: string[] = [];
 
 	for (const [_, nodeData] of Object.entries(components)) {
 		nodeData.import_data = getComponentImportData(nodeData);
 		const typeName = nodeData.import_data.node_type;
-		const nodeInputs = getNodeInputs(typeName);
+		const nodeInputs = nodeTypes[typeName].inputs;
 
 		if (nodeInputs === null) return []; /** TODO */
 		const mediumInputs = nodeInputs.filter((input) => input.type === InputObjectType.MEDIUM);

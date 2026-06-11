@@ -4,7 +4,7 @@ import { Accordion, AccordionTab } from 'primereact/accordion';
 import type { ImportExportMenuProps } from './Import-Export/ImportExportMenu';
 import ImportExportMenu from './Import-Export/ImportExportMenu';
 import MediumMenu, { type MediumMenuProps } from './Mediums/MediumMenu';
-import NewNodeMenu from './NewNodeMenu';
+import NewNodeMenu, { type NewNodeMenuProps } from './NewNodeMenu';
 import { DropdownDivider } from 'react-bootstrap';
 import { InstructionMenu } from './Instructions';
 import { SettingsMenu, type SettingsMenuProps } from './SettingsMenu';
@@ -24,7 +24,7 @@ export const MenuType = {
 
 export type MenuType = (typeof MenuType)[keyof typeof MenuType];
 
-type SidebarProps = ImportExportMenuProps & MediumMenuProps & SettingsMenuProps;
+type SidebarProps = ImportExportMenuProps & MediumMenuProps & SettingsMenuProps & NewNodeMenuProps;
 
 const Sidebar = (menuProps: SidebarProps) => {
 	const [selectedMenu, setSelectedMenu] = useState<MenuType>(MenuType.NewNodeMenu);
@@ -60,7 +60,7 @@ const Sidebar = (menuProps: SidebarProps) => {
 					/>
 				);
 			case MenuType.NewNodeMenu:
-				return <NewNodeMenu />;
+				return <NewNodeMenu {...menuProps} />;
 			case MenuType.ImportExportMenu:
 				return <ImportExportMenu {...menuProps} />;
 			case MenuType.SimulationParameters:

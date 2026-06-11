@@ -29,8 +29,8 @@
 	background-color: var(--heat-node-color);
 }
 
-.dndnode[style*='--category: special'],
-.react-flow__node[style*='--category: special'] {
+.dndnode[style*='--category: connections'],
+.react-flow__node[style*='--category: connections'] {
 	background-color: var(--special-node-color);
 }
 

@@ -1,8 +1,10 @@
 import { useEffect, type Dispatch, type SetStateAction } from 'react';
 import type { Medium } from '../NodeDataStructures/Mediums/Medium';
 import { InputObject, InputObjectType } from '../Reactflow-Components/CustomInputWidgets/InputObject';
-import { getComponentInputs, type APIComponentInput } from './ProcessComponentInputs';
+import { getComponentTypes } from './ProcessComponentInputs';
 import _ from 'lodash';
+import type { ApiCategory, ApiComponent, ApiReturn } from './ApiData';
+import type { NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
 
 const exampleInputs: InputObject[] = [
 	new InputObject({ type: InputObjectType.STRING, resieName: 'example1', displayName: 'Example1', value: 'hello1' }),
@@ -47,23 +49,30 @@ const exampleInputs: InputObject[] = [
 export function fetchComponentInputs(
 	setLoadingMessage: (isLoading: string | null) => void,
 	mediums: Medium[],
-	componentInputsByType: Record<string, InputObject[]> | null,
-	setComponentInputs: Dispatch<SetStateAction<Record<string, InputObject[]> | null>>,
+	nodeTypes: Record<string, NodeType> | null,
+	setComponentTypes: Dispatch<SetStateAction<Record<string, NodeType> | null>>,
+	setComponentCategories: Dispatch<SetStateAction<ApiCategory[]>>,
 	setIOSettings: Dispatch<SetStateAction<InputObject[]>>,
 	setSimulationParametersList: Dispatch<SetStateAction<InputObject[]>>,
 	setOverlayError: Dispatch<SetStateAction<string | null>>
 ) {
 	useEffect(() => {
-		if (componentInputsByType !== null) {
+		if (nodeTypes !== null) {
 			return;
 		}
 		setLoadingMessage('Loading Resie Data...');
-		fetch('/parameters')
+		fetch('/parameters/susi')
 			.then((response) => response.json())
-			.then((data) => {
-				const apiComponents: Record<string, Record<string, APIComponentInput>> = data.components;
-				const componentInputs = getComponentInputs(apiComponents, mediums);
-				setComponentInputs(componentInputs);
+			.then((data: ApiReturn) => {
+				const apiComponents: Record<string, ApiComponent> = data.components.types;
+				const componentTypes: Record<string, NodeType> = getComponentTypes(
+					apiComponents,
+					data.components.type_categories,
+					mediums
+				);
+				setComponentTypes(componentTypes);
+				setComponentCategories(data.components.type_categories);
+				/** io settings and sim params */
 				exampleInputs.forEach((input) => {
 					input.checkInputValid(exampleInputs);
 				});
@@ -86,13 +95,14 @@ export function fetchComponentInputs(
  */
 export function getNodeInputsFromAPI(
 	componentType: string,
-	componentInputsByType: Record<string, InputObject[]> | null
+	componentTypes: Record<string, NodeType> | null
 ): InputObject[] {
-	if (componentInputsByType === null) {
+	if (componentTypes === null) {
 		console.warn("You shouldn't be able to call getNodeInputsFromAPI if componentInputsByType is null");
 		return [];
 	}
-	const nodeInputs = componentInputsByType[componentType.toLowerCase()];
+	const nodeType = componentTypes[componentType];
+	const nodeInputs = nodeType?.inputs;
 	if (!nodeInputs) {
 		console.warn(`Unknown component type: ${componentType}`);
 		return [];
