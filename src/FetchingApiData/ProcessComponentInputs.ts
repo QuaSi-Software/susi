@@ -82,6 +82,7 @@ export function getComponentTypes(
 			segment: component.segment,
 			category: category !== undefined ? category.heading : 'Other',
 			inputs: nodeInputs,
+			inputCategories: component.param_categories,
 		};
 		nodeTypes[nodeType.type_name] = nodeType;
 	}

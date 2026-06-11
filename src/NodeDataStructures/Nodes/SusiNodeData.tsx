@@ -1,6 +1,7 @@
 import BusData from '../Bus/BusData';
 import { InputObjectType, type InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { NodeType } from './SusiNodeTypes';
+import type { ApiCategory } from '../../FetchingApiData/ApiData';
 
 interface MediumHandleDict {
 	source: string[];
@@ -11,6 +12,7 @@ export interface SusiNodeData extends Record<string, unknown> {
 	content: string;
 	componentType: string;
 	nodeInputs: Array<InputObject>;
+	inputCategories: ApiCategory[];
 	handleMediumDict: MediumHandleDict;
 	busData: BusData | null;
 	nodeCategory: string;
@@ -79,5 +81,6 @@ export function createSusiNodeData(nodeType: NodeType, content: string = ''): Su
 		sourceHandles: nodeType.nr_outputs,
 		targetHandles: nodeType.nr_inputs,
 		hasValidInputs: hasValidInputs,
+		inputCategories: nodeType.inputCategories,
 	};
 }

@@ -13,9 +13,9 @@ import type { InputObject } from '../CustomInputWidgets/InputObject';
 import { getEdgesWithMediumMismatch } from '../../NodeDataStructures/Mediums/MediumUtils';
 import { updateBusDataOnEdgeDelete } from '../../NodeDataStructures/Bus/BusDataUtils';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
-import InputMenu from '../CustomInputWidgets/InputMenu';
 import BusConnectionMenu from '../BusDataWidget/BusConnectionMenu';
 import { AppContext } from '../../AppContext';
+import InputMenuWithCategories from '../CustomInputWidgets/InputMenuWithCategories';
 
 interface EditNodeModalInputs {
 	show: boolean;
@@ -128,9 +128,10 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 						</Col>
 					</Row>
 				</Modal.Body>
-				<InputMenu
+				<InputMenuWithCategories
 					title="Component Inputs"
 					inputs={editedNode.data.nodeInputs}
+					inputCategories={editedNode.data.inputCategories}
 					onValueChange={onNodeInputValueChange}
 					onIncludedChange={onNodeInputIncludedChange}
 					numberOfColumns={2}

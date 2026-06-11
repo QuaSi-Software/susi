@@ -1,6 +1,7 @@
 /**
  * Contains ReSiE-component-specific data and how they relate to components of streamlit flow.
  */
+import type { ApiCategory } from '../../FetchingApiData/ApiData';
 import type { InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
 
 export interface NodeType {
@@ -12,4 +13,5 @@ export interface NodeType {
 	segment: string;
 	category: string;
 	inputs: InputObject[];
+	inputCategories: ApiCategory[];
 }

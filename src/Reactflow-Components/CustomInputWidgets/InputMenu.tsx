@@ -7,7 +7,7 @@ import OptionalInputField from './OptionalInputField';
 import { InputIssueType } from './Validation/InputChecking';
 import { uniqueId } from 'lodash';
 
-interface InputMenuProps {
+export interface InputMenuProps {
 	title: string;
 	inputs: InputObject[];
 	onValueChange: (resieName: string, newValue: string | number | boolean) => void;
@@ -37,7 +37,13 @@ const chunk_into_rows = (inputs: InputObject[], items_per_row: number): (InputOb
 	return rows;
 };
 
-const InputMenu: React.FC<InputMenuProps> = ({ title, inputs, onValueChange, onIncludedChange, numberOfColumns }) => {
+export const InputMenu: React.FC<InputMenuProps> = ({
+	title,
+	inputs,
+	onValueChange,
+	onIncludedChange,
+	numberOfColumns,
+}) => {
 	if (inputs.length === 0) return <></>;
 	const rows = chunk_into_rows(inputs, numberOfColumns);
 
@@ -87,5 +93,3 @@ const InputMenu: React.FC<InputMenuProps> = ({ title, inputs, onValueChange, onI
 		</>
 	);
 };
-
-export default InputMenu;
