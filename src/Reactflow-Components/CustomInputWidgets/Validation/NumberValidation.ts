@@ -50,7 +50,7 @@ function checkNumberValidation(input: InputObject, otherInputs: InputObject[]): 
 	}
 	for (let i = 0; i < input.validations.length; i++) {
 		const validation = input.validations[i];
-		if (!isValid(input.value, validation, otherInputs)) {
+		if (!isValid(input, validation, otherInputs)) {
 			return {
 				issueType: InputIssueType.Validity,
 				message: getValidationMessage(validation),
@@ -60,20 +60,25 @@ function checkNumberValidation(input: InputObject, otherInputs: InputObject[]): 
 	return null;
 }
 
-function getValidationComparisonValue(validation: Validation, otherInputs: InputObject[]) {
+function getValidationComparisonValue(validation: Validation, otherInputs: InputObject[], inputType: string) {
 	switch (validation.operator) {
 		case ValidationOperator.LESS_THAN_OTHER_INPUT:
 		case ValidationOperator.LESS_EQUAL_THAN_OTHER_INPUT:
 		case ValidationOperator.GREATER_THAN_OTHER_INPUT:
 		case ValidationOperator.GREATER_EQUAL_THAN_OTHER_INPUT:
 			const otherInput = otherInputs.find((input) => input.resieName === validation.otherInputName);
+			console.assert(
+				otherInput !== undefined,
+				`Validation in ${inputType} cannot find input with name ${validation.otherInputName}`
+			);
 			return otherInput?.value;
 		default:
 			return validation.value;
 	}
 }
-function isValid(value: number, validation: Validation, otherInputs: InputObject[]): boolean {
-	const other = getValidationComparisonValue(validation, otherInputs);
+function isValid(input: InputObject, validation: Validation, otherInputs: InputObject[]): boolean {
+	const value = input.value;
+	const other = getValidationComparisonValue(validation, otherInputs, input.resieName);
 	switch (validation.operator) {
 		case ValidationOperator.LESS_THAN:
 		case ValidationOperator.LESS_THAN_OR_NULL:

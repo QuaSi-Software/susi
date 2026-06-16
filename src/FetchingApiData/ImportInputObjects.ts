@@ -38,7 +38,7 @@ function getNodeInputType(inputName: string, apiInput: APIParameter) {
 export function getInputObjectFromAPIParameter(inputName: string, apiInput: APIParameter) {
 	if (Array.isArray(apiInput.default) && apiInput.default.length > 0 && apiInput.default[0] === null)
 		apiInput.default = null;
-	return new InputObject({
+	const input = new InputObject({
 		type: getNodeInputType(inputName, apiInput),
 		resieName: inputName,
 		displayName: apiInput.display_name,
@@ -51,6 +51,7 @@ export function getInputObjectFromAPIParameter(inputName: string, apiInput: APIP
 		validations: apiInput.validations === undefined ? [] : apiInput.validations.map((x) => importValidation(x)),
 		conditionals: apiInput.conditionals === undefined ? [] : apiInput.conditionals.map((x) => importConditional(x)),
 	});
+	return input;
 }
 
 export function checkParametersAndCategoriesMatch(inputs: InputObject[], categories: ApiCategory[], inputType: string) {
