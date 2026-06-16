@@ -55,6 +55,7 @@ function checkConditional(conditional: Conditional, inputs: InputObject[], input
 		targetParameter !== undefined,
 		`Conditional can't find parameter ${conditional.targetParameterName} on input ${inputName}`
 	);
+	if (targetParameter === undefined) return false;
 	const targetValue = targetParameter!.value;
 	switch (conditional.operator) {
 		case ConditionalOperator.is:
