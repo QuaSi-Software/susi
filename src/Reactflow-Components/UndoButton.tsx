@@ -51,12 +51,7 @@ export function UndoButton({ nodes, setNodes, edges, setEdges, checkState }: Und
 
 	return (
 		<>
-			<Button
-				className="undo-button"
-				variant="outline-primary"
-				onClick={undoAction}
-				disabled={stateHistory.length === 0}
-			>
+			<Button variant="outline-primary" onClick={undoAction} disabled={stateHistory.length === 0}>
 				<i className="bi bi-arrow-clockwise"></i> Undo
 			</Button>
 		</>

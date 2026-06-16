@@ -38,6 +38,7 @@ import ErrorOverlay from './Reactflow-Components/ErrorScreenOverlay';
 import type { NodeType } from './NodeDataStructures/Nodes/SusiNodeTypes';
 import { type ApiCategory } from './FetchingApiData/ApiData';
 import type { MenuInputs } from './FetchingApiData/MenuInputs';
+import { ClearNodesButton } from './Reactflow-Components/ClearNodesButton';
 
 const initialNodes: SusiNode[] = [];
 
@@ -243,13 +244,16 @@ const DnDFlow = () => {
 				>
 					<Controls showInteractive={false} />
 					<Background />
-					<UndoButton
-						nodes={nodes}
-						edges={edges}
-						checkState={checkState}
-						setNodes={setNodes}
-						setEdges={setEdges}
-					/>
+					<div className="canvas-button-section">
+						<UndoButton
+							nodes={nodes}
+							edges={edges}
+							checkState={checkState}
+							setNodes={setNodes}
+							setEdges={setEdges}
+						/>
+						<ClearNodesButton nodes={nodes} setNodes={setNodes} setEdges={setEdges} />
+					</div>
 				</ReactFlow>
 				<EdgeContextMenu
 					edgeContextMenuData={edgeContextMenu}
