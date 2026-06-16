@@ -3,7 +3,7 @@ import { getUndefinedMedium } from '../NodeDataStructures/Mediums/MediumUtils';
 import { InputObjectType } from '../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { ApiCategory, ApiComponent } from './ApiData';
 import { type NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
-import { getInputObjectFromAPIParameter } from './ImportInputObjects';
+import { checkParametersAndCategoriesMatch, getInputObjectFromAPIParameter } from './ImportInputObjects';
 
 export function getComponentTypes(
 	apiComponents: Record<string, ApiComponent>,
@@ -21,6 +21,7 @@ export function getComponentTypes(
 			}
 			nodeInputs.push(newInput);
 		}
+		checkParametersAndCategoriesMatch(nodeInputs, component.param_categories, componentType);
 
 		let category = typeCategories.find((category) => category.types!.includes(componentType));
 		console.assert(category !== undefined, `Component ${componentType} is not assigned a category`);

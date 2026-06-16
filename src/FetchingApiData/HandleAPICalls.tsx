@@ -34,14 +34,13 @@ export function fetchComponentInputs(
 				setComponentTypes(componentTypes);
 				setComponentCategories(data.components.type_categories);
 				/** io settings and sim params */
-				// exampleInputs.forEach((input) => {
-				// 	input.checkInputValid(exampleInputs);
-				// });
-				// setIOSettings(exampleInputs.map((input) => input.copy()));
-				// setSimulationParametersList(exampleInputs.map((input) => input.copy()));
-				setIOSettings(importMenuInputs(data.general.io_categories, data.general.io_settings));
+				setIOSettings(importMenuInputs(data.general.io_categories, data.general.io_settings, 'IO Settings'));
 				setSimulationParametersList(
-					importMenuInputs(data.general.simulation_categories, data.general.simulation)
+					importMenuInputs(
+						data.general.simulation_categories,
+						data.general.simulation,
+						'Simulation Parameters'
+					)
 				);
 				setLoadingMessage(null);
 			})

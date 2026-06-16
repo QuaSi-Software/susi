@@ -9,10 +9,6 @@ export default function InputMenuWithCategories(props: Props) {
 		const inputs = category.parameters!.map((parameterName) => {
 			const allInputs = props.inputs;
 			const input = allInputs.find((input) => input.resieName === parameterName);
-			console.assert(
-				input !== undefined,
-				`Parameter '${parameterName} in category ${category.heading} in ${props.menuTypeName} is not in the list of inputs`
-			);
 			return input!;
 		});
 		return inputs.filter((input) => input !== undefined);
