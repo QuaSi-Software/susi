@@ -135,6 +135,7 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 					onValueChange={onNodeInputValueChange}
 					onIncludedChange={onNodeInputIncludedChange}
 					numberOfColumns={2}
+					menuTypeName={editedNode.data.componentType}
 				/>
 				<BusConnectionMenu node={node} nodes={nodes} onBusDataChange={onNodeBusDataChange} />
 				<Modal.Footer>

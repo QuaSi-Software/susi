@@ -76,6 +76,7 @@ const Sidebar = (menuProps: SidebarProps) => {
 							changeInputListElement(key, value, menuProps.setSimulationParameters, true)
 						}
 						numberOfColumns={1}
+						menuTypeName="Simulation Parameters"
 					/>
 				);
 			case MenuType.IO_Settings:
@@ -91,6 +92,7 @@ const Sidebar = (menuProps: SidebarProps) => {
 							changeInputListElement(key, value, menuProps.setIOSettings, true)
 						}
 						numberOfColumns={1}
+						menuTypeName="IO Settings"
 					/>
 				);
 			case MenuType.Instructions:

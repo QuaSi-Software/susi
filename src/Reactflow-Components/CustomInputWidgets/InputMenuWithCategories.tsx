@@ -1,14 +1,21 @@
 import type { ApiCategory } from '../../FetchingApiData/ApiData';
 import { type InputMenuProps, InputMenu } from './InputMenu';
+import type { InputObject } from './InputObject';
 
-type Props = InputMenuProps & { inputCategories: ApiCategory[] };
+type Props = InputMenuProps & { inputCategories: ApiCategory[]; menuTypeName: string };
 
 export default function InputMenuWithCategories(props: Props) {
-	function getInputsInCategory(category: ApiCategory) {
-		return category.parameters!.map((parameterName) => {
+	function getInputsInCategory(category: ApiCategory): InputObject[] {
+		const inputs = category.parameters!.map((parameterName) => {
 			const allInputs = props.inputs;
-			return allInputs.find((input) => input.resieName === parameterName)!;
+			const input = allInputs.find((input) => input.resieName === parameterName);
+			console.assert(
+				input !== undefined,
+				`Parameter '${parameterName} in category ${category.heading} in ${props.menuTypeName} is not in the list of inputs`
+			);
+			return input!;
 		});
+		return inputs.filter((input) => input !== undefined);
 	}
 	return (
 		<>
