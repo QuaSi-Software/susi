@@ -64,7 +64,7 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 		setTextContent(data);
 	};
 
-	const canExport = (): boolean => {
+	const menusAndComponentsValid = (): boolean => {
 		const mediumsValid = mediums.every((m) => m.valid);
 		if (!mediumsValid) return false;
 		const nodeInputsValid = menuProps.nodes.every((n) => n.data.hasValidInputs);
@@ -77,21 +77,22 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 		return true;
 	};
 
-	const exportDisabled = !canExport();
+	const exportWarning = !menusAndComponentsValid();
 	return (
 		<div className="import-export-menu">
 			<div className="sidebar-heading">Import & Export</div>
-			{exportDisabled && (
+			{exportWarning && (
 				<div className="input-warning-message">
-					⚠️ There are issues in your project that prevent exporting. Please check the Sidebar Menus and the
-					Components for warning signs
+					There are issues in your project that will cause your export file to be invalid.
+					<br />
+					Please check the Sidebar Menus and the Components for warning signs. ⚠️
 				</div>
 			)}
 			<div className="import-export-buttons">
 				<Button variant="primary" onClick={handleImport} disabled={textContent === ''}>
 					Import
 				</Button>
-				<Button variant="primary" onClick={handleExport} disabled={exportDisabled}>
+				<Button variant="primary" onClick={handleExport}>
 					Export
 				</Button>
 			</div>

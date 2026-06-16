@@ -1,4 +1,4 @@
-import type { InputObject } from '../InputObject';
+import { InputObjectType, type InputObject } from '../InputObject';
 import checkAtLeastOne from './AtLeastOne';
 import { checkAllConditionals } from './Conditionals';
 import checkMutex from './Mutex';
@@ -38,8 +38,40 @@ function checkForInputIssues(input: InputObject, otherInputs: InputObject[]): In
 	/** check for invalid number inputs */
 	const numberIssue = checkNumberValidation(input, otherInputs);
 	if (numberIssue) return numberIssue;
+	/** Check valid array or object string */
+	const parseIssue = checkObjectsAndArrays(input);
+	if (parseIssue) return parseIssue;
 	/** if no issues were found, return null */
 	return { issueType: InputIssueType.None, message: '' };
+}
+
+function checkObjectsAndArrays(input: InputObject): InputIssue | null {
+	const shouldBeArray = input.type === InputObjectType.VECTOR_FLOAT || input.type === InputObjectType.VECTOR_STRING;
+	const shouldBeObject = input.type === InputObjectType.CUSTOM_OBJECT;
+	if (shouldBeArray || shouldBeObject) {
+		/** Check that they are valid JSON objects */
+		let obj;
+		try {
+			obj = JSON.parse(input.value);
+		} catch (error) {
+			return {
+				issueType: InputIssueType.Validity,
+				message: `Input is not a valid JSON`,
+			};
+		}
+		if (shouldBeArray && !Array.isArray(obj)) {
+			return {
+				issueType: InputIssueType.Validity,
+				message: `Input is not an array`,
+			};
+		} else if (shouldBeObject && Array.isArray(obj)) {
+			return {
+				issueType: InputIssueType.Validity,
+				message: `Input is not a dictionary`,
+			};
+		}
+	}
+	return null;
 }
 
 export { type InputIssue, InputIssueType, checkForInputIssues };

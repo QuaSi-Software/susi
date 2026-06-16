@@ -68,6 +68,7 @@ export function checkParametersAndCategoriesMatch(inputs: InputObject[], categor
 					parameters: [],
 					types: [],
 				};
+				categories.push(otherCategory);
 			}
 			otherCategory.parameters?.push(input.resieName);
 			otherCategory.types?.push(input.resieName);

@@ -47,6 +47,9 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 	const getInputFieldByType = (): React.ReactNode => {
 		const disabledByMutex = nodeInput.issue.issueType === InputIssueType.Mutex;
 		switch (js_type) {
+			case InputObjectType.VECTOR_FLOAT:
+			case InputObjectType.VECTOR_STRING:
+			case InputObjectType.CUSTOM_OBJECT:
 			case InputObjectType.STRING:
 				return (
 					<FloatingLabel controlId="floatingInput" label={displayName}>
