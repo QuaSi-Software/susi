@@ -32,12 +32,12 @@ import type { SusiEdge } from './NodeDataStructures/Edges/SusiEdge';
 import LoadingOverlay from './Reactflow-Components/LoadingOverlay';
 import { getNewEdge } from './NodeDataStructures/Edges/CreateEdge';
 import { fetchComponentInputs, getNodeInputsFromAPI } from './FetchingApiData/HandleAPICalls';
-import type { InputObject } from './Reactflow-Components/CustomInputWidgets/InputObject';
 import { UndoButton } from './Reactflow-Components/UndoButton';
 import { Locale } from './Sidebar/SettingsMenu';
 import ErrorOverlay from './Reactflow-Components/ErrorScreenOverlay';
 import type { NodeType } from './NodeDataStructures/Nodes/SusiNodeTypes';
 import { type ApiCategory } from './FetchingApiData/ApiData';
+import type { MenuInputs } from './FetchingApiData/MenuInputs';
 
 const initialNodes: SusiNode[] = [];
 
@@ -66,8 +66,11 @@ const DnDFlow = () => {
 	/** Component Inputs */
 	const [componentTypes, setComponentTypes] = useState<Record<string, NodeType> | null>(null);
 	const [componentCategories, setComponentCategories] = useState<ApiCategory[]>([]);
-	const [ioSettingsList, setIOSettingsList] = useState<InputObject[]>([]);
-	const [simulationParametersList, setSimulationParametersList] = useState<InputObject[]>([]);
+	const [ioSettingsList, setIOSettingsList] = useState<MenuInputs>({ inputs: [], categories: [] });
+	const [simulationParametersList, setSimulationParametersList] = useState<MenuInputs>({
+		inputs: [],
+		categories: [],
+	});
 
 	document.documentElement.setAttribute('data-theme', theme);
 
@@ -206,9 +209,9 @@ const DnDFlow = () => {
 					logError={logError}
 					nodeNamePrefix={nodeNamePrefix}
 					setNodeNamePrefix={setNodeNamePrefix}
-					ioSettingsList={ioSettingsList}
+					ioSettings={ioSettingsList}
 					setIOSettings={setIOSettingsList}
-					simulationParametersList={simulationParametersList}
+					simulationParameters={simulationParametersList}
 					setSimulationParameters={setSimulationParametersList}
 					theme={theme}
 					setTheme={setTheme}

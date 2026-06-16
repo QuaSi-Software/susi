@@ -8,9 +8,9 @@ import NewNodeMenu, { type NewNodeMenuProps } from './NewNodeMenu';
 import { DropdownDivider } from 'react-bootstrap';
 import { InstructionMenu } from './Instructions';
 import { SettingsMenu, type SettingsMenuProps } from './SettingsMenu';
-import { InputMenu } from '../Reactflow-Components/CustomInputWidgets/InputMenu';
-import { InputObject } from '../Reactflow-Components/CustomInputWidgets/InputObject';
 import { AppContext } from '../AppContext';
+import type { MenuInputs } from '../FetchingApiData/MenuInputs';
+import InputMenuWithCategories from '../Reactflow-Components/CustomInputWidgets/InputMenuWithCategories';
 
 export const MenuType = {
 	NewNodeMenu: 'Add New Components',
@@ -33,18 +33,18 @@ const Sidebar = (menuProps: SidebarProps) => {
 	function changeInputListElement(
 		key: string,
 		value: any,
-		setInputList: Dispatch<SetStateAction<InputObject[]>>,
+		setInput: Dispatch<SetStateAction<MenuInputs>>,
 		isIncludedChange: boolean
 	) {
-		setInputList((list) => {
-			const input = list.find((e) => e.resieName === key);
-			if (!input) console.error(`Input with key ${key} should not be undefined in list ${list}`);
+		setInput((menuInputs) => {
+			const input = menuInputs.inputs.find((e) => e.resieName === key);
+			if (!input) console.error(`Input with key ${key} should not be undefined in list ${menuInputs}`);
 			if (isIncludedChange) input!.isIncluded = value;
 			else input!.value = value;
-			list.forEach((e) => {
-				e.checkInputValid(list);
+			menuInputs.inputs.forEach((e) => {
+				e.checkInputValid(menuInputs.inputs);
 			});
-			return [...list];
+			return menuInputs;
 		});
 	}
 
@@ -65,9 +65,10 @@ const Sidebar = (menuProps: SidebarProps) => {
 				return <ImportExportMenu {...menuProps} />;
 			case MenuType.SimulationParameters:
 				return (
-					<InputMenu
+					<InputMenuWithCategories
 						title="Simulation Parameters"
-						inputs={menuProps.simulationParametersList}
+						inputs={menuProps.simulationParameters.inputs}
+						inputCategories={menuProps.simulationParameters.categories}
 						onValueChange={(key, value) =>
 							changeInputListElement(key, value, menuProps.setSimulationParameters, false)
 						}
@@ -79,9 +80,10 @@ const Sidebar = (menuProps: SidebarProps) => {
 				);
 			case MenuType.IO_Settings:
 				return (
-					<InputMenu
+					<InputMenuWithCategories
 						title="IO Settings"
-						inputs={menuProps.ioSettingsList}
+						inputs={menuProps.ioSettings.inputs}
+						inputCategories={menuProps.ioSettings.categories}
 						onValueChange={(key, value) =>
 							changeInputListElement(key, value, menuProps.setIOSettings, false)
 						}
@@ -106,10 +108,10 @@ const Sidebar = (menuProps: SidebarProps) => {
 				const allMediumsValid = mediums.every((m) => m.valid);
 				return !allMediumsValid;
 			case MenuType.SimulationParameters:
-				const simulationParamsValid = menuProps.simulationParametersList.every((input) => input.isValid());
+				const simulationParamsValid = menuProps.simulationParameters.inputs.every((input) => input.isValid());
 				return !simulationParamsValid;
 			case MenuType.IO_Settings:
-				const ioSettingsValid = menuProps.ioSettingsList.every((input) => input.isValid());
+				const ioSettingsValid = menuProps.ioSettings.inputs.every((input) => input.isValid());
 				return !ioSettingsValid;
 			default:
 				return false;

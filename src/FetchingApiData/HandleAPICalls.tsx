@@ -1,50 +1,11 @@
 import { useEffect, type Dispatch, type SetStateAction } from 'react';
 import type { Medium } from '../NodeDataStructures/Mediums/Medium';
-import { InputObject, InputObjectType } from '../Reactflow-Components/CustomInputWidgets/InputObject';
+import { InputObject } from '../Reactflow-Components/CustomInputWidgets/InputObject';
 import { getComponentTypes } from './ProcessComponentInputs';
 import _ from 'lodash';
 import type { ApiCategory, ApiComponent, ApiReturn } from './ApiData';
 import type { NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
-
-const exampleInputs: InputObject[] = [
-	new InputObject({ type: InputObjectType.STRING, resieName: 'example1', displayName: 'Example1', value: 'hello1' }),
-	new InputObject({ type: InputObjectType.STRING, resieName: 'example2', displayName: 'Example2', value: 'hello2' }),
-	new InputObject({
-		type: InputObjectType.INT,
-		resieName: 'example3',
-		displayName: 'Example3',
-		value: 5,
-		isRequired: false,
-	}),
-	new InputObject({
-		type: InputObjectType.FLOAT,
-		resieName: 'example7',
-		displayName: 'Example7',
-		value: 5.87,
-		isRequired: false,
-	}),
-	new InputObject({
-		type: InputObjectType.BOOLEAN,
-		resieName: 'example4',
-		displayName: 'Example4',
-		value: true,
-		isRequired: false,
-	}),
-	new InputObject({
-		type: InputObjectType.MULTISELECT,
-		resieName: 'example5',
-		displayName: 'Example5',
-		value: ['a'],
-		dropdownOptions: ['a', 'b', 'c'],
-		dropdownOptionDisplayNames: ['A', 'B', 'C'],
-	}),
-	new InputObject({
-		type: InputObjectType.DATE,
-		resieName: 'example8',
-		displayName: 'Example8',
-		value: '03/03/2003',
-	}),
-];
+import { importMenuInputs, type MenuInputs } from './MenuInputs';
 
 export function fetchComponentInputs(
 	setLoadingMessage: (isLoading: string | null) => void,
@@ -52,8 +13,8 @@ export function fetchComponentInputs(
 	nodeTypes: Record<string, NodeType> | null,
 	setComponentTypes: Dispatch<SetStateAction<Record<string, NodeType> | null>>,
 	setComponentCategories: Dispatch<SetStateAction<ApiCategory[]>>,
-	setIOSettings: Dispatch<SetStateAction<InputObject[]>>,
-	setSimulationParametersList: Dispatch<SetStateAction<InputObject[]>>,
+	setIOSettings: Dispatch<SetStateAction<MenuInputs>>,
+	setSimulationParametersList: Dispatch<SetStateAction<MenuInputs>>,
 	setOverlayError: Dispatch<SetStateAction<string | null>>
 ) {
 	useEffect(() => {
@@ -73,11 +34,15 @@ export function fetchComponentInputs(
 				setComponentTypes(componentTypes);
 				setComponentCategories(data.components.type_categories);
 				/** io settings and sim params */
-				exampleInputs.forEach((input) => {
-					input.checkInputValid(exampleInputs);
-				});
-				setIOSettings(exampleInputs.map((input) => input.copy()));
-				setSimulationParametersList(exampleInputs.map((input) => input.copy()));
+				// exampleInputs.forEach((input) => {
+				// 	input.checkInputValid(exampleInputs);
+				// });
+				// setIOSettings(exampleInputs.map((input) => input.copy()));
+				// setSimulationParametersList(exampleInputs.map((input) => input.copy()));
+				setIOSettings(importMenuInputs(data.general.io_categories, data.general.io_settings));
+				setSimulationParametersList(
+					importMenuInputs(data.general.simulation_categories, data.general.simulation)
+				);
 				setLoadingMessage(null);
 			})
 			.catch((error) => {

@@ -8,9 +8,9 @@ import { getBusDataFromConnections, isBusDataValid } from './ImportBusData';
 import type { SusiEdge } from '../../../NodeDataStructures/Edges/SusiEdge';
 import { createSourceHandleDict, findTargetHandle, initializeTakenHandles } from './ImportHandles';
 import { getNewEdge } from '../../../NodeDataStructures/Edges/CreateEdge';
-import type { InputObject } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { Dispatch, SetStateAction } from 'react';
 import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
+import type { MenuInputs } from '../../../FetchingApiData/MenuInputs';
 
 interface ImportStateProps {
 	stateJSON: string;
@@ -19,8 +19,8 @@ interface ImportStateProps {
 	setMediums: (mediums: Medium[]) => void;
 	logError: (errorMessage: string) => void;
 	/** io settings and simulation parameters */
-	setIOSettings: Dispatch<SetStateAction<InputObject[]>>;
-	setSimulationParameters: Dispatch<SetStateAction<InputObject[]>>;
+	setIOSettings: Dispatch<SetStateAction<MenuInputs>>;
+	setSimulationParameters: Dispatch<SetStateAction<MenuInputs>>;
 	nodeTypes: Record<string, NodeType>;
 }
 
@@ -37,9 +37,9 @@ function getOutputRefs(sourceNodeID: string, sourceNodeData: ComponentData): str
 	}
 }
 
-function setListOfInputs(setter: Dispatch<SetStateAction<InputObject[]>>, importedValues: Record<string, any>) {
-	setter((inputs) => {
-		inputs.forEach((input) => {
+function setListOfInputs(setter: Dispatch<SetStateAction<MenuInputs>>, importedValues: Record<string, any>) {
+	setter((menuInputs) => {
+		menuInputs.inputs.forEach((input) => {
 			const importedValue = importedValues[input.resieName];
 			if (importedValue === undefined) {
 				input.isIncluded = false;
@@ -47,7 +47,7 @@ function setListOfInputs(setter: Dispatch<SetStateAction<InputObject[]>>, import
 				input.value = importedValue;
 			}
 		});
-		return inputs;
+		return menuInputs;
 	});
 }
 
