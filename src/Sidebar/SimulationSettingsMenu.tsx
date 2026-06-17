@@ -30,15 +30,15 @@ export function SimulationSettingsMenu({ simulationMenus, setSimulationMenus }: 
 	const menu = simulationMenus.find((e) => e.title === selectedMenu);
 	return (
 		<>
-			<CustomDropdown
-				displayName="Simulation Settings Menus"
-				startValue={selectedMenu}
-				dropdown_options={menuNames}
-				onEdit={setSelectedMenu}
-			/>
+			<div className="simulation-settings-menus">
+				<CustomDropdown
+					displayName="Simulation Settings Menus"
+					startValue={selectedMenu}
+					dropdown_options={menuNames}
+					onEdit={setSelectedMenu}
+				/>
+			</div>
 			<br />
-			<DropdownDivider />
-			<div className="sidebar-heading">{menu?.title}</div>
 			<InputMenuWithCategories
 				title={menu!.title}
 				inputs={menu!.inputs}
