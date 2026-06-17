@@ -3,6 +3,8 @@ import type { ApiCategory, APIParameter } from './ApiData';
 import { checkParametersAndCategoriesMatch, getInputObjectFromAPIParameter } from './ImportInputObjects';
 
 export interface MenuInputs {
+	title: string;
+	exportKey: string;
 	inputs: InputObject[];
 	categories: ApiCategory[];
 }
@@ -10,7 +12,8 @@ export interface MenuInputs {
 export function importMenuInputs(
 	categories: ApiCategory[],
 	parameters: Record<string, APIParameter>,
-	menuName: string
+	menuName: string,
+	exportKey: string
 ): MenuInputs {
 	const inputs: InputObject[] = [];
 	for (const [paramName, paramObject] of Object.entries(parameters)) {
@@ -19,7 +22,9 @@ export function importMenuInputs(
 	}
 	checkParametersAndCategoriesMatch(inputs, categories, menuName);
 	return {
+		title: menuName,
 		inputs,
 		categories,
+		exportKey,
 	};
 }

@@ -67,11 +67,12 @@ const DnDFlow = () => {
 	/** Component Inputs */
 	const [componentTypes, setComponentTypes] = useState<Record<string, NodeType> | null>(null);
 	const [componentCategories, setComponentCategories] = useState<ApiCategory[]>([]);
-	const [ioSettingsList, setIOSettingsList] = useState<MenuInputs>({ inputs: [], categories: [] });
-	const [simulationParametersList, setSimulationParametersList] = useState<MenuInputs>({
-		inputs: [],
-		categories: [],
-	});
+	// const [ioSettingsList, setIOSettingsList] = useState<MenuInputs>({ inputs: [], categories: [] });
+	// const [simulationParametersList, setSimulationParametersList] = useState<MenuInputs>({
+	// 	inputs: [],
+	// 	categories: [],
+	// });
+	const [simulationMenus, setSimulationMenus] = useState<MenuInputs[]>([]);
 
 	document.documentElement.setAttribute('data-theme', theme);
 
@@ -81,8 +82,7 @@ const DnDFlow = () => {
 		componentTypes,
 		setComponentTypes,
 		setComponentCategories,
-		setIOSettingsList,
-		setSimulationParametersList,
+		setSimulationMenus,
 		setOverlayErrorMessage
 	);
 	const getNodeInputs = (componentType: string) => {
@@ -210,10 +210,8 @@ const DnDFlow = () => {
 					logError={logError}
 					nodeNamePrefix={nodeNamePrefix}
 					setNodeNamePrefix={setNodeNamePrefix}
-					ioSettings={ioSettingsList}
-					setIOSettings={setIOSettingsList}
-					simulationParameters={simulationParametersList}
-					setSimulationParameters={setSimulationParametersList}
+					simulationMenus={simulationMenus}
+					setSimulationMenus={setSimulationMenus}
 					theme={theme}
 					setTheme={setTheme}
 					setLocale={setLocale}

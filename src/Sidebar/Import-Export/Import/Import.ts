@@ -19,8 +19,8 @@ interface ImportStateProps {
 	setMediums: (mediums: Medium[]) => void;
 	logError: (errorMessage: string) => void;
 	/** io settings and simulation parameters */
-	setIOSettings: Dispatch<SetStateAction<MenuInputs>>;
-	setSimulationParameters: Dispatch<SetStateAction<MenuInputs>>;
+	simulationMenus: MenuInputs[];
+	setSimulationMenus: Dispatch<SetStateAction<MenuInputs[]>>;
 	nodeTypes: Record<string, NodeType>;
 }
 
@@ -37,9 +37,14 @@ function getOutputRefs(sourceNodeID: string, sourceNodeData: ComponentData): str
 	}
 }
 
-function setListOfInputs(setter: Dispatch<SetStateAction<MenuInputs>>, importedValues: Record<string, any>) {
+function setListOfInputs(
+	setter: Dispatch<SetStateAction<MenuInputs[]>>,
+	menuKey: string,
+	importedValues: Record<string, any>
+) {
 	setter((menuInputs) => {
-		menuInputs.inputs.forEach((input) => {
+		const menu = menuInputs.find((e) => e.exportKey === menuKey);
+		menu!.inputs.forEach((input) => {
 			const importedValue = importedValues[input.resieName];
 			if (importedValue === undefined) {
 				input.isIncluded = false;
@@ -57,8 +62,8 @@ const importState = ({
 	setEdges,
 	setMediums,
 	logError,
-	setIOSettings,
-	setSimulationParameters,
+	setSimulationMenus,
+	simulationMenus,
 	nodeTypes,
 }: ImportStateProps): void => {
 	let importDict: ImportData;
@@ -73,12 +78,11 @@ const importState = ({
 		logError('There is no dictionary of components defined in import file.');
 		return;
 	}
-	if (importDict.io_settings) {
-		setListOfInputs(setIOSettings, importDict.io_settings);
-	}
-	if (importDict.simulation_parameters) {
-		setListOfInputs(setSimulationParameters, importDict.simulation_parameters);
-	}
+	simulationMenus.forEach((menu) => {
+		const list = importDict[menu.exportKey];
+		if (list === undefined) return;
+		setListOfInputs(setSimulationMenus, menu.exportKey, list);
+	});
 	// Get or generate mediums
 	const mediums = getImportMediums(importDict, nodeTypes);
 	setMediums(mediums);

@@ -16,10 +16,12 @@ export interface ImportExportMenuProps {
 	logError: (errorMessage: string) => void;
 	nodes: SusiNode[];
 	edges: SusiEdge[];
-	simulationParameters: MenuInputs;
-	ioSettings: MenuInputs;
-	setIOSettings: Dispatch<SetStateAction<MenuInputs>>;
-	setSimulationParameters: Dispatch<SetStateAction<MenuInputs>>;
+	simulationMenus: MenuInputs[];
+	setSimulationMenus: Dispatch<SetStateAction<MenuInputs[]>>;
+	// simulationParameters: MenuInputs;
+	// ioSettings: MenuInputs;
+	// setIOSettings: Dispatch<SetStateAction<MenuInputs>>;
+	// setSimulationParameters: Dispatch<SetStateAction<MenuInputs>>;
 	nodeTypes: Record<string, NodeType> | null;
 }
 
@@ -69,10 +71,10 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 		if (!mediumsValid) return false;
 		const nodeInputsValid = menuProps.nodes.every((n) => n.data.hasValidInputs);
 		if (!nodeInputsValid) return false;
-		const simulationParamsValid = menuProps.simulationParameters.inputs.every((input) => input.isValid());
+		const simulationParamsValid = menuProps.simulationMenus.every((menu) => {
+			return menu.inputs.every((input) => input.isValid());
+		});
 		if (!simulationParamsValid) return false;
-		const ioSettingsValid = menuProps.ioSettings.inputs.every((input) => input.isValid());
-		if (!ioSettingsValid) return false;
 
 		return true;
 	};

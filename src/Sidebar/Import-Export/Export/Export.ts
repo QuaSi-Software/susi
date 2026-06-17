@@ -11,8 +11,9 @@ interface ExportProps {
 	nodes: SusiNode[];
 	edges: SusiEdge[];
 	mediums: Medium[];
-	simulationParameters: MenuInputs;
-	ioSettings: MenuInputs;
+	// simulationParameters: MenuInputs;
+	// ioSettings: MenuInputs;
+	simulationMenus: MenuInputs[];
 }
 
 function getNodeNameFromID(nodeID: string, nodes: SusiNode[]) {
@@ -82,18 +83,17 @@ const addNodeInputsToObject = (nodeInputs: InputObject[], obj: Record<string, an
 	return obj;
 };
 
-const exportState = ({ nodes, edges, mediums, ioSettings, simulationParameters }: ExportProps): string => {
+const exportState = ({ nodes, edges, mediums, simulationMenus }: ExportProps): string => {
 	/** adding these node inputs doesn't really require the mediums, since they should not include medium inputs  */
-	const simulationParameterDict = {};
-	addNodeInputsToObject(simulationParameters.inputs, simulationParameterDict, []);
-	const ioSettingsDict = {};
-	addNodeInputsToObject(ioSettings.inputs, ioSettingsDict, []);
 	const exportDict: ImportData = {
 		components: {},
 		mediums: getMediumListForExport(mediums),
-		io_settings: ioSettingsDict,
-		simulation_parameters: simulationParameterDict,
 	};
+	simulationMenus.forEach((menu) => {
+		const obj = {};
+		addNodeInputsToObject(menu.inputs, obj, []);
+		exportDict[menu.exportKey] = obj;
+	});
 
 	const components: Record<string, ComponentData> = {};
 

@@ -1,4 +1,4 @@
-import { useContext, useState, type Dispatch, type SetStateAction } from 'react';
+import { useContext, useState } from 'react';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 
 import type { ImportExportMenuProps } from './Import-Export/ImportExportMenu';
@@ -9,14 +9,12 @@ import { DropdownDivider } from 'react-bootstrap';
 import { InstructionMenu } from './Instructions';
 import { SettingsMenu, type SettingsMenuProps } from './SettingsMenu';
 import { AppContext } from '../AppContext';
-import type { MenuInputs } from '../FetchingApiData/MenuInputs';
-import InputMenuWithCategories from '../Reactflow-Components/CustomInputWidgets/InputMenuWithCategories';
+import { SimulationSettingsMenu, type SimulationSettingsMenuProps } from './SimulationSettingsMenu';
 
 export const MenuType = {
 	NewNodeMenu: 'Add New Components',
 	MediumMenu: 'Medium Menu',
-	SimulationParameters: 'Simulation Parameters',
-	IO_Settings: 'IO Settings',
+	SimulationSettings: 'Simulation Settings',
 	ImportExportMenu: 'Import/Export',
 	Instructions: 'Instructions',
 	Settings: 'Settings',
@@ -24,29 +22,15 @@ export const MenuType = {
 
 export type MenuType = (typeof MenuType)[keyof typeof MenuType];
 
-type SidebarProps = ImportExportMenuProps & MediumMenuProps & SettingsMenuProps & NewNodeMenuProps;
+type SidebarProps = ImportExportMenuProps &
+	MediumMenuProps &
+	SettingsMenuProps &
+	NewNodeMenuProps &
+	SimulationSettingsMenuProps;
 
 const Sidebar = (menuProps: SidebarProps) => {
 	const [selectedMenu, setSelectedMenu] = useState<MenuType>(MenuType.NewNodeMenu);
 	const mediums = useContext(AppContext)!.mediums;
-
-	function changeInputListElement(
-		key: string,
-		value: any,
-		setInput: Dispatch<SetStateAction<MenuInputs>>,
-		isIncludedChange: boolean
-	) {
-		setInput((menuInputs) => {
-			const input = menuInputs.inputs.find((e) => e.resieName === key);
-			if (!input) console.error(`Input with key ${key} should not be undefined in list ${menuInputs}`);
-			if (isIncludedChange) input!.isIncluded = value;
-			else input!.value = value;
-			menuInputs.inputs.forEach((e) => {
-				e.checkInputValid(menuInputs.inputs);
-			});
-			return menuInputs;
-		});
-	}
 
 	const renderMenu = () => {
 		switch (selectedMenu) {
@@ -63,38 +47,8 @@ const Sidebar = (menuProps: SidebarProps) => {
 				return <NewNodeMenu {...menuProps} />;
 			case MenuType.ImportExportMenu:
 				return <ImportExportMenu {...menuProps} />;
-			case MenuType.SimulationParameters:
-				return (
-					<InputMenuWithCategories
-						title="Simulation Parameters"
-						inputs={menuProps.simulationParameters.inputs}
-						inputCategories={menuProps.simulationParameters.categories}
-						onValueChange={(key, value) =>
-							changeInputListElement(key, value, menuProps.setSimulationParameters, false)
-						}
-						onIncludedChange={(key, value) =>
-							changeInputListElement(key, value, menuProps.setSimulationParameters, true)
-						}
-						numberOfColumns={1}
-						menuTypeName="Simulation Parameters"
-					/>
-				);
-			case MenuType.IO_Settings:
-				return (
-					<InputMenuWithCategories
-						title="IO Settings"
-						inputs={menuProps.ioSettings.inputs}
-						inputCategories={menuProps.ioSettings.categories}
-						onValueChange={(key, value) =>
-							changeInputListElement(key, value, menuProps.setIOSettings, false)
-						}
-						onIncludedChange={(key, value) =>
-							changeInputListElement(key, value, menuProps.setIOSettings, true)
-						}
-						numberOfColumns={1}
-						menuTypeName="IO Settings"
-					/>
-				);
+			case MenuType.SimulationSettings:
+				return <SimulationSettingsMenu {...menuProps} />;
 			case MenuType.Instructions:
 				return <InstructionMenu />;
 			case MenuType.Settings:
@@ -109,12 +63,11 @@ const Sidebar = (menuProps: SidebarProps) => {
 			case MenuType.MediumMenu:
 				const allMediumsValid = mediums.every((m) => m.valid);
 				return !allMediumsValid;
-			case MenuType.SimulationParameters:
-				const simulationParamsValid = menuProps.simulationParameters.inputs.every((input) => input.isValid());
+			case MenuType.SimulationSettings:
+				const simulationParamsValid = menuProps.simulationMenus.every((menu) => {
+					return menu.inputs.every((input) => input.isValid());
+				});
 				return !simulationParamsValid;
-			case MenuType.IO_Settings:
-				const ioSettingsValid = menuProps.ioSettings.inputs.every((input) => input.isValid());
-				return !ioSettingsValid;
 			default:
 				return false;
 		}

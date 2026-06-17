@@ -1,8 +1,9 @@
 export interface ImportData {
 	components: Record<string, ComponentData>;
-	io_settings: Record<string, any>;
-	simulation_parameters: Record<string, any>;
+	// io_settings: Record<string, any>;
+	// simulation_parameters: Record<string, any>;
 	mediums?: Array<[string, string | null]>;
+	[key: string]: any;
 }
 
 export interface Connections {

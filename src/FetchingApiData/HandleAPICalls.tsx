@@ -13,8 +13,7 @@ export function fetchComponentInputs(
 	nodeTypes: Record<string, NodeType> | null,
 	setComponentTypes: Dispatch<SetStateAction<Record<string, NodeType> | null>>,
 	setComponentCategories: Dispatch<SetStateAction<ApiCategory[]>>,
-	setIOSettings: Dispatch<SetStateAction<MenuInputs>>,
-	setSimulationParametersList: Dispatch<SetStateAction<MenuInputs>>,
+	setSimulationMenus: Dispatch<SetStateAction<MenuInputs[]>>,
 	setOverlayError: Dispatch<SetStateAction<string | null>>
 ) {
 	useEffect(() => {
@@ -34,14 +33,20 @@ export function fetchComponentInputs(
 				setComponentTypes(componentTypes);
 				setComponentCategories(data.components.type_categories);
 				/** io settings and sim params */
-				setIOSettings(importMenuInputs(data.general.io_categories, data.general.io_settings, 'IO Settings'));
-				setSimulationParametersList(
+				setSimulationMenus([
+					importMenuInputs(
+						data.general.io_categories,
+						data.general.io_settings,
+						'IO Settings',
+						'io_settings'
+					),
 					importMenuInputs(
 						data.general.simulation_categories,
 						data.general.simulation,
-						'Simulation Parameters'
-					)
-				);
+						'Simulation Parameters',
+						'simulation_parameters'
+					),
+				]);
 				setLoadingMessage(null);
 			})
 			.catch((error) => {
