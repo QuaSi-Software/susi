@@ -8,6 +8,10 @@
 	--button-disabled-border-color: #939393;
 }
 
+.medium-menu {
+	font-size: 22px;
+}
+
 .medium-menu-button-section {
 	display: flex;
 	align-items: center;
