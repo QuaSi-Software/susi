@@ -46,6 +46,18 @@ export function fetchComponentInputs(
 						'Simulation Parameters',
 						'simulation_parameters'
 					),
+					importMenuInputs(
+						data.general.economic_categories,
+						data.general.economic,
+						'Economic Settings',
+						'economic'
+					),
+					importMenuInputs(
+						data.general.emissions_categories,
+						data.general.emissions,
+						'Emissions',
+						'emissions'
+					),
 				]);
 				setLoadingMessage(null);
 			})
