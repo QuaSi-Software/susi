@@ -50,6 +50,11 @@ const createNodeFromType = (
 	};
 };
 
+export function checkNodeValidInputs(node: SusiNode) {
+	const hasValidInputs = node.data.nodeInputs.every((input) => input.isValid());
+	node.data.hasValidInputs = hasValidInputs;
+}
+
 export const deepCloneNode = (node: SusiNode): SusiNode => {
 	const newNode = _.cloneDeep(node);
 	newNode.data.nodeInputs = node.data.nodeInputs.map((input) => input.copy());

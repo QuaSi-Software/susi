@@ -89,7 +89,7 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 
 	const handleSaveChanges = () => {
 		let updatedNodes = deepCloneNodes(nodes);
-		editedNode.data.hasValidInputs = true;
+		editedNode.data.hasValidInputs = node.data.nodeInputs.every((input) => input.isValid());
 		updatedNodes = updatedNodes.map((n: SusiNode) => (n.id === editedNode.id ? editedNode : n));
 		edgesToDelete.forEach((edgeID) => {
 			const edge = edges.find((e) => e.id === edgeID);
@@ -139,11 +139,23 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 				/>
 				<BusConnectionMenu node={node} nodes={nodes} onBusDataChange={onNodeBusDataChange} />
 				<Modal.Footer>
+					<span className="warning-text right-aligned-row">
+						<span style={{ visibility: 'hidden' }}>Placeholder</span>
+						{!allInputsValid && (
+							<>
+								<i className="bi bi-exclamation-circle" />
+								<span> </span>
+								There are issues in this file.
+							</>
+						)}
+					</span>
+
 					<Button variant="secondary" onClick={handleClose}>
 						Close
 					</Button>
-					<Button variant="primary" onClick={handleSaveChanges} disabled={!allInputsValid || nameIsDuplicate}>
+					<Button variant="primary" onClick={handleSaveChanges} disabled={nameIsDuplicate}>
 						Save Changes
+						<span style={{ visibility: !allInputsValid ? 'visible' : 'hidden' }}> ⚠️ </span>
 					</Button>
 				</Modal.Footer>
 			</Modal>

@@ -23,4 +23,16 @@ function checkMutex(input: InputObject, otherInputs: InputObject[]): InputIssue 
 	return null;
 }
 
-export default checkMutex;
+function mutexSolver(inputs: InputObject[]) {
+	inputs.forEach((input) => {
+		/** If this input is included and mutex, uninclude it */
+		if (input.isIncluded && input.issue.issueType === InputIssueType.Mutex) {
+			input.isIncluded = false;
+		}
+	});
+	inputs.forEach((input) => {
+		input.checkInputValid(inputs);
+	});
+}
+
+export { mutexSolver, checkMutex };

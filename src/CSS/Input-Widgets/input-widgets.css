@@ -28,8 +28,7 @@
 	margin-top: 3px;
 }
 
-.input-warning-message,
-.mutex-warning {
+.input-warning-message {
 	font-size: medium;
 	overflow: hidden;
 	white-space: nowrap;
@@ -38,9 +37,13 @@
 	display: block;
 }
 
-.input-warning-message {
+/* .input-warning-message {
 	color: #f00;
-}
+} */
 .mutex-warning {
 	color: #505050;
+}
+
+.warning-text {
+	color: #f00;
 }

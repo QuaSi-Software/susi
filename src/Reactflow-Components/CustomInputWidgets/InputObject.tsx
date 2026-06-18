@@ -71,7 +71,7 @@ class InputObject implements InputObjectProps {
 
 		if (this.value === null && !this.isRequired) {
 			if (this.type === InputObjectType.STRING) this.value = '';
-			this.isIncluded = false;
+			// this.isIncluded = false;
 		}
 		if (this.type === InputObjectType.DATE) {
 			this.value = new Date(this.value);

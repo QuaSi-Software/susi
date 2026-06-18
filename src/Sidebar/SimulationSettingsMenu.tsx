@@ -1,7 +1,6 @@
 import { useState, type Dispatch, type SetStateAction } from 'react';
 import type { MenuInputs } from '../FetchingApiData/MenuInputs';
 import CustomDropdown from '../Reactflow-Components/CustomInputWidgets/CustomDropdown';
-import { DropdownDivider } from 'react-bootstrap';
 import InputMenuWithCategories from '../Reactflow-Components/CustomInputWidgets/InputMenuWithCategories';
 
 export interface SimulationSettingsMenuProps {

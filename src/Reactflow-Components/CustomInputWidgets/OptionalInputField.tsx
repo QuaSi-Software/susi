@@ -39,7 +39,7 @@ const OptionalInputField: React.FC<OptionalInputFieldProps> = ({
 					type="switch"
 					checked={isIncluded}
 					id={resieName}
-					label="include?"
+					label="include"
 					onChange={onSwitchClicked}
 					isInvalid={nodeInput.issue.issueType === InputIssueType.AtLeastOne}
 					disabled={nodeInput.issue.issueType === InputIssueType.Mutex}

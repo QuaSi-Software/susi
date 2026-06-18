@@ -19,3 +19,8 @@
 	font-weight: 600;
 	font-size: 28px;
 }
+
+.right-aligned-row {
+	width: 100%;
+	text-align: right;
+}

@@ -239,6 +239,7 @@ const DnDFlow = () => {
 					onNodeContextMenu={onNodeContextMenu}
 					onPaneContextMenu={onPaneContextMenu}
 					onPaneClick={clearAllMenus}
+					proOptions={{ hideAttribution: true }}
 				>
 					<Controls showInteractive={false} />
 					<Background />

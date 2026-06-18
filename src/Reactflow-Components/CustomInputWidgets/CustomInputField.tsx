@@ -14,7 +14,7 @@ import { Locale } from '../../Sidebar/SettingsMenu';
 
 import { de } from 'primelocale/js/de.js';
 import { en } from 'primelocale/js/en.js';
-import { InputIssueType } from './Validation/InputChecking';
+import { InputIssueType, type InputIssue } from './Validation/InputChecking';
 addLocale('de-DE', de);
 addLocale('en-US', en);
 
@@ -163,20 +163,33 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 		}
 	};
 
-	let warningMessage = nodeInput.issue.message;
-	const showWarningIcon: boolean =
-		nodeInput.issue.issueType === InputIssueType.AtLeastOne ||
-		nodeInput.issue.issueType === InputIssueType.Validity;
-	const showMutexInfo: boolean = nodeInput.issue.issueType === InputIssueType.Mutex;
-	return (
-		<>
-			<span title={warningMessage} className={showWarningIcon ? 'input-warning-message' : 'mutex-warning'}>
-				{showWarningIcon && <i className="bi bi-exclamation-circle" />}
-				{showMutexInfo && <i className="bi bi-info-circle-fill" />}
+	function getWarningMessage(issue: InputIssue) {
+		let iconName = '';
+		let textClass = '';
+		switch (issue.issueType) {
+			case InputIssueType.AtLeastOne:
+			case InputIssueType.Validity:
+				iconName = 'bi bi-exclamation-circle';
+				textClass = 'warning-text';
+				break;
+			case InputIssueType.Mutex:
+				iconName = 'bi bi-info-circle-fill';
+				textClass = 'mutex-warning';
+				break;
+		}
+		return (
+			<span title={issue.message} className={`input-warning-message ${textClass}`}>
+				{iconName && <i className={iconName} />}
 				<span> </span>
-				{warningMessage}
+				{issue.message}
 				<span style={{ visibility: 'hidden' }}>Placeholder</span>
 			</span>
+		);
+	}
+
+	return (
+		<>
+			{getWarningMessage(nodeInput.issue)}
 
 			<div data-toggle="tooltip" data-placement="top" title={nodeInput.tooltip}>
 				{getInputFieldByType()}

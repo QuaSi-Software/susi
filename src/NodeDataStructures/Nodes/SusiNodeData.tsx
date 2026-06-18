@@ -2,6 +2,7 @@ import BusData from '../Bus/BusData';
 import { InputObjectType, type InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { NodeType } from './SusiNodeTypes';
 import type { ApiCategory } from '../../FetchingApiData/ApiData';
+import { mutexSolver } from '../../Reactflow-Components/CustomInputWidgets/Validation/Mutex';
 
 interface MediumHandleDict {
 	source: string[];
@@ -67,6 +68,7 @@ export function createSusiNodeData(nodeType: NodeType, content: string = ''): Su
 	nodeInputs.forEach((input) => {
 		input.checkInputValid(nodeInputs);
 	});
+	mutexSolver(nodeInputs);
 	const hasValidInputs = nodeInputs.every((input) => input.isValid());
 	const componentType = nodeType.type_name;
 	const busData = componentType.toLowerCase() === 'bus' ? new BusData() : null;
