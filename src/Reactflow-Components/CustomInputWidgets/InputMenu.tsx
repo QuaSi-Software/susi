@@ -5,7 +5,6 @@ import type { InputObject } from './InputObject';
 import React from 'react';
 import OptionalInputField from './OptionalInputField';
 import { InputIssueType } from './Validation/InputChecking';
-import { uniqueId } from 'lodash';
 
 export interface InputMenuProps {
 	title: string;
@@ -59,9 +58,10 @@ export const InputMenu: React.FC<InputMenuProps> = ({
 				{rows.map((pair, pairIndex) => (
 					<Row key={pairIndex} className="g-2 mt-1 mt-md-0 input-menu-row">
 						{pair.map((input) => (
-							<Col key={uniqueId(input?.resieName || '')} md>
+							<Col key={input?.resieName} md>
 								{input !== null && (
 									<div
+										key="warning-message-text"
 										style={{
 											visibility:
 												input.issue.issueType === InputIssueType.Conditional
