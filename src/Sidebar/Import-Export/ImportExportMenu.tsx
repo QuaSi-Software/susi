@@ -83,13 +83,16 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 	return (
 		<div className="import-export-menu">
 			<div className="sidebar-heading">Import & Export</div>
-			{exportWarning && (
-				<div className="input-warning-message">
-					There are issues in your project that will cause your export file to be invalid.
-					<br />
-					Please check the Sidebar Menus and the Components for warning signs. ⚠️
-				</div>
-			)}
+			{/* {exportWarning && ( */}
+			<div
+				className="input-warning-message warning-text"
+				style={{ visibility: exportWarning ? 'visible' : 'hidden' }}
+			>
+				There are issues in your project that will cause your export file to be invalid.
+				<br />
+				Please check the Sidebar Menus and the Components for warning signs. ⚠️
+			</div>
+			{/* )} */}
 			<div className="import-export-buttons">
 				<Button variant="primary" onClick={handleImport} disabled={textContent === ''}>
 					Import
