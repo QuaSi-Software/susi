@@ -1,15 +1,13 @@
+/** Modal */
 .modal-dialog {
 	max-width: 70%;
+	display: flex;
+	max-height: 90vh;
 }
 .modal-content {
 	padding: 20px;
 	background-color: #fafafa;
-}
-.table {
-	display: block;
-	width: max-content;
-	max-width: 100%;
-	overflow: auto;
+	overflow: hidden;
 }
 .modal-header {
 	font-weight: 600;
@@ -18,6 +16,24 @@
 .modal-title {
 	font-weight: 600;
 	font-size: 28px;
+}
+
+.modal-body {
+	overflow-y: auto;
+}
+
+.modal-footer {
+	display: flex;
+	gap: 0rem;
+	padding: 10px;
+}
+
+/** Non-Modal components */
+.table {
+	display: block;
+	width: max-content;
+	max-width: 100%;
+	overflow: auto;
 }
 
 .right-aligned-row {

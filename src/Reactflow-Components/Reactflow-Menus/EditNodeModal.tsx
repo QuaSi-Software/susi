@@ -128,17 +128,17 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 							</FloatingLabel>
 						</Col>
 					</Row>
+					<InputMenuWithCategories
+						title="Component Inputs"
+						inputs={editedNode.data.nodeInputs}
+						inputCategories={editedNode.data.inputCategories}
+						onValueChange={onNodeInputValueChange}
+						onIncludedChange={onNodeInputIncludedChange}
+						numberOfColumns={2}
+						menuTypeName={editedNode.data.componentType}
+					/>
+					<BusConnectionMenu node={node} nodes={nodes} onBusDataChange={onNodeBusDataChange} />
 				</Modal.Body>
-				<InputMenuWithCategories
-					title="Component Inputs"
-					inputs={editedNode.data.nodeInputs}
-					inputCategories={editedNode.data.inputCategories}
-					onValueChange={onNodeInputValueChange}
-					onIncludedChange={onNodeInputIncludedChange}
-					numberOfColumns={2}
-					menuTypeName={editedNode.data.componentType}
-				/>
-				<BusConnectionMenu node={node} nodes={nodes} onBusDataChange={onNodeBusDataChange} />
 				<Modal.Footer>
 					<span className="warning-text right-aligned-row">
 						<span style={{ visibility: 'hidden' }}>Placeholder</span>
