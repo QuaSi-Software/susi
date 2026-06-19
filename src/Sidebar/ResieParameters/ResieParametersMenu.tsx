@@ -31,7 +31,7 @@ export function ResieParametersMenu({
 	const menu = resieParameterMenus.find((e) => e.title === selectedMenu);
 	return (
 		<>
-			<div className="sidebar-heading">{menu?.title}</div>
+			<div className="sidebar-subheading">{menu?.title}</div>
 			<br />
 			<InputMenuWithCategories
 				title={menu!.title}

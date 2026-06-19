@@ -92,7 +92,7 @@ const MediumMenu = ({ nodes, setNodes, edges, setEdges }: MediumMenuProps) => {
 
 	return (
 		<div className="medium-menu">
-			<div className="sidebar-heading">{'Mediums'}</div>
+			{/* <div className="sidebar-heading">{'Mediums'}</div> */}
 			<Col className="d-flex flex-column gap-2">
 				{mediums.map(
 					(medium) =>

@@ -22,7 +22,6 @@ export function SettingsMenu({ nodeNamePrefix, setNodeNamePrefix, theme, setThem
 	const locale = useContext(AppContext)!.locale;
 	return (
 		<>
-			<div className="sidebar-heading">Settings</div>
 			<FloatingLabel
 				controlId="floatingInput"
 				label={'UAC Prefix for Component Names'}

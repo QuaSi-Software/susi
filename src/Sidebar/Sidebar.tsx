@@ -1,7 +1,8 @@
 import { useContext, useState } from 'react';
-// import { Accordion, AccordionTab } from 'primereact/accordion';
 import { DropdownMenu } from 'radix-ui';
-// import { HamburgerMenuIcon, DotFilledIcon, CheckIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import '@radix-ui/colors/black-alpha.css';
+import '@radix-ui/colors/mauve.css';
+import '@radix-ui/colors/violet.css';
 
 import type { ImportExportMenuProps } from './Import-Export/ImportExportMenu';
 import ImportExportMenu from './Import-Export/ImportExportMenu';
@@ -77,7 +78,7 @@ const Sidebar = (menuProps: SidebarProps) => {
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger asChild>
 						<button className="IconButton" aria-label="Choose Sidebar Menu">
-							Menus
+							<i className="bi bi-list"></i>
 						</button>
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Portal>
@@ -96,9 +97,8 @@ const Sidebar = (menuProps: SidebarProps) => {
 						</DropdownMenu.Content>
 					</DropdownMenu.Portal>
 				</DropdownMenu.Root>
+				<span className="sidebar-heading">{selectedMenu}</span>
 			</div>
-
-			<DropdownDivider />
 			<div className="sidebar-menu-content">{renderMenu()}</div>
 		</aside>
 	);

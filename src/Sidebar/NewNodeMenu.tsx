@@ -20,7 +20,6 @@ export default function NewNodeMenu({ categories, nodeTypes }: NewNodeMenuProps)
 	categories = categories.sort((a, b) => a.index - b.index);
 	return (
 		<>
-			<div className="sidebar-heading">Components </div>
 			{categories.map((category: ApiCategory) => (
 				<div key={category.heading}>
 					<div className="sidebar-subheading">{category.heading}</div>

@@ -82,8 +82,6 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 	const exportWarning = !menusAndComponentsValid();
 	return (
 		<div className="import-export-menu">
-			<div className="sidebar-heading">Import & Export</div>
-			{/* {exportWarning && ( */}
 			<div
 				className="input-warning-message warning-text"
 				style={{ visibility: exportWarning ? 'visible' : 'hidden' }}
