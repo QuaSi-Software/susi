@@ -1,17 +1,14 @@
-import { useState, type Dispatch, type SetStateAction } from 'react';
+import { type Dispatch, type SetStateAction } from 'react';
 import type { MenuInputs } from '../FetchingApiData/MenuInputs';
-import CustomDropdown from '../Reactflow-Components/CustomInputWidgets/CustomDropdown';
 import InputMenuWithCategories from '../Reactflow-Components/CustomInputWidgets/InputMenuWithCategories';
 
-export interface SimulationSettingsMenuProps {
+export interface ResieParametersMenuProps {
+	selectedMenu?: string;
 	simulationMenus: MenuInputs[];
 	setSimulationMenus: Dispatch<SetStateAction<MenuInputs[]>>;
 }
 
-export function SimulationSettingsMenu({ simulationMenus, setSimulationMenus }: SimulationSettingsMenuProps) {
-	const menuNames = simulationMenus.map((menu) => menu.title);
-	const [selectedMenu, setSelectedMenu] = useState<string>(menuNames[0]);
-
+export function ResieParametersMenu({ selectedMenu, simulationMenus, setSimulationMenus }: ResieParametersMenuProps) {
 	function changeInputListElement(menuTitle: string, key: string, value: any, isIncludedChange: boolean) {
 		setSimulationMenus((menuInputs) => {
 			const menu = simulationMenus.find((e) => e.title === menuTitle);
@@ -29,14 +26,7 @@ export function SimulationSettingsMenu({ simulationMenus, setSimulationMenus }: 
 	const menu = simulationMenus.find((e) => e.title === selectedMenu);
 	return (
 		<>
-			<div className="simulation-settings-menus">
-				<CustomDropdown
-					displayName="Simulation Settings Menus"
-					startValue={selectedMenu}
-					dropdown_options={menuNames}
-					onEdit={setSelectedMenu}
-				/>
-			</div>
+			<div className="sidebar-heading">{menu?.title}</div>
 			<br />
 			<InputMenuWithCategories
 				title={menu!.title}

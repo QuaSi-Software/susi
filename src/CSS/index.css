@@ -17,6 +17,7 @@
 @import './Sidebar-Styling/sidebar-new-node-menu.css';
 @import './Sidebar-Styling/medium-menu.css';
 @import './Sidebar-Styling/simulation-menus.css';
+@import './Sidebar-Styling/radix-ui.css';
 
 /** Input Widget Styling */
 @import './Input-Widgets/input-widgets.css';

@@ -31,7 +31,7 @@ function getNodeInputType(inputName: string, apiInput: APIParameter) {
 			else if (apiInput.type === 'Vector{Float64}' || apiInput.type === 'Vector{Union{Nothing, Float64}}')
 				return InputObjectType.VECTOR_FLOAT;
 	}
-	console.error(`Node Input value ${inputName} has unsupported type: ${apiInput.json_type} \n`, apiInput);
+	console.warn(`Node Input value ${inputName} has unsupported type: ${apiInput.json_type} \n`, apiInput);
 	return InputObjectType.UNSET;
 }
 
@@ -59,7 +59,7 @@ export function checkParametersAndCategoriesMatch(inputs: InputObject[], categor
 	inputs.forEach((input) => {
 		const category = categories.find((category) => category.parameters?.includes(input.resieName));
 		if (category === undefined) {
-			console.error(`Input ${input.resieName} in ${inputType} is not included in any category.`);
+			console.warn(`Input ${input.resieName} in ${inputType} is not included in any category.`);
 			let otherCategory = categories.find((category) => category.heading === 'Other');
 			if (otherCategory === undefined) {
 				otherCategory = {
@@ -78,7 +78,7 @@ export function checkParametersAndCategoriesMatch(inputs: InputObject[], categor
 	const categoryNames = categories.map((category) => category.heading);
 	categoryNames.forEach((categoryName) => {
 		const numInArray = categoryNames.filter((e) => e === categoryName).length;
-		if (numInArray > 1) console.error(`${inputType} has category ${categoryName} ${numInArray} times`);
+		if (numInArray > 1) console.warn(`${inputType} has category ${categoryName} ${numInArray} times`);
 	});
 	/** Check no category includes an input name that isn't in inputs */
 	categories.forEach((category) => {
@@ -86,7 +86,7 @@ export function checkParametersAndCategoriesMatch(inputs: InputObject[], categor
 		parameters!.forEach((paramName) => {
 			const input = inputs.find((input) => input.resieName === paramName);
 			if (input === undefined) {
-				console.error(
+				console.warn(
 					`${inputType} has input ${paramName} in category ${category.heading}, but it is not in the parameter list`
 				);
 			}
