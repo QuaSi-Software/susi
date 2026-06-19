@@ -1,13 +1,13 @@
 import type { Dispatch, SetStateAction } from 'react';
-import type { MenuInputs } from '../FetchingApiData/MenuInputs';
 import { DropdownMenu } from 'radix-ui';
-import { MenuType } from './Sidebar';
+import type { ResieParameterMenuInfo } from './ResieParameterMenuInfo';
+import { MenuType } from '../Sidebar';
 
 interface ResieParameterSubMenuProps {
 	resieParameterMenu: string;
 	setResieParameterMenu: Dispatch<SetStateAction<string>>;
 	setSelectedMenu: Dispatch<SetStateAction<MenuType>>;
-	resieParameterMenus: MenuInputs[];
+	resieParameterMenus: ResieParameterMenuInfo[];
 }
 
 export function ResieParameterSubMenu({
@@ -16,14 +16,14 @@ export function ResieParameterSubMenu({
 	setSelectedMenu,
 	resieParameterMenus,
 }: ResieParameterSubMenuProps) {
-	function noInputIssues(resieParameterMenu: MenuInputs) {
+	function noInputIssues(resieParameterMenu: ResieParameterMenuInfo) {
 		return resieParameterMenu.inputs.every((input) => input.isValid());
 	}
 	function anyMenuHasWarning() {
 		const allMenusFine = resieParameterMenus.every((menu) => noInputIssues(menu));
 		return !allMenusFine;
 	}
-	function onSelect(menu: MenuInputs) {
+	function onSelect(menu: ResieParameterMenuInfo) {
 		setSelectedMenu(MenuType.ResieParameters);
 		setResieParameterMenu(menu.title);
 	}
@@ -36,7 +36,7 @@ export function ResieParameterSubMenu({
 			</DropdownMenu.SubTrigger>
 			<DropdownMenu.Portal>
 				<DropdownMenu.SubContent className="DropdownMenuSubContent" sideOffset={2} alignOffset={-5}>
-					{resieParameterMenus.map((menu: MenuInputs) => (
+					{resieParameterMenus.map((menu: ResieParameterMenuInfo) => (
 						<DropdownMenu.Item
 							className="DropdownMenuItem"
 							onSelect={() => onSelect(menu)}

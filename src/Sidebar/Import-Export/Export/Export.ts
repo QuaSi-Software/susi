@@ -5,15 +5,15 @@ import type { InputObject } from '../../../Reactflow-Components/CustomInputWidge
 import type { ComponentData, Connections, ImportData } from '../ExportDataStrucures';
 import { getUndefinedMedium } from '../../../NodeDataStructures/Mediums/MediumUtils';
 import { InputIssueType } from '../../../Reactflow-Components/CustomInputWidgets/Validation/InputChecking';
-import type { MenuInputs } from '../../../FetchingApiData/MenuInputs';
+import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
 
 interface ExportProps {
 	nodes: SusiNode[];
 	edges: SusiEdge[];
 	mediums: Medium[];
-	// simulationParameters: MenuInputs;
-	// ioSettings: MenuInputs;
-	simulationMenus: MenuInputs[];
+	// simulationParameters: ResieParameterMenuInfo;
+	// ioSettings: ResieParameterMenuInfo;
+	resieParameterMenus: ResieParameterMenuInfo[];
 }
 
 function getNodeNameFromID(nodeID: string, nodes: SusiNode[]) {
@@ -83,13 +83,13 @@ const addNodeInputsToObject = (nodeInputs: InputObject[], obj: Record<string, an
 	return obj;
 };
 
-const exportState = ({ nodes, edges, mediums, simulationMenus }: ExportProps): string => {
+const exportState = ({ nodes, edges, mediums, resieParameterMenus }: ExportProps): string => {
 	/** adding these node inputs doesn't really require the mediums, since they should not include medium inputs  */
 	const exportDict: ImportData = {
 		components: {},
 		mediums: getMediumListForExport(mediums),
 	};
-	simulationMenus.forEach((menu) => {
+	resieParameterMenus.forEach((menu) => {
 		const obj = {};
 		addNodeInputsToObject(menu.inputs, obj, []);
 		exportDict[menu.exportKey] = obj;

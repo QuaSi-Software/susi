@@ -11,8 +11,8 @@ import { DropdownDivider } from 'react-bootstrap';
 import { InstructionMenu } from './Instructions';
 import { SettingsMenu, type SettingsMenuProps } from './SettingsMenu';
 import { AppContext } from '../AppContext';
-import { ResieParametersMenu, type ResieParametersMenuProps } from './ResieParametersMenu';
-import { ResieParameterSubMenu } from './ResieParameterSubMenu';
+import { ResieParametersMenu, type ResieParametersMenuProps } from './ResieParameters/ResieParametersMenu';
+import { ResieParameterSubMenu } from './ResieParameters/ResieParameterSubMenu';
 
 export const MenuType = {
 	NewNodeMenu: 'Add New Components',
@@ -32,9 +32,9 @@ type SidebarProps = ImportExportMenuProps &
 	ResieParametersMenuProps;
 
 const Sidebar = (menuProps: SidebarProps) => {
-	if (menuProps.simulationMenus.length === 0) return <></>;
+	if (menuProps.resieParameterMenus.length === 0) return <></>;
 	const [selectedMenu, setSelectedMenu] = useState<MenuType>(MenuType.NewNodeMenu);
-	const [selectedResieParamMenu, setSelectedResieParamMenu] = useState(menuProps.simulationMenus[0].title);
+	const [selectedResieParamMenu, setSelectedResieParamMenu] = useState(menuProps.resieParameterMenus[0].title);
 	const mediums = useContext(AppContext)!.mediums;
 
 	const renderMenu = () => {
@@ -77,7 +77,6 @@ const Sidebar = (menuProps: SidebarProps) => {
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger asChild>
 						<button className="IconButton" aria-label="Choose Sidebar Menu">
-							{/* <HamburgerMenuIcon /> */}
 							Menus
 						</button>
 					</DropdownMenu.Trigger>
@@ -89,7 +88,7 @@ const Sidebar = (menuProps: SidebarProps) => {
 								resieParameterMenu={selectedResieParamMenu}
 								setResieParameterMenu={setSelectedResieParamMenu}
 								setSelectedMenu={setSelectedMenu}
-								resieParameterMenus={menuProps.simulationMenus}
+								resieParameterMenus={menuProps.resieParameterMenus}
 							/>
 							{MenuItem(MenuType.ImportExportMenu)}
 							{MenuItem(MenuType.Instructions)}

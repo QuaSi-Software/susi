@@ -1,29 +1,34 @@
 import { type Dispatch, type SetStateAction } from 'react';
-import type { MenuInputs } from '../FetchingApiData/MenuInputs';
-import InputMenuWithCategories from '../Reactflow-Components/CustomInputWidgets/InputMenuWithCategories';
+import type { ResieParameterMenuInfo } from './ResieParameterMenuInfo';
+import InputMenuWithCategories from '../../Reactflow-Components/CustomInputWidgets/InputMenuWithCategories';
 
 export interface ResieParametersMenuProps {
 	selectedMenu?: string;
-	simulationMenus: MenuInputs[];
-	setSimulationMenus: Dispatch<SetStateAction<MenuInputs[]>>;
+	resieParameterMenus: ResieParameterMenuInfo[];
+	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
 }
 
-export function ResieParametersMenu({ selectedMenu, simulationMenus, setSimulationMenus }: ResieParametersMenuProps) {
+export function ResieParametersMenu({
+	selectedMenu,
+	resieParameterMenus,
+	setResieParameterMenus,
+}: ResieParametersMenuProps) {
 	function changeInputListElement(menuTitle: string, key: string, value: any, isIncludedChange: boolean) {
-		setSimulationMenus((menuInputs) => {
-			const menu = simulationMenus.find((e) => e.title === menuTitle);
+		setResieParameterMenus((resieParameterMenuInfo) => {
+			const menu = resieParameterMenus.find((e) => e.title === menuTitle);
 			const input = menu!.inputs.find((e) => e.resieName === key);
-			if (!input) console.error(`Input with key ${key} should not be undefined in list ${menuInputs}`);
+			if (!input)
+				console.error(`Input with key ${key} should not be undefined in list ${resieParameterMenuInfo}`);
 			if (isIncludedChange) input!.isIncluded = value;
 			else input!.value = value;
 			menu!.inputs.forEach((e) => {
 				e.checkInputValid(menu!.inputs);
 			});
-			return menuInputs;
+			return resieParameterMenuInfo;
 		});
 	}
 
-	const menu = simulationMenus.find((e) => e.title === selectedMenu);
+	const menu = resieParameterMenus.find((e) => e.title === selectedMenu);
 	return (
 		<>
 			<div className="sidebar-heading">{menu?.title}</div>

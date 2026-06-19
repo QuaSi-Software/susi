@@ -8,7 +8,7 @@ import { useReactFlow } from '@xyflow/react';
 import { flushSync } from 'react-dom';
 import { AppContext } from '../../AppContext';
 import type { NodeType } from '../../NodeDataStructures/Nodes/SusiNodeTypes';
-import type { MenuInputs } from '../../FetchingApiData/MenuInputs';
+import type { ResieParameterMenuInfo } from '../ResieParameters/ResieParameterMenuInfo';
 
 export interface ImportExportMenuProps {
 	setNodes: (nodes: SusiNode[]) => void;
@@ -16,12 +16,12 @@ export interface ImportExportMenuProps {
 	logError: (errorMessage: string) => void;
 	nodes: SusiNode[];
 	edges: SusiEdge[];
-	simulationMenus: MenuInputs[];
-	setSimulationMenus: Dispatch<SetStateAction<MenuInputs[]>>;
-	// simulationParameters: MenuInputs;
-	// ioSettings: MenuInputs;
-	// setIOSettings: Dispatch<SetStateAction<MenuInputs>>;
-	// setSimulationParameters: Dispatch<SetStateAction<MenuInputs>>;
+	resieParameterMenus: ResieParameterMenuInfo[];
+	setresieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
+	// simulationParameters: ResieParameterMenuInfo;
+	// ioSettings: ResieParameterMenuInfo;
+	// setIOSettings: Dispatch<SetStateAction<ResieParameterMenuInfo>>;
+	// setSimulationParameters: Dispatch<SetStateAction<ResieParameterMenuInfo>>;
 	nodeTypes: Record<string, NodeType> | null;
 }
 
@@ -71,7 +71,7 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 		if (!mediumsValid) return false;
 		const nodeInputsValid = menuProps.nodes.every((n) => n.data.hasValidInputs);
 		if (!nodeInputsValid) return false;
-		const simulationParamsValid = menuProps.simulationMenus.every((menu) => {
+		const simulationParamsValid = menuProps.resieParameterMenus.every((menu) => {
 			return menu.inputs.every((input) => input.isValid());
 		});
 		if (!simulationParamsValid) return false;

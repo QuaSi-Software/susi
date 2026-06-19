@@ -10,7 +10,7 @@ import { createSourceHandleDict, findTargetHandle, initializeTakenHandles } from
 import { getNewEdge } from '../../../NodeDataStructures/Edges/CreateEdge';
 import type { Dispatch, SetStateAction } from 'react';
 import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
-import type { MenuInputs } from '../../../FetchingApiData/MenuInputs';
+import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
 
 interface ImportStateProps {
 	stateJSON: string;
@@ -19,8 +19,8 @@ interface ImportStateProps {
 	setMediums: (mediums: Medium[]) => void;
 	logError: (errorMessage: string) => void;
 	/** io settings and simulation parameters */
-	simulationMenus: MenuInputs[];
-	setSimulationMenus: Dispatch<SetStateAction<MenuInputs[]>>;
+	resieParameterMenus: ResieParameterMenuInfo[];
+	setresieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
 	nodeTypes: Record<string, NodeType>;
 }
 
@@ -38,12 +38,12 @@ function getOutputRefs(sourceNodeID: string, sourceNodeData: ComponentData): str
 }
 
 function setListOfInputs(
-	setter: Dispatch<SetStateAction<MenuInputs[]>>,
+	setter: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>,
 	menuKey: string,
 	importedValues: Record<string, any>
 ) {
-	setter((menuInputs) => {
-		const menu = menuInputs.find((e) => e.exportKey === menuKey);
+	setter((ResieParameterMenuInfo) => {
+		const menu = ResieParameterMenuInfo.find((e) => e.exportKey === menuKey);
 		menu!.inputs.forEach((input) => {
 			const importedValue = importedValues[input.resieName];
 			if (importedValue === undefined) {
@@ -52,7 +52,7 @@ function setListOfInputs(
 				input.value = importedValue;
 			}
 		});
-		return menuInputs;
+		return ResieParameterMenuInfo;
 	});
 }
 
@@ -62,8 +62,8 @@ const importState = ({
 	setEdges,
 	setMediums,
 	logError,
-	setSimulationMenus,
-	simulationMenus,
+	setresieParameterMenus,
+	resieParameterMenus,
 	nodeTypes,
 }: ImportStateProps): void => {
 	let importDict: ImportData;
@@ -78,10 +78,10 @@ const importState = ({
 		logError('There is no dictionary of components defined in import file.');
 		return;
 	}
-	simulationMenus.forEach((menu) => {
+	resieParameterMenus.forEach((menu) => {
 		const list = importDict[menu.exportKey];
 		if (list === undefined) return;
-		setListOfInputs(setSimulationMenus, menu.exportKey, list);
+		setListOfInputs(setresieParameterMenus, menu.exportKey, list);
 	});
 	// Get or generate mediums
 	const mediums = getImportMediums(importDict, nodeTypes);

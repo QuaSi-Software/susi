@@ -5,7 +5,10 @@ import { getComponentTypes } from './ProcessComponentInputs';
 import _ from 'lodash';
 import type { ApiCategory, ApiComponent, ApiReturn } from './ApiData';
 import type { NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
-import { importMenuInputs, type MenuInputs } from './MenuInputs';
+import {
+	importResieParameterMenuInfo,
+	type ResieParameterMenuInfo,
+} from '../Sidebar/ResieParameters/ResieParameterMenuInfo';
 
 export function fetchComponentInputs(
 	setLoadingMessage: (isLoading: string | null) => void,
@@ -13,7 +16,7 @@ export function fetchComponentInputs(
 	nodeTypes: Record<string, NodeType> | null,
 	setComponentTypes: Dispatch<SetStateAction<Record<string, NodeType> | null>>,
 	setComponentCategories: Dispatch<SetStateAction<ApiCategory[]>>,
-	setSimulationMenus: Dispatch<SetStateAction<MenuInputs[]>>,
+	setresieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>,
 	setOverlayError: Dispatch<SetStateAction<string | null>>
 ) {
 	useEffect(() => {
@@ -33,26 +36,26 @@ export function fetchComponentInputs(
 				setComponentTypes(componentTypes);
 				setComponentCategories(data.components.type_categories);
 				/** io settings and sim params */
-				setSimulationMenus([
-					importMenuInputs(
+				setresieParameterMenus([
+					importResieParameterMenuInfo(
 						data.general.io_categories,
 						data.general.io_settings,
 						'IO Settings',
 						'io_settings'
 					),
-					importMenuInputs(
+					importResieParameterMenuInfo(
 						data.general.simulation_categories,
 						data.general.simulation,
 						'Simulation Parameters',
 						'simulation_parameters'
 					),
-					importMenuInputs(
+					importResieParameterMenuInfo(
 						data.general.economic_categories,
 						data.general.economic,
 						'Economic Settings',
 						'economic'
 					),
-					importMenuInputs(
+					importResieParameterMenuInfo(
 						data.general.emissions_categories,
 						data.general.emissions,
 						'Emissions',

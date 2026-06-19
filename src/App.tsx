@@ -37,7 +37,7 @@ import { Locale } from './Sidebar/SettingsMenu';
 import ErrorOverlay from './Reactflow-Components/ErrorScreenOverlay';
 import type { NodeType } from './NodeDataStructures/Nodes/SusiNodeTypes';
 import { type ApiCategory } from './FetchingApiData/ApiData';
-import type { MenuInputs } from './FetchingApiData/MenuInputs';
+import type { ResieParameterMenuInfo } from './Sidebar/ResieParameters/ResieParameterMenuInfo';
 import { ClearNodesButton } from './Reactflow-Components/ClearNodesButton';
 
 const initialNodes: SusiNode[] = [];
@@ -67,12 +67,12 @@ const DnDFlow = () => {
 	/** Component Inputs */
 	const [componentTypes, setComponentTypes] = useState<Record<string, NodeType> | null>(null);
 	const [componentCategories, setComponentCategories] = useState<ApiCategory[]>([]);
-	// const [ioSettingsList, setIOSettingsList] = useState<MenuInputs>({ inputs: [], categories: [] });
-	// const [simulationParametersList, setSimulationParametersList] = useState<MenuInputs>({
+	// const [ioSettingsList, setIOSettingsList] = useState<ResieParameterMenuInfo>({ inputs: [], categories: [] });
+	// const [simulationParametersList, setSimulationParametersList] = useState<ResieParameterMenuInfo>({
 	// 	inputs: [],
 	// 	categories: [],
 	// });
-	const [simulationMenus, setSimulationMenus] = useState<MenuInputs[]>([]);
+	const [resieParameterMenus, setresieParameterMenus] = useState<ResieParameterMenuInfo[]>([]);
 
 	document.documentElement.setAttribute('data-theme', theme);
 
@@ -82,7 +82,7 @@ const DnDFlow = () => {
 		componentTypes,
 		setComponentTypes,
 		setComponentCategories,
-		setSimulationMenus,
+		setresieParameterMenus,
 		setOverlayErrorMessage
 	);
 	const getNodeInputs = (componentType: string) => {
@@ -210,8 +210,8 @@ const DnDFlow = () => {
 					logError={logError}
 					nodeNamePrefix={nodeNamePrefix}
 					setNodeNamePrefix={setNodeNamePrefix}
-					simulationMenus={simulationMenus}
-					setSimulationMenus={setSimulationMenus}
+					resieParameterMenus={resieParameterMenus}
+					setresieParameterMenus={setresieParameterMenus}
 					theme={theme}
 					setTheme={setTheme}
 					setLocale={setLocale}
