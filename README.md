@@ -1,25 +1,43 @@
-# SuSi
+# SUSI
 
-SuSi is a User Interface made with Typescript React and built with Reactflow that enables users to design Energy Systems to be simulated with the software [Resie](https://github.com/QuaSi-Software/resie).
+SUSI (Simple UI for Simulation Input) is a user interface made with Typescript React and built with Reactflow to create the input that is required to use the energy system simulation software [ReSiE](https://github.com/QuaSi-Software/resie).
 
-# Project Setup
-
+## Installation for development
 This project uses **Vite** as the build tool and bundler for a TypeScript React application.
 
 ### Prerequisites
-
 - Node.js
 - npm
 
-### Installation
+### Instructions
 
-1. Clone the repository
-2. Install dependencies
-3. Run the app
+1. Clone the repository: `git clone git@github.com:QuaSi-Software/susi.git`
+1. Switch into directory: `cd susi`
+1. Install dependencies: `npm install`
+1. Run the app: `npm run dev`
 
-```
-git clone git@github.com:QuaSi-Software/susi.git
-npm install
-npm run dev
-```
+## Installation for deployment (via docker)
+This project can be deployed as a docker container, which avoids the needs to install node on the host machine.
 
+**Note:** At the moment the port on which SUSI is running is fixed at 5002. This might be addressed in a future update.
+
+### Prerequisites
+- Docker
+  - For Windows: Install Docker Desktop
+  - For Linux: Install via package manager, including compose
+
+### Instructions
+
+1. Clone the repository: `git clone git@github.com:QuaSi-Software/susi.git`
+1. Switch into directory: `cd susi`
+1. Build and run the docker container: `docker compose up`
+    * You can also run SUSI in the background using `docker compose up`. You can turn it off using `docker compose down`
+    * To force a new build, for example after updates, you can use `docker compose up --build`
+
+## Contributing
+
+If you want to contribute to this project, you can find more information [here](https://quasi-software.readthedocs.io/en/latest/workflow_code_contributions/)
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
