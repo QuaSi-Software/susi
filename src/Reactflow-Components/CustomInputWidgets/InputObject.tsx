@@ -74,7 +74,12 @@ class InputObject implements InputObjectProps {
 			// this.isIncluded = false;
 		}
 		if (this.type === InputObjectType.DATE) {
-			this.value = new Date(this.value);
+			const date: Date = new Date(this.value);
+			if (isNaN(date.getSeconds()) || this.value === null) {
+				const now = new Date();
+				now.setHours(0, 0, 0);
+				this.value = now;
+			} else this.value = date;
 		}
 
 		if (this.type === InputObjectType.DROPDOWN) {

@@ -14,13 +14,14 @@ interface CustomCalendarProps {
 
 export function CustomCalendar({ date, locale, disabled, displayName, onInputChanged }: CustomCalendarProps) {
 	const [calendarVisible, setCalendarVisible] = useState<boolean>(false);
-	const cal = useRef(null);
+	const cal = useRef<Calendar>(null);
 
-	// const handleCalendarKeyDown = (e: React.KeyboardEvent) => {
-	// 	if (e.key === 'Enter') {
-	// 		setCalendarVisible(false);
-	// 	}
-	// };
+	const handleCalendarKeyDown = (e: React.KeyboardEvent) => {
+		if (e.key === 'Enter') {
+			setCalendarVisible(false);
+		}
+	};
+
 	return (
 		<FloatLabel className="p-fluid">
 			<Calendar
@@ -31,19 +32,19 @@ export function CustomCalendar({ date, locale, disabled, displayName, onInputCha
 				}}
 				showIcon
 				showTime
-				visible={calendarVisible}
-				onVisibleChange={(e) => setCalendarVisible(e.visible)}
-				footerTemplate={() => (
-					<div className="footer-calendar">
-						<button
-							onClick={() => {
-								setCalendarVisible(false);
-							}}
-						>
-							Done
-						</button>
-					</div>
-				)}
+				// visible={calendarVisible}
+				// onVisibleChange={(e) => setCalendarVisible(e.visible)}
+				// footerTemplate={() => (
+				// 	<div className="footer-calendar">
+				// 		<button
+				// 			onClick={() => {
+				// 				cal.current?.hide();
+				// 			}}
+				// 		>
+				// 			Done
+				// 		</button>
+				// 	</div>
+				// )}
 				locale={locale}
 				disabled={disabled}
 			/>
