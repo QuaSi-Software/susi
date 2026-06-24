@@ -39,7 +39,7 @@ export function getInputObjectFromAPIParameter(inputName: string, apiInput: APIP
 	if (Array.isArray(apiInput.default) && apiInput.default.length > 0 && apiInput.default[0] === null)
 		apiInput.default = null;
 	const input = new InputObject({
-		type: getNodeInputType(inputName, apiInput),
+		type: apiInput.widget_type, //getNodeInputType(inputName, apiInput),
 		resieName: inputName,
 		displayName: apiInput.display_name,
 		value: apiInput.default,

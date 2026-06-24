@@ -1,3 +1,5 @@
+import type { InputObjectType } from '../Reactflow-Components/CustomInputWidgets/InputObject';
+
 interface ApiReturn {
 	components: {
 		control: Record<string, APIParameter>;
@@ -47,6 +49,7 @@ interface APIParameter {
 	type: string;
 	unit: string;
 	validations: Array<Array<string | number>>;
+	widget_type: InputObjectType;
 }
 
 export type { ApiReturn, ApiCategory, ApiComponent, APIParameter };
