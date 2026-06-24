@@ -1,14 +1,11 @@
 import { useContext, useState } from 'react';
 import { DropdownMenu } from 'radix-ui';
-import '@radix-ui/colors/black-alpha.css';
-import '@radix-ui/colors/mauve.css';
-import '@radix-ui/colors/violet.css';
+import '@radix-ui/colors/indigo.css';
 
 import type { ImportExportMenuProps } from './Import-Export/ImportExportMenu';
 import ImportExportMenu from './Import-Export/ImportExportMenu';
 import MediumMenu, { type MediumMenuProps } from './Mediums/MediumMenu';
 import NewNodeMenu, { type NewNodeMenuProps } from './NewNodeMenu';
-import { DropdownDivider } from 'react-bootstrap';
 import { InstructionMenu } from './Instructions';
 import { SettingsMenu, type SettingsMenuProps } from './SettingsMenu';
 import { AppContext } from '../AppContext';
@@ -75,14 +72,21 @@ const Sidebar = (menuProps: SidebarProps) => {
 	return (
 		<aside>
 			<div className="sidebar-menu-section">
-				<DropdownMenu.Root>
+				<DropdownMenu.Root
+				//  open={true}
+				>
 					<DropdownMenu.Trigger asChild>
 						<button className="IconButton" aria-label="Choose Sidebar Menu">
 							<i className="bi bi-list"></i>
 						</button>
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Portal>
-						<DropdownMenu.Content className="DropdownMenuContent" sideOffset={5}>
+						<DropdownMenu.Content
+							className="DropdownMenuContent"
+							sideOffset={15}
+							align="start"
+							side="right"
+						>
 							{MenuItem(MenuType.NewNodeMenu)}
 							{MenuItem(MenuType.MediumMenu, !mediums.every((m) => m.valid))}
 							<ResieParameterSubMenu

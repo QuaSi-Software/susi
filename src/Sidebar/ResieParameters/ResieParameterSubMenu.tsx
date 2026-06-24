@@ -33,6 +33,9 @@ export function ResieParameterSubMenu({
 			<DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">
 				{MenuType.ResieParameters as string}
 				{anyMenuHasWarning() && <> ⚠️</>}
+				<div className="RightSlot">
+					<i className="bi bi-chevron-compact-right"></i>
+				</div>
 			</DropdownMenu.SubTrigger>
 			<DropdownMenu.Portal>
 				<DropdownMenu.SubContent className="DropdownMenuSubContent" sideOffset={2} alignOffset={-5}>
