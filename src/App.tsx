@@ -64,15 +64,10 @@ const DnDFlow = () => {
 	const [theme, setTheme] = useState<'dark' | 'light'>('light');
 	const [locale, setLocale] = useState<Locale>(Locale.US);
 
-	/** Component Inputs */
+	/** Data imported from API */
 	const [componentTypes, setComponentTypes] = useState<Record<string, NodeType> | null>(null);
 	const [componentCategories, setComponentCategories] = useState<ApiCategory[]>([]);
-	// const [ioSettingsList, setIOSettingsList] = useState<ResieParameterMenuInfo>({ inputs: [], categories: [] });
-	// const [simulationParametersList, setSimulationParametersList] = useState<ResieParameterMenuInfo>({
-	// 	inputs: [],
-	// 	categories: [],
-	// });
-	const [resieParameterMenus, setresieParameterMenus] = useState<ResieParameterMenuInfo[]>([]);
+	const [resieParameterMenus, setResieParameterMenus] = useState<ResieParameterMenuInfo[]>([]);
 
 	document.documentElement.setAttribute('data-theme', theme);
 
@@ -82,7 +77,7 @@ const DnDFlow = () => {
 		componentTypes,
 		setComponentTypes,
 		setComponentCategories,
-		setresieParameterMenus,
+		setResieParameterMenus,
 		setOverlayErrorMessage
 	);
 	const getNodeInputs = (componentType: string) => {
@@ -196,7 +191,6 @@ const DnDFlow = () => {
 					setLoadingMessage: setLoadingMessage,
 					getNodeInputs: getNodeInputs,
 					setCheckState: setCheckState,
-					// setOverlayError: setOverlayErrorMessage,
 					locale: locale,
 				}}
 			>
@@ -211,12 +205,13 @@ const DnDFlow = () => {
 					nodeNamePrefix={nodeNamePrefix}
 					setNodeNamePrefix={setNodeNamePrefix}
 					resieParameterMenus={resieParameterMenus}
-					setresieParameterMenus={setresieParameterMenus}
+					setresieParameterMenus={setResieParameterMenus}
 					theme={theme}
 					setTheme={setTheme}
 					setLocale={setLocale}
 					nodeTypes={componentTypes}
 					categories={componentCategories}
+					setResieParameterMenus={setResieParameterMenus}
 				/>
 				<ReactFlow
 					nodes={nodes}

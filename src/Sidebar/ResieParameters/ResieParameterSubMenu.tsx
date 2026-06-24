@@ -11,7 +11,7 @@ interface ResieParameterSubMenuProps {
 }
 
 export function ResieParameterSubMenu({
-	resieParameterMenu,
+	// resieParameterMenu,
 	setResieParameterMenu,
 	setSelectedMenu,
 	resieParameterMenus,

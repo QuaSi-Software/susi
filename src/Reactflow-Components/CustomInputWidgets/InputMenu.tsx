@@ -54,11 +54,11 @@ export const InputMenu: React.FC<InputMenuProps> = ({
 	return (
 		<>
 			<Modal.Body className="side-padded-menu" key={title}>
-				<Modal.Header>{title}</Modal.Header>
+				<Modal.Header key={'input-menu-header'}>{title}</Modal.Header>
 				{rows.map((pair, pairIndex) => (
-					<Row key={pairIndex} className="g-2 mt-1 mt-md-0 input-menu-row">
-						{pair.map((input) => (
-							<Col key={input?.resieName} md>
+					<Row key={`Key-${pairIndex}`} className="g-2 mt-1 mt-md-0 input-menu-row">
+						{pair.map((input, colIndex) => (
+							<Col key={input?.resieName ?? `empty-${pairIndex}-${colIndex}`} md>
 								{input !== null && (
 									<div
 										key="warning-message-text"
