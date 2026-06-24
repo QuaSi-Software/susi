@@ -1,7 +1,7 @@
 import React from 'react';
 import { useContext, useState } from 'react';
 import { Form, FloatingLabel } from 'react-bootstrap';
-import { Calendar } from 'primereact/calendar';
+
 import { addLocale } from 'primereact/api';
 
 import { AppContext } from '../../AppContext';
@@ -9,12 +9,12 @@ import CustomDropdown from './CustomDropdown';
 import { InputObjectType, type InputObject } from './InputObject';
 import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
 import { Multiselect } from './MultiSelect';
-import { FloatLabel } from 'primereact/floatlabel';
 import { Locale } from '../../Sidebar/SettingsMenu';
 
 import { de } from 'primelocale/js/de.js';
 import { en } from 'primelocale/js/en.js';
 import { InputIssueType, type InputIssue } from './Validation/InputChecking';
+import { CustomCalendar } from './CustomCalendar';
 addLocale('de-DE', de);
 addLocale('en-US', en);
 
@@ -115,7 +115,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 				return (
 					<CustomDropdown
 						displayName={displayName}
-						startValue={startValue}
+						startValue={inputValue}
 						dropdown_options={nodeInputCopy.dropdownOptions}
 						dropdown_options_display_names={nodeInputCopy.dropdownOptionDisplayNames}
 						onEdit={onInputChanged}
@@ -143,19 +143,13 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 				);
 			case InputObjectType.DATE:
 				return (
-					<FloatLabel className="p-fluid">
-						<Calendar
-							value={startValue}
-							onChange={(e) => onInputChanged(e.value)}
-							showIcon
-							showTime
-							locale={locale}
-							disabled={disabledByMutex}
-						/>
-						<label htmlFor="intInputWidget" id="floating-label">
-							{displayName}
-						</label>
-					</FloatLabel>
+					<CustomCalendar
+						date={inputValue}
+						locale={locale}
+						disabled={disabledByMutex}
+						displayName={displayName}
+						onInputChanged={onInputChanged}
+					/>
 				);
 			default:
 				console.log('Input ' + displayName + ' has type that is not defined yet.');
