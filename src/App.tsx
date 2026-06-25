@@ -93,6 +93,14 @@ const DnDFlow = () => {
 			},
 		]);
 	};
+	/** check value in resie parameter menus */
+	const getResieParameter = (menuExportKey: string, inputName: string) => {
+		const menu = resieParameterMenus.find((e) => e.exportKey === menuExportKey);
+		if (!menu) return null;
+		const input = menu.inputs.find((e) => e.resieName === inputName);
+		if (!input) return null;
+		return input.value;
+	};
 
 	// Update CSS variables whenever mediums change
 	useEffect(() => {
@@ -262,6 +270,7 @@ const DnDFlow = () => {
 					setNodeContextMenu={setNodeContextMenu}
 					setNodes={setNodes}
 					setEdges={setEdges}
+					getResieParameter={getResieParameter}
 				/>
 				<PaneContextMenu
 					paneContextMenu={paneContextMenu}

@@ -12,7 +12,9 @@ interface MediumHandleDict {
 export interface SusiNodeData extends Record<string, unknown> {
 	content: string;
 	componentType: string;
-	nodeInputs: Array<InputObject>;
+	nodeInputs: InputObject[];
+	emissionsInputs: InputObject[];
+	economicInputs: InputObject[];
 	inputCategories: ApiCategory[];
 	handleMediumDict: MediumHandleDict;
 	busData: BusData | null;
@@ -84,5 +86,7 @@ export function createSusiNodeData(nodeType: NodeType, content: string = ''): Su
 		targetHandles: nodeType.nr_inputs,
 		hasValidInputs: hasValidInputs,
 		inputCategories: nodeType.inputCategories,
+		economicInputs: nodeType.economic,
+		emissionsInputs: nodeType.emissions,
 	};
 }

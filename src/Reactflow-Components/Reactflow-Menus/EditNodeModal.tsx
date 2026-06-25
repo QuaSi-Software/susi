@@ -16,6 +16,8 @@ import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import BusConnectionMenu from '../BusDataWidget/BusConnectionMenu';
 import { AppContext } from '../../AppContext';
 import InputMenuWithCategories from '../CustomInputWidgets/InputMenuWithCategories';
+import { InputMenu } from '../CustomInputWidgets/InputMenu';
+import { assignInputs, ComponentInputType, getInputs } from '../../NodeDataStructures/Nodes/ComponentInputTypes';
 
 interface EditNodeModalInputs {
 	show: boolean;
@@ -25,9 +27,19 @@ interface EditNodeModalInputs {
 	edges: SusiEdge[];
 	setEdges: (edges: SusiEdge[]) => void;
 	handleClose: () => void;
+	getResieParameter: (menuName: string, inputName: string) => any;
 }
 
-const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edges }: EditNodeModalInputs) => {
+const EditNodeModal = ({
+	show,
+	node,
+	handleClose,
+	nodes,
+	setNodes,
+	setEdges,
+	edges,
+	getResieParameter,
+}: EditNodeModalInputs) => {
 	const [editedNode, setEditedNode] = useState(deepCloneNode(node));
 	const [edgesToDelete, setEdgesToDelete] = useState<string[]>([]);
 	const setCheckState = useContext(AppContext)!.setCheckState;
@@ -47,16 +59,22 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 		}));
 	};
 
-	const onNodeInputValueChange = (key: string, newValue: any) => {
-		changeNodeInput(key, newValue, true);
+	const onNodeInputValueChange = (componentInputType: ComponentInputType, key: string, newValue: any) => {
+		changeNodeInput(componentInputType, key, newValue, true);
 	};
-	const onNodeInputIncludedChange = (key: string, isIncluded: boolean) => {
-		changeNodeInput(key, isIncluded, false);
+	const onNodeInputIncludedChange = (componentInputType: ComponentInputType, key: string, isIncluded: boolean) => {
+		changeNodeInput(componentInputType, key, isIncluded, false);
 	};
-	const changeNodeInput = (resieName: string, value: any, isValueChange: boolean) => {
+
+	const changeNodeInput = (
+		componentInputType: ComponentInputType,
+		resieName: string,
+		value: any,
+		isValueChange: boolean
+	) => {
 		//change node input
 		//if you don't make a copy, the change to the resie_data is applied to the nodes list, since editedNode is a reference, not a copy
-		const resieDataCopy: Array<InputObject> = Object.assign([], editedNode.data.nodeInputs);
+		const resieDataCopy: Array<InputObject> = Object.assign([], getInputs(componentInputType, editedNode));
 		let nodeInput = resieDataCopy.find((obj: InputObject) => obj.resieName === resieName);
 		console.assert(
 			nodeInput != undefined,
@@ -71,10 +89,10 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 		resieDataCopy.forEach((input) => {
 			input.checkInputValid(resieDataCopy);
 		});
-		setEditedNode((editedNode: SusiNode) => ({
-			...editedNode,
-			data: { ...editedNode.data, nodeInputs: resieDataCopy },
-		}));
+		setEditedNode((editedNode: SusiNode) => {
+			assignInputs(componentInputType, editedNode, resieDataCopy);
+			return editedNode;
+		});
 		// remove edge if the medium change necessitates it
 		let newEdgesToDelete = getEdgesWithMediumMismatch(edges, editedNode, resieName);
 		newEdgesToDelete = newEdgesToDelete.concat(edgesToDelete);
@@ -132,11 +150,42 @@ const EditNodeModal = ({ show, node, handleClose, nodes, setNodes, setEdges, edg
 						title="Component Inputs"
 						inputs={editedNode.data.nodeInputs}
 						inputCategories={editedNode.data.inputCategories}
-						onValueChange={onNodeInputValueChange}
-						onIncludedChange={onNodeInputIncludedChange}
+						onValueChange={(resieName, newValue) => {
+							onNodeInputValueChange(ComponentInputType.PARAMETER, resieName, newValue);
+						}}
+						onIncludedChange={(resieName, isIncluded) => {
+							onNodeInputIncludedChange(ComponentInputType.PARAMETER, resieName, isIncluded);
+						}}
 						numberOfColumns={2}
 						menuTypeName={editedNode.data.componentType}
 					/>
+					{getResieParameter('economic', 'calculate_economy') && (
+						<InputMenu
+							title="Economic"
+							inputs={editedNode.data.economicInputs}
+							numberOfColumns={2}
+							onValueChange={(resieName, newValue) => {
+								onNodeInputValueChange(ComponentInputType.ECONOMIC, resieName, newValue);
+							}}
+							onIncludedChange={(resieName, isIncluded) => {
+								onNodeInputIncludedChange(ComponentInputType.ECONOMIC, resieName, isIncluded);
+							}}
+						/>
+					)}
+					{getResieParameter('emissions', 'calculate_emissions') && (
+						<InputMenu
+							title="Emissions"
+							inputs={editedNode.data.emissionsInputs}
+							numberOfColumns={2}
+							onValueChange={(resieName, newValue) => {
+								onNodeInputValueChange(ComponentInputType.EMISSIONS, resieName, newValue);
+							}}
+							onIncludedChange={(resieName, isIncluded) => {
+								onNodeInputIncludedChange(ComponentInputType.EMISSIONS, resieName, isIncluded);
+							}}
+						/>
+					)}
+
 					<BusConnectionMenu node={node} nodes={nodes} onBusDataChange={onNodeBusDataChange} />
 				</Modal.Body>
 				<Modal.Footer>

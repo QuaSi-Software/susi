@@ -18,6 +18,7 @@ interface NodeContextMenuInput {
 	setNodeContextMenu: (NodeContextMenuData: NodeContextMenuData | null) => void;
 	setNodes: Dispatch<SetStateAction<SusiNode[]>>;
 	setEdges: Dispatch<SetStateAction<SusiEdge[]>>;
+	getResieParameter: (menuName: string, inputName: string) => any;
 }
 
 interface NodeContextMenuData {
@@ -32,6 +33,7 @@ const NodeContextMenu = ({
 	setNodeContextMenu,
 	setNodes,
 	setEdges,
+	getResieParameter,
 }: NodeContextMenuInput) => {
 	const [showModal, setShowModal] = useState(false);
 	const setCheckState = useContext(AppContext)!.setCheckState;
@@ -164,6 +166,7 @@ const NodeContextMenu = ({
 				handleClose={closeEditNodeModal}
 				setNodes={setNodes}
 				setEdges={setEdges}
+				getResieParameter={getResieParameter}
 			/>
 		</>
 	);

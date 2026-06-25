@@ -14,4 +14,6 @@ export interface NodeType {
 	category: string;
 	inputs: InputObject[];
 	inputCategories: ApiCategory[];
+	emissions: InputObject[];
+	economic: InputObject[];
 }

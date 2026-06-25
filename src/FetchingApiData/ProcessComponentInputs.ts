@@ -22,6 +22,12 @@ export function getComponentTypes(
 			nodeInputs.push(newInput);
 		}
 		checkParametersAndCategoriesMatch(nodeInputs, component.param_categories, componentType);
+		const economic = Object.entries(component.economic).map(([inputName, attributes]) =>
+			getInputObjectFromAPIParameter(inputName, attributes)
+		);
+		const emissions = Object.entries(component.emissions).map(([inputName, attributes]) =>
+			getInputObjectFromAPIParameter(inputName, attributes)
+		);
 
 		let category = typeCategories.find((category) => category.types!.includes(componentType));
 		console.assert(category !== undefined, `Component ${componentType} is not assigned a category`);
@@ -34,6 +40,8 @@ export function getComponentTypes(
 			category: category !== undefined ? category.heading : 'Other',
 			inputs: nodeInputs,
 			inputCategories: component.param_categories,
+			economic: economic,
+			emissions: emissions,
 		};
 		nodeTypes[nodeType.type_name] = nodeType;
 	}

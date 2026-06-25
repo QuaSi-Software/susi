@@ -29,12 +29,12 @@ interface ApiCategory {
 
 interface ApiComponent {
 	display_name: string;
-	economic: Record<string, Object>;
-	emissions: Record<string, Object>;
+	economic: Record<string, APIParameter>;
+	emissions: Record<string, APIParameter>;
 	nr_inputs: number;
 	nr_outputs: number;
 	param_categories: ApiCategory[];
-	parameters: APIParameter[];
+	parameters: Record<string, APIParameter>;
 	segment: string;
 }
 
