@@ -61,6 +61,7 @@
 
 .markdown-node p {
 	margin: 10px 0px;
+	font-size: var(--xsmall-font-size);
 }
 
 .react-flow__node.selected,

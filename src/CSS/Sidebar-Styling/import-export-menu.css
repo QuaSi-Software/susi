@@ -24,7 +24,7 @@
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	font-family: monospace;
-	font-size: 12px;
+	font-size: var(--small-font-size);
 	resize: none;
 	height: 700px;
 	min-width: 300px;

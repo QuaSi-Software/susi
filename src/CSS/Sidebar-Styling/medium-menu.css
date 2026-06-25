@@ -9,7 +9,7 @@
 }
 
 .medium-menu {
-	font-size: 22px;
+	font-size: var(--medium-font-size);
 }
 
 .medium-menu-button-section {
@@ -34,8 +34,7 @@
 
 .medium-input-row .form-control,
 .medium-input-row .btn {
-	height: 100%;
-	font-size: 22px;
+	font-size: var(--medium-font-size);
 	padding: 1rem;
 	display: inline-flex;
 	align-items: center;
@@ -47,7 +46,7 @@
 	width: 60%;
 	min-width: fit-content;
 	padding: 20px;
-	font-size: 20px;
+	font-size: var(--medium-font-size);
 }
 .medium-menu-button:disabled {
 	text-decoration: line-through;

@@ -11,12 +11,12 @@
 
 .dndflow aside {
 	border-right: 1px solid var(--sidebar-outline-color);
-	padding: 20px 30px;
-	font-size: 22px;
+	padding: 1em;
+	font-size: var(--medium-font-size);
 	background: var(--sidebar-bg-color);
 	color: var(--sidebar-text-color);
 	overflow-y: auto;
-	min-width: 200px;
+	min-width: 320px;
 	width: 40%;
 	resize: horizontal;
 }
@@ -37,13 +37,13 @@
 }
 
 .sidebar-heading {
-	font-size: 32px;
+	font-size: var(--xlarge-font-size);
 	font-weight: 600;
 	padding-left: 0px;
 	color: var(--sidebar-text-color) !important;
 }
 .sidebar-subheading {
 	padding-top: 15px;
-	font-size: 24px;
+	font-size: var(--large-font-size);
 	font-weight: 600;
 }

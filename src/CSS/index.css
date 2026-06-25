@@ -30,6 +30,7 @@
 #root {
 	width: 100vw;
 	height: 100vh;
+	font-family: (--bs-body-font-family);
 }
 
 html,
@@ -38,11 +39,25 @@ body {
 	/* box-sizing: border-box; */
 }
 
+:root {
+	--xsmall-font-size: clamp(8px, 0.7vw, 18px);
+	--small-font-size: clamp(10px, 0.8vw, 22px);
+	--medium-font-size: clamp(12px, 1vw, 26px);
+	--large-font-size: clamp(16px, 1.3vw, 32px);
+	--xlarge-font-size: clamp(20px, 1.5vw, 42px);
+}
+
+/* @media screen and (max-width: 600px) {
+	:root {
+		--medium-font-size: 20px;
+	}
+} */
+
 .dndflow {
 	display: flex;
 	height: 100%;
 	text-align: left;
-	margin-bottom: 10px;
+	margin-bottom: 2em;
 	flex-grow: 1;
 	height: 100%;
 }

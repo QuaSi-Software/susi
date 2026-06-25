@@ -6,19 +6,3 @@
 	--dropdown-background-color: #bfd8f300;
 	--dropdown-text-color: #e7ebf4;
 }
-
-.simulation-settings-menus .form-floating .form-select {
-	font-size: xx-large;
-	font-weight: 600;
-	padding: 0.5rem 1rem;
-	background-color: var(--dropdown-background-color);
-	color: var(--dropdown-text-color);
-	border: 2px solid rgb(165, 182, 203);
-	min-width: fit-content;
-}
-.simulation-settings-menus .form-floating .form-select option {
-	font-size: large;
-}
-.simulation-settings-menus .form-floating label {
-	display: none;
-}

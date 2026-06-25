@@ -43,7 +43,7 @@
 }
 
 .loading-message {
-	font-size: 16px;
+	font-size: var(--medium-font-size);
 	color: #333;
 	margin: 0;
 	font-weight: 500;
@@ -51,5 +51,5 @@
 
 .overlay-error-message {
 	color: rgb(205, 17, 17);
-	font-size: x-large;
+	font-size: var(--medium-font-size);
 }

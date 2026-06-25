@@ -1,12 +1,12 @@
 .dndnode {
-	padding: 20px;
+	padding: 0.5em;
 	border: 1px solid var(--sidebar-outline-color);
 	border-radius: 10px;
-	margin: 15px 0px;
+	margin: 0.5em 0px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	cursor: grab;
 	text-align: center;
-	font-size: 24px;
+	font-size: var(--large-font-size);
 }
