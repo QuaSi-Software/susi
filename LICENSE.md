@@ -1,3 +1,9 @@
+Where not otherwise specified, the source code of this software is released under MIT license
+(see next section). Specific exceptions are as follows:
+* Logos and icons of ReSiE and SUSI are released under [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/) license. Copyright 2023 by Jürgen Benesch
+
+============================================================================================
+
 MIT License
 
 Copyright (c) 2026 Authors: Etienne Ott, Sarah Werum

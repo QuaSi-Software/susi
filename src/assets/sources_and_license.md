@@ -1,0 +1,1 @@
+Logos and icons of ReSiE and SUSI are released under [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/) license. Copyright 2023 by Jürgen Benesch
