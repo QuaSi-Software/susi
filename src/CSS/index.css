@@ -43,7 +43,7 @@ body {
 	--xsmall-font-size: clamp(8px, 0.7vw, 18px);
 	--small-font-size: clamp(10px, 0.8vw, 22px);
 	--medium-font-size: clamp(12px, 1vw, 26px);
-	--large-font-size: clamp(16px, 1.3vw, 32px);
+	--large-font-size: clamp(16px, 1.2vw, 32px);
 	--xlarge-font-size: clamp(20px, 1.5vw, 42px);
 }
 

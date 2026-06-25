@@ -1,9 +1,16 @@
+:root {
+	--input-border-color: #a4a4a4;
+}
+[data-theme='dark'] {
+	--input-border-color: #e6e6e6;
+}
+
 .input-menu-row {
 	margin: 6px 2px;
 }
 .input-menu-column {
 	border-style: solid;
-	border-color: #e6e6e6;
+	border-color: var(--input-border-color);
 	border-radius: 6px;
 	border-width: 2px;
 }
