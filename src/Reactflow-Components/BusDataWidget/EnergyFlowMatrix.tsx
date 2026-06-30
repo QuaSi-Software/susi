@@ -54,7 +54,7 @@ const EnergyFlowMatrix: React.FC<EnergyFlowMatrixProps> = ({
 						<tr key={node_id}>
 							<th scope="row">{node_id}</th>
 							{energyFlow[row].map((element, col) => (
-								<td key={`${row}-${col}`}>
+								<td key={`energy-flow-element-${row}-${col}`}>
 									<Form.Control
 										type="number"
 										value={element}

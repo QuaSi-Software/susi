@@ -30,11 +30,15 @@ function generateMediumListFromComponents(
 	components: Record<string, ComponentData>,
 	nodeTypes: Record<string, NodeType>
 ): Array<[string, string | null]> {
-	const mediums: string[] = [];
+	const mediums: string[] = getDefaultMediums().map((m) => m.name);
 
 	for (const [_, nodeData] of Object.entries(components)) {
 		nodeData.import_data = getComponentImportData(nodeData);
 		const typeName = nodeData.import_data.node_type;
+		if (!Object.keys(nodeTypes).includes(typeName)) {
+			console.warn(`${typeName} is not a valid Component Type.`);
+			continue;
+		}
 		const nodeInputs = nodeTypes[typeName].inputs;
 
 		if (nodeInputs === null) return []; /** TODO */

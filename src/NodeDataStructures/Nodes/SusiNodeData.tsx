@@ -66,7 +66,7 @@ function getMediumHandleDict(
 }
 
 export function createSusiNodeData(nodeType: NodeType, content: string = ''): SusiNodeData {
-	const nodeInputs = nodeType.inputs;
+	const nodeInputs = nodeType.inputs.map((e) => e.copy());
 	nodeInputs.forEach((input) => {
 		input.checkInputValid(nodeInputs);
 	});
@@ -86,7 +86,7 @@ export function createSusiNodeData(nodeType: NodeType, content: string = ''): Su
 		targetHandles: nodeType.nr_inputs,
 		hasValidInputs: hasValidInputs,
 		inputCategories: nodeType.inputCategories,
-		economicInputs: nodeType.economic,
-		emissionsInputs: nodeType.emissions,
+		economicInputs: nodeType.economic.map((e) => e.copy()),
+		emissionsInputs: nodeType.emissions.map((e) => e.copy()),
 	};
 }

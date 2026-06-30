@@ -3,7 +3,8 @@ import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type { ComponentData, Connections } from '../ExportDataStrucures';
 
 function getNodeIDFromName(nodeName: string, nodes: SusiNode[]) {
-	return nodes.find((n) => n.data.content === nodeName)!.id;
+	const node = nodes.find((n) => n.data.content === nodeName);
+	return node === undefined ? 'undefined' : node!.id;
 }
 
 export function getBusDataFromConnections(connections: Connections, nodes: SusiNode[]): BusData {

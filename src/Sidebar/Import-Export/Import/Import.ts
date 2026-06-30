@@ -93,6 +93,10 @@ const importState = ({
 	// First pass: create all nodes
 	for (const [nodeId, nodeData] of Object.entries(importDict.components)) {
 		const importData: ComponentImportData = getComponentImportData(nodeData);
+		if (!Object.keys(nodeTypes).includes(importData.node_type)) {
+			logError(`Component Type ${importData.node_type} does not exist.`);
+			continue;
+		}
 		const nodeType = nodeTypes[importData.node_type];
 
 		if (!nodeType) {
@@ -102,7 +106,7 @@ const importState = ({
 		const newNode = createNodeFromType(nodeArray, nodeType, importData.node_position, '', nodeId);
 
 		// Fill in node inputs from import data
-		const nodeInputs = nodeTypes[nodeType.type_name].inputs;
+		const nodeInputs = newNode.data.nodeInputs;
 		for (const nodeInput of nodeInputs) {
 			const value = nodeData[nodeInput.resieName];
 			if (value !== undefined) {

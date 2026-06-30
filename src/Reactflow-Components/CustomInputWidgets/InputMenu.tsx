@@ -52,44 +52,38 @@ export const InputMenu: React.FC<InputMenuProps> = ({
 	 * a confusing experience.
 	 */
 	return (
-		<>
-			<Modal.Body className="side-padded-menu" key={title}>
-				<Modal.Header key={'input-menu-header'}>{title}</Modal.Header>
-				{rows.map((pair, pairIndex) => (
-					<Row key={`Key-${pairIndex}`} className="g-2 mt-1 mt-md-0 input-menu-row">
-						{pair.map((input, colIndex) => (
-							<Col key={input?.resieName ?? `empty-${pairIndex}-${colIndex}`} md>
-								{input !== null && (
-									<div
-										key="warning-message-text"
-										style={{
-											visibility:
-												input.issue.issueType === InputIssueType.Conditional
-													? 'hidden'
-													: 'visible',
-											height: '100%',
-										}}
-										className="input-menu-column"
-									>
-										{input.isRequired && (
-											<CustomInputField nodeInput={input} onEdit={onValueChange} />
-										)}
-										{!input.isRequired && (
-											<OptionalInputField
-												key={input.resieName}
-												nodeInput={input}
-												onValueChange={onValueChange}
-												startIncluded={input.isIncluded}
-												onIncludedChange={onIncludedChange}
-											/>
-										)}
-									</div>
-								)}
-							</Col>
-						))}
-					</Row>
-				))}
-			</Modal.Body>
-		</>
+		<Modal.Body className="side-padded-menu" key={`body-${title}`}>
+			<Modal.Header key={'input-menu-header'}>{`header-${title}`}</Modal.Header>
+			{rows.map((pair, pairIndex) => (
+				<Row key={`Key-${pairIndex}`} className="g-2 mt-1 mt-md-0 input-menu-row">
+					{pair.map((input, colIndex) => (
+						<Col key={`menu-item-${pairIndex}-${colIndex}`} md>
+							{input !== null && (
+								<div
+									key="warning-message-text"
+									style={{
+										visibility:
+											input.issue.issueType === InputIssueType.Conditional ? 'hidden' : 'visible',
+										height: '100%',
+									}}
+									className="input-menu-column"
+								>
+									{input.isRequired && <CustomInputField nodeInput={input} onEdit={onValueChange} />}
+									{!input.isRequired && (
+										<OptionalInputField
+											key={input.resieName}
+											nodeInput={input}
+											onValueChange={onValueChange}
+											startIncluded={input.isIncluded}
+											onIncludedChange={onIncludedChange}
+										/>
+									)}
+								</div>
+							)}
+						</Col>
+					))}
+				</Row>
+			))}
+		</Modal.Body>
 	);
 };
