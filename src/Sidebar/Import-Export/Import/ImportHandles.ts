@@ -73,6 +73,7 @@ export function createSourceHandleDict(nodes: SusiNode[], components: Record<str
 			});
 			return;
 		}
+		if (!componentData.output_refs) componentData.output_refs = [];
 		const outputRefs = componentData.output_refs;
 		/** If outputRefs is an array, just map them one after another */
 		if (Array.isArray(outputRefs)) {

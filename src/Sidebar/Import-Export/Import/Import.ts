@@ -29,7 +29,7 @@ function getOutputRefs(sourceNodeID: string, sourceNodeData: ComponentData): str
 		return sourceNodeData.connections?.output_order || [];
 	} else {
 		if (!Array.isArray(sourceNodeData.output_refs)) {
-			console.log(`output_refs on ${sourceNodeID} is a dictionary, but should already be a string[] here.`);
+			console.warn(`output_refs on ${sourceNodeID} is a dictionary, but should already be a string[] here.`);
 			return [];
 		}
 		if (!sourceNodeData.output_refs) return [];

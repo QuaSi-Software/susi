@@ -53,7 +53,7 @@ export const InputMenu: React.FC<InputMenuProps> = ({
 	 */
 	return (
 		<Modal.Body className="side-padded-menu" key={`body-${title}`}>
-			<Modal.Header key={'input-menu-header'}>{`header-${title}`}</Modal.Header>
+			<Modal.Header key={'input-menu-header'}>{title}</Modal.Header>
 			{rows.map((pair, pairIndex) => (
 				<Row key={`Key-${pairIndex}`} className="g-2 mt-1 mt-md-0 input-menu-row">
 					{pair.map((input, colIndex) => (
