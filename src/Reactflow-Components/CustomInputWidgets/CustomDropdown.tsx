@@ -8,6 +8,13 @@ interface CustomDropdownProps<T> {
 	onEdit: (value: T) => void;
 }
 
+function assertNoDuplicates(arr: Array<any>, arrayName: string) {
+	arr.forEach((element) => {
+		const equalElements = arr.filter((e) => e === element);
+		console.assert(equalElements.length === 1, `Array ${arrayName} has duplicate element: ${element}`);
+	});
+}
+
 const CustomDropdown = <T extends string | number>({
 	displayName,
 	startValue,
@@ -17,6 +24,7 @@ const CustomDropdown = <T extends string | number>({
 }: CustomDropdownProps<T>) => {
 	const [selectedOption, setInputValue] = useState<T>(startValue);
 	const displayNames = dropdown_options_display_names || dropdown_options;
+	assertNoDuplicates(dropdown_options, `Dropdown Options in ${displayName}`);
 
 	const onOptionSelected = (value: T): void => {
 		console.log(`Dropdown value selected: ${value}`);
@@ -34,7 +42,7 @@ const CustomDropdown = <T extends string | number>({
 				onChange={(e) => onOptionSelected(e.target.value as T)}
 			>
 				{dropdown_options.map((option, index) => (
-					<option key={option} value={option}>
+					<option key={`${option}-${index}`} value={option}>
 						{displayNames[index]}
 					</option>
 				))}

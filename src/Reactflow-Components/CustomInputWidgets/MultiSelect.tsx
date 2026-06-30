@@ -30,6 +30,10 @@ export const Multiselect: React.FC<CustomMultiSelectProps> = ({
 		for (let i = 0; i < displayNames!.length; i++) {
 			const displayName = displayNames![i];
 			const value = dropdown_options![i];
+			console.assert(
+				value !== undefined && value !== null,
+				`Multiselect ${displayName} has undefined or null option`
+			);
 			options.push({
 				value: value,
 				label: displayName,
