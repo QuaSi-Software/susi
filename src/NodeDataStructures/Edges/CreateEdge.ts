@@ -5,6 +5,14 @@ import { getMedium, getMediumKey, mediumsMatch } from '../Mediums/MediumUtils';
 import type { Medium } from '../Mediums/Medium';
 import type { SusiEdge } from './SusiEdge';
 
+function getOrdinalNumberString(indexString: string): string {
+	const index: number = parseInt(indexString) + 1;
+	if (index % 10 === 1) return `${index}st`;
+	if (index % 10 === 2) return `${index}nd`;
+	if (index % 10 === 3) return `${index}rd`;
+	return `${index}th`;
+}
+
 /**
  * Check if the source and target handle of the edge we are trying to connect are already taken
  * i.e. if there exists an edge that is already attached to it.
@@ -67,8 +75,10 @@ const getNewEdge = (
 	const sourceMediumKey = sourceMedium!.key;
 	const targetMediumKey = getMediumKey(connection.targetHandle!, targetNode!.data);
 	if (!mediumsMatch(sourceMediumKey, targetMediumKey)) {
+		const sourceHandleIndex = connection.sourceHandle?.charAt(connection.sourceHandle.length - 1);
+		const targetHandleIndex = connection.targetHandle?.charAt(connection.targetHandle.length - 1);
 		logError(
-			`The mediums of handle ${connection.sourceHandle} on ${sourceNode?.data.content} and ${connection.targetHandle} on ${targetNode?.data.content} do not match or are undefined.`
+			`The mediums of the ${getOrdinalNumberString(sourceHandleIndex!)} handle on ${sourceNode?.data.content} and the ${getOrdinalNumberString(targetHandleIndex!)} handle on ${targetNode?.data.content} do not match or are undefined.`
 		);
 		return null;
 	}

@@ -26,7 +26,7 @@ export function findTargetHandle(
 	logError: (errorMessage: string) => void
 ) {
 	/** If target is a bus, all edges connect to handle 0 */
-	if (targetNode.data.busData) return 0;
+	const targetIsBus = targetNode.data.busData !== undefined;
 	/** Find the medium of the source node's handle */
 	const mediumVarName = sourceNode.data.handleMediumDict.source[sourceHandleIndex];
 	const mediumNodeInput = sourceNode.data.nodeInputs.find((input) => input.resieName === mediumVarName);
@@ -40,7 +40,7 @@ export function findTargetHandle(
 		const handleMediumKey = targetNode.data.nodeInputs.find((input) => input.resieName === varName)!.value;
 		if (sourceMediumKey !== handleMediumKey) continue;
 		/** If the handle isn't taken */
-		if (!takenHandles[targetNode.id].target[handleIndex]) {
+		if (targetIsBus || !takenHandles[targetNode.id].target[handleIndex]) {
 			/** update takenHandles and return the handleIndex */
 			takenHandles[targetNode.id].target[handleIndex] = true;
 			return handleIndex;
