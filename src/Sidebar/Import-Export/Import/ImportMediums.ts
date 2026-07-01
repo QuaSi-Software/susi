@@ -10,7 +10,11 @@ export default function getImportMediums(importDict: ImportData, nodeTypes: Reco
 	const importedMediums = importDict.mediums || generateMediumListFromComponents(importDict.components, nodeTypes);
 
 	for (const [name, color] of importedMediums) {
-		if (mediums.find((m) => m.name === name)) continue;
+		const existingMedium = mediums.find((m) => m.name === name);
+		if (existingMedium) {
+			if (color !== null) existingMedium.color = color;
+			continue;
+		}
 		mediums.push(createMediumFromImport(name, color));
 	}
 	return mediums;

@@ -11,7 +11,7 @@ interface ErrorMessagePopupProps {
 }
 
 const ErrorMessagePopup = ({ errorMessage, removeMessage }: ErrorMessagePopupProps) => {
-	const showErrorForSeconds = 10;
+	const showErrorForSeconds = 50;
 	/** remove message after showErrorForSeconds seconds  */
 	useEffect(() => {
 		if (errorMessage) {
