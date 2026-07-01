@@ -171,16 +171,20 @@ const DnDFlow = () => {
 		setEdgeContextMenu(newEdgeContextMenuData);
 	};
 	const onNodeContextMenu = (event: React.MouseEvent, node: SusiNode): void => {
+		const selectedNodes = nodes.filter((node) => node.selected);
+		if (selectedNodes.length > 1) {
+			onSelectionContextMenu(event, selectedNodes);
+			return;
+		}
 		event.preventDefault();
 		setPaneContextMenu(null);
 		setEdgeContextMenu(null);
 		setSelectionContextMenu(null);
 
-		let newNodeContextMenuData: NodeContextMenuData = {
+		setNodeContextMenu({
 			node: node,
 			menuPosition: createMenuPosition(event, ref),
-		};
-		setNodeContextMenu(newNodeContextMenuData);
+		});
 	};
 	const onPaneContextMenu = (event: MouseEvent | React.MouseEvent<Element, MouseEvent>) => {
 		event.preventDefault();
@@ -265,6 +269,7 @@ const DnDFlow = () => {
 					onPaneContextMenu={onPaneContextMenu}
 					onSelectionContextMenu={onSelectionContextMenu}
 					onPaneClick={clearAllMenus}
+					multiSelectionKeyCode="Shift"
 					proOptions={{ hideAttribution: true }}
 				>
 					<Controls showInteractive={false} />
