@@ -4,7 +4,7 @@ import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import type { MenuPosition } from './Menus';
 import { AppContext } from '../../AppContext';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import { deleteNode } from './ContextMenuUtils';
+import { deleteNode, duplicateNode } from './ContextMenuUtils';
 
 interface SelectionContextMenuProps {
 	selectionContextMenu: SelectionContextMenuData | null;
@@ -40,6 +40,15 @@ const SelectionContextMenu = ({
 		setSelectionContextMenu(null);
 	}
 
+	function duplicateSelectionNodes() {
+		if (!selectionContextMenu) return;
+		selectionContextMenu.nodes.forEach((node) => {
+			duplicateNode(node.id, setNodes);
+		});
+		setCheckState(true);
+		setSelectionContextMenu(null);
+	}
+
 	if (selectionContextMenu == null) return <></>;
 	return (
 		<>
@@ -58,7 +67,10 @@ const SelectionContextMenu = ({
 				{
 					<ButtonGroup vertical>
 						<Button className="contextMenu" variant={'outline-danger'} onClick={deleteSelectionNodes}>
-							<i className="bi bi-trash3"></i> Delete Nodes
+							<i className="bi bi-trash3"></i> Delete Components
+						</Button>
+						<Button className="contextMenu" variant="outline-primary" onClick={duplicateSelectionNodes}>
+							<i className="bi bi-copy"></i> Duplicate Component
 						</Button>
 					</ButtonGroup>
 				}

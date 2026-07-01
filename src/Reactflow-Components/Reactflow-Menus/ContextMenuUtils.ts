@@ -59,6 +59,7 @@ function duplicateNode(nodeID: string, setNodes: Dispatch<SetStateAction<SusiNod
 		const nodeToDuplicate: SusiNode | undefined = nodes.find((node) => node.id === nodeID);
 		console.assert(nodeToDuplicate != undefined, `Trying to duplicate a node that doesn't exist`);
 		if (!nodeToDuplicate) return nodes;
+
 		const duplicateNode: SusiNode = deepCloneNode(nodeToDuplicate);
 		// move node towards bottom right and give it a unique ID
 		duplicateNode.position.x += 20;
@@ -67,9 +68,11 @@ function duplicateNode(nodeID: string, setNodes: Dispatch<SetStateAction<SusiNod
 		let isBus = duplicateNode.data.componentType.toLowerCase() === 'bus';
 		duplicateNode.data.busData = isBus ? new BusData() : null;
 		duplicateNode.data.content = findNameForDuplicate(nodeToDuplicate.data.content, nodes);
-		duplicateNode.selected = false;
-		// update list of nodes
-		let updatedNodes = [...nodes, duplicateNode];
+		duplicateNode.selected = true;
+
+		// update list of nodes: deselect original, keep new one selected
+		let updatedNodes = nodes.map((node) => (node.id === nodeID ? { ...node, selected: false } : node));
+		updatedNodes = [...updatedNodes, duplicateNode];
 		return updatedNodes;
 	});
 }
