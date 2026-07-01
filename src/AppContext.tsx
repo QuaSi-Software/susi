@@ -11,7 +11,6 @@ interface AppContextType {
 	setLoadingMessage: (isLoading: string | null) => void;
 	getNodeInputs: (componentType: string) => InputObject[];
 	setCheckState: Dispatch<SetStateAction<boolean>>;
-	// setOverlayError: Dispatch<SetStateAction<string | null>>;
 	locale: Locale;
 }
 export const AppContext = createContext<AppContextType | null>(null);

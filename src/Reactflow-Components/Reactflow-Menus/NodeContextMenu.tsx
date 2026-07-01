@@ -7,9 +7,9 @@ import { deepCloneNode, type SusiNode } from '../../NodeDataStructures/Nodes/Sus
 import EditNodeModal from './EditNodeModal';
 import BusData from '../../NodeDataStructures/Bus/BusData';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
-import { updateBusDataOnNodeDelete } from '../../NodeDataStructures/Bus/BusDataUtils';
 import _ from 'lodash';
 import { AppContext } from '../../AppContext';
+import { deleteNode } from './ContextMenuUtils';
 
 interface NodeContextMenuInput {
 	nodeContextMenu: NodeContextMenuData | null;
@@ -56,15 +56,9 @@ const NodeContextMenu = ({
 	const handleDeleteNode = () => {
 		if (!nodeContextMenu) return;
 		if (nodeContextMenu.node.deletable) {
-			const updatedNodes = nodes.filter((node) => node.id !== nodeContextMenu.node.id);
-			const updatedEdges = edges.filter(
-				(edge) => edge.source !== nodeContextMenu.node.id && edge.target !== nodeContextMenu.node.id
-			);
-			updateBusDataOnNodeDelete(nodeContextMenu.node.id, nodes, edges);
-			setNodes(updatedNodes);
-			setEdges(updatedEdges);
-			setCheckState(true);
+			deleteNode(nodeContextMenu.node, edges, setNodes, setEdges);
 		}
+		setCheckState(true);
 		setNodeContextMenu(null);
 	};
 

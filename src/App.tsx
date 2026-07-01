@@ -39,6 +39,10 @@ import type { NodeType } from './NodeDataStructures/Nodes/SusiNodeTypes';
 import { type ApiCategory } from './FetchingApiData/ApiData';
 import type { ResieParameterMenuInfo } from './Sidebar/ResieParameters/ResieParameterMenuInfo';
 import { ClearNodesButton } from './Reactflow-Components/ClearNodesButton';
+import {
+	SelectionContextMenu,
+	type SelectionContextMenuData,
+} from './Reactflow-Components/Reactflow-Menus/SelectionContextMenu';
 
 const initialNodes: SusiNode[] = [];
 
@@ -53,6 +57,7 @@ const DnDFlow = () => {
 	const [edgeContextMenu, setEdgeContextMenu] = useState<EdgeContextMenuData | null>(null);
 	const [nodeContextMenu, setNodeContextMenu] = useState<NodeContextMenuData | null>(null);
 	const [paneContextMenu, setPaneContextMenu] = useState<MenuPosition | null>(null);
+	const [selectionContextMenu, setSelectionContextMenu] = useState<SelectionContextMenuData | null>(null);
 
 	/**  */
 	const [mediums, setMediums] = useState<Medium[]>(getDefaultMediums());
@@ -157,6 +162,7 @@ const DnDFlow = () => {
 		event.preventDefault();
 		setNodeContextMenu(null);
 		setPaneContextMenu(null);
+		setSelectionContextMenu(null);
 
 		let newEdgeContextMenuData: EdgeContextMenuData = {
 			edge: edge,
@@ -168,6 +174,7 @@ const DnDFlow = () => {
 		event.preventDefault();
 		setPaneContextMenu(null);
 		setEdgeContextMenu(null);
+		setSelectionContextMenu(null);
 
 		let newNodeContextMenuData: NodeContextMenuData = {
 			node: node,
@@ -179,6 +186,7 @@ const DnDFlow = () => {
 		event.preventDefault();
 		setNodeContextMenu(null);
 		setEdgeContextMenu(null);
+		setSelectionContextMenu(null);
 
 		let newPaneContextMenuData: MenuPosition = createMenuPosition(event, ref);
 		setPaneContextMenu(newPaneContextMenuData);
@@ -189,12 +197,18 @@ const DnDFlow = () => {
 		setEdgeContextMenu(null);
 		setPaneContextMenu(null);
 
+		let newSelectionContextData: SelectionContextMenuData = {
+			nodes: selectedNodes,
+			menuPosition: createMenuPosition(event, ref),
+		};
+		setSelectionContextMenu(newSelectionContextData);
 		console.log(`Selected nodes: ${selectedNodes.map((node) => node.data.content)}`);
 	};
 	const clearAllMenus = () => {
 		setNodeContextMenu(null);
 		setEdgeContextMenu(null);
 		setPaneContextMenu(null);
+		setSelectionContextMenu(null);
 	};
 
 	return (
@@ -281,13 +295,21 @@ const DnDFlow = () => {
 					setEdges={setEdges}
 					getResieParameter={getResieParameter}
 				/>
+				<SelectionContextMenu
+					selectionContextMenu={selectionContextMenu}
+					nodes={nodes}
+					edges={edges}
+					setSelectionContextMenu={setSelectionContextMenu}
+					setNodes={setNodes}
+					setEdges={setEdges}
+				/>
 				<PaneContextMenu
 					paneContextMenu={paneContextMenu}
 					setPaneContextMenu={setPaneContextMenu}
 					nodes={nodes}
 					setNodes={setNodes}
 					edges={edges}
-				/>{' '}
+				/>
 				<ErrorMenu messages={errorMessages} setMessages={setErrorMessages} />
 			</AppContext.Provider>
 		</div>
