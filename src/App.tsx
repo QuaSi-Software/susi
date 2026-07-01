@@ -183,6 +183,14 @@ const DnDFlow = () => {
 		let newPaneContextMenuData: MenuPosition = createMenuPosition(event, ref);
 		setPaneContextMenu(newPaneContextMenuData);
 	};
+	const onSelectionContextMenu = (event: React.MouseEvent<Element, MouseEvent>, selectedNodes: SusiNode[]) => {
+		event.preventDefault();
+		setNodeContextMenu(null);
+		setEdgeContextMenu(null);
+		setPaneContextMenu(null);
+
+		console.log(`Selected nodes: ${selectedNodes.map((node) => node.data.content)}`);
+	};
 	const clearAllMenus = () => {
 		setNodeContextMenu(null);
 		setEdgeContextMenu(null);
@@ -241,6 +249,7 @@ const DnDFlow = () => {
 					onEdgeContextMenu={onEdgeContextMenu}
 					onNodeContextMenu={onNodeContextMenu}
 					onPaneContextMenu={onPaneContextMenu}
+					onSelectionContextMenu={onSelectionContextMenu}
 					onPaneClick={clearAllMenus}
 					proOptions={{ hideAttribution: true }}
 				>
