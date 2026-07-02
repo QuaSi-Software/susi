@@ -8,7 +8,7 @@ import EditNodeModal from './EditNodeModal';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import _ from 'lodash';
 import { AppContext } from '../../AppContext';
-import { deleteNode, duplicateNode } from './ContextMenuUtils';
+import { createDuplicateNode, deleteNode } from './ContextMenuUtils';
 
 interface NodeContextMenuInput {
 	nodeContextMenu: NodeContextMenuData | null;
@@ -67,7 +67,15 @@ const NodeContextMenu = ({
 	 */
 	const handleDuplicateNode = () => {
 		if (!nodeContextMenu) return;
-		duplicateNode(nodeContextMenu.node.id, setNodes);
+		setNodes((nodes) => {
+			const nodeID = nodeContextMenu.node.id;
+			const duplicateNode = createDuplicateNode(nodeID, nodes);
+			if (!duplicateNode) return nodes;
+			// update list of nodes: deselect original, keep new one selected
+			let updatedNodes: SusiNode[] = nodes.map((node) => ({ ...node, selected: false }));
+			updatedNodes = [...updatedNodes, duplicateNode];
+			return updatedNodes;
+		});
 		setNodeContextMenu(null);
 		setCheckState(true);
 	};

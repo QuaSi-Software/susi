@@ -4,7 +4,9 @@ import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import type { MenuPosition } from './Menus';
 import { AppContext } from '../../AppContext';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import { deleteNode, duplicateNode } from './ContextMenuUtils';
+import { deleteNode, createDuplicateNode } from './ContextMenuUtils';
+import { getNewEdge } from '../../NodeDataStructures/Edges/CreateEdge';
+import type { Connection } from '@xyflow/react';
 
 interface SelectionContextMenuProps {
 	selectionContextMenu: SelectionContextMenuData | null;
@@ -22,12 +24,14 @@ interface SelectionContextMenuData {
 
 const SelectionContextMenu = ({
 	selectionContextMenu,
+	nodes,
 	edges,
 	setSelectionContextMenu,
 	setNodes,
 	setEdges,
 }: SelectionContextMenuProps) => {
 	const setCheckState = useContext(AppContext)!.setCheckState;
+	const mediums = useContext(AppContext)!.mediums;
 
 	function deleteSelectionNodes() {
 		if (!selectionContextMenu) return;
@@ -42,9 +46,30 @@ const SelectionContextMenu = ({
 
 	function duplicateSelectionNodes() {
 		if (!selectionContextMenu) return;
+		const duplicatedNodes: Record<string, SusiNode> = {};
 		selectionContextMenu.nodes.forEach((node) => {
-			duplicateNode(node.id, setNodes);
+			const newNode = createDuplicateNode(node.id, nodes);
+			if (newNode) duplicatedNodes[node.id] = newNode;
 		});
+		const unselectedNodes: SusiNode[] = nodes.map((n) => ({ ...n, selected: false }));
+		const updatedNodes = unselectedNodes.concat(Object.values(duplicatedNodes));
+		/** duplicate edges where both source and target are in the selection nodes */
+		const newEdges: SusiEdge[] = [];
+		edges.forEach((edge) => {
+			const duplicateSource = duplicatedNodes[edge.source];
+			const duplicateTarget = duplicatedNodes[edge.target];
+			if (!duplicateSource || !duplicateTarget) return;
+			const connection: Connection = {
+				source: duplicateSource.id,
+				target: duplicateTarget.id,
+				sourceHandle: edge.sourceHandle!,
+				targetHandle: edge.targetHandle!,
+			};
+			const newEdge = getNewEdge(connection, updatedNodes, edges, mediums, () => {});
+			if (newEdge) newEdges.push(newEdge);
+		});
+		setNodes(updatedNodes);
+		setEdges((_edges) => _edges.concat(newEdges));
 		setCheckState(true);
 		setSelectionContextMenu(null);
 	}

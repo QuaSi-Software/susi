@@ -53,28 +53,32 @@ const findNameForDuplicate = (name: string, nodes: SusiNode[]) => {
 	}
 };
 
-function duplicateNode(nodeID: string, setNodes: Dispatch<SetStateAction<SusiNode[]>>) {
-	// duplicate node object
-	setNodes((nodes) => {
-		const nodeToDuplicate: SusiNode | undefined = nodes.find((node) => node.id === nodeID);
-		console.assert(nodeToDuplicate != undefined, `Trying to duplicate a node that doesn't exist`);
-		if (!nodeToDuplicate) return nodes;
-
-		const duplicateNode: SusiNode = deepCloneNode(nodeToDuplicate);
-		// move node towards bottom right and give it a unique ID
-		duplicateNode.position.x += 20;
-		duplicateNode.position.y += 20;
-		duplicateNode.id = nodeToDuplicate.id + '_' + new Date().getTime();
-		let isBus = duplicateNode.data.componentType.toLowerCase() === 'bus';
-		duplicateNode.data.busData = isBus ? new BusData() : null;
-		duplicateNode.data.content = findNameForDuplicate(nodeToDuplicate.data.content, nodes);
-		duplicateNode.selected = true;
-
-		// update list of nodes: deselect original, keep new one selected
-		let updatedNodes = nodes.map((node) => (node.id === nodeID ? { ...node, selected: false } : node));
-		updatedNodes = [...updatedNodes, duplicateNode];
-		return updatedNodes;
-	});
+function createDuplicateNode(nodeID: string, nodes: SusiNode[]): SusiNode | null {
+	const nodeToDuplicate: SusiNode | undefined = nodes.find((node) => node.id === nodeID);
+	console.assert(nodeToDuplicate != undefined, `Trying to duplicate a node that doesn't exist`);
+	if (!nodeToDuplicate) return null;
+	const duplicateNode: SusiNode = deepCloneNode(nodeToDuplicate);
+	// move node towards bottom right and give it a unique ID
+	duplicateNode.position.x += 20;
+	duplicateNode.position.y += 20;
+	duplicateNode.id = nodeToDuplicate.id + '_' + new Date().getTime();
+	let isBus = duplicateNode.data.componentType.toLowerCase() === 'bus';
+	duplicateNode.data.busData = isBus ? new BusData() : null;
+	duplicateNode.data.content = findNameForDuplicate(nodeToDuplicate.data.content, nodes);
+	duplicateNode.selected = true;
+	return duplicateNode;
 }
 
-export { deleteNode, duplicateNode };
+// function duplicateNode(nodeID: string, setNodes: Dispatch<SetStateAction<SusiNode[]>>) {
+// 	// duplicate node object
+// 	setNodes((nodes) => {
+// 		const duplicateNode = createDuplicateNode(nodeID, nodes);
+// 		if (!duplicateNode) return nodes;
+// 		// update list of nodes: deselect original, keep new one selected
+// 		let updatedNodes = nodes.map((node) => (node.id === nodeID ? { ...node, selected: false } : node));
+// 		updatedNodes = [...updatedNodes, duplicateNode];
+// 		return updatedNodes;
+// 	});
+// }
+
+export { deleteNode, createDuplicateNode };
