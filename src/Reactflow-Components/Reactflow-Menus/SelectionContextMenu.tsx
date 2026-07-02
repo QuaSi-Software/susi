@@ -67,10 +67,10 @@ const SelectionContextMenu = ({
 				{
 					<ButtonGroup vertical>
 						<Button className="contextMenu" variant={'outline-danger'} onClick={deleteSelectionNodes}>
-							<i className="bi bi-trash3"></i> Delete Components
+							<i className="bi bi-trash3"></i> Delete
 						</Button>
 						<Button className="contextMenu" variant="outline-primary" onClick={duplicateSelectionNodes}>
-							<i className="bi bi-copy"></i> Duplicate Component
+							<i className="bi bi-copy"></i> Duplicate
 						</Button>
 					</ButtonGroup>
 				}

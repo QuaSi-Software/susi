@@ -90,10 +90,10 @@ const NodeContextMenu = ({
 				{!showModal && (
 					<ButtonGroup vertical>
 						<Button className="contextMenu" variant="outline-primary" onClick={handleEditNode}>
-							<i className="bi bi-tools"></i> Edit Component
+							<i className="bi bi-tools"></i> Edit
 						</Button>
 						<Button className="contextMenu" variant="outline-primary" onClick={handleDuplicateNode}>
-							<i className="bi bi-copy"></i> Duplicate Component
+							<i className="bi bi-copy"></i> Duplicate
 						</Button>
 						<Button
 							className="contextMenu"
@@ -101,7 +101,7 @@ const NodeContextMenu = ({
 							onClick={handleDeleteNode}
 							disabled={!nodeContextMenu.node.deletable}
 						>
-							<i className="bi bi-trash3"></i> Delete Component
+							<i className="bi bi-trash3"></i> Delete
 						</Button>
 					</ButtonGroup>
 				)}
