@@ -43,6 +43,7 @@ import {
 	SelectionContextMenu,
 	type SelectionContextMenuData,
 } from './Reactflow-Components/Reactflow-Menus/SelectionContextMenu';
+import logo from './assets/resie.svg';
 
 const initialNodes: SusiNode[] = [];
 
@@ -284,6 +285,9 @@ const DnDFlow = () => {
 						/>
 						<ClearNodesButton nodes={nodes} setNodes={setNodes} setEdges={setEdges} />
 					</div>
+					<a href="https://quasi-software.readthedocs.io/en/latest/" className="resie-logo" target="_blank">
+						<img src={logo} style={{ width: 'inherit' }} />
+					</a>
 				</ReactFlow>
 				<EdgeContextMenu
 					edgeContextMenuData={edgeContextMenu}
