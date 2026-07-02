@@ -115,7 +115,30 @@ class InputObject implements InputObjectProps {
 			if (!medium) return 'UNDEFINED';
 			return medium.name;
 		}
+		if (this.type === InputObjectType.DATE) {
+			const date: Date = this.value;
+			return (
+				'' +
+				getPaddedNumber(date.getDay(), 2) +
+				'.' +
+				getPaddedNumber(date.getMonth(), 2) +
+				'.' +
+				getPaddedNumber(date.getFullYear(), 4) +
+				' ' +
+				getPaddedNumber(date.getHours(), 2) +
+				':' +
+				getPaddedNumber(date.getMinutes(), 2)
+			);
+		}
 		return this.value;
+
+		function getPaddedNumber(num: number, padding: number) {
+			let result = '' + num;
+			while (result.length < padding) {
+				result = '0' + result;
+			}
+			return result;
+		}
 	}
 	public copy(): InputObject {
 		return new InputObject(this);

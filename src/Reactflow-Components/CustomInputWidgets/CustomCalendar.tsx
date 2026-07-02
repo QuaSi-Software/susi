@@ -1,4 +1,3 @@
-import 'react-datepicker/dist/react-datepicker.css';
 import type { Locale } from '../../Sidebar/SettingsMenu';
 import { FloatLabel } from 'primereact/floatlabel';
 import { Calendar } from 'primereact/calendar';

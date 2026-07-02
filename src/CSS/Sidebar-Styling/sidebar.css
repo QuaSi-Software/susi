@@ -26,7 +26,7 @@
 	background: none;
 }
 
-.form-floating > {
+.form-floating > * {
 	padding-top: 24px;
 	overflow: visible;
 }
