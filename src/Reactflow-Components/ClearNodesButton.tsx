@@ -20,7 +20,7 @@ export function ClearNodesButton({ nodes, setNodes, setEdges }: ClearNodesButton
 	return (
 		<>
 			<Button variant="outline-danger" onClick={clearNodes} disabled={nodes.length === 0}>
-				<i className="bi bi-trash3"></i> Delete All Nodes
+				<i className="bi bi-trash3"></i> Delete All Components
 			</Button>
 		</>
 	);
