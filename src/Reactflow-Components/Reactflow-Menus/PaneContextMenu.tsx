@@ -4,21 +4,22 @@ import type { MenuPosition } from './Menus';
 import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import { useReactFlow } from '@xyflow/react';
 import createElkGraphLayout from './ElkLayout';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import { flushSync } from 'react-dom';
 import { AppContext } from '../../AppContext';
+import { createGroupNode } from '../../NodeDataStructures/Nodes/GroupNode';
 
 interface PaneContextMenuInput {
 	paneContextMenu: MenuPosition | null;
 	setPaneContextMenu: (NodeContextMenuData: MenuPosition | null) => void;
 	nodes: SusiNode[];
-	setNodes: (nodes: SusiNode[]) => void;
+	setNodes: Dispatch<SetStateAction<SusiNode[]>>;
 	edges: SusiEdge[];
 }
 
 const PaneContextMenu = ({ paneContextMenu, setPaneContextMenu, nodes, setNodes, edges }: PaneContextMenuInput) => {
-	const { fitView } = useReactFlow();
+	const { fitView, screenToFlowPosition } = useReactFlow();
 	const [layoutCalculated, setLayoutCalculated] = useState(true);
 	const setLoadingMessage = useContext(AppContext)!.setLoadingMessage;
 	const setCheckState = useContext(AppContext)!.setCheckState;
@@ -29,8 +30,19 @@ const PaneContextMenu = ({ paneContextMenu, setPaneContextMenu, nodes, setNodes,
 		setPaneContextMenu(null);
 		setLayoutCalculated(false);
 		setLoadingMessage('Resetting Layout...');
-		setPaneContextMenu(null);
 	};
+
+	function instantiateGroupNode() {
+		if (!paneContextMenu) return;
+		const pos = screenToFlowPosition({
+			x: paneContextMenu!.left,
+			y: paneContextMenu!.top,
+		});
+		const groupNode: SusiNode = createGroupNode(pos);
+		setNodes((_nodes) => [groupNode].concat(_nodes)); // group nodes must be at the start of the array
+		setCheckState(true);
+		setPaneContextMenu(null);
+	}
 
 	useEffect(() => {
 		if (layoutCalculated) return;
@@ -64,6 +76,9 @@ const PaneContextMenu = ({ paneContextMenu, setPaneContextMenu, nodes, setNodes,
 					<ButtonGroup vertical>
 						<Button className="contextMenu" variant="outline-success" onClick={handleLayoutReset}>
 							<i className="bi bi-arrow-clockwise"></i> Reset Layout
+						</Button>
+						<Button className="contextMenu" variant="outline-success" onClick={instantiateGroupNode}>
+							<i className="bi bi-collection"></i> Create Component Group
 						</Button>
 						<Button
 							className="contextMenu"

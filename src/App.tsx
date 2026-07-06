@@ -44,13 +44,12 @@ import {
 	type SelectionContextMenuData,
 } from './Reactflow-Components/Reactflow-Menus/SelectionContextMenu';
 import logo from './assets/resie.svg';
-
-const initialNodes: SusiNode[] = [];
+import GroupNodeComponent from './Reactflow-Components/GroupNodeComponent';
 
 const DnDFlow = () => {
-	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>(initialNodes);
+	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);
 	const [edges, setEdges, onEdgesChange] = useEdgesState<SusiEdge>([] as any);
-	const { screenToFlowPosition } = useReactFlow();
+	const { screenToFlowPosition, getIntersectingNodes } = useReactFlow();
 	const [type] = useDnD();
 	const ref = useRef<HTMLInputElement>(null);
 
@@ -89,6 +88,9 @@ const DnDFlow = () => {
 	const getNodeInputs = (componentType: string) => {
 		return getNodeInputsFromAPI(componentType, componentTypes);
 	};
+	const getSusiNodes = useCallback((): SusiNode[] => {
+		return nodes.filter((n) => 'nodeInputs' in n.data);
+	}, [nodes]);
 	/** Log error */
 	const logError = (message: string) => {
 		setErrorMessages((prevMessages) => [
@@ -115,12 +117,26 @@ const DnDFlow = () => {
 
 	const onConnect = useCallback(
 		(connection: Connection): void => {
-			const edge: SusiEdge | null = getNewEdge(connection, nodes, edges, mediums, logError);
+			const edge: SusiEdge | null = getNewEdge(connection, getSusiNodes(), edges, mediums, logError);
 			if (edge === null) return;
 			setEdges((eds: any[]) => addEdge(edge, eds) as any[]);
 			setCheckState(true);
 		},
 		[setEdges, nodes, edges, mediums]
+	);
+	const onNodeDrag = useCallback(
+		(_event: React.MouseEvent, _node: SusiNode) => {
+			const intersections = getIntersectingNodes(_node, false) as SusiNode[];
+			const parentNode = intersections.find((n: SusiNode) => n.id !== _node.id && n.type === 'group');
+			const parentId = parentNode ? parentNode?.id : undefined;
+			if (parentNode) console.log(`Node ${_node.data.content} found parent node ${parentNode.data.content}`);
+			if (_node.parentId !== parentId) {
+				setNodes((_nodes) =>
+					_nodes.map((n: SusiNode) => (n.id === _node.id ? { ..._node, parentId: parentId } : n))
+				);
+			}
+		},
+		[setNodes]
 	);
 
 	const onDragOver = useCallback((event: ReactDragEvent<HTMLDivElement>) => {
@@ -255,6 +271,7 @@ const DnDFlow = () => {
 					onEdgesChange={onEdgesChange}
 					onConnect={onConnect}
 					onDrop={onDrop}
+					onNodeDrag={onNodeDrag}
 					onDragStart={onDragStart}
 					onDragOver={onDragOver}
 					onNodeDragStop={() => {
@@ -262,7 +279,7 @@ const DnDFlow = () => {
 					}}
 					fitView
 					nodeOrigin={[0.5, 0.5]}
-					nodeTypes={{ default: MarkdownNode }}
+					nodeTypes={{ default: MarkdownNode, group: GroupNodeComponent }}
 					colorMode={theme}
 					ref={ref}
 					onEdgeContextMenu={onEdgeContextMenu}

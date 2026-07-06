@@ -51,7 +51,11 @@ const createNodeFromType = (
 };
 
 export function checkNodeValidInputs(node: SusiNode) {
-	const hasValidInputs = node.data.nodeInputs.every((input) => input.isValid());
+	console.assert(
+		node.data.nodeInputs !== undefined,
+		`Trying to access node inputs of group node: ${node.data.label}`
+	);
+	const hasValidInputs = node.data.nodeInputs!.every((input) => input.isValid());
 	node.data.hasValidInputs = hasValidInputs;
 }
 
