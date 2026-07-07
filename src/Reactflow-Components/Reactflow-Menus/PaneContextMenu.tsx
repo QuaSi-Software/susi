@@ -77,7 +77,7 @@ const PaneContextMenu = ({ paneContextMenu, setPaneContextMenu, nodes, setNodes,
 						<Button className="contextMenu" variant="outline-success" onClick={handleLayoutReset}>
 							<i className="bi bi-arrow-clockwise"></i> Reset Layout
 						</Button>
-						<Button className="contextMenu" variant="outline-success" onClick={instantiateGroupNode}>
+						<Button className="contextMenu" variant="outline-primary" onClick={instantiateGroupNode}>
 							<i className="bi bi-collection"></i> Create Component Group
 						</Button>
 						<Button

@@ -6,7 +6,8 @@ import { AppContext } from '../../AppContext';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { deleteNode, createDuplicateNode } from './ContextMenuUtils';
 import { getNewEdge } from '../../NodeDataStructures/Edges/CreateEdge';
-import type { Connection } from '@xyflow/react';
+import { useReactFlow, type Connection } from '@xyflow/react';
+import { createGroupNode } from '../../NodeDataStructures/Nodes/GroupNode';
 
 interface SelectionContextMenuProps {
 	selectionContextMenu: SelectionContextMenuData | null;
@@ -31,6 +32,7 @@ const SelectionContextMenu = ({
 	setEdges,
 }: SelectionContextMenuProps) => {
 	const setCheckState = useContext(AppContext)!.setCheckState;
+	const { screenToFlowPosition } = useReactFlow();
 	const mediums = useContext(AppContext)!.mediums;
 
 	function deleteSelectionNodes() {
@@ -74,6 +76,25 @@ const SelectionContextMenu = ({
 		setSelectionContextMenu(null);
 	}
 
+	function groupSelectionNodes() {
+		if (!selectionContextMenu) return;
+		const pos = screenToFlowPosition({
+			x: selectionContextMenu!.menuPosition.left,
+			y: selectionContextMenu!.menuPosition.top,
+		});
+		const groupNode: SusiNode = createGroupNode(pos);
+		groupNode.expandParent = true;
+		const selectedNodeIDs = selectionContextMenu.nodes.map((n) => n.id);
+		setNodes((_nodes) => {
+			const groupedNodes: SusiNode[] = _nodes.map((n) =>
+				selectedNodeIDs.includes(n.id) ? { ...n, parentId: groupNode.id } : n
+			);
+			return [groupNode].concat(groupedNodes);
+		});
+		setCheckState(true);
+		setSelectionContextMenu(null);
+	}
+
 	if (selectionContextMenu == null) return <></>;
 	return (
 		<>
@@ -96,6 +117,9 @@ const SelectionContextMenu = ({
 						</Button>
 						<Button className="contextMenu" variant="outline-primary" onClick={duplicateSelectionNodes}>
 							<i className="bi bi-copy"></i> Duplicate
+						</Button>
+						<Button className="contextMenu" variant="outline-primary" onClick={groupSelectionNodes}>
+							<i className="bi bi-collection"></i> Group
 						</Button>
 					</ButtonGroup>
 				}
