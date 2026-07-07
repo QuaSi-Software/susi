@@ -1,9 +1,18 @@
 export interface ImportData {
 	components: Record<string, ComponentData>;
-	// io_settings: Record<string, any>;
-	// simulation_parameters: Record<string, any>;
 	mediums?: Array<[string, string | null]>;
+	groups?: NodeGroup[]; /** For importing back into susi only */
+	/** General Parameters */
+	io_settings?: Record<string, any>;
+	emissions?: Record<string, any>;
+	simulation_parameters?: Record<string, any>;
+	economic?: Record<string, any>;
 	[key: string]: any;
+}
+
+export interface NodeGroup {
+	groupName: string;
+	nodesInGroup: string[];
 }
 
 export interface Connections {

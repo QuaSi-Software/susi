@@ -2,7 +2,7 @@ import type { Medium } from '../../../NodeDataStructures/Mediums/Medium';
 import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type { SusiEdge } from '../../../NodeDataStructures/Edges/SusiEdge';
 import type { InputObject } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
-import type { ComponentData, Connections, ImportData } from '../ExportDataStrucures';
+import type { ComponentData, Connections, ImportData, NodeGroup } from '../ExportDataStrucures';
 import { getUndefinedMedium } from '../../../NodeDataStructures/Mediums/MediumUtils';
 import { InputIssueType } from '../../../Reactflow-Components/CustomInputWidgets/Validation/InputChecking';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
@@ -83,10 +83,19 @@ const addNodeInputsToObject = (nodeInputs: InputObject[], obj: Record<string, an
 	return obj;
 };
 
+function getNodeGroup(parentNode: SusiNode, nodes: SusiNode[]): NodeGroup {
+	const childNodes = nodes.filter((n) => n.parentId === parentNode.id);
+	return {
+		groupName: parentNode.data.content,
+		nodesInGroup: childNodes.map((n) => n.data.content),
+	};
+}
+
 const exportState = ({ nodes, edges, mediums, resieParameterMenus }: ExportProps): string => {
 	/** adding these node inputs doesn't really require the mediums, since they should not include medium inputs  */
 	const exportDict: ImportData = {
 		components: {},
+		groups: [],
 		mediums: getMediumListForExport(mediums),
 	};
 	resieParameterMenus.forEach((menu) => {
@@ -98,6 +107,10 @@ const exportState = ({ nodes, edges, mediums, resieParameterMenus }: ExportProps
 	const components: Record<string, ComponentData> = {};
 
 	nodes.forEach((node) => {
+		if (node.type === 'group') {
+			exportDict.groups?.push(getNodeGroup(node, nodes));
+			return;
+		}
 		const compDict: ComponentData = { type: node.data.componentType };
 		addNodeInputsToObject(node.data.nodeInputs, compDict, mediums);
 
