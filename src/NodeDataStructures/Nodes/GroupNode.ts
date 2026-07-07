@@ -1,8 +1,20 @@
-import { Position, type XYPosition } from '@xyflow/react';
+import { Position, type XYPosition, getNodesBounds } from '@xyflow/react';
 import type { SusiNodeData } from './SusiNodeData';
 import type { SusiNode } from './SusiNode';
 
-function createGroupNode(position: XYPosition, content: string | null = null): SusiNode {
+function createGroupNodeFromSelection(content: string | null, selectedNodes: SusiNode[]): SusiNode {
+	const bounds = getNodesBounds(selectedNodes);
+	const padding = 50;
+	const groupNode = createGroupNode(bounds, content, bounds.width + padding, bounds.height + padding);
+	return groupNode;
+}
+
+function createGroupNode(
+	position: XYPosition,
+	content: string | null = null,
+	width: number = 200,
+	height: number = 150
+): SusiNode {
 	const timestamp = Date.now();
 	if (!content) {
 		content = 'New Group';
@@ -29,8 +41,8 @@ function createGroupNode(position: XYPosition, content: string | null = null): S
 		position: position,
 		data: susiNodeData,
 		type: 'group',
-		width: 200,
-		height: 150,
+		width,
+		height,
 		sourcePosition: Position.Bottom,
 		targetPosition: Position.Top,
 		hidden: false,
@@ -50,4 +62,4 @@ function createGroupNode(position: XYPosition, content: string | null = null): S
 	};
 }
 
-export { createGroupNode };
+export { createGroupNode, createGroupNodeFromSelection };

@@ -2,7 +2,7 @@ import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type { Medium } from '../../../NodeDataStructures/Mediums/Medium';
 import createNodeFromType from '../../../NodeDataStructures/Nodes/SusiNode';
 import getImportMediums from './ImportMediums';
-import type { ComponentData, ComponentImportData, ImportData } from '../ExportDataStrucures';
+import type { ComponentData, ComponentImportData, ImportData, NodeGroup } from '../ExportDataStrucures';
 import { getComponentImportData } from './ImportData';
 import { getBusDataFromConnections, isBusDataValid } from './ImportBusData';
 import type { SusiEdge } from '../../../NodeDataStructures/Edges/SusiEdge';
@@ -11,6 +11,7 @@ import { getNewEdge } from '../../../NodeDataStructures/Edges/CreateEdge';
 import type { Dispatch, SetStateAction } from 'react';
 import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
+import { createGroupNodeFromSelection } from '../../../NodeDataStructures/Nodes/GroupNode';
 
 interface ImportStateProps {
 	stateJSON: string;
@@ -54,6 +55,29 @@ function setListOfInputs(
 		});
 		return ResieParameterMenuInfo;
 	});
+}
+
+function setNodeGroups(groups: NodeGroup[], nodes: SusiNode[], logError: (errorMessage: string) => void): SusiNode[] {
+	let nodesWithGroups: SusiNode[] = nodes;
+	groups.forEach((group) => {
+		/** Create a group node and add it to the start of the list */
+		const nodesInGroup = group.nodesInGroup.map((nodeName) => nodes.find((n) => n.data.content === nodeName));
+		const groupNode = createGroupNodeFromSelection(
+			group.groupName,
+			nodesInGroup.filter((n) => n !== undefined)
+		);
+		nodesWithGroups = [groupNode].concat(nodesWithGroups);
+		/** set this node as the parent of all the child node */
+		group.nodesInGroup.forEach((nodeName) => {
+			const node = nodes.find((n) => n.data.content === nodeName);
+			if (!node) {
+				logError(`Group ${group.groupName} contains node id not found in components Dictionary: ${nodeName}`);
+				return;
+			}
+			node.parentId = groupNode.id;
+		});
+	});
+	return nodesWithGroups;
 }
 
 const importState = ({
@@ -184,8 +208,12 @@ const importState = ({
 			}
 		}
 	}
-
-	setNodes(nodeArray);
+	if (importDict.groups) {
+		const nodeArrayWithGroups = setNodeGroups(importDict.groups, nodeArray, logError);
+		setNodes(nodeArrayWithGroups);
+	} else {
+		setNodes(nodeArray);
+	}
 	setEdges(edgeArray);
 };
 
