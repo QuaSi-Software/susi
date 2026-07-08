@@ -25,8 +25,15 @@ export function fetchComponentInputs(
 		}
 		setLoadingMessage('Loading Resie Data...');
 		fetch('/parameters/susi')
-			.then((response) => response.json())
-			.then((data: ApiReturn) => {
+			.then((response) => {
+				if (!response.ok) {
+					console.error(`Status code ${response.status}: ${response.statusText}`);
+					return null;
+				}
+				return response.json();
+			})
+			.then((data: ApiReturn | null) => {
+				if (data === null) return;
 				const apiComponents: Record<string, ApiComponent> = data.components.types;
 				const componentTypes: Record<string, NodeType> = getComponentTypes(
 					apiComponents,

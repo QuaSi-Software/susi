@@ -23,6 +23,9 @@ export function importResieParameterMenuInfo(
 		const input = getInputObjectFromAPIParameter(paramName, paramObject);
 		inputs.push(input);
 	}
+	inputs.forEach((input) => {
+		input.checkInputValid(inputs);
+	});
 	checkParametersAndCategoriesMatch(inputs, categories, menuName);
 	return {
 		title: menuName,
