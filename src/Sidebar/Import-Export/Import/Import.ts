@@ -11,6 +11,7 @@ import { getNewEdge } from '../../../NodeDataStructures/Edges/CreateEdge';
 import type { Dispatch, SetStateAction } from 'react';
 import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
+import { getStartEndUnit } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
 
 interface ImportStateProps {
 	stateJSON: string;
@@ -40,7 +41,8 @@ function getOutputRefs(sourceNodeID: string, sourceNodeData: ComponentData): str
 function setListOfInputs(
 	setter: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>,
 	menuKey: string,
-	importedValues: Record<string, any>
+	importedValues: Record<string, any>,
+	startEndUnit: string
 ) {
 	setter((ResieParameterMenuInfo) => {
 		const menu = ResieParameterMenuInfo.find((e) => e.exportKey === menuKey);
@@ -49,7 +51,7 @@ function setListOfInputs(
 			if (importedValue === undefined) {
 				input.isIncluded = false;
 			} else {
-				input.value = importedValue;
+				input.setValueOnImport(importedValue, [], startEndUnit);
 			}
 		});
 		return ResieParameterMenuInfo;
@@ -78,10 +80,11 @@ const importState = ({
 		logError('There is no dictionary of components defined in import file.');
 		return;
 	}
+	const startEndUnit = getStartEndUnit(resieParameterMenus);
 	resieParameterMenus.forEach((menu) => {
 		const list = importDict[menu.exportKey];
 		if (list === undefined) return;
-		setListOfInputs(setresieParameterMenus, menu.exportKey, list);
+		setListOfInputs(setresieParameterMenus, menu.exportKey, list, startEndUnit);
 	});
 	// Get or generate mediums
 	const mediums = getImportMediums(importDict, nodeTypes);
@@ -110,7 +113,7 @@ const importState = ({
 		for (const nodeInput of nodeInputs) {
 			const value = nodeData[nodeInput.resieName];
 			if (value !== undefined) {
-				nodeInput.setNodeInputValue(value, mediums);
+				nodeInput.setValueOnImport(value, mediums, startEndUnit);
 				nodeInput.isIncluded = true;
 			} else {
 				nodeInput.isIncluded = false;

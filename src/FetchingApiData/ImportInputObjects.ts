@@ -6,19 +6,23 @@ import type { ApiCategory, APIParameter } from './ApiData';
 export function getInputObjectFromAPIParameter(inputName: string, apiInput: APIParameter) {
 	if (Array.isArray(apiInput.default) && apiInput.default.length > 0 && apiInput.default[0] === null)
 		apiInput.default = null;
-	const input = new InputObject({
-		type: apiInput.widget_type, //getNodeInputType(inputName, apiInput),
-		resieName: inputName,
-		displayName: apiInput.display_name,
-		value: apiInput.default,
-		tooltip: apiInput.description,
-		unit: apiInput.unit,
-		isRequired: apiInput.required,
-		dropdownOptions: apiInput.options,
-		dropdownOptionDisplayNames: apiInput.options,
-		validations: apiInput.validations === undefined ? [] : apiInput.validations.map((x) => importValidation(x)),
-		conditionals: apiInput.conditionals === undefined ? [] : apiInput.conditionals.map((x) => importConditional(x)),
-	});
+	const input = new InputObject(
+		{
+			type: apiInput.widget_type, //getNodeInputType(inputName, apiInput),
+			resieName: inputName,
+			displayName: apiInput.display_name,
+			value: apiInput.default,
+			tooltip: apiInput.description,
+			unit: apiInput.unit,
+			isRequired: apiInput.required,
+			dropdownOptions: apiInput.options,
+			dropdownOptionDisplayNames: apiInput.options,
+			validations: apiInput.validations === undefined ? [] : apiInput.validations.map((x) => importValidation(x)),
+			conditionals:
+				apiInput.conditionals === undefined ? [] : apiInput.conditionals.map((x) => importConditional(x)),
+		},
+		true
+	);
 	return input;
 }
 

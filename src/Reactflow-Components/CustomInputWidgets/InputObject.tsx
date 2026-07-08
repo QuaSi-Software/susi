@@ -3,6 +3,7 @@ import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
 import { type Validation } from './Validation/NumberValidation';
 import { type Conditional } from './Validation/Conditionals';
 import { checkForInputIssues, InputIssueType, type InputIssue } from './Validation/InputChecking';
+import { exportDate, parseDate } from './DateParsing';
 
 const InputObjectType = {
 	INT: 'INT',
@@ -61,25 +62,31 @@ class InputObject implements InputObjectProps {
 	conditionals: Conditional[] = [];
 	issue: InputIssue = { issueType: InputIssueType.None, message: '' };
 
-	constructor(props: InputObjectProps) {
+	constructor(props: InputObjectProps, isImport: boolean = false, startEndUnit: string | null = null) {
 		this.type = props.type;
 		this.resieName = props.resieName;
 		this.displayName = props.displayName;
 		Object.assign(this, props);
+		if (isImport) this.setValueOnImport(props.value, [], startEndUnit);
+	}
 
-		if (this.issue === undefined) if (this.value === undefined) this.value = null;
+	public setValueOnImport(value: any, mediums: Medium[] = [], startEndUnit: string | null): void {
+		this.value = value;
+		if (this.type === InputObjectType.MEDIUM) {
+			const mediumWithKey = mediums.find((m) => m.key === this.value);
+			if (mediumWithKey === undefined) {
+				const mediumWithName = mediums.find((m) => m.name === this.value);
+				this.value = mediumWithName?.key || getUndefinedMedium().key;
+			}
+		}
+		if (this.value === undefined) this.value = null;
 
 		if (this.value === null && !this.isRequired) {
 			if (this.type === InputObjectType.STRING) this.value = '';
-			// this.isIncluded = false;
 		}
 		if (this.type === InputObjectType.DATE) {
-			const date: Date = new Date(this.value);
-			if (isNaN(date.getSeconds()) || this.value === null) {
-				const now = new Date();
-				now.setHours(0, 0, 0);
-				this.value = now;
-			} else this.value = date;
+			const date: Date = parseDate(this.value, startEndUnit);
+			this.value = date;
 		}
 
 		if (this.type === InputObjectType.DROPDOWN) {
@@ -97,18 +104,7 @@ class InputObject implements InputObjectProps {
 			}
 		}
 	}
-
-	public setNodeInputValue(value: any, mediums: Medium[]): void {
-		if (this.type === InputObjectType.MEDIUM) {
-			const mediumWithKey = mediums.find((m) => m.key === value);
-			if (mediumWithKey === undefined) {
-				const mediumWithName = mediums.find((m) => m.name === value);
-				value = mediumWithName?.key || getUndefinedMedium().key;
-			}
-		}
-		this.value = value;
-	}
-	public getNodeInputExportValue(mediums: Medium[]): any {
+	public getNodeInputExportValue(mediums: Medium[], startEndUnit: string | null = null): any {
 		if (this.type === InputObjectType.MEDIUM) {
 			const mediumKey = this.value;
 			const medium = mediums.find((m) => m.key === mediumKey);
@@ -116,29 +112,9 @@ class InputObject implements InputObjectProps {
 			return medium.name;
 		}
 		if (this.type === InputObjectType.DATE) {
-			const date: Date = this.value;
-			return (
-				'' +
-				getPaddedNumber(date.getDay(), 2) +
-				'.' +
-				getPaddedNumber(date.getMonth(), 2) +
-				'.' +
-				getPaddedNumber(date.getFullYear(), 4) +
-				' ' +
-				getPaddedNumber(date.getHours(), 2) +
-				':' +
-				getPaddedNumber(date.getMinutes(), 2)
-			);
+			return exportDate(this.value, startEndUnit);
 		}
 		return this.value;
-
-		function getPaddedNumber(num: number, padding: number) {
-			let result = '' + num;
-			while (result.length < padding) {
-				result = '0' + result;
-			}
-			return result;
-		}
 	}
 	public copy(): InputObject {
 		return new InputObject(this);

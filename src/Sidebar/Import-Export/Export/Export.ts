@@ -6,6 +6,7 @@ import type { ComponentData, Connections, ImportData } from '../ExportDataStrucu
 import { getUndefinedMedium } from '../../../NodeDataStructures/Mediums/MediumUtils';
 import { InputIssueType } from '../../../Reactflow-Components/CustomInputWidgets/Validation/InputChecking';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
+import { getStartEndUnit } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
 
 interface ExportProps {
 	nodes: SusiNode[];
@@ -71,14 +72,19 @@ const getBusConnections = (node: SusiNode, nodes: SusiNode[]): Connections => {
 	};
 };
 
-const addNodeInputsToObject = (nodeInputs: InputObject[], obj: Record<string, any>, mediums: Medium[]) => {
+const addNodeInputsToObject = (
+	nodeInputs: InputObject[],
+	obj: Record<string, any>,
+	mediums: Medium[],
+	startEndUnit: string
+) => {
 	nodeInputs.forEach((nodeInput) => {
 		if (!nodeInput.isIncluded && !nodeInput.isRequired) {
 			return;
 		}
 		const issueType = nodeInput.issue.issueType;
 		if (issueType === InputIssueType.Conditional || issueType === InputIssueType.Mutex) return;
-		obj[nodeInput.resieName] = nodeInput.getNodeInputExportValue(mediums);
+		obj[nodeInput.resieName] = nodeInput.getNodeInputExportValue(mediums, startEndUnit);
 	});
 	return obj;
 };
@@ -89,9 +95,10 @@ const exportState = ({ nodes, edges, mediums, resieParameterMenus }: ExportProps
 		components: {},
 		mediums: getMediumListForExport(mediums),
 	};
+	const startEndUnit = getStartEndUnit(resieParameterMenus);
 	resieParameterMenus.forEach((menu) => {
 		const obj = {};
-		addNodeInputsToObject(menu.inputs, obj, []);
+		addNodeInputsToObject(menu.inputs, obj, [], startEndUnit);
 		exportDict[menu.exportKey] = obj;
 	});
 
@@ -99,7 +106,7 @@ const exportState = ({ nodes, edges, mediums, resieParameterMenus }: ExportProps
 
 	nodes.forEach((node) => {
 		const compDict: ComponentData = { type: node.data.componentType };
-		addNodeInputsToObject(node.data.nodeInputs, compDict, mediums);
+		addNodeInputsToObject(node.data.nodeInputs, compDict, mediums, startEndUnit);
 
 		// Add import data
 		compDict.import_data = {
