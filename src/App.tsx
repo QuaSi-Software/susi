@@ -168,6 +168,14 @@ const DnDFlow = () => {
 			});
 			const newNode = createNodeFromType(nodes, type, position, nodeNamePrefix);
 
+			/** check if node was dragged into a group */
+			const intersections = getIntersectingNodes(newNode, false) as SusiNode[];
+			const newParent = intersections.find((n: SusiNode) => n.type === 'group');
+			if (newParent) {
+				newNode.position = getPositionAfterParentChange(newNode, undefined, newParent);
+				newNode.parentId = newParent.id;
+			}
+
 			setNodes((nds) => nds.concat(newNode));
 			setCheckState(true);
 		},

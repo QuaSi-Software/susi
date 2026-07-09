@@ -17,7 +17,7 @@ const createNodeFromType = (
 	position: XYPosition,
 	nodeNamePrefix: string,
 	content: string | null = null
-) => {
+): SusiNode => {
 	const nodesWithType = nodes.filter((node: SusiNode) => node.data.componentType === nodeType.type_name);
 	const index = nodesWithType.length;
 	const timestamp = Date.now();
