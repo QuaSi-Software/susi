@@ -2,7 +2,8 @@ import type { Node, XYPosition } from '@xyflow/react';
 import type { SusiNode } from './SusiNode';
 
 function getPositionAfterParentChange(_node: SusiNode, prevParent?: SusiNode, newParent?: SusiNode): XYPosition {
-	let position = _node.position;
+	let position = Object.assign({}, _node.position);
+	if (prevParent?.id === newParent?.id) return position;
 	if (prevParent) {
 		position = getNodePositionOutsideParent(_node.position, prevParent);
 	}
@@ -14,31 +15,35 @@ function getPositionAfterParentChange(_node: SusiNode, prevParent?: SusiNode, ne
 
 const getNodePositionInsideParent = (nodePosition: XYPosition, node: Partial<Node>, groupNode: Node): XYPosition => {
 	const position = nodePosition ?? { x: 0, y: 0 };
-	const nodeWidth = node.measured?.width ?? 0;
-	const nodeHeight = node.measured?.height ?? 0;
+	const nodeWidth = node.measured?.width ?? node.width ?? 0;
+	const nodeHeight = node.measured?.height ?? node.height ?? 0;
+	const nodeTopLeftCorner = {
+		x: position.x - nodeWidth / 2,
+		y: position.y - nodeHeight / 2,
+	};
 
-	const groupWidth = groupNode.measured?.width ?? 0;
-	const groupHeight = groupNode.measured?.height ?? 0;
+	const groupWidth = groupNode.measured?.width ?? groupNode.width ?? 0;
+	const groupHeight = groupNode.measured?.height ?? groupNode.height ?? 0;
 
-	const groupPosition = {
+	const parentTopLeftCorner = {
 		x: groupNode.position.x - groupWidth / 2,
 		y: groupNode.position.y - groupHeight / 2,
 	};
 
-	if (position.x < groupPosition.x) {
+	if (nodeTopLeftCorner.x < parentTopLeftCorner.x) {
 		position.x = 0;
-	} else if (position.x + nodeWidth > groupPosition.x + groupWidth) {
-		position.x = groupWidth - nodeWidth;
+	} else if (nodeTopLeftCorner.x + nodeWidth > parentTopLeftCorner.x + groupWidth) {
+		position.x = groupWidth - nodeWidth / 2;
 	} else {
-		position.x = position.x - groupPosition.x;
+		position.x = position.x - parentTopLeftCorner.x;
 	}
 
-	if (position.y < groupPosition.y) {
+	if (position.y < parentTopLeftCorner.y) {
 		position.y = 0;
-	} else if (position.y + nodeHeight > groupPosition.y + groupHeight) {
-		position.y = groupHeight - nodeHeight;
+	} else if (nodeTopLeftCorner.y + nodeHeight > parentTopLeftCorner.y + groupHeight) {
+		position.y = groupHeight - nodeHeight / 2;
 	} else {
-		position.y = position.y - groupPosition.y;
+		position.y = position.y - parentTopLeftCorner.y;
 	}
 
 	return position;

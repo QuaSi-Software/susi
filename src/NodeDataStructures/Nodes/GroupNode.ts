@@ -1,11 +1,12 @@
-import { Position, type XYPosition, getNodesBounds } from '@xyflow/react';
+import { Position, type XYPosition } from '@xyflow/react';
 import type { SusiNodeData } from './SusiNodeData';
 import type { SusiNode } from './SusiNode';
+import getOriginAdjustedNodeBounds from './OriginAdjustedNodeBounds';
 
-function createGroupNodeFromSelection(content: string | null, selectedNodes: SusiNode[]): SusiNode {
-	const bounds = getNodesBounds(selectedNodes);
+function createGroupNodeFromSelection(selectedNodes: SusiNode[], content: string | null = null): SusiNode {
 	const padding = 50;
-	const groupNode = createGroupNode(bounds, content, bounds.width + padding, bounds.height + padding);
+	const bounds = getOriginAdjustedNodeBounds(selectedNodes, padding);
+	const groupNode = createGroupNode(bounds, content, bounds.width, bounds.height);
 	return groupNode;
 }
 

@@ -8,6 +8,7 @@ import { deleteNode, createDuplicateNode } from './ContextMenuUtils';
 import { getNewEdge } from '../../NodeDataStructures/Edges/CreateEdge';
 import { type Connection } from '@xyflow/react';
 import { createGroupNodeFromSelection } from '../../NodeDataStructures/Nodes/GroupNode';
+import { getPositionAfterParentChange } from '../../NodeDataStructures/Nodes/CalculateChildNodePosition';
 
 interface SelectionContextMenuProps {
 	selectionContextMenu: SelectionContextMenuData | null;
@@ -77,13 +78,23 @@ const SelectionContextMenu = ({
 
 	function groupSelectionNodes() {
 		if (!selectionContextMenu) return;
-		const groupNode: SusiNode = createGroupNodeFromSelection(null, selectionContextMenu.nodes);
+		const parentNode: SusiNode = createGroupNodeFromSelection(selectionContextMenu.nodes, null);
 		const selectedNodeIDs = selectionContextMenu.nodes.map((n) => n.id);
 		setNodes((_nodes) => {
-			const groupedNodes: SusiNode[] = _nodes.map((n) =>
-				selectedNodeIDs.includes(n.id) ? { ...n, parentId: groupNode.id } : n
-			);
-			return [groupNode].concat(groupedNodes);
+			const childNodes: SusiNode[] = _nodes.map((n) => {
+				const isSelectedNode = selectedNodeIDs.includes(n.id);
+				if (isSelectedNode) {
+					const position = getPositionAfterParentChange(
+						n,
+						_nodes.find((e) => e.id === n.parentId),
+						parentNode
+					);
+					return { ...n, parentId: parentNode.id, position: position };
+				} else {
+					return n;
+				}
+			});
+			return [parentNode].concat(childNodes);
 		});
 		setCheckState(true);
 		setSelectionContextMenu(null);
