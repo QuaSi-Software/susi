@@ -45,6 +45,7 @@ import {
 } from './Reactflow-Components/Reactflow-Menus/SelectionContextMenu';
 import logo from './assets/resie.svg';
 import GroupNodeComponent from './Reactflow-Components/GroupNodeComponent';
+import { getPositionAfterParentChange } from './NodeDataStructures/Nodes/CalculateChildNodePosition';
 
 const DnDFlow = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);
@@ -74,6 +75,7 @@ const DnDFlow = () => {
 	const [componentCategories, setComponentCategories] = useState<ApiCategory[]>([]);
 	const [resieParameterMenus, setResieParameterMenus] = useState<ResieParameterMenuInfo[]>([]);
 
+	// const { onNodeDragStop } = useNodeDragHandlers();
 	document.documentElement.setAttribute('data-theme', theme);
 
 	fetchComponentInputs(
@@ -124,19 +126,23 @@ const DnDFlow = () => {
 		},
 		[setEdges, nodes, edges, mediums]
 	);
-	const onNodeDrag = useCallback(
+	const onNodeDragStop = useCallback(
 		(_event: React.MouseEvent, _node: SusiNode) => {
 			const intersections = getIntersectingNodes(_node, false) as SusiNode[];
-			const parentNode = intersections.find((n: SusiNode) => n.id !== _node.id && n.type === 'group');
-			const parentId = parentNode ? parentNode?.id : undefined;
-			if (parentNode) console.log(`Node ${_node.data.content} found parent node ${parentNode.data.content}`);
+			const newParent = intersections.find((n: SusiNode) => n.id !== _node.id && n.type === 'group');
+			const parentId = newParent ? newParent?.id : undefined;
 			if (_node.parentId !== parentId) {
+				/** get node position */
+				const prevParent = _node.parentId ? nodes.find((n) => n.id === _node.parentId) : undefined;
+				const position = getPositionAfterParentChange(_node, prevParent, newParent);
+				/** update node with new or newly undefined parent */
 				setNodes((_nodes) =>
-					_nodes.map((n: SusiNode) => (n.id === _node.id ? { ..._node, parentId: parentId } : n))
+					_nodes.map((n: SusiNode) => (n.id === _node.id ? { ..._node, parentId: parentId, position } : n))
 				);
 			}
+			setCheckState(true);
 		},
-		[setNodes]
+		[setNodes, nodes]
 	);
 
 	const onDragOver = useCallback((event: ReactDragEvent<HTMLDivElement>) => {
@@ -271,12 +277,9 @@ const DnDFlow = () => {
 					onEdgesChange={onEdgesChange}
 					onConnect={onConnect}
 					onDrop={onDrop}
-					onNodeDrag={onNodeDrag}
+					onNodeDragStop={onNodeDragStop}
 					onDragStart={onDragStart}
 					onDragOver={onDragOver}
-					onNodeDragStop={() => {
-						setCheckState(true);
-					}}
 					fitView
 					nodeOrigin={[0.5, 0.5]}
 					nodeTypes={{ default: MarkdownNode, group: GroupNodeComponent }}
