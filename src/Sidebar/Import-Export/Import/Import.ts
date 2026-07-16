@@ -13,6 +13,7 @@ import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
 import { createGroupNodeFromSelection } from '../../../NodeDataStructures/Nodes/GroupNode';
 import { getStartEndUnit } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
+import { getPositionAfterParentChange } from '../../../NodeDataStructures/Nodes/CalculateChildNodePosition';
 
 interface ImportStateProps {
 	stateJSON: string;
@@ -65,8 +66,8 @@ function setNodeGroups(groups: NodeGroup[], nodes: SusiNode[], logError: (errorM
 		/** Create a group node and add it to the start of the list */
 		const nodesInGroup = group.nodesInGroup.map((nodeName) => nodes.find((n) => n.data.content === nodeName));
 		const groupNode = createGroupNodeFromSelection(
-			group.groupName,
-			nodesInGroup.filter((n) => n !== undefined)
+			nodesInGroup.filter((n) => n !== undefined),
+			group.groupName
 		);
 		nodesWithGroups = [groupNode].concat(nodesWithGroups);
 		/** set this node as the parent of all the child node */
@@ -77,6 +78,7 @@ function setNodeGroups(groups: NodeGroup[], nodes: SusiNode[], logError: (errorM
 				return;
 			}
 			node.parentId = groupNode.id;
+			node.position = getPositionAfterParentChange(node, undefined, groupNode);
 		});
 	});
 	return nodesWithGroups;

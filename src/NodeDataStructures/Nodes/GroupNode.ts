@@ -4,6 +4,10 @@ import type { SusiNode } from './SusiNode';
 import getOriginAdjustedNodeBounds from './OriginAdjustedNodeBounds';
 
 function createGroupNodeFromSelection(selectedNodes: SusiNode[], content: string | null = null): SusiNode {
+	console.assert(
+		selectedNodes.every((n) => n !== undefined),
+		'createGroupNodeFromSelection cannot be called with undefined node'
+	);
 	const padding = 50;
 	const bounds = getOriginAdjustedNodeBounds(selectedNodes, padding);
 	const groupNode = createGroupNode(bounds, content, bounds.width, bounds.height);

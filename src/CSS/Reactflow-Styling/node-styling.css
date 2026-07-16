@@ -8,7 +8,7 @@
 	--node-border-color: #3b3b3b;
 	--selected-node-border-color: #000000;
 
-	--group-node-background: #1c52762b;
+	--group-node-background: #314f6455;
 
 	--xy-edge-stroke-default: black;
 	--xy-theme-edge-hover: #2e2e2e;
@@ -23,7 +23,7 @@
 	--node-border-color: #a9a9a9;
 	--selected-node-border-color: #ffffff;
 
-	--group-node-background: #6bb8ff36;
+	--group-node-background: #2d303485;
 
 	--xy-edge-stroke-default: white;
 	--xy-theme-edge-hover: #bbbbbb;

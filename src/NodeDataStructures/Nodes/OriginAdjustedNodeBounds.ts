@@ -3,8 +3,8 @@ import type { SusiNode } from './SusiNode';
 
 function getNodeBounds(node: SusiNode): Rect {
 	const position = node.position ?? { x: 0, y: 0 };
-	const nodeWidth = node.measured?.width ?? 0;
-	const nodeHeight = node.measured?.height ?? 0;
+	const nodeWidth = node.measured?.width ?? 150;
+	const nodeHeight = node.measured?.height ?? 120;
 
 	return {
 		x: position.x,
@@ -47,6 +47,7 @@ function getBoundingBounds(rect1: Rect, rect2: Rect): Rect {
 }
 
 export default function getOriginAdjustedNodeBounds(nodes: SusiNode[], padding: number): Rect {
+	if (nodes.length === 0) return { x: 0, y: 0, width: 200, height: 150 };
 	let bounds: Rect = getNodeBounds(nodes[0]);
 	nodes.forEach((node) => {
 		const nodeBounds = getNodeBounds(node);

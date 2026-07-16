@@ -89,7 +89,7 @@ const SelectionContextMenu = ({
 						_nodes.find((e) => e.id === n.parentId),
 						parentNode
 					);
-					return { ...n, parentId: parentNode.id, position: position };
+					return { ...n, parentId: parentNode.id, position: position, selected: false };
 				} else {
 					return n;
 				}
