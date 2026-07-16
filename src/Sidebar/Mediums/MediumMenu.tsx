@@ -27,6 +27,7 @@ const MediumMenu = ({ nodes, setNodes, edges, setEdges }: MediumMenuProps) => {
 	if (!context) return <></>;
 	const mediums = context.mediums;
 	const setMediums = context.setMediums;
+	const setCheckState = context.setCheckState;
 
 	const onMediumChange = (medium: Medium) => {
 		const mediumIndex = mediums.findIndex((m) => m.key === medium.key);
@@ -34,6 +35,7 @@ const MediumMenu = ({ nodes, setNodes, edges, setEdges }: MediumMenuProps) => {
 		newMediums[mediumIndex] = medium;
 		checkForDuplicateNames(newMediums);
 		setMediums(newMediums);
+		setCheckState(true);
 	};
 
 	const updateNodesAndEdgesOnMediumDelete = (mediumKeys: string[]) => {
@@ -60,6 +62,7 @@ const MediumMenu = ({ nodes, setNodes, edges, setEdges }: MediumMenuProps) => {
 		});
 		checkForDuplicateNames(newMediums);
 		setMediums(newMediums);
+		setCheckState(true);
 	};
 	const addMedium = () => {
 		const mediumNameDuplicate = mediums.find((m) => m.name === 'm_untitled') !== undefined;
@@ -73,6 +76,7 @@ const MediumMenu = ({ nodes, setNodes, edges, setEdges }: MediumMenuProps) => {
 		newMediums.push(newMedium);
 		checkForDuplicateNames(newMediums);
 		setMediums(newMediums);
+		setCheckState(true);
 	};
 	const resetMenu = () => {
 		const defaultMediums = getDefaultMediums();
@@ -83,6 +87,7 @@ const MediumMenu = ({ nodes, setNodes, edges, setEdges }: MediumMenuProps) => {
 		const mediumsKeys = mediumsToDelete.map((m) => m.key);
 		flushSync(() => updateNodesAndEdgesOnMediumDelete(mediumsKeys));
 		setMediums(defaultMediums);
+		setCheckState(true);
 	};
 
 	const mediumsAreDefault = () => {
@@ -92,7 +97,6 @@ const MediumMenu = ({ nodes, setNodes, edges, setEdges }: MediumMenuProps) => {
 
 	return (
 		<div className="medium-menu">
-			{/* <div className="sidebar-heading">{'Mediums'}</div> */}
 			<Col className="d-flex flex-column gap-2">
 				{mediums.map(
 					(medium) =>
