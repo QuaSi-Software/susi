@@ -3,6 +3,7 @@ import { deepCloneNode, type SusiNode } from '../../NodeDataStructures/Nodes/Sus
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import { updateBusDataOnNodeDelete } from '../../NodeDataStructures/Bus/BusDataUtils';
 import BusData from '../../NodeDataStructures/Bus/BusData';
+import { getPositionAfterParentChange } from '../../NodeDataStructures/Nodes/CalculateChildNodePosition';
 
 function deleteNode(
 	node: SusiNode,
@@ -13,7 +14,15 @@ function deleteNode(
 ) {
 	if (node.deletable) {
 		setNodes((nodes) => {
-			const updatedNodes = nodes.filter((e) => e.id !== node.id);
+			let updatedNodes = nodes.filter((e) => e.id !== node.id);
+			if (node.type === 'group') {
+				/** If this node was a group node,  */
+				updatedNodes = updatedNodes.map((n) =>
+					n.parentId === node.id
+						? { ...n, parentId: undefined, position: getPositionAfterParentChange(n, node, undefined) }
+						: n
+				);
+			}
 			updateBusDataOnNodeDelete(node.id, nodes, allEdges);
 			return updatedNodes;
 		});
@@ -68,17 +77,5 @@ function createDuplicateNode(nodeID: string, nodes: SusiNode[]): SusiNode | null
 	duplicateNode.selected = true;
 	return duplicateNode;
 }
-
-// function duplicateNode(nodeID: string, setNodes: Dispatch<SetStateAction<SusiNode[]>>) {
-// 	// duplicate node object
-// 	setNodes((nodes) => {
-// 		const duplicateNode = createDuplicateNode(nodeID, nodes);
-// 		if (!duplicateNode) return nodes;
-// 		// update list of nodes: deselect original, keep new one selected
-// 		let updatedNodes = nodes.map((node) => (node.id === nodeID ? { ...node, selected: false } : node));
-// 		updatedNodes = [...updatedNodes, duplicateNode];
-// 		return updatedNodes;
-// 	});
-// }
 
 export { deleteNode, createDuplicateNode };
