@@ -167,6 +167,10 @@ const DnDFlow = () => {
 				y: event.clientY,
 			});
 			const newNode = createNodeFromType(nodes, type, position, nodeNamePrefix);
+			newNode.measured = {
+				width: 50,
+				height: 50,
+			}; // add estimated height and width, so getIntersectingNodes works right
 
 			/** check if node was dragged into a group */
 			const intersections = getIntersectingNodes(newNode, false) as SusiNode[];
