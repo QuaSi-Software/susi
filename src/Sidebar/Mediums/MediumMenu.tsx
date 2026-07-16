@@ -59,9 +59,9 @@ const MediumMenu = ({ nodes, setNodes, edges, setEdges }: MediumMenuProps) => {
 		const newMediums = mediums.filter((m) => m.key !== key);
 		flushSync(() => {
 			updateNodesAndEdgesOnMediumDelete([key]);
+			checkForDuplicateNames(newMediums);
+			setMediums(newMediums);
 		});
-		checkForDuplicateNames(newMediums);
-		setMediums(newMediums);
 		setCheckState(true);
 	};
 	const addMedium = () => {
