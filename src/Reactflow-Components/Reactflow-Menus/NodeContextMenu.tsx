@@ -9,6 +9,8 @@ import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import _ from 'lodash';
 import { AppContext } from '../../AppContext';
 import { createDuplicateNode, deleteNode } from './ContextMenuUtils';
+import getOriginAdjustedNodeBounds from '../../NodeDataStructures/Nodes/OriginAdjustedNodeBounds';
+import { getPositionAfterParentChange } from '../../NodeDataStructures/Nodes/CalculateChildNodePosition';
 
 interface NodeContextMenuInput {
 	nodeContextMenu: NodeContextMenuData | null;
@@ -80,6 +82,40 @@ const NodeContextMenu = ({
 		setCheckState(true);
 	};
 
+	const fitGroupNodeToChildren = () => {
+		if (!nodeContextMenu) return;
+		const parentNode = nodeContextMenu.node;
+		setNodes((nodes) => {
+			const childNodes = nodes.filter((n) => n.parentId === parentNode.id);
+			const deparentedChildNodes = childNodes.map((n) => ({
+				...n,
+				position: getPositionAfterParentChange(n, parentNode, undefined),
+			}));
+			const bounds = getOriginAdjustedNodeBounds(deparentedChildNodes);
+			const newParentNode = {
+				...Object.assign({}, parentNode),
+				position: { x: bounds.x, y: bounds.y },
+				width: bounds.width,
+				height: bounds.height,
+				measured: {
+					width: bounds.width,
+					height: bounds.height,
+				},
+			};
+			return nodes.map((n) => {
+				if (n.id === parentNode.id) return newParentNode;
+				else if (n.parentId === parentNode.id) {
+					const deparentedNode = deparentedChildNodes.find((e) => e.id === n.id);
+					const newPos = getPositionAfterParentChange(deparentedNode!, undefined, newParentNode);
+					return { ...n, position: newPos, parentId: parentNode.id };
+					// return { ...n, position: deparentedNode?.position, parentId: undefined };
+				} else return n;
+			});
+		});
+		setNodeContextMenu(null);
+		setCheckState(true);
+	};
+
 	if (!nodeContextMenu) return <></>;
 	return (
 		<>
@@ -103,6 +139,11 @@ const NodeContextMenu = ({
 						<Button className="contextMenu" variant="outline-primary" onClick={handleDuplicateNode}>
 							<i className="bi bi-copy"></i> Duplicate
 						</Button>
+						{nodeContextMenu.node.type === 'group' && (
+							<Button className="contextMenu" variant="outline-primary" onClick={fitGroupNodeToChildren}>
+								<i className="bi bi-bounding-box-circles"></i> Resize to fit content
+							</Button>
+						)}
 						<Button
 							className="contextMenu"
 							variant={nodeContextMenu.node.deletable ? 'outline-danger' : 'secondary'}

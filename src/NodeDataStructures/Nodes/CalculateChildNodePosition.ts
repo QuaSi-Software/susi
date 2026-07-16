@@ -13,10 +13,11 @@ function getPositionAfterParentChange(_node: SusiNode, prevParent?: SusiNode, ne
 	return position;
 }
 
-const getNodePositionInsideParent = (nodePosition: XYPosition, node: Partial<Node>, groupNode: Node): XYPosition => {
+const getNodePositionInsideParent = (nodePosition: XYPosition, node: SusiNode, groupNode: Node): XYPosition => {
+	console.assert(nodePosition !== undefined, `Node ${node.data.content} has undefined position`);
 	const position = nodePosition ?? { x: 0, y: 0 };
-	const nodeWidth = node.measured?.width ?? node.width ?? 0;
-	const nodeHeight = node.measured?.height ?? node.height ?? 0;
+	const nodeWidth = node.measured?.width ?? node.width ?? 75;
+	const nodeHeight = node.measured?.height ?? node.height ?? 75;
 	const nodeTopLeftCorner = {
 		x: position.x - nodeWidth / 2,
 		y: position.y - nodeHeight / 2,

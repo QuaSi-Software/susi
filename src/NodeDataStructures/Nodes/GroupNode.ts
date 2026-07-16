@@ -8,8 +8,7 @@ function createGroupNodeFromSelection(selectedNodes: SusiNode[], content: string
 		selectedNodes.every((n) => n !== undefined),
 		'createGroupNodeFromSelection cannot be called with undefined node'
 	);
-	const padding = 50;
-	const bounds = getOriginAdjustedNodeBounds(selectedNodes, padding);
+	const bounds = getOriginAdjustedNodeBounds(selectedNodes);
 	const groupNode = createGroupNode(bounds, content, bounds.width, bounds.height);
 	return groupNode;
 }

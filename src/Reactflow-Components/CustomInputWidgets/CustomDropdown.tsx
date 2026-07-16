@@ -27,7 +27,6 @@ const CustomDropdown = <T extends string | number>({
 	assertNoDuplicates(dropdown_options, `Dropdown Options in ${displayName}`);
 
 	const onOptionSelected = (value: T): void => {
-		console.log(`Dropdown value selected: ${value}`);
 		setInputValue(value);
 		onEdit(value);
 	};

@@ -128,7 +128,7 @@ const DnDFlow = () => {
 	);
 	const onNodeDragStop = useCallback(
 		(_event: React.MouseEvent, _node: SusiNode) => {
-			const intersections = getIntersectingNodes(_node, false) as SusiNode[];
+			const intersections = getIntersectingNodes(_node, true) as SusiNode[];
 			const newParent = intersections.find((n: SusiNode) => n.id !== _node.id && n.type === 'group');
 			const parentId = newParent ? newParent?.id : undefined;
 			if (_node.parentId !== parentId) {
@@ -173,7 +173,7 @@ const DnDFlow = () => {
 			}; // add estimated height and width, so getIntersectingNodes works right
 
 			/** check if node was dragged into a group */
-			const intersections = getIntersectingNodes(newNode, false) as SusiNode[];
+			const intersections = getIntersectingNodes(newNode, true) as SusiNode[];
 			const newParent = intersections.find((n: SusiNode) => n.type === 'group');
 			if (newParent) {
 				newNode.position = getPositionAfterParentChange(newNode, undefined, newParent);
@@ -241,7 +241,6 @@ const DnDFlow = () => {
 			menuPosition: createMenuPosition(event, ref),
 		};
 		setSelectionContextMenu(newSelectionContextData);
-		console.log(`Selected nodes: ${selectedNodes.map((node) => node.data.content)}`);
 	};
 	const clearAllMenus = () => {
 		setNodeContextMenu(null);

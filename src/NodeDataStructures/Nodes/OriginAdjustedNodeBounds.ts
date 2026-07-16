@@ -46,7 +46,7 @@ function getBoundingBounds(rect1: Rect, rect2: Rect): Rect {
 	};
 }
 
-export default function getOriginAdjustedNodeBounds(nodes: SusiNode[], padding: number): Rect {
+export default function getOriginAdjustedNodeBounds(nodes: SusiNode[], padding: number = 50): Rect {
 	if (nodes.length === 0) return { x: 0, y: 0, width: 200, height: 150 };
 	let bounds: Rect = getNodeBounds(nodes[0]);
 	nodes.forEach((node) => {

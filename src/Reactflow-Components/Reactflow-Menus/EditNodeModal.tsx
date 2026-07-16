@@ -108,7 +108,6 @@ const EditNodeModal = ({
 	const handleSaveChanges = () => {
 		let updatedNodes = deepCloneNodes(nodes);
 		editedNode.data.hasValidInputs = editedNode.data.nodeInputs.every((input) => input.isValid());
-		console.log(`edited node has valid inputs: ${editedNode.data.hasValidInputs}`);
 		updatedNodes = updatedNodes.map((n: SusiNode) => (n.id === editedNode.id ? editedNode : n));
 		edgesToDelete.forEach((edgeID) => {
 			const edge = edges.find((e) => e.id === edgeID);
