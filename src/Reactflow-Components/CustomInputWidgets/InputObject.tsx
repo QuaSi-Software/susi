@@ -53,7 +53,7 @@ class InputObject implements InputObjectProps {
 	value: any;
 	tooltip: string = '';
 	isRequired: boolean = true;
-	isIncluded: boolean = true;
+	isIncluded: boolean = false;
 	dropdownOptions: Array<string> = [];
 	dropdownOptionDisplayNames: Array<string> = [];
 	unit: string = '';
