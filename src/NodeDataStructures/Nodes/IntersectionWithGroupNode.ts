@@ -26,6 +26,7 @@ function areIntersecting(A: SusiNode, G: SusiNode): boolean {
 }
 
 export function getIntersectionsWithGroupNode(_node: SusiNode, nodes: SusiNode[]): SusiNode[] {
+	if (_node.type === 'group') return [];
 	return nodes.filter((n) => {
 		if (n.id === _node.id) return false;
 		if (n.type !== 'group') return false;
