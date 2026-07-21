@@ -37,6 +37,7 @@ const createElkGraphLayout = async (graphNodes: Array<SusiNode>, graphEdges: Arr
 				? {
 						'elk.nodeSize.minimum': `[${minGroupNodeSize.width}, ${minGroupNodeSize.height}]`,
 						'elk.nodeSize.constraints': 'MINIMUM_SIZE',
+						'elk.padding': '[top=30, left=10, bottom=10, right=10]',
 					}
 				: undefined,
 	}));
