@@ -8,9 +8,7 @@ import EditNodeModal from './EditNodeModal';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import _ from 'lodash';
 import { AppContext } from '../../AppContext';
-import { createDuplicateNode, deleteNode } from './ContextMenuUtils';
-import getOriginAdjustedNodeBounds from '../../NodeDataStructures/Nodes/OriginAdjustedNodeBounds';
-import { getPositionAfterParentChange } from '../../NodeDataStructures/Nodes/CalculateChildNodePosition';
+import { createDuplicateNode, deleteNode, resizeGroupNodeToFitChildren } from './ContextMenuUtils';
 
 interface NodeContextMenuInput {
 	nodeContextMenu: NodeContextMenuData | null;
@@ -86,31 +84,7 @@ const NodeContextMenu = ({
 		if (!nodeContextMenu) return;
 		const parentNode = nodeContextMenu.node;
 		setNodes((nodes) => {
-			const childNodes = nodes.filter((n) => n.parentId === parentNode.id);
-			const deparentedChildNodes = childNodes.map((n) => ({
-				...n,
-				position: getPositionAfterParentChange(n, parentNode, undefined),
-			}));
-			const bounds = getOriginAdjustedNodeBounds(deparentedChildNodes);
-			const newParentNode = {
-				...Object.assign({}, parentNode),
-				position: { x: bounds.x, y: bounds.y },
-				width: bounds.width,
-				height: bounds.height,
-				measured: {
-					width: bounds.width,
-					height: bounds.height,
-				},
-			};
-			return nodes.map((n) => {
-				if (n.id === parentNode.id) return newParentNode;
-				else if (n.parentId === parentNode.id) {
-					const deparentedNode = deparentedChildNodes.find((e) => e.id === n.id);
-					const newPos = getPositionAfterParentChange(deparentedNode!, undefined, newParentNode);
-					return { ...n, position: newPos, parentId: parentNode.id };
-					// return { ...n, position: deparentedNode?.position, parentId: undefined };
-				} else return n;
-			});
+			return resizeGroupNodeToFitChildren(nodes, parentNode);
 		});
 		setNodeContextMenu(null);
 		setCheckState(true);
