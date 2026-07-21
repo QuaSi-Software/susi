@@ -3,8 +3,8 @@ import { NodeResizer } from '@xyflow/react';
 import type { SusiNodeData } from '../NodeDataStructures/Nodes/SusiNodeData';
 
 export const minGroupNodeSize = {
-	width: 200,
-	height: 150,
+	width: 120,
+	height: 120,
 };
 
 const GroupNodeComponent = ({ data, selected }: { data: SusiNodeData; selected: boolean }) => {

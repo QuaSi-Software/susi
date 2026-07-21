@@ -2,6 +2,7 @@
 import { type SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import type { ElkNode } from 'elkjs';
+import { minGroupNodeSize } from '../GroupNodeComponent';
 
 type GraphNode = ElkNode & SusiNode;
 
@@ -31,6 +32,13 @@ const createElkGraphLayout = async (graphNodes: Array<SusiNode>, graphEdges: Arr
 		height: n.measured?.height ?? 75,
 		type: n.type ?? 'default',
 		parentId: n.parentId,
+		layoutOptions:
+			n.type === 'group'
+				? {
+						'elk.nodeSize.minimum': `[${minGroupNodeSize.width}, ${minGroupNodeSize.height}]`,
+						'elk.nodeSize.constraints': 'MINIMUM_SIZE',
+					}
+				: undefined,
 	}));
 	const children = nodes.filter((n) => n.type === 'group' || !n.parentId);
 	children.forEach((parentNode) => {
