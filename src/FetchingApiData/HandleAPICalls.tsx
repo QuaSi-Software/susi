@@ -28,6 +28,10 @@ export function fetchComponentInputs(
 			.then((response) => {
 				if (!response.ok) {
 					console.error(`Status code ${response.status}: ${response.statusText}`);
+					setLoadingMessage(null);
+					setOverlayError(
+						`An unexpected error occured. Please check your internet connection and try again.`
+					);
 					return null;
 				}
 				return response.json();

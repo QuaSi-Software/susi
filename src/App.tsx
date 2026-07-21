@@ -301,8 +301,6 @@ const DnDFlow = () => {
 					onPaneContextMenu={onPaneContextMenu}
 					onSelectionContextMenu={onSelectionContextMenu}
 					onPaneClick={clearAllMenus}
-					multiSelectionKeyCode="Shift"
-					proOptions={{ hideAttribution: true }}
 				>
 					<Controls showInteractive={false} />
 					<Background />
