@@ -39,16 +39,16 @@ interface ApiComponent {
 }
 
 interface APIParameter {
-	conditionals: string[][];
-	default: any;
+	conditionals?: string[][];
+	default?: any;
 	description: string;
 	display_name: string;
 	json_type: string;
-	options: string[];
-	required: false;
+	options?: string[];
+	required: boolean;
 	type: string;
 	unit: string;
-	validations: Array<Array<string | number>>;
+	validations?: Array<Array<string | number>>;
 	widget_type: InputObjectType;
 }
 
