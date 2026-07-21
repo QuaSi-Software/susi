@@ -78,7 +78,15 @@ const SelectionContextMenu = ({
 
 	function groupSelectionNodes() {
 		if (!selectionContextMenu) return;
-		const parentNode: SusiNode = createGroupNodeFromSelection(selectionContextMenu.nodes, null);
+		/** get the selected nodes in world space */
+		const selectedNodes = selectionContextMenu.nodes.map((n) => ({
+			...n,
+			position: getPositionAfterParentChange(
+				n,
+				nodes.find((p) => p.id === n.parentId)
+			),
+		}));
+		const parentNode: SusiNode = createGroupNodeFromSelection(selectedNodes, null);
 		const selectedNodeIDs = selectionContextMenu.nodes.map((n) => n.id);
 		setNodes((_nodes) => {
 			const childNodes: SusiNode[] = _nodes.map((n) => {
