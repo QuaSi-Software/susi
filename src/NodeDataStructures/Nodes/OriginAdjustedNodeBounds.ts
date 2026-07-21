@@ -1,5 +1,6 @@
 import type { Rect, XYPosition } from '@xyflow/react';
 import type { SusiNode } from './SusiNode';
+import { minGroupNodeSize } from '../../Reactflow-Components/GroupNodeComponent';
 
 function getNodeBounds(node: SusiNode): Rect {
 	const position = node.position ?? { x: 0, y: 0 };
@@ -56,7 +57,7 @@ export default function getOriginAdjustedNodeBounds(nodes: SusiNode[], padding: 
 	return {
 		x: bounds.x,
 		y: bounds.y,
-		width: bounds.width + padding,
-		height: bounds.height + padding,
+		width: Math.max(bounds.width + padding, minGroupNodeSize.width),
+		height: Math.max(bounds.height + padding, minGroupNodeSize.height),
 	};
 }

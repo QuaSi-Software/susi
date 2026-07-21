@@ -46,11 +46,12 @@ import {
 import logo from './assets/resie.svg';
 import GroupNodeComponent from './Reactflow-Components/GroupNodeComponent';
 import { getPositionAfterParentChange } from './NodeDataStructures/Nodes/CalculateChildNodePosition';
+import { getIntersectionsWithGroupNode } from './NodeDataStructures/Nodes/IntersectionWithGroupNode';
 
 const DnDFlow = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);
 	const [edges, setEdges, onEdgesChange] = useEdgesState<SusiEdge>([] as any);
-	const { screenToFlowPosition, getIntersectingNodes } = useReactFlow();
+	const { screenToFlowPosition } = useReactFlow();
 	const [type] = useDnD();
 	const ref = useRef<HTMLInputElement>(null);
 
@@ -128,8 +129,9 @@ const DnDFlow = () => {
 	);
 	const onNodeDragStop = useCallback(
 		(_event: React.MouseEvent, _node: SusiNode) => {
-			const intersections = getIntersectingNodes(_node, true) as SusiNode[];
-			const newParent = intersections.find((n: SusiNode) => n.id !== _node.id && n.type === 'group');
+			// const intersections = getIntersectingNodes(_node, true, nodes) as SusiNode[];
+			const intersections = getIntersectionsWithGroupNode(_node, nodes);
+			const newParent = intersections[0];
 			const parentId = newParent ? newParent?.id : undefined;
 			if (_node.parentId !== parentId) {
 				/** get node position */
@@ -173,8 +175,8 @@ const DnDFlow = () => {
 			}; // add estimated height and width, so getIntersectingNodes works right
 
 			/** check if node was dragged into a group */
-			const intersections = getIntersectingNodes(newNode, true) as SusiNode[];
-			const newParent = intersections.find((n: SusiNode) => n.type === 'group');
+			const intersections = getIntersectionsWithGroupNode(newNode, nodes) as SusiNode[];
+			const newParent = intersections.length > 0 ? intersections[0] : undefined;
 			if (newParent) {
 				newNode.position = getPositionAfterParentChange(newNode, undefined, newParent);
 				newNode.parentId = newParent.id;

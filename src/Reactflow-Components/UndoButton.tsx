@@ -39,7 +39,6 @@ export function UndoButton({ nodes, setNodes, edges, setEdges, checkState }: Und
 			mediums: _.cloneDeep(mediums),
 		};
 		const delta: Delta = jsondiffpatch.diff(currentState, newState);
-		console.debug(`Undo button delta: ${JSON.stringify(delta)}`);
 		if (delta === undefined) return;
 		stateHistory.push(delta);
 		setStateHistory(stateHistory);

@@ -1,5 +1,6 @@
 import type { Node, XYPosition } from '@xyflow/react';
 import type { SusiNode } from './SusiNode';
+const defaultPadding = 10;
 
 function getPositionAfterParentChange(_node: SusiNode, prevParent?: SusiNode, newParent?: SusiNode): XYPosition {
 	let position = Object.assign({}, _node.position);
@@ -31,18 +32,20 @@ const getNodePositionInsideParent = (nodePosition: XYPosition, node: SusiNode, g
 		y: groupNode.position.y - groupHeight / 2,
 	};
 
+	const xpadding = groupWidth - nodeWidth < 2 * defaultPadding ? (groupWidth - nodeWidth) / 2 : defaultPadding;
 	if (nodeTopLeftCorner.x < parentTopLeftCorner.x) {
-		position.x = 0;
+		position.x = nodeWidth / 2 + xpadding;
 	} else if (nodeTopLeftCorner.x + nodeWidth > parentTopLeftCorner.x + groupWidth) {
-		position.x = groupWidth - nodeWidth / 2;
+		position.x = groupWidth - nodeWidth / 2 - xpadding;
 	} else {
 		position.x = position.x - parentTopLeftCorner.x;
 	}
 
-	if (position.y < parentTopLeftCorner.y) {
-		position.y = 0;
+	const ypadding = groupHeight - nodeHeight < 2 * defaultPadding ? (groupHeight - nodeHeight) / 2 : defaultPadding;
+	if (nodeTopLeftCorner.y < parentTopLeftCorner.y) {
+		position.y = nodeHeight / 2 + ypadding;
 	} else if (nodeTopLeftCorner.y + nodeHeight > parentTopLeftCorner.y + groupHeight) {
-		position.y = groupHeight - nodeHeight / 2;
+		position.y = groupHeight - nodeHeight / 2 - ypadding;
 	} else {
 		position.y = position.y - parentTopLeftCorner.y;
 	}
