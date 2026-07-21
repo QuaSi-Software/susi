@@ -3,7 +3,10 @@ import { deepCloneNode, type SusiNode } from '../../NodeDataStructures/Nodes/Sus
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import { updateBusDataOnNodeDelete } from '../../NodeDataStructures/Bus/BusDataUtils';
 import BusData from '../../NodeDataStructures/Bus/BusData';
-import { getPositionAfterParentChange } from '../../NodeDataStructures/Nodes/CalculateChildNodePosition';
+import {
+	getPositionAfterParentChange,
+	moveChildIntoParentBounds,
+} from '../../NodeDataStructures/Nodes/CalculateChildNodePosition';
 import getOriginAdjustedNodeBounds from '../../NodeDataStructures/Nodes/OriginAdjustedNodeBounds';
 
 function deleteNode(
@@ -71,6 +74,11 @@ function createDuplicateNode(nodeID: string, nodes: SusiNode[]): SusiNode | null
 	// move node towards bottom right and give it a unique ID
 	duplicateNode.position.x += 20;
 	duplicateNode.position.y += 20;
+	/** if it's parented, make sure it's still within the bounds of the group */
+	if (duplicateNode.parentId) {
+		const parent = nodes.find((n) => n.id === duplicateNode.parentId);
+		if (parent) duplicateNode.position = moveChildIntoParentBounds(duplicateNode, parent);
+	}
 	duplicateNode.id = nodeToDuplicate.id + '_' + new Date().getTime();
 	let isBus = duplicateNode.data.componentType.toLowerCase() === 'bus';
 	duplicateNode.data.busData = isBus ? new BusData() : null;

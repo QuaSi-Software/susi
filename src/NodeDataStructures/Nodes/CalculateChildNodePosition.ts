@@ -14,6 +14,11 @@ function getPositionAfterParentChange(_node: SusiNode, prevParent?: SusiNode, ne
 	return position;
 }
 
+function moveChildIntoParentBounds(child: SusiNode, parent: SusiNode): XYPosition {
+	const worldPosition = getNodePositionOutsideParent(child.position, parent);
+	return getNodePositionInsideParent(worldPosition, child, parent);
+}
+
 const getNodePositionInsideParent = (nodePosition: XYPosition, node: SusiNode, groupNode: Node): XYPosition => {
 	console.assert(nodePosition !== undefined, `Node ${node.data.content} has undefined position`);
 	const position = nodePosition ?? { x: 0, y: 0 };
@@ -66,4 +71,4 @@ function getNodePositionOutsideParent(nodePosition: XYPosition, previousParent: 
 	};
 }
 
-export { getPositionAfterParentChange };
+export { getPositionAfterParentChange, moveChildIntoParentBounds };
