@@ -2,7 +2,7 @@
 import { type SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import type { ElkNode } from 'elkjs';
-import { minGroupNodeSize } from '../GroupNodeComponent';
+import { minGroupNodeSize } from '../../NodeDataStructures/GroupNodes/GroupNodeComponent';
 
 type GraphNode = ElkNode & SusiNode;
 

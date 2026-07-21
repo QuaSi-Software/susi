@@ -44,9 +44,9 @@ import {
 	type SelectionContextMenuData,
 } from './Reactflow-Components/Reactflow-Menus/SelectionContextMenu';
 import logo from './assets/resie.svg';
-import GroupNodeComponent from './Reactflow-Components/GroupNodeComponent';
-import { getPositionAfterParentChange } from './NodeDataStructures/Nodes/CalculateChildNodePosition';
-import { getIntersectionsWithGroupNode } from './NodeDataStructures/Nodes/IntersectionWithGroupNode';
+import { getIntersectionsWithGroupNode } from './NodeDataStructures/GroupNodes/IntersectionWithGroupNode';
+import { getPositionAfterParentChange } from './NodeDataStructures/GroupNodes/CalculateChildNodePosition';
+import GroupNodeComponent from './NodeDataStructures/GroupNodes/GroupNodeComponent';
 
 const DnDFlow = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);

@@ -8,7 +8,7 @@ import { useContext, useEffect, useState, type Dispatch, type SetStateAction } f
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import { flushSync } from 'react-dom';
 import { AppContext } from '../../AppContext';
-import { createGroupNode } from '../../NodeDataStructures/Nodes/GroupNode';
+import { createGroupNode } from '../../NodeDataStructures/GroupNodes/GroupNode';
 
 interface PaneContextMenuInput {
 	paneContextMenu: MenuPosition | null;

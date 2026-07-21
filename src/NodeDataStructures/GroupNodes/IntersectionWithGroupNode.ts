@@ -1,4 +1,4 @@
-import type { SusiNode } from './SusiNode';
+import type { SusiNode } from '../Nodes/SusiNode';
 
 function areIntersecting(A: SusiNode, G: SusiNode): boolean {
 	const minOverlap = 10;

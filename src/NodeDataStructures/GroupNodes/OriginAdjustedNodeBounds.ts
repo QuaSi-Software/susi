@@ -1,6 +1,6 @@
 import type { Rect, XYPosition } from '@xyflow/react';
-import type { SusiNode } from './SusiNode';
-import { minGroupNodeSize } from '../../Reactflow-Components/GroupNodeComponent';
+import type { SusiNode } from '../Nodes/SusiNode';
+import { minGroupNodeSize } from './GroupNodeComponent';
 
 function getNodeBounds(node: SusiNode): Rect {
 	const position = node.position ?? { x: 0, y: 0 };

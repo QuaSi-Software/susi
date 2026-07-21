@@ -11,9 +11,9 @@ import { getNewEdge } from '../../../NodeDataStructures/Edges/CreateEdge';
 import type { Dispatch, SetStateAction } from 'react';
 import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
-import { createGroupNodeFromSelection } from '../../../NodeDataStructures/Nodes/GroupNode';
+import { createGroupNodeFromSelection } from '../../../NodeDataStructures/GroupNodes/GroupNode';
 import { getStartEndUnit } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
-import { getPositionAfterParentChange } from '../../../NodeDataStructures/Nodes/CalculateChildNodePosition';
+import { getPositionAfterParentChange } from '../../../NodeDataStructures/GroupNodes/CalculateChildNodePosition';
 
 interface ImportStateProps {
 	stateJSON: string;

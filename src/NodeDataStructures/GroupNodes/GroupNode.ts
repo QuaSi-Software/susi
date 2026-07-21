@@ -1,6 +1,6 @@
 import { Position, type XYPosition } from '@xyflow/react';
-import type { SusiNodeData } from './SusiNodeData';
-import type { SusiNode } from './SusiNode';
+import type { SusiNodeData } from '../Nodes/SusiNodeData';
+import type { SusiNode } from '../Nodes/SusiNode';
 import getOriginAdjustedNodeBounds from './OriginAdjustedNodeBounds';
 
 function createGroupNodeFromSelection(selectedNodes: SusiNode[], content: string | null = null): SusiNode {

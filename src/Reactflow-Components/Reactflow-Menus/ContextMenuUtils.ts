@@ -6,8 +6,8 @@ import BusData from '../../NodeDataStructures/Bus/BusData';
 import {
 	getPositionAfterParentChange,
 	moveChildIntoParentBounds,
-} from '../../NodeDataStructures/Nodes/CalculateChildNodePosition';
-import getOriginAdjustedNodeBounds from '../../NodeDataStructures/Nodes/OriginAdjustedNodeBounds';
+} from '../../NodeDataStructures/GroupNodes/CalculateChildNodePosition';
+import getOriginAdjustedNodeBounds from '../../NodeDataStructures/GroupNodes/OriginAdjustedNodeBounds';
 
 function deleteNode(
 	node: SusiNode,

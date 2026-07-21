@@ -7,8 +7,8 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 import { deleteNode, createDuplicateNode } from './ContextMenuUtils';
 import { getNewEdge } from '../../NodeDataStructures/Edges/CreateEdge';
 import { type Connection } from '@xyflow/react';
-import { createGroupNodeFromSelection } from '../../NodeDataStructures/Nodes/GroupNode';
-import { getPositionAfterParentChange } from '../../NodeDataStructures/Nodes/CalculateChildNodePosition';
+import { createGroupNodeFromSelection } from '../../NodeDataStructures/GroupNodes/GroupNode';
+import { getPositionAfterParentChange } from '../../NodeDataStructures/GroupNodes/CalculateChildNodePosition';
 
 interface SelectionContextMenuProps {
 	selectionContextMenu: SelectionContextMenuData | null;

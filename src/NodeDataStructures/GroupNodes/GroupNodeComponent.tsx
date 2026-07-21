@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { NodeResizer } from '@xyflow/react';
-import type { SusiNodeData } from '../NodeDataStructures/Nodes/SusiNodeData';
+import type { SusiNodeData } from '../Nodes/SusiNodeData';
 
 export const minGroupNodeSize = {
 	width: 120,

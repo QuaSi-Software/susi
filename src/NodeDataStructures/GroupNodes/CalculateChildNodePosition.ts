@@ -1,5 +1,5 @@
 import type { Node, XYPosition } from '@xyflow/react';
-import type { SusiNode } from './SusiNode';
+import type { SusiNode } from '../Nodes/SusiNode';
 const defaultPadding = 10;
 
 function getPositionAfterParentChange(_node: SusiNode, prevParent?: SusiNode, newParent?: SusiNode): XYPosition {
