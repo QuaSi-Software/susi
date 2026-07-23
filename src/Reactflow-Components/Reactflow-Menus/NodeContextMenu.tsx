@@ -73,9 +73,21 @@ const NodeContextMenu = ({
 			const nodeID = nodeContextMenu.node.id;
 			const duplicateNode = createDuplicateNode(nodeID, nodes);
 			if (!duplicateNode) return nodes;
+			const newNodes: SusiNode[] = [duplicateNode];
+			if (duplicateNode.type === 'group') {
+				/** Duplicate its children too */
+				const originalChildren = nodes.filter((n) => n.parentId === nodeContextMenu.node.id);
+				originalChildren.forEach((child) => {
+					const duplicateChild = createDuplicateNode(child.id, nodes.concat(newNodes));
+					if (duplicateChild) {
+						duplicateChild.parentId = duplicateNode.id;
+						newNodes.push(duplicateChild);
+					}
+				});
+			}
 			// update list of nodes: deselect original, keep new one selected
 			let updatedNodes: SusiNode[] = nodes.map((node) => ({ ...node, selected: false }));
-			updatedNodes = [...updatedNodes, duplicateNode];
+			updatedNodes = [...updatedNodes, ...newNodes];
 			return updatedNodes;
 		});
 		setNodeContextMenu(null);
