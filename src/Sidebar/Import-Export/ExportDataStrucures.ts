@@ -13,6 +13,7 @@ export interface ImportData {
 export interface NodeGroup {
 	groupName: string;
 	nodesInGroup: string[];
+	groupColorIndex: number;
 }
 
 export interface Connections {

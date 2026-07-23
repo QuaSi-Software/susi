@@ -3,13 +3,17 @@ import type { SusiNodeData } from '../Nodes/SusiNodeData';
 import type { SusiNode } from '../Nodes/SusiNode';
 import getOriginAdjustedNodeBounds from './OriginAdjustedNodeBounds';
 
-function createGroupNodeFromSelection(selectedNodes: SusiNode[], content: string | null = null): SusiNode {
+function createGroupNodeFromSelection(
+	selectedNodes: SusiNode[],
+	content: string | null = null,
+	colorIndex: number = 0
+): SusiNode {
 	console.assert(
 		selectedNodes.every((n) => n !== undefined),
 		'createGroupNodeFromSelection cannot be called with undefined node'
 	);
 	const bounds = getOriginAdjustedNodeBounds(selectedNodes);
-	const groupNode = createGroupNode(bounds, content, bounds.width, bounds.height);
+	const groupNode = createGroupNode(bounds, content, bounds.width, bounds.height, colorIndex);
 	return groupNode;
 }
 
@@ -17,7 +21,8 @@ function createGroupNode(
 	position: XYPosition,
 	content: string | null = null,
 	width: number = 200,
-	height: number = 150
+	height: number = 150,
+	colorIndex: number = 0
 ): SusiNode {
 	const timestamp = Date.now();
 	if (!content) {
@@ -39,6 +44,7 @@ function createGroupNode(
 		inputCategories: [],
 		economicInputs: [],
 		emissionsInputs: [],
+		colorIndex,
 	};
 	return {
 		id: `${content}_${timestamp}`,

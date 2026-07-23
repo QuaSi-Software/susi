@@ -28,8 +28,8 @@
 	--xy-edge-stroke-default: white;
 	--xy-theme-edge-hover: #bbbbbb;
 }
-.react-flow__node {
-	background-color: var(--group-node-background);
+.react-flow__node-group {
+	padding: 0px;
 }
 
 /** Set node colors by category*/

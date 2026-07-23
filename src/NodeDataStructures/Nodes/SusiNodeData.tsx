@@ -22,6 +22,7 @@ export interface SusiNodeData extends Record<string, unknown> {
 	sourceHandles: number;
 	targetHandles: number;
 	hasValidInputs: boolean;
+	colorIndex?: number;
 }
 
 function getMediumHandleDict(

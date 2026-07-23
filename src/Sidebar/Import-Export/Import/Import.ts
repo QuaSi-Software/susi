@@ -67,7 +67,8 @@ function setNodeGroups(groups: NodeGroup[], nodes: SusiNode[], logError: (errorM
 		const nodesInGroup = group.nodesInGroup.map((nodeName) => nodes.find((n) => n.data.content === nodeName));
 		const groupNode = createGroupNodeFromSelection(
 			nodesInGroup.filter((n) => n !== undefined),
-			group.groupName
+			group.groupName,
+			group.groupColorIndex
 		);
 		nodesWithGroups = [groupNode].concat(nodesWithGroups);
 		/** set this node as the parent of all the child node */
