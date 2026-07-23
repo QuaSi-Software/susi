@@ -8,7 +8,8 @@ import EditNodeModal from './EditNodeModal';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import _ from 'lodash';
 import { AppContext } from '../../AppContext';
-import { createDuplicateNode, deleteNode, resizeGroupNodeToFitChildren } from './ContextMenuUtils';
+import { createDuplicateNode, deleteNode } from './ContextMenuUtils';
+import { resizeGroupNodeToFitChildren } from '../../NodeDataStructures/GroupNodes/ResizeGroupNodeToFitChildren';
 
 interface NodeContextMenuInput {
 	nodeContextMenu: NodeContextMenuData | null;
