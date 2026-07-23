@@ -128,7 +128,7 @@ const DnDFlow = () => {
 		[setEdges, nodes, edges, mediums]
 	);
 	const onNodeDragStop = useCallback(
-		(_event: React.MouseEvent, _node: SusiNode) => {
+		(_: MouseEvent | TouchEvent, _node: SusiNode) => {
 			/** For the intersection check, you have to convert the node position into world space */
 			const prevParent = _node.parentId ? nodes.find((n) => n.id === _node.parentId) : undefined;
 			const intersections = getIntersectionsWithGroupNode(
@@ -183,6 +183,7 @@ const DnDFlow = () => {
 			if (newParent) {
 				newNode.position = getPositionAfterParentChange(newNode, undefined, newParent);
 				newNode.parentId = newParent.id;
+				newNode.expandParent = true;
 			}
 
 			setNodes((nds) => nds.concat(newNode));

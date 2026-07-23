@@ -43,6 +43,7 @@ const createNodeFromType = (
 		deletable: true,
 		zIndex: 0,
 		focusable: true,
+		expandParent: true,
 		style: {
 			'--category': susiNodeData.nodeCategory.toLowerCase(),
 			width: 'auto',
