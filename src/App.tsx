@@ -180,6 +180,7 @@ const DnDFlow = () => {
 				width: 50,
 				height: 50,
 			}; // add estimated height and width, so getIntersectingNodes works right
+			newNode.selected = true;
 
 			/** check if node was dragged into a group */
 			const intersections = getIntersectionsWithGroupNode(newNode, nodes) as SusiNode[];
@@ -189,7 +190,9 @@ const DnDFlow = () => {
 				newNode.parentId = newParent.id;
 			}
 
+			setNodes((nds) => nds.map((n) => ({ ...n, selected: false })));
 			setNodes((nds) => nds.concat(newNode));
+
 			setCheckState(true);
 		},
 		[screenToFlowPosition, type, setNodes, nodes, nodeNamePrefix]

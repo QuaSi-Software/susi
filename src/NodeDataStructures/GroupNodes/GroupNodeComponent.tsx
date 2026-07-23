@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { NodeResizer, NodeToolbar, useReactFlow } from '@xyflow/react';
 import type { SusiNodeData } from '../Nodes/SusiNodeData';
 
@@ -58,8 +58,13 @@ const GroupNodeComponent = ({
 	selected: boolean;
 	dragging: boolean;
 }) => {
-	const { updateNodeData } = useReactFlow();
+	const { updateNodeData, setNodes } = useReactFlow();
 	const colorIndex = data.colorIndex ?? 0;
+
+	useEffect(() => {
+		setNodes((nodes) => nodes.map((node) => (node.parentId === id ? { ...node, expandParent: selected } : node)));
+	}, [selected, id, setNodes]);
+
 	return (
 		<>
 			<NodeToolbar isVisible={selected && !dragging} className="nopan">
