@@ -128,23 +128,27 @@ const DnDFlow = () => {
 		[setEdges, nodes, edges, mediums]
 	);
 	const onNodeDragStop = useCallback(
-		(_: MouseEvent | TouchEvent, _node: SusiNode) => {
-			/** For the intersection check, you have to convert the node position into world space */
-			const prevParent = _node.parentId ? nodes.find((n) => n.id === _node.parentId) : undefined;
-			const intersections = getIntersectionsWithGroupNode(
-				{ ..._node, position: getPositionAfterParentChange(_node, prevParent, undefined) },
-				nodes
-			);
-			const newParent = intersections[0];
-			const parentId = newParent ? newParent?.id : undefined;
-			if (_node.parentId !== parentId) {
-				/** get node position */
-				const position = getPositionAfterParentChange(_node, prevParent, newParent);
-				/** update node with new or newly undefined parent */
-				setNodes((_nodes) =>
-					_nodes.map((n: SusiNode) => (n.id === _node.id ? { ..._node, parentId: parentId, position } : n))
+		(_: MouseEvent | TouchEvent, _draggedNode: SusiNode, draggedNodes: SusiNode[]) => {
+			draggedNodes.forEach((_node) => {
+				/** For the intersection check, you have to convert the node position into world space */
+				const prevParent = _node.parentId ? nodes.find((n) => n.id === _node.parentId) : undefined;
+				const intersections = getIntersectionsWithGroupNode(
+					{ ..._node, position: getPositionAfterParentChange(_node, prevParent, undefined) },
+					nodes
 				);
-			}
+				const newParent = intersections[0];
+				const parentId = newParent ? newParent?.id : undefined;
+				if (_node.parentId !== parentId) {
+					/** get node position */
+					const position = getPositionAfterParentChange(_node, prevParent, newParent);
+					/** update node with new or newly undefined parent */
+					setNodes((_nodes) =>
+						_nodes.map((n: SusiNode) =>
+							n.id === _node.id ? { ..._node, parentId: parentId, position } : n
+						)
+					);
+				}
+			});
 			setCheckState(true);
 		},
 		[setNodes, nodes]
@@ -183,7 +187,6 @@ const DnDFlow = () => {
 			if (newParent) {
 				newNode.position = getPositionAfterParentChange(newNode, undefined, newParent);
 				newNode.parentId = newParent.id;
-				newNode.expandParent = true;
 			}
 
 			setNodes((nds) => nds.concat(newNode));
