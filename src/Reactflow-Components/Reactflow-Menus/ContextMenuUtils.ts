@@ -86,4 +86,13 @@ function createDuplicateNode(nodeID: string, nodes: SusiNode[]): SusiNode | null
 	return duplicateNode;
 }
 
-export { deleteNode, createDuplicateNode };
+function checkForDuplicateNodeNames(setNodes: Dispatch<SetStateAction<SusiNode[]>>) {
+	setNodes((_nodes) =>
+		_nodes.map((node) => {
+			const hasValidName = _nodes.every((n) => node.data.content !== n.data.content || node.id === n.id);
+			return { ...node, data: { ...node.data, hasValidName } };
+		})
+	);
+}
+
+export { deleteNode, createDuplicateNode, checkForDuplicateNodeNames };

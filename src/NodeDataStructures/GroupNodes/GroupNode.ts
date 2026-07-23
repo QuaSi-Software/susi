@@ -41,6 +41,7 @@ function createGroupNode(
 		sourceHandles: 0,
 		targetHandles: 0,
 		hasValidInputs: true,
+		hasValidName: true,
 		inputCategories: [],
 		economicInputs: [],
 		emissionsInputs: [],

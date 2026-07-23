@@ -8,7 +8,7 @@ import EditNodeModal from './EditNodeModal';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import _ from 'lodash';
 import { AppContext } from '../../AppContext';
-import { createDuplicateNode, deleteNode } from './ContextMenuUtils';
+import { checkForDuplicateNodeNames, createDuplicateNode, deleteNode } from './ContextMenuUtils';
 import { resizeGroupNodeToFitChildren } from '../../NodeDataStructures/GroupNodes/ResizeGroupNodeToFitChildren';
 
 interface NodeContextMenuInput {
@@ -57,6 +57,7 @@ const NodeContextMenu = ({
 		if (!nodeContextMenu) return;
 		if (nodeContextMenu.node.deletable) {
 			deleteNode(nodeContextMenu.node, edges, setNodes, setEdges);
+			checkForDuplicateNodeNames(setNodes);
 		}
 		setCheckState(true);
 		setNodeContextMenu(null);

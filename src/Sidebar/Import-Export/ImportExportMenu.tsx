@@ -70,6 +70,11 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 			return menu.inputs.every((input) => input.isValid());
 		});
 		if (!simulationParamsValid) return false;
+		const allNodeNamesUnique = menuProps.nodes.every((node, nodeIndex) => {
+			const duplicate = menuProps.nodes.find((e, i) => e.data.content === node.data.content && i !== nodeIndex);
+			return duplicate === undefined;
+		});
+		if (!allNodeNamesUnique) return false;
 
 		return true;
 	};

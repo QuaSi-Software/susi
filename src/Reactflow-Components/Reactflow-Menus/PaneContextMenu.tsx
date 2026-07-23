@@ -9,6 +9,7 @@ import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import { flushSync } from 'react-dom';
 import { AppContext } from '../../AppContext';
 import { createGroupNode } from '../../NodeDataStructures/GroupNodes/GroupNode';
+import { checkForDuplicateNodeNames } from './ContextMenuUtils';
 
 interface PaneContextMenuInput {
 	paneContextMenu: MenuPosition | null;
@@ -39,7 +40,11 @@ const PaneContextMenu = ({ paneContextMenu, setPaneContextMenu, nodes, setNodes,
 			y: paneContextMenu!.top,
 		});
 		const groupNode: SusiNode = createGroupNode(pos);
+		// groupNode.data.hasValidName = nodes.every(
+		// 	(node) => node.data.content !== groupNode.data.content || node.id === groupNode.id
+		// );
 		setNodes((_nodes) => [groupNode].concat(_nodes)); // group nodes must be at the start of the array
+		checkForDuplicateNodeNames(setNodes);
 		setCheckState(true);
 		setPaneContextMenu(null);
 	}

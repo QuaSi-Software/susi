@@ -93,6 +93,7 @@ const GroupNodeComponent = ({
 			<div style={{ padding: '0.5em', fontSize: '12px', position: 'absolute', top: 0, left: 0 }}>
 				{data.content}
 			</div>
+			{(!data.hasValidInputs || !data.hasValidName) && <div className="invalid-input-warning-icon">⚠️</div>}
 		</>
 	);
 };

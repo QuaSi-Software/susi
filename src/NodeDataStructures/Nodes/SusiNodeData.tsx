@@ -22,6 +22,7 @@ export interface SusiNodeData extends Record<string, unknown> {
 	sourceHandles: number;
 	targetHandles: number;
 	hasValidInputs: boolean;
+	hasValidName: boolean;
 	colorIndex?: number;
 }
 
@@ -86,6 +87,7 @@ export function createSusiNodeData(nodeType: NodeType, content: string = ''): Su
 		sourceHandles: nodeType.nr_outputs,
 		targetHandles: nodeType.nr_inputs,
 		hasValidInputs: hasValidInputs,
+		hasValidName: true,
 		inputCategories: nodeType.inputCategories,
 		economicInputs: nodeType.economic.map((e) => e.copy()),
 		emissionsInputs: nodeType.emissions.map((e) => e.copy()),
