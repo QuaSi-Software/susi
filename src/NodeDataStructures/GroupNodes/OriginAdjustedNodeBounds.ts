@@ -4,7 +4,7 @@ import { minGroupNodeSize } from './GroupNodeComponent';
 
 function getNodeBounds(node: SusiNode): Rect {
 	const position = node.position ?? { x: 0, y: 0 };
-	const nodeWidth = node.measured?.width ?? 150;
+	const nodeWidth = node.measured?.width ?? 250;
 	const nodeHeight = node.measured?.height ?? 120;
 
 	return {

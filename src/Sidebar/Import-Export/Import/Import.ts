@@ -11,7 +11,7 @@ import { getNewEdge } from '../../../NodeDataStructures/Edges/CreateEdge';
 import type { Dispatch, SetStateAction } from 'react';
 import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
-import { createGroupNodeFromSelection } from '../../../NodeDataStructures/GroupNodes/GroupNode';
+import { createGroupNode } from '../../../NodeDataStructures/GroupNodes/GroupNode';
 import { getStartEndUnit } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
 import { getPositionAfterParentChange } from '../../../NodeDataStructures/GroupNodes/CalculateChildNodePosition';
 
@@ -64,12 +64,7 @@ function setNodeGroups(groups: NodeGroup[], nodes: SusiNode[], logError: (errorM
 	let nodesWithGroups: SusiNode[] = nodes;
 	groups.forEach((group) => {
 		/** Create a group node and add it to the start of the list */
-		const nodesInGroup = group.nodesInGroup.map((nodeName) => nodes.find((n) => n.data.content === nodeName));
-		const groupNode = createGroupNodeFromSelection(
-			nodesInGroup.filter((n) => n !== undefined),
-			group.groupName,
-			group.groupColorIndex
-		);
+		const groupNode = createGroupNode({ x: 0, y: 0 }, group.groupName, 10000, 10000, group.groupColorIndex);
 		nodesWithGroups = [groupNode].concat(nodesWithGroups);
 		/** set this node as the parent of all the child node */
 		group.nodesInGroup.forEach((nodeName) => {

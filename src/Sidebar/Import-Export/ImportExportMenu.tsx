@@ -1,4 +1,4 @@
-import { useContext, useState, useCallback, type Dispatch, type SetStateAction } from 'react';
+import { useContext, useState, useCallback, type Dispatch, type SetStateAction, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import importState from './Import/Import';
@@ -9,24 +9,22 @@ import { flushSync } from 'react-dom';
 import { AppContext } from '../../AppContext';
 import type { NodeType } from '../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../ResieParameters/ResieParameterMenuInfo';
+import { resizeGroupNodeToFitChildren } from '../../NodeDataStructures/GroupNodes/ResizeGroupNodeToFitChildren';
 
 export interface ImportExportMenuProps {
-	setNodes: (nodes: SusiNode[]) => void;
+	setNodes: Dispatch<SetStateAction<SusiNode[]>>;
 	setEdges: (edges: SusiEdge[]) => void;
 	logError: (errorMessage: string) => void;
 	nodes: SusiNode[];
 	edges: SusiEdge[];
 	resieParameterMenus: ResieParameterMenuInfo[];
 	setresieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
-	// simulationParameters: ResieParameterMenuInfo;
-	// ioSettings: ResieParameterMenuInfo;
-	// setIOSettings: Dispatch<SetStateAction<ResieParameterMenuInfo>>;
-	// setSimulationParameters: Dispatch<SetStateAction<ResieParameterMenuInfo>>;
 	nodeTypes: Record<string, NodeType> | null;
 }
 
 const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 	const [textContent, setTextContent] = useState('');
+	const [resizeGroupNodes, setResizeGroupNodes] = useState<boolean>(false);
 	const context = useContext(AppContext);
 	if (!context || menuProps.nodeTypes === null) return <></>;
 	const mediums = context.mediums;
@@ -34,7 +32,22 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 	const setMediums = context.setMediums;
 	const setLoadingMessage = context.setLoadingMessage;
 	const { fitView } = useReactFlow();
-	/** Check if all nodes and the medium menu have valid inputs */
+
+	useEffect(() => {
+		if (!resizeGroupNodes) return;
+		const haveMeasurements = menuProps.nodes.every((n) => n.type === 'group' || n.measured !== undefined);
+		if (!haveMeasurements) return;
+		/** resize group nodes to match their children. At this point, the children are in global coordinates */
+		menuProps.setNodes((nodes: SusiNode[]) => {
+			const groupNodes = nodes.filter((n) => n.type === 'group');
+			let updatedNodes = nodes;
+			groupNodes.forEach((groupNode) => {
+				updatedNodes = resizeGroupNodeToFitChildren(updatedNodes, groupNode);
+			});
+			return updatedNodes;
+		});
+		setResizeGroupNodes(false);
+	}, [menuProps.nodes, menuProps.setNodes]);
 
 	const handleImport = useCallback(async () => {
 		try {
@@ -55,6 +68,7 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 			setCheckState(true);
 			fitView();
 			setTextContent('');
+			setResizeGroupNodes(true);
 		} catch (error) {
 			setLoadingMessage(null);
 			console.error('Import failed:', error);

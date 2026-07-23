@@ -4,6 +4,7 @@ import { getPositionAfterParentChange } from './CalculateChildNodePosition';
 
 export function resizeGroupNodeToFitChildren(nodes: SusiNode[], parentNode: SusiNode): SusiNode[] {
 	console.assert(parentNode.type === 'group', `Cannot resize non-group node`);
+	/** Get the global child node positions, so you can get their bounding box */
 	const childNodes = nodes.filter((n) => n.parentId === parentNode.id);
 	const deparentedChildNodes = childNodes.map((n) => ({
 		...n,
