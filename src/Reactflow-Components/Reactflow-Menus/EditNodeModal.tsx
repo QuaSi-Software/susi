@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, type Dispatch, type SetStateAction } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
@@ -18,12 +18,13 @@ import { AppContext } from '../../AppContext';
 import InputMenuWithCategories from '../CustomInputWidgets/InputMenuWithCategories';
 import { InputMenu } from '../CustomInputWidgets/InputMenu';
 import { assignInputs, ComponentInputType, getInputs } from '../../NodeDataStructures/Nodes/ComponentInputTypes';
+import { checkForDuplicateNodeNames } from './ContextMenuUtils';
 
 interface EditNodeModalInputs {
 	show: boolean;
 	node: SusiNode;
 	nodes: SusiNode[];
-	setNodes: (nodes: SusiNode[]) => void;
+	setNodes: Dispatch<SetStateAction<SusiNode[]>>;
 	edges: SusiEdge[];
 	setEdges: (edges: SusiEdge[]) => void;
 	handleClose: () => void;
@@ -108,15 +109,13 @@ const EditNodeModal = ({
 	const handleSaveChanges = () => {
 		let updatedNodes = deepCloneNodes(nodes);
 		editedNode.data.hasValidInputs = editedNode.data.nodeInputs.every((input) => input.isValid());
-		editedNode.data.hasValidName = nodes.every(
-			(node) => node.data.content !== editedNode.data.content || node.id === editedNode.id
-		);
 		updatedNodes = updatedNodes.map((n: SusiNode) => (n.id === editedNode.id ? editedNode : n));
 		edgesToDelete.forEach((edgeID) => {
 			const edge = edges.find((e) => e.id === edgeID);
 			updateBusDataOnEdgeDelete(updatedNodes, edge!);
 		});
 		setNodes(updatedNodes);
+		checkForDuplicateNodeNames(setNodes);
 		const updatedEdges = edges.filter((edge: SusiEdge) => edgesToDelete.findIndex((e) => e === edge.id) === -1);
 		setEdges(updatedEdges);
 		setCheckState(true);
@@ -125,10 +124,10 @@ const EditNodeModal = ({
 
 	const nameIsDuplicate =
 		nodes.find((node) => node.id !== editedNode.id && node.data.content === editedNode.data.content) !== undefined;
-	const allInputsValid = editedNode.data.nodeInputs.every((input) => input.isValid());
+	const allInputsValid = editedNode.data.nodeInputs.every((input) => input.isValid()) && !nameIsDuplicate;
 	return (
 		<>
-			<Modal show={show} onHide={handleClose} onExited={handleClose}>
+			<Modal show={show} onHide={handleSaveChanges}>
 				<Modal.Header closeButton style={{ padding: '20px 10%' }}>
 					<Modal.Title>Edit Component</Modal.Title>
 				</Modal.Header>
@@ -205,7 +204,7 @@ const EditNodeModal = ({
 					<Button variant="outline-danger" onClick={handleClose}>
 						Close without Saving
 					</Button>
-					<Button variant="primary" onClick={handleSaveChanges} disabled={nameIsDuplicate}>
+					<Button variant="primary" onClick={handleSaveChanges}>
 						Save Changes
 						<span style={{ visibility: !allInputsValid ? 'visible' : 'hidden' }}> ⚠️ </span>
 					</Button>

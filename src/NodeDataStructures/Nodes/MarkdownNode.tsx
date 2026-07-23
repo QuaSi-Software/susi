@@ -89,7 +89,9 @@ function MarkdownNode(susiData: SusiNodeData, sourcePosition: boolean, targetPos
 						/>
 					))}
 			</div>
-			{!susiData.hasValidInputs && <div className="invalid-input-warning-icon">⚠️</div>}
+			{(!susiData.hasValidInputs || !susiData.hasValidName) && (
+				<div className="invalid-input-warning-icon">⚠️</div>
+			)}
 		</>
 	);
 }
