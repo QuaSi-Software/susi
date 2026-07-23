@@ -199,8 +199,8 @@ const EditNodeModal = ({
 						)}
 					</span>
 
-					<Button variant="secondary" onClick={handleClose}>
-						Close
+					<Button variant="outline-danger" onClick={handleClose}>
+						Close without Saving
 					</Button>
 					<Button variant="primary" onClick={handleSaveChanges} disabled={nameIsDuplicate}>
 						Save Changes
