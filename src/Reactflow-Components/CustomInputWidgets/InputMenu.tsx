@@ -68,7 +68,11 @@ export const InputMenu: React.FC<InputMenuProps> = ({
 									}}
 									className="input-menu-column"
 								>
-									{input.isRequired && <CustomInputField nodeInput={input} onEdit={onValueChange} />}
+									{input.isRequired && (
+										<div className="required-input-row">
+											<CustomInputField nodeInput={input} onEdit={onValueChange} />
+										</div>
+									)}
 									{!input.isRequired && (
 										<OptionalInputField
 											key={input.resieName}

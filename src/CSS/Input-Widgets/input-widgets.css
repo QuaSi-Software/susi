@@ -45,6 +45,11 @@
 	display: block;
 }
 
+.required-input-row {
+	padding: 0.5em;
+	padding-left: 10%;
+}
+
 .mutex-warning {
 	color: #505050;
 }

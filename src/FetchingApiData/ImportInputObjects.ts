@@ -1,4 +1,4 @@
-import { InputObject } from '../Reactflow-Components/CustomInputWidgets/InputObject';
+import { InputObject, InputObjectType } from '../Reactflow-Components/CustomInputWidgets/InputObject';
 import { importConditional } from '../Reactflow-Components/CustomInputWidgets/Validation/Conditionals';
 import { importValidation } from '../Reactflow-Components/CustomInputWidgets/Validation/NumberValidation';
 import type { ApiCategory, APIParameter } from './ApiData';
@@ -14,7 +14,7 @@ export function getInputObjectFromAPIParameter(inputName: string, apiInput: APIP
 			value: apiInput.default,
 			tooltip: apiInput.description,
 			unit: apiInput.unit,
-			isRequired: apiInput.required,
+			isRequired: apiInput.required || apiInput.widget_type === InputObjectType.BOOLEAN,
 			dropdownOptions: apiInput.options,
 			dropdownOptionDisplayNames: apiInput.options,
 			validations: apiInput.validations === undefined ? [] : apiInput.validations.map((x) => importValidation(x)),

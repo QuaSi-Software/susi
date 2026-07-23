@@ -16,7 +16,7 @@
 	background: var(--sidebar-bg-color);
 	color: var(--sidebar-text-color);
 	overflow-y: auto;
-	min-width: 320px;
+	min-width: 375px;
 	width: 40%;
 	resize: horizontal;
 }
