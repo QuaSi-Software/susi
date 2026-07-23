@@ -95,6 +95,12 @@ function getNodeGroup(parentNode: SusiNode, nodes: SusiNode[]): NodeGroup {
 		groupName: parentNode.data.content,
 		nodesInGroup: childNodes.map((n) => n.data.content),
 		groupColorIndex: parentNode.data.colorIndex ?? 0,
+		bounds: {
+			x: parentNode.position.x,
+			y: parentNode.position.y,
+			width: parentNode.measured?.width ?? parentNode.measured?.width ?? 0,
+			height: parentNode.measured?.height ?? parentNode.measured?.height ?? 0,
+		},
 	};
 }
 

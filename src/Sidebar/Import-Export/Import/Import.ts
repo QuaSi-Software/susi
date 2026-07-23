@@ -13,7 +13,7 @@ import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
 import { createGroupNode } from '../../../NodeDataStructures/GroupNodes/GroupNode';
 import { getStartEndUnit } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
-import { getPositionAfterParentChange } from '../../../NodeDataStructures/GroupNodes/CalculateChildNodePosition';
+// import { getPositionAfterParentChange } from '../../../NodeDataStructures/GroupNodes/CalculateChildNodePosition';
 
 interface ImportStateProps {
 	stateJSON: string;
@@ -62,9 +62,21 @@ function setListOfInputs(
 
 function setNodeGroups(groups: NodeGroup[], nodes: SusiNode[], logError: (errorMessage: string) => void): SusiNode[] {
 	let nodesWithGroups: SusiNode[] = nodes;
-	groups.forEach((group) => {
+	groups.forEach((group, groupIndex) => {
+		/** Check if there's duplicate group names */
+		const duplicate = groups.find((e, i) => e.groupName === group.groupName && i !== groupIndex);
+		if (duplicate) {
+			logError(`Group name ${group.groupName} is a duplicate. Please give all groups unique names`);
+			return;
+		}
 		/** Create a group node and add it to the start of the list */
-		const groupNode = createGroupNode({ x: 0, y: 0 }, group.groupName, 10000, 10000, group.groupColorIndex);
+		const groupNode = createGroupNode(
+			{ x: group.bounds.x, y: group.bounds.y },
+			group.groupName,
+			group.bounds.width,
+			group.bounds.height,
+			group.groupColorIndex
+		);
 		nodesWithGroups = [groupNode].concat(nodesWithGroups);
 		/** set this node as the parent of all the child node */
 		group.nodesInGroup.forEach((nodeName) => {
@@ -74,7 +86,6 @@ function setNodeGroups(groups: NodeGroup[], nodes: SusiNode[], logError: (errorM
 				return;
 			}
 			node.parentId = groupNode.id;
-			node.position = getPositionAfterParentChange(node, undefined, groupNode);
 		});
 	});
 	return nodesWithGroups;

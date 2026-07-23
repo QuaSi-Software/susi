@@ -1,3 +1,5 @@
+import type { Rect } from '@xyflow/react';
+
 export interface ImportData {
 	components: Record<string, ComponentData>;
 	mediums?: Array<[string, string | null]>;
@@ -14,6 +16,7 @@ export interface NodeGroup {
 	groupName: string;
 	nodesInGroup: string[];
 	groupColorIndex: number;
+	bounds: Rect;
 }
 
 export interface Connections {
