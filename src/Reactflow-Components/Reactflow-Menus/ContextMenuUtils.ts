@@ -68,14 +68,14 @@ const findNameForDuplicate = (name: string, nodes: SusiNode[]) => {
 	}
 };
 
-function createDuplicateNode(nodeID: string, nodes: SusiNode[]): SusiNode | null {
+function createDuplicateNode(nodeID: string, nodes: SusiNode[], offset: number = 20): SusiNode | null {
 	const nodeToDuplicate: SusiNode | undefined = nodes.find((node) => node.id === nodeID);
 	console.assert(nodeToDuplicate != undefined, `Trying to duplicate a node that doesn't exist`);
 	if (!nodeToDuplicate) return null;
 	const duplicateNode: SusiNode = deepCloneNode(nodeToDuplicate);
 	// move node towards bottom right and give it a unique ID
-	duplicateNode.position.x += 20;
-	duplicateNode.position.y += 20;
+	duplicateNode.position.x += offset;
+	duplicateNode.position.y += offset;
 	/** if it's parented, make sure it's still within the bounds of the group */
 	if (duplicateNode.parentId) {
 		const parent = nodes.find((n) => n.id === duplicateNode.parentId);

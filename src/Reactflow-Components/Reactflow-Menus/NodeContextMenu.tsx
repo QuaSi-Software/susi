@@ -1,4 +1,4 @@
-import { useState, useEffect, type Dispatch, type SetStateAction, useContext } from 'react';
+import { useState, useEffect, type Dispatch, type SetStateAction, useContext, useCallback } from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/esm/ButtonGroup';
 
@@ -73,39 +73,37 @@ const NodeContextMenu = ({
 	 * Duplicate the selected node. Move the duplicated node towards the bottom right.
 	 * Give the duplicated node a unique ID and name.
 	 */
-	const handleDuplicateNode = () => {
+	const handleDuplicateNode = useCallback(() => {
+		console.assert(nodeContextMenu !== null, `Node Context Menu is null.`);
 		if (!nodeContextMenu) return;
-		setNodes((nodes) => {
-			const nodeID = nodeContextMenu.node.id;
-			const duplicateNode = createDuplicateNode(nodeID, nodes);
-			if (!duplicateNode) return nodes;
-			const duplicateChildren: Record<string, SusiNode> = {};
-			if (duplicateNode.type === 'group') {
-				/** Duplicate its children too */
-				const originalChildren = nodes.filter((n) => n.parentId === nodeContextMenu.node.id);
-				originalChildren.forEach((child) => {
-					const duplicateChild = createDuplicateNode(
-						child.id,
-						nodes.concat(Object.values(duplicateChildren))
-					);
-					if (duplicateChild) {
-						duplicateChild.parentId = duplicateNode.id;
-						duplicateChildren[child.id] = duplicateChild;
-						duplicateChild.selected = false;
-					}
-				});
-				const newEdges = duplicateEdgesWithinSelection(edges, duplicateChildren, mediums);
-				setEdges((edges) => [...edges, ...newEdges]);
-			}
-			// update list of nodes: deselect original, keep new one selected
-			let updatedNodes: SusiNode[] = nodes.map((node) => ({ ...node, selected: false }));
-			/** Group nodes must be at the start of the nodes list */
-			updatedNodes = [duplicateNode, ...updatedNodes, ...Object.values(duplicateChildren)];
-			return updatedNodes;
-		});
+		const nodeID = nodeContextMenu.node.id;
+		const duplicateNode = createDuplicateNode(nodeID, nodes);
+		console.assert(duplicateNode !== null, `Node ${nodeContextMenu.node.data.content} could not be duplicated.`);
+		if (!duplicateNode) return nodes;
+		const duplicateChildren: Record<string, SusiNode> = {};
+		if (duplicateNode.type === 'group') {
+			/** Duplicate its children too */
+			const originalChildren = nodes.filter((n) => n.parentId === nodeContextMenu.node.id);
+			originalChildren.forEach((child) => {
+				const duplicateChild = createDuplicateNode(child.id, nodes.concat(Object.values(duplicateChildren)), 0);
+				if (duplicateChild) {
+					duplicateChild.parentId = duplicateNode.id;
+					duplicateChildren[child.id] = duplicateChild;
+					duplicateChild.selected = false;
+				}
+			});
+			const newEdges = duplicateEdgesWithinSelection(edges, duplicateChildren, mediums);
+			setEdges((edges) => [...edges, ...newEdges]);
+		}
+		// update list of nodes: deselect original, keep new one selected
+		let updatedNodes: SusiNode[] = nodes.map((node) => ({ ...node, selected: false }));
+		/** Group nodes must be at the start of the nodes list */
+		updatedNodes = [duplicateNode, ...updatedNodes, ...Object.values(duplicateChildren)];
+
+		setNodes(updatedNodes);
 		setNodeContextMenu(null);
 		setCheckState(true);
-	};
+	}, [nodes, edges, nodeContextMenu]);
 
 	const fitGroupNodeToChildren = () => {
 		if (!nodeContextMenu) return;
