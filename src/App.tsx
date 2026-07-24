@@ -15,7 +15,7 @@ import './CSS/index.css';
 
 /** Nodes */
 import { DnDProvider, useDnD } from './Sidebar/DnDContext';
-import createNodeFromType, { type SusiNode } from './NodeDataStructures/Nodes/SusiNode';
+import createNodeFromType, { deepCloneNodes, type SusiNode } from './NodeDataStructures/Nodes/SusiNode';
 import MarkdownNode from './NodeDataStructures/Nodes/MarkdownNode';
 import { getIntersectionsWithGroupNode } from './NodeDataStructures/GroupNodes/IntersectionWithGroupNode';
 import { getPositionAfterParentChange } from './NodeDataStructures/GroupNodes/CalculateChildNodePosition';
@@ -104,9 +104,6 @@ const DnDFlow = () => {
 	const getNodeInputs = (componentType: string) => {
 		return getNodeInputsFromAPI(componentType, componentTypes);
 	};
-	const getSusiNodes = useCallback((): SusiNode[] => {
-		return nodes.filter((n) => 'nodeInputs' in n.data);
-	}, [nodes]);
 	/** Log error */
 	const logError = (message: string) => {
 		setErrorMessages((prevMessages) => [
@@ -133,9 +130,11 @@ const DnDFlow = () => {
 
 	const onConnect = useCallback(
 		(connection: Connection): void => {
-			const edge: SusiEdge | null = getNewEdge(connection, getSusiNodes(), edges, mediums, logError);
+			const _nodes = deepCloneNodes(nodes);
+			const edge: SusiEdge | null = getNewEdge(connection, _nodes, edges, mediums, logError);
 			if (edge === null) return;
 			setEdges((eds: SusiEdge[]) => addEdge(edge, eds) as SusiEdge[]);
+			setNodes(_nodes);
 			setCheckState(true);
 		},
 		[setEdges, nodes, edges, mediums]

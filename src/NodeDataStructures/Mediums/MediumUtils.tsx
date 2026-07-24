@@ -36,6 +36,21 @@ function mediumsMatch(m1: string, m2: string) {
 	return m1 !== getUndefinedMedium().key && m1 === m2;
 }
 
+function setMediumOfHandle(mediumKey: string, handleName: string, node: SusiNode) {
+	const splitName = handleName.split('-');
+	const sourceOrTarget = splitName[0] as HandleType;
+	const handleIndex = parseInt(splitName[1], 10);
+	// get the variable name for the medium that sets this handle's color
+	const mediumPerHandle = node.data.handleMediumDict[sourceOrTarget];
+	const variableName = mediumPerHandle[handleIndex];
+	const nodeInput = node.data.nodeInputs.find((input) => input.resieName === variableName);
+	console.assert(
+		nodeInput !== undefined,
+		`Node input ${variableName} does not exist even though it is in the handleMediumDict`
+	);
+	if (nodeInput) nodeInput.value = mediumKey;
+}
+
 /**
  * Get the key of the medium associated with a specific handle on a node
  * @param {string} handleName the name of the handle
@@ -142,4 +157,5 @@ export {
 	getRandomColor,
 	getUndefinedMedium,
 	checkForDuplicateNames,
+	setMediumOfHandle,
 };

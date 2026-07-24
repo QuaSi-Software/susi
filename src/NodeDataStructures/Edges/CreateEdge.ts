@@ -1,7 +1,7 @@
 import type { Connection } from '@xyflow/react';
 import type { SusiNode } from '../Nodes/SusiNode';
 import { updateBusDataOnEdgeConnect } from '../Bus/BusDataUtils';
-import { getMedium, getMediumKey, mediumsMatch } from '../Mediums/MediumUtils';
+import { getMedium, getMediumKey, getUndefinedMedium, mediumsMatch, setMediumOfHandle } from '../Mediums/MediumUtils';
 import type { Medium } from '../Mediums/Medium';
 import type { SusiEdge } from './SusiEdge';
 
@@ -60,6 +60,8 @@ const getNewEdge = (
 		console.error(`Node ${connection.target} not found.`);
 		return null;
 	}
+	console.assert(connection.sourceHandle !== undefined, 'Source Handle cannot be undefined');
+	console.assert(connection.targetHandle !== undefined, 'Target Handle cannot be undefined');
 	/** Check if handle is taken */
 	if (isHandleTaken(connection.sourceHandle!, connection.targetHandle!, sourceNode!, targetNode!, edges)) {
 		logError('Cannot attach two edges to the same Handle');
@@ -71,9 +73,20 @@ const getNewEdge = (
 		return null;
 	}
 	/** Set Mediums */
-	const sourceMedium = getMedium(connection.sourceHandle!, sourceNode!.data, mediums);
-	const sourceMediumKey = sourceMedium!.key;
-	const targetMediumKey = getMediumKey(connection.targetHandle!, targetNode!.data);
+	let sourceMediumKey = getMedium(connection.sourceHandle!, sourceNode!.data, mediums)!.key;
+	let targetMediumKey = getMediumKey(connection.targetHandle!, targetNode!.data);
+	/** if only one of the mediums is undefined, set it to be the same as the other medium */
+	const sourceMediumUndefined = sourceMediumKey === getUndefinedMedium().key;
+	const targetMediumUndefined = targetMediumKey === getUndefinedMedium().key;
+	if (sourceMediumUndefined && !targetMediumUndefined) {
+		setMediumOfHandle(targetMediumKey, connection.sourceHandle!, sourceNode);
+		sourceMediumKey = targetMediumKey;
+	}
+	if (targetMediumUndefined && !sourceMediumUndefined) {
+		setMediumOfHandle(sourceMediumKey, connection.targetHandle!, targetNode);
+		targetMediumKey = sourceMediumKey;
+	}
+	/** Check if the mediums match */
 	if (!mediumsMatch(sourceMediumKey, targetMediumKey)) {
 		const sourceHandleIndex = connection.sourceHandle?.charAt(connection.sourceHandle.length - 1);
 		const targetHandleIndex = connection.targetHandle?.charAt(connection.targetHandle.length - 1);
