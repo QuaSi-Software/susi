@@ -8,7 +8,12 @@ import EditNodeModal from './EditNodeModal';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import _ from 'lodash';
 import { AppContext } from '../../AppContext';
-import { checkForDuplicateNodeNames, createDuplicateNode, deleteNode } from './ContextMenuUtils';
+import {
+	checkForDuplicateNodeNames,
+	createDuplicateNode,
+	deleteNode,
+	duplicateEdgesWithinSelection,
+} from './ContextMenuUtils';
 import { resizeGroupNodeToFitChildren } from '../../NodeDataStructures/GroupNodes/ResizeGroupNodeToFitChildren';
 
 interface NodeContextMenuInput {
@@ -37,6 +42,7 @@ const NodeContextMenu = ({
 }: NodeContextMenuInput) => {
 	const [showModal, setShowModal] = useState(false);
 	const setCheckState = useContext(AppContext)!.setCheckState;
+	const mediums = useContext(AppContext)!.mediums;
 
 	// Check if the node still exists and if it was deleted somehow, close the context menu
 	// This can happen if the user clicked 'Clear Graph' while the context menu was open
@@ -73,21 +79,28 @@ const NodeContextMenu = ({
 			const nodeID = nodeContextMenu.node.id;
 			const duplicateNode = createDuplicateNode(nodeID, nodes);
 			if (!duplicateNode) return nodes;
-			const newNodes: SusiNode[] = [duplicateNode];
+			const duplicateChildren: Record<string, SusiNode> = {};
 			if (duplicateNode.type === 'group') {
 				/** Duplicate its children too */
 				const originalChildren = nodes.filter((n) => n.parentId === nodeContextMenu.node.id);
 				originalChildren.forEach((child) => {
-					const duplicateChild = createDuplicateNode(child.id, nodes.concat(newNodes));
+					const duplicateChild = createDuplicateNode(
+						child.id,
+						nodes.concat(Object.values(duplicateChildren))
+					);
 					if (duplicateChild) {
 						duplicateChild.parentId = duplicateNode.id;
-						newNodes.push(duplicateChild);
+						duplicateChildren[child.id] = duplicateChild;
+						duplicateChild.selected = false;
 					}
 				});
+				const newEdges = duplicateEdgesWithinSelection(edges, duplicateChildren, mediums);
+				setEdges((edges) => [...edges, ...newEdges]);
 			}
 			// update list of nodes: deselect original, keep new one selected
 			let updatedNodes: SusiNode[] = nodes.map((node) => ({ ...node, selected: false }));
-			updatedNodes = [...updatedNodes, ...newNodes];
+			/** Group nodes must be at the start of the nodes list */
+			updatedNodes = [duplicateNode, ...updatedNodes, ...Object.values(duplicateChildren)];
 			return updatedNodes;
 		});
 		setNodeContextMenu(null);

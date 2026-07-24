@@ -7,6 +7,9 @@ import {
 	getPositionAfterParentChange,
 	moveChildIntoParentBounds,
 } from '../../NodeDataStructures/GroupNodes/CalculateChildNodePosition';
+import { getNewEdge } from '../../NodeDataStructures/Edges/CreateEdge';
+import type { Connection } from '@xyflow/react';
+import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
 
 function deleteNode(
 	node: SusiNode,
@@ -95,4 +98,26 @@ function checkForDuplicateNodeNames(setNodes: Dispatch<SetStateAction<SusiNode[]
 	);
 }
 
-export { deleteNode, createDuplicateNode, checkForDuplicateNodeNames };
+function duplicateEdgesWithinSelection(
+	edges: SusiEdge[],
+	selectionNodes: Record<string, SusiNode>,
+	mediums: Medium[]
+): SusiEdge[] {
+	const newEdges: SusiEdge[] = [];
+	edges.forEach((edge) => {
+		const duplicateSource = selectionNodes[edge.source];
+		const duplicateTarget = selectionNodes[edge.target];
+		if (!duplicateSource || !duplicateTarget) return;
+		const connection: Connection = {
+			source: duplicateSource.id,
+			target: duplicateTarget.id,
+			sourceHandle: edge.sourceHandle!,
+			targetHandle: edge.targetHandle!,
+		};
+		const newEdge = getNewEdge(connection, Object.values(selectionNodes), edges, mediums, () => {});
+		if (newEdge) newEdges.push(newEdge);
+	});
+	return newEdges;
+}
+
+export { deleteNode, createDuplicateNode, checkForDuplicateNodeNames, duplicateEdgesWithinSelection };

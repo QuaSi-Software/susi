@@ -4,9 +4,7 @@ import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import type { MenuPosition } from './Menus';
 import { AppContext } from '../../AppContext';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import { deleteNode, createDuplicateNode } from './ContextMenuUtils';
-import { getNewEdge } from '../../NodeDataStructures/Edges/CreateEdge';
-import { type Connection } from '@xyflow/react';
+import { deleteNode, createDuplicateNode, duplicateEdgesWithinSelection } from './ContextMenuUtils';
 import { createGroupNodeFromSelection } from '../../NodeDataStructures/GroupNodes/GroupNode';
 import { getPositionAfterParentChange } from '../../NodeDataStructures/GroupNodes/CalculateChildNodePosition';
 
@@ -50,26 +48,13 @@ const SelectionContextMenu = ({
 		if (!selectionContextMenu) return;
 		const duplicatedNodes: Record<string, SusiNode> = {};
 		selectionContextMenu.nodes.forEach((node) => {
-			const newNode = createDuplicateNode(node.id, nodes);
+			const newNode = createDuplicateNode(node.id, nodes.concat(Object.values(duplicatedNodes)));
 			if (newNode) duplicatedNodes[node.id] = newNode;
 		});
 		const unselectedNodes: SusiNode[] = nodes.map((n) => ({ ...n, selected: false }));
 		const updatedNodes = unselectedNodes.concat(Object.values(duplicatedNodes));
 		/** duplicate edges where both source and target are in the selection nodes */
-		const newEdges: SusiEdge[] = [];
-		edges.forEach((edge) => {
-			const duplicateSource = duplicatedNodes[edge.source];
-			const duplicateTarget = duplicatedNodes[edge.target];
-			if (!duplicateSource || !duplicateTarget) return;
-			const connection: Connection = {
-				source: duplicateSource.id,
-				target: duplicateTarget.id,
-				sourceHandle: edge.sourceHandle!,
-				targetHandle: edge.targetHandle!,
-			};
-			const newEdge = getNewEdge(connection, updatedNodes, edges, mediums, () => {});
-			if (newEdge) newEdges.push(newEdge);
-		});
+		const newEdges: SusiEdge[] = duplicateEdgesWithinSelection(edges, duplicatedNodes, mediums);
 		setNodes(updatedNodes);
 		setEdges((_edges) => _edges.concat(newEdges));
 		setCheckState(true);
