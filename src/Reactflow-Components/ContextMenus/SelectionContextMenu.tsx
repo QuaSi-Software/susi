@@ -1,5 +1,5 @@
 import { useContext, type Dispatch, type SetStateAction } from 'react';
-import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
+import type { EdgeType, SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import type { MenuPosition } from './Menus';
 import { AppContext } from '../../AppContext';
@@ -12,6 +12,7 @@ interface SelectionContextMenuProps {
 	selectionContextMenu: SelectionContextMenuData | null;
 	nodes: SusiNode[];
 	edges: SusiEdge[];
+	edgeType: EdgeType;
 	setSelectionContextMenu: Dispatch<SetStateAction<SelectionContextMenuData | null>>;
 	setNodes: Dispatch<SetStateAction<SusiNode[]>>;
 	setEdges: Dispatch<SetStateAction<SusiEdge[]>>;
@@ -26,6 +27,7 @@ const SelectionContextMenu = ({
 	selectionContextMenu,
 	nodes,
 	edges,
+	edgeType,
 	setSelectionContextMenu,
 	setNodes,
 	setEdges,
@@ -54,7 +56,7 @@ const SelectionContextMenu = ({
 		const unselectedNodes: SusiNode[] = nodes.map((n) => ({ ...n, selected: false }));
 		const updatedNodes = unselectedNodes.concat(Object.values(duplicatedNodes));
 		/** duplicate edges where both source and target are in the selection nodes */
-		const newEdges: SusiEdge[] = duplicateEdgesWithinSelection(edges, duplicatedNodes, mediums);
+		const newEdges: SusiEdge[] = duplicateEdgesWithinSelection(edges, duplicatedNodes, mediums, edgeType);
 		setNodes(updatedNodes);
 		setEdges((_edges) => _edges.concat(newEdges));
 		setCheckState(true);

@@ -24,7 +24,7 @@ import type { NodeType } from './NodeDataStructures/Nodes/SusiNodeTypes';
 
 /** Edges */
 import type { Connection } from '@xyflow/react';
-import type { SusiEdge } from './NodeDataStructures/Edges/SusiEdge';
+import { EdgeType, type SusiEdge } from './NodeDataStructures/Edges/SusiEdge';
 import { getNewEdge } from './NodeDataStructures/Edges/CreateEdge';
 
 /** Mediums */
@@ -93,6 +93,7 @@ const DnDFlow = () => {
 	const [checkState, setCheckState] = useState<boolean>(false);
 	const [theme, setTheme] = useState<'dark' | 'light'>('light');
 	const [locale, setLocale] = useState<Locale>(Locale.US);
+	const [edgeType, setEdgeType] = useState<EdgeType>(EdgeType.SMOOTHSTEP);
 
 	/** Data imported from API */
 	const [componentTypes, setComponentTypes] = useState<Record<string, NodeType> | null>(null);
@@ -143,7 +144,7 @@ const DnDFlow = () => {
 			const _nodes = deepCloneNodes(nodes);
 			const edge: SusiEdge | null = getNewEdge(connection, _nodes, edges, mediums, logError);
 			if (edge === null) return;
-			setEdges((eds: SusiEdge[]) => addEdge(edge, eds) as SusiEdge[]);
+			setEdges((eds) => addEdge({ ...edge, type: edgeType }, eds));
 			setNodes(_nodes);
 			setCheckState(true);
 		},
@@ -258,6 +259,8 @@ const DnDFlow = () => {
 					nodeTypes={componentTypes}
 					categories={componentCategories}
 					setResieParameterMenus={setResieParameterMenus}
+					edgeType={edgeType}
+					setEdgeType={setEdgeType}
 				/>
 				<ReactFlow
 					nodes={nodes}
@@ -306,6 +309,7 @@ const DnDFlow = () => {
 					nodeContextMenu={nodeContextMenu}
 					nodes={nodes}
 					edges={edges}
+					edgeType={edgeType}
 					setNodeContextMenu={setNodeContextMenu}
 					setNodes={setNodes}
 					setEdges={setEdges}
@@ -315,6 +319,7 @@ const DnDFlow = () => {
 					selectionContextMenu={selectionContextMenu}
 					nodes={nodes}
 					edges={edges}
+					edgeType={edgeType}
 					setSelectionContextMenu={setSelectionContextMenu}
 					setNodes={setNodes}
 					setEdges={setEdges}

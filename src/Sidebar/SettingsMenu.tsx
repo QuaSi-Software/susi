@@ -2,6 +2,7 @@ import { useContext, type Dispatch, type SetStateAction } from 'react';
 import { FloatingLabel, Form } from 'react-bootstrap';
 import CustomDropdown from '../Reactflow-Components/CustomInputWidgets/CustomDropdown';
 import { AppContext } from '../AppContext';
+import { EdgeType, type SusiEdge } from '../NodeDataStructures/Edges/SusiEdge';
 
 export interface SettingsMenuProps {
 	nodeNamePrefix: string;
@@ -9,6 +10,9 @@ export interface SettingsMenuProps {
 	theme: 'dark' | 'light';
 	setTheme: Dispatch<SetStateAction<'dark' | 'light'>>;
 	setLocale: Dispatch<SetStateAction<Locale>>;
+	edgeType: EdgeType;
+	setEdgeType: Dispatch<SetStateAction<EdgeType>>;
+	setEdges: Dispatch<SetStateAction<SusiEdge[]>>;
 }
 
 export const Locale = {
@@ -18,7 +22,16 @@ export const Locale = {
 
 export type Locale = (typeof Locale)[keyof typeof Locale];
 
-export function SettingsMenu({ nodeNamePrefix, setNodeNamePrefix, theme, setTheme, setLocale }: SettingsMenuProps) {
+export function SettingsMenu({
+	nodeNamePrefix,
+	setNodeNamePrefix,
+	theme,
+	setTheme,
+	setLocale,
+	edgeType,
+	setEdgeType,
+	setEdges,
+}: SettingsMenuProps) {
 	const locale = useContext(AppContext)!.locale;
 	return (
 		<>
@@ -44,6 +57,17 @@ export function SettingsMenu({ nodeNamePrefix, setNodeNamePrefix, theme, setThem
 					dropdown_options={['light', 'dark']}
 					dropdown_options_display_names={['☀️ Light Mode', '🌙 Dark Mode']}
 					onEdit={(value) => setTheme(value)}
+				/>
+			</div>
+			<div className="input-menu-row">
+				<CustomDropdown<EdgeType>
+					displayName="Edge Type"
+					startValue={edgeType}
+					dropdown_options={Object.values(EdgeType)}
+					onEdit={(value) => {
+						setEdgeType(value);
+						setEdges((edges) => edges.map((e) => ({ ...e, type: value })));
+					}}
 				/>
 			</div>
 			<div

@@ -1,6 +1,6 @@
 import type { Edge } from '@xyflow/react';
 
-export class SusiEdgeData {
+class SusiEdgeData {
 	mediumKey: string;
 
 	constructor(mediumKey: string = '') {
@@ -8,4 +8,14 @@ export class SusiEdgeData {
 	}
 }
 
-export type SusiEdge = Edge & { data: SusiEdgeData };
+type SusiEdge = Edge & { data: SusiEdgeData };
+
+const EdgeType = {
+	DEFAULT: 'default',
+	STRAIGHT: 'straight',
+	STEP: 'step',
+	SMOOTHSTEP: 'smoothstep',
+} as const;
+type EdgeType = (typeof EdgeType)[keyof typeof EdgeType];
+
+export { SusiEdgeData, type SusiEdge, EdgeType };

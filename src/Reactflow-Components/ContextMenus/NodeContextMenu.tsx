@@ -5,7 +5,7 @@ import ButtonGroup from 'react-bootstrap/esm/ButtonGroup';
 import type { MenuPosition } from './Menus';
 import { type SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import EditNodeModal from './EditNodeModal';
-import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
+import type { EdgeType, SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import _ from 'lodash';
 import { AppContext } from '../../AppContext';
 import {
@@ -24,6 +24,7 @@ interface NodeContextMenuInput {
 	setNodes: Dispatch<SetStateAction<SusiNode[]>>;
 	setEdges: Dispatch<SetStateAction<SusiEdge[]>>;
 	getResieParameter: (menuName: string, inputName: string) => any;
+	edgeType: EdgeType;
 }
 
 interface NodeContextMenuData {
@@ -35,6 +36,7 @@ const NodeContextMenu = ({
 	nodeContextMenu,
 	nodes,
 	edges,
+	edgeType,
 	setNodeContextMenu,
 	setNodes,
 	setEdges,
@@ -92,7 +94,7 @@ const NodeContextMenu = ({
 					duplicateChild.selected = false;
 				}
 			});
-			const newEdges = duplicateEdgesWithinSelection(edges, duplicateChildren, mediums);
+			const newEdges = duplicateEdgesWithinSelection(edges, duplicateChildren, mediums, edgeType);
 			setEdges((edges) => [...edges, ...newEdges]);
 		}
 		// update list of nodes: deselect original, keep new one selected

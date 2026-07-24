@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { deepCloneNode, type SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
-import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
+import type { EdgeType, SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import { updateBusDataOnNodeDelete } from '../../NodeDataStructures/Bus/BusDataUtils';
 import BusData from '../../NodeDataStructures/Bus/BusData';
 import {
@@ -101,7 +101,8 @@ function checkForDuplicateNodeNames(setNodes: Dispatch<SetStateAction<SusiNode[]
 function duplicateEdgesWithinSelection(
 	edges: SusiEdge[],
 	selectionNodes: Record<string, SusiNode>,
-	mediums: Medium[]
+	mediums: Medium[],
+	edgeType: EdgeType
 ): SusiEdge[] {
 	const newEdges: SusiEdge[] = [];
 	edges.forEach((edge) => {
@@ -115,7 +116,7 @@ function duplicateEdgesWithinSelection(
 			targetHandle: edge.targetHandle!,
 		};
 		const newEdge = getNewEdge(connection, Object.values(selectionNodes), edges, mediums, () => {});
-		if (newEdge) newEdges.push(newEdge);
+		if (newEdge) newEdges.push({ ...newEdge, type: edgeType });
 	});
 	return newEdges;
 }
