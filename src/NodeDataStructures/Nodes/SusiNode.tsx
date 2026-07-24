@@ -4,6 +4,7 @@ import { Position } from '@xyflow/react';
 import { type SusiNodeData, createSusiNodeData } from './SusiNodeData';
 
 import _ from 'lodash';
+import { findNameForDuplicate } from '../../Reactflow-Components/ContextMenus/ContextMenuUtils';
 
 /**
  * SusiNode is a normal ReactFlow Node, but with data replaced by the interface SusiNodeData for clarity
@@ -18,12 +19,11 @@ const createNodeFromType = (
 	nodeNamePrefix: string,
 	content: string | null = null
 ): SusiNode => {
-	const nodesWithType = nodes.filter((node: SusiNode) => node.data.componentType === nodeType.type_name);
-	const index = nodesWithType.length;
 	const timestamp = Date.now();
 	if (!content) {
 		if (nodeNamePrefix !== '') nodeNamePrefix += '_';
-		content = nodeNamePrefix + nodeType.segment + '_' + index;
+		const baseName = nodeNamePrefix + nodeType.segment + '_';
+		content = findNameForDuplicate(baseName, nodes);
 	}
 	const susiNodeData = createSusiNodeData(nodeType, content);
 	return {

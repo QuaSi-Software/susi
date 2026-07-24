@@ -120,4 +120,10 @@ function duplicateEdgesWithinSelection(
 	return newEdges;
 }
 
-export { deleteNode, createDuplicateNode, checkForDuplicateNodeNames, duplicateEdgesWithinSelection };
+export {
+	deleteNode,
+	createDuplicateNode,
+	checkForDuplicateNodeNames,
+	duplicateEdgesWithinSelection,
+	findNameForDuplicate,
+};
