@@ -12,41 +12,54 @@ import {
 } from '@xyflow/react';
 
 import './CSS/index.css';
-import { setMediumCSSVariables } from './Sidebar/Mediums/MediumCSSUtils';
 
-import Sidebar from './Sidebar/Sidebar';
+/** Nodes */
 import { DnDProvider, useDnD } from './Sidebar/DnDContext';
 import createNodeFromType, { type SusiNode } from './NodeDataStructures/Nodes/SusiNode';
 import MarkdownNode from './NodeDataStructures/Nodes/MarkdownNode';
-import type { Connection } from '@xyflow/react';
-import { EdgeContextMenu, type EdgeContextMenuData } from './Reactflow-Components/Reactflow-Menus/EdgeContextMenu';
-import { createMenuPosition, type MenuPosition } from './Reactflow-Components/Reactflow-Menus/Menus';
-import { NodeContextMenu, type NodeContextMenuData } from './Reactflow-Components/Reactflow-Menus/NodeContextMenu';
-import PaneContextMenu from './Reactflow-Components/Reactflow-Menus/PaneContextMenu';
-import { type Medium } from './NodeDataStructures/Mediums/Medium';
-import { getDefaultMediums } from './NodeDataStructures/Mediums/MediumUtils';
-import { AppContext } from './AppContext';
-import ErrorMenu from './Reactflow-Components/Errors/ErrorMenu';
-import type { ErrorMessage } from './Reactflow-Components/Errors/ErrorMessage';
-import type { SusiEdge } from './NodeDataStructures/Edges/SusiEdge';
-import LoadingOverlay from './Reactflow-Components/LoadingOverlay';
-import { getNewEdge } from './NodeDataStructures/Edges/CreateEdge';
-import { fetchComponentInputs, getNodeInputsFromAPI } from './FetchingApiData/HandleAPICalls';
-import { UndoButton } from './Reactflow-Components/UndoButton';
-import { Locale } from './Sidebar/SettingsMenu';
-import ErrorOverlay from './Reactflow-Components/ErrorScreenOverlay';
-import type { NodeType } from './NodeDataStructures/Nodes/SusiNodeTypes';
-import { type ApiCategory } from './FetchingApiData/ApiData';
-import type { ResieParameterMenuInfo } from './Sidebar/ResieParameters/ResieParameterMenuInfo';
-import { ClearNodesButton } from './Reactflow-Components/ClearNodesButton';
-import {
-	SelectionContextMenu,
-	type SelectionContextMenuData,
-} from './Reactflow-Components/Reactflow-Menus/SelectionContextMenu';
-import logo from './assets/resie.svg';
 import { getIntersectionsWithGroupNode } from './NodeDataStructures/GroupNodes/IntersectionWithGroupNode';
 import { getPositionAfterParentChange } from './NodeDataStructures/GroupNodes/CalculateChildNodePosition';
 import GroupNodeComponent from './NodeDataStructures/GroupNodes/GroupNodeComponent';
+import type { NodeType } from './NodeDataStructures/Nodes/SusiNodeTypes';
+
+/** Edges */
+import type { Connection } from '@xyflow/react';
+import type { SusiEdge } from './NodeDataStructures/Edges/SusiEdge';
+import { getNewEdge } from './NodeDataStructures/Edges/CreateEdge';
+
+/** Mediums */
+import { setMediumCSSVariables } from './Sidebar/Mediums/MediumCSSUtils';
+import { type Medium } from './NodeDataStructures/Mediums/Medium';
+import { getDefaultMediums } from './NodeDataStructures/Mediums/MediumUtils';
+
+/** Context Menus */
+import { EdgeContextMenu, type EdgeContextMenuData } from './Reactflow-Components/ContextMenus/EdgeContextMenu';
+import { createMenuPosition, type MenuPosition } from './Reactflow-Components/ContextMenus/Menus';
+import { NodeContextMenu, type NodeContextMenuData } from './Reactflow-Components/ContextMenus/NodeContextMenu';
+import PaneContextMenu from './Reactflow-Components/ContextMenus/PaneContextMenu';
+import {
+	SelectionContextMenu,
+	type SelectionContextMenuData,
+} from './Reactflow-Components/ContextMenus/SelectionContextMenu';
+
+/** Error Messages and Overlays */
+import ErrorMenu from './Reactflow-Components/Errors/ErrorMenu';
+import type { ErrorMessage } from './Reactflow-Components/Errors/ErrorMessage';
+import LoadingOverlay from './Reactflow-Components/LoadingOverlay';
+import ErrorOverlay from './Reactflow-Components/ErrorScreenOverlay';
+
+/** API Data */
+import { fetchComponentInputs, getNodeInputsFromAPI } from './FetchingApiData/HandleAPICalls';
+import { type ApiCategory } from './FetchingApiData/ApiData';
+import type { ResieParameterMenuInfo } from './Sidebar/ResieParameters/ResieParameterMenuInfo';
+
+/** Other */
+import Sidebar from './Sidebar/Sidebar';
+import { AppContext } from './AppContext';
+import { UndoButton } from './Reactflow-Components/UndoButton';
+import { Locale } from './Sidebar/SettingsMenu';
+import { ClearNodesButton } from './Reactflow-Components/ClearNodesButton';
+import logo from './assets/resie.svg';
 
 const DnDFlow = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);
