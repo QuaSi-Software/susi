@@ -34,7 +34,7 @@ import { getDefaultMediums } from './NodeDataStructures/Mediums/MediumUtils';
 
 /** Context Menus */
 import { EdgeContextMenu, type EdgeContextMenuData } from './Reactflow-Components/ContextMenus/EdgeContextMenu';
-import { createMenuPosition, type MenuPosition } from './Reactflow-Components/ContextMenus/Menus';
+import { type MenuPosition } from './Reactflow-Components/ContextMenus/Menus';
 import { NodeContextMenu, type NodeContextMenuData } from './Reactflow-Components/ContextMenus/NodeContextMenu';
 import PaneContextMenu from './Reactflow-Components/ContextMenus/PaneContextMenu';
 import {
@@ -60,6 +60,7 @@ import { UndoButton } from './Reactflow-Components/UndoButton';
 import { Locale } from './Sidebar/SettingsMenu';
 import { ClearNodesButton } from './Reactflow-Components/ClearNodesButton';
 import logo from './assets/resie.svg';
+import { useContextMenuHandlers } from './Reactflow-Components/ContextMenus/useContextMenuHandlers';
 
 const DnDFlow = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);
@@ -73,6 +74,15 @@ const DnDFlow = () => {
 	const [nodeContextMenu, setNodeContextMenu] = useState<NodeContextMenuData | null>(null);
 	const [paneContextMenu, setPaneContextMenu] = useState<MenuPosition | null>(null);
 	const [selectionContextMenu, setSelectionContextMenu] = useState<SelectionContextMenuData | null>(null);
+	const { onNodeContextMenu, onEdgeContextMenu, onPaneContextMenu, onSelectionContextMenu, clearAllMenus } =
+		useContextMenuHandlers({
+			ref,
+			nodes,
+			setNodeContextMenu,
+			setEdgeContextMenu,
+			setPaneContextMenu,
+			setSelectionContextMenu,
+		});
 
 	/**  */
 	const [mediums, setMediums] = useState<Medium[]>(getDefaultMediums());
@@ -215,62 +225,6 @@ const DnDFlow = () => {
 			event.dataTransfer.setData('text/plain', type.button_name as string);
 			event.dataTransfer.effectAllowed = 'move';
 		}
-	};
-
-	const onEdgeContextMenu = (event: React.MouseEvent, edge: SusiEdge): void => {
-		event.preventDefault();
-		setNodeContextMenu(null);
-		setPaneContextMenu(null);
-		setSelectionContextMenu(null);
-
-		let newEdgeContextMenuData: EdgeContextMenuData = {
-			edge: edge,
-			menuPosition: createMenuPosition(event, ref),
-		};
-		setEdgeContextMenu(newEdgeContextMenuData);
-	};
-	const onNodeContextMenu = (event: React.MouseEvent, node: SusiNode): void => {
-		const selectedNodes = nodes.filter((node) => node.selected);
-		if (selectedNodes.length > 1) {
-			onSelectionContextMenu(event, selectedNodes);
-			return;
-		}
-		event.preventDefault();
-		setPaneContextMenu(null);
-		setEdgeContextMenu(null);
-		setSelectionContextMenu(null);
-
-		setNodeContextMenu({
-			node: node,
-			menuPosition: createMenuPosition(event, ref),
-		});
-	};
-	const onPaneContextMenu = (event: MouseEvent | React.MouseEvent<Element, MouseEvent>) => {
-		event.preventDefault();
-		setNodeContextMenu(null);
-		setEdgeContextMenu(null);
-		setSelectionContextMenu(null);
-
-		let newPaneContextMenuData: MenuPosition = createMenuPosition(event, ref);
-		setPaneContextMenu(newPaneContextMenuData);
-	};
-	const onSelectionContextMenu = (event: React.MouseEvent<Element, MouseEvent>, selectedNodes: SusiNode[]) => {
-		event.preventDefault();
-		setNodeContextMenu(null);
-		setEdgeContextMenu(null);
-		setPaneContextMenu(null);
-
-		let newSelectionContextData: SelectionContextMenuData = {
-			nodes: selectedNodes,
-			menuPosition: createMenuPosition(event, ref),
-		};
-		setSelectionContextMenu(newSelectionContextData);
-	};
-	const clearAllMenus = () => {
-		setNodeContextMenu(null);
-		setEdgeContextMenu(null);
-		setPaneContextMenu(null);
-		setSelectionContextMenu(null);
 	};
 
 	return (
