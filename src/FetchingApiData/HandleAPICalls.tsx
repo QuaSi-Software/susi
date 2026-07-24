@@ -53,16 +53,23 @@ function processApiReturn(
 		),
 	]);
 }
+const localResieParameterModules = import.meta.glob('../assets/resie_parameters.json');
+
 const loadLocalFile = async (): Promise<ApiReturn | null> => {
-	try {
-		const resieParametersData: ApiReturn = (await import('../assets/resie_parameters.json')) as ApiReturn;
-		if (resieParametersData) {
-			return resieParametersData;
-		}
-	} catch (error) {
+	const loader = localResieParameterModules['../assets/resie_parameters.json'];
+	if (!loader) {
 		console.debug('Local resie_parameters.json not found, falling back to API');
+		return null;
 	}
-	return null;
+	try {
+		const mod = (await loader()) as { default: ApiReturn } | ApiReturn;
+		// JSON modules expose the parsed contents on `default`
+		const data = (mod as { default?: ApiReturn }).default ?? (mod as ApiReturn);
+		return data ?? null;
+	} catch (error) {
+		console.debug('Failed to load local resie_parameters.json, falling back to API', error);
+		return null;
+	}
 };
 
 export function fetchComponentInputs(
