@@ -26,12 +26,12 @@ function isHandleTaken(
 	edges: SusiEdge[]
 ) {
 	// edge is valid if its target and source handle are not already taken unless the node is a bus
-	var sourceIsBus = sourceNode.data.componentType === 'Bus';
-	var targetIsBus = targetNode.data.componentType === 'Bus';
+	const sourceIsBus = sourceNode.data.componentType === 'Bus';
+	const targetIsBus = targetNode.data.componentType === 'Bus';
 	for (let i = 0; i < edges.length; i++) {
 		const edge = edges[i];
-		var sourceHandleTaken = edge.source === sourceNode.id && edge.sourceHandle === sourceHandle;
-		var targetHandleTaken = edge.target === targetNode.id && edge.targetHandle === targetHandle;
+		const sourceHandleTaken = edge.source === sourceNode.id && edge.sourceHandle === sourceHandle;
+		const targetHandleTaken = edge.target === targetNode.id && edge.targetHandle === targetHandle;
 		if ((!sourceIsBus && sourceHandleTaken) || (!targetIsBus && targetHandleTaken)) {
 			return true;
 		}
@@ -87,7 +87,7 @@ const getNewEdge = (
 		updateBusDataOnEdgeConnect(sourceNode, targetNode.id, false);
 		updateBusDataOnEdgeConnect(targetNode, sourceNode.id, true);
 	}
-	var newEdgeId = `st-flow-edge_${connection.source}-${connection.target}`;
+	let newEdgeId = `st-flow-edge_${connection.source}-${connection.target}`;
 	newEdgeId += '_' + Date.now();
 	const newEdge: SusiEdge = {
 		...connection,

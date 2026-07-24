@@ -50,7 +50,7 @@ import GroupNodeComponent from './NodeDataStructures/GroupNodes/GroupNodeCompone
 
 const DnDFlow = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);
-	const [edges, setEdges, onEdgesChange] = useEdgesState<SusiEdge>([] as any);
+	const [edges, setEdges, onEdgesChange] = useEdgesState<SusiEdge>([]);
 	const { screenToFlowPosition } = useReactFlow();
 	const [type] = useDnD();
 	const ref = useRef<HTMLInputElement>(null);
@@ -122,7 +122,7 @@ const DnDFlow = () => {
 		(connection: Connection): void => {
 			const edge: SusiEdge | null = getNewEdge(connection, getSusiNodes(), edges, mediums, logError);
 			if (edge === null) return;
-			setEdges((eds: any[]) => addEdge(edge, eds) as any[]);
+			setEdges((eds: SusiEdge[]) => addEdge(edge, eds) as SusiEdge[]);
 			setCheckState(true);
 		},
 		[setEdges, nodes, edges, mediums]

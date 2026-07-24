@@ -14,9 +14,9 @@ class BusData {
 	}
 
 	public setInputOrder(newInputOrder: Array<string>) {
-		let newEnergyFlow: Array<Array<number>> = [];
+		const newEnergyFlow: Array<Array<number>> = [];
 		newInputOrder.forEach((nodeID) => {
-			let oldIndex = this.inputOrder.findIndex((id) => nodeID === id);
+			const oldIndex = this.inputOrder.findIndex((id) => nodeID === id);
 			newEnergyFlow.push(this.energyFlow[oldIndex]);
 		});
 		this.inputOrder = newInputOrder;
@@ -42,7 +42,7 @@ class BusData {
 
 	public addToInputOrder(nodeID: string) {
 		this.inputOrder.push(nodeID);
-		let newRow = this.outputOrder.map(() => 1);
+		const newRow = this.outputOrder.map(() => 1);
 		this.energyFlow.push(newRow);
 	}
 

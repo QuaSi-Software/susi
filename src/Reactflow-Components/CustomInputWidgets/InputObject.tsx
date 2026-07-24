@@ -34,7 +34,7 @@ export interface InputObjectProps {
 	type: InputObjectType;
 	resieName: string;
 	displayName: string;
-	value: any;
+	value: string | number | Date | boolean | string[];
 	tooltip?: string;
 	unit?: string;
 	isRequired?: boolean;

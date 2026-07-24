@@ -43,14 +43,14 @@ function mediumsMatch(m1: string, m2: string) {
  * @returns {Object} the key of the medium associated with this handle
  */
 function getMediumKey(handleName: string, nodeData: SusiNodeData) {
-	let splitName = handleName.split('-');
+	const splitName = handleName.split('-');
 	const sourceOrTarget = splitName[0] as HandleType;
 	const handleIndex = parseInt(splitName[1], 10);
 	// get the variable name for the medium that sets this handle's color
-	let mediumPerHandle = nodeData.handleMediumDict[sourceOrTarget];
-	let variableName = mediumPerHandle[handleIndex];
+	const mediumPerHandle = nodeData.handleMediumDict[sourceOrTarget];
+	const variableName = mediumPerHandle[handleIndex];
 	// find the medium that is set in this variable
-	let mediumNodeInput = nodeData.nodeInputs.find((x) => x.resieName === variableName);
+	const mediumNodeInput = nodeData.nodeInputs.find((x) => x.resieName === variableName);
 	return mediumNodeInput!.value;
 }
 
@@ -76,9 +76,9 @@ function getMedium(handleName: string, nodeData: SusiNodeData, mediums: Medium[]
  */
 function getEdgesWithMediumMismatch(edges: SusiEdge[], node: SusiNode, mediumVarName: string) {
 	// find all edges connected to this medium variables
-	let handleMediumDict = node.data.handleMediumDict;
-	let sourceEdgesToDelete = getEdgesToDelete(edges, node.id, mediumVarName, HandleType.source);
-	let targetEdgesToDelete = getEdgesToDelete(edges, node.id, mediumVarName, HandleType.target);
+	const handleMediumDict = node.data.handleMediumDict;
+	const sourceEdgesToDelete = getEdgesToDelete(edges, node.id, mediumVarName, HandleType.source);
+	const targetEdgesToDelete = getEdgesToDelete(edges, node.id, mediumVarName, HandleType.target);
 	// get just the edge IDs
 	const edgeIDs: string[] = [];
 	sourceEdgesToDelete.concat(targetEdgesToDelete).forEach((e) => {
@@ -97,13 +97,13 @@ function getEdgesWithMediumMismatch(edges: SusiEdge[], node: SusiNode, mediumVar
 	function getEdgesToDelete(_edges: SusiEdge[], _nodeID: string, _mediumVarName: string, handleType: HandleType) {
 		let listOfEdgesToDelete: SusiEdge[] = [];
 		//get the list of variable names
-		let mediumVarNames = handleMediumDict[handleType];
+		const mediumVarNames = handleMediumDict[handleType];
 		// multiple edges are possible for the bus node
 		for (let handleIndex = 0; handleIndex < mediumVarNames.length; handleIndex++) {
 			if (mediumVarNames[handleIndex] !== _mediumVarName) continue;
-			let handleID = handleType + '-' + handleIndex;
+			const handleID = handleType + '-' + handleIndex;
 			// find edges that connect to this handle on this node
-			let edgesOnHandle = _edges.filter((e) => {
+			const edgesOnHandle = _edges.filter((e) => {
 				return (
 					e[handleType] === _nodeID &&
 					e[handleType == HandleType.source ? 'sourceHandle' : 'targetHandle'] === handleID

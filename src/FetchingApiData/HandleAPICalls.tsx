@@ -107,7 +107,7 @@ export function fetchComponentInputs(
 				setLoadingMessage(null);
 				setOverlayError(`An unexpected error occured. Please check your internet connection and try again.`);
 			});
-	});
+	}, [nodeTypes]);
 }
 
 /**
