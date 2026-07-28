@@ -11,6 +11,7 @@ import { SettingsMenu, type SettingsMenuProps } from './SettingsMenu';
 import { AppContext } from '../AppContext';
 import { ResieParametersMenu, type ResieParametersMenuProps } from './ResieParameters/ResieParametersMenu';
 import { ResieParameterSubMenu } from './ResieParameters/ResieParameterSubMenu';
+import { InformationMenu } from './InformationMenu/InformationMenu';
 
 export const MenuType = {
 	NewNodeMenu: 'Add New Components',
@@ -19,6 +20,7 @@ export const MenuType = {
 	ImportExportMenu: 'Import/Export',
 	Instructions: 'Instructions',
 	Settings: 'Settings',
+	Information: 'Project Info',
 } as const;
 
 export type MenuType = (typeof MenuType)[keyof typeof MenuType];
@@ -56,6 +58,8 @@ const Sidebar = (menuProps: SidebarProps) => {
 				return <InstructionMenu />;
 			case MenuType.Settings:
 				return <SettingsMenu {...menuProps} />;
+			case MenuType.Information:
+				return <InformationMenu />;
 			default:
 				return null;
 		}
@@ -98,6 +102,7 @@ const Sidebar = (menuProps: SidebarProps) => {
 							{MenuItem(MenuType.ImportExportMenu)}
 							{MenuItem(MenuType.Instructions)}
 							{MenuItem(MenuType.Settings)}
+							{MenuItem(MenuType.Information)}
 						</DropdownMenu.Content>
 					</DropdownMenu.Portal>
 				</DropdownMenu.Root>

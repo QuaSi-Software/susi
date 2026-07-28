@@ -6,3 +6,16 @@
 	--dropdown-background-color: #bfd8f300;
 	--dropdown-text-color: #e7ebf4;
 }
+
+.link-button {
+	background: none;
+	border: none;
+	padding: 0;
+	color: var(--link-color, #0066cc);
+	text-decoration: underline;
+	cursor: pointer;
+}
+.link-button:hover,
+.link-button:focus-visible {
+	text-decoration: none;
+}
