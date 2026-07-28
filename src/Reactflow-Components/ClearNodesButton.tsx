@@ -19,7 +19,12 @@ export function ClearNodesButton({ nodes, setNodes, setEdges }: ClearNodesButton
 	}
 	return (
 		<>
-			<Button variant="outline-danger" onClick={clearNodes} disabled={nodes.length === 0}>
+			<Button
+				variant="outline-danger"
+				onClick={clearNodes}
+				disabled={nodes.length === 0}
+				className="delete-all-components-button"
+			>
 				<i className="bi bi-trash3"></i> Delete All Components
 			</Button>
 		</>

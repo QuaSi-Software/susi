@@ -38,7 +38,7 @@
 	text-decoration: line-through;
 }
 
-.btn-outline-danger,
+.delete-all-components-button,
 .btn-outline-primary {
 	--bs-btn-bg: var(--outline-button-bg);
 }

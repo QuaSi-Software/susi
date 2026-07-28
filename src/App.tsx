@@ -93,7 +93,7 @@ const DnDFlow = () => {
 	const [checkState, setCheckState] = useState<boolean>(false);
 	const [theme, setTheme] = useState<'dark' | 'light'>('light');
 	const [locale, setLocale] = useState<Locale>(Locale.US);
-	const [edgeType, setEdgeType] = useState<EdgeType>(EdgeType.SMOOTHSTEP);
+	const [edgeType, setEdgeType] = useState<EdgeType>(EdgeType.DEFAULT);
 
 	/** Data imported from API */
 	const [componentTypes, setComponentTypes] = useState<Record<string, NodeType> | null>(null);
