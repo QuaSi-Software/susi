@@ -25,7 +25,7 @@ const PaneContextMenu = ({ paneContextMenu, setPaneContextMenu, nodes, setNodes,
 	const setLoadingMessage = useContext(AppContext)!.setLoadingMessage;
 	const setCheckState = useContext(AppContext)!.setCheckState;
 
-	const nodeWithIssues = nodes.find((n) => !n.data.hasValidInputs);
+	const nodeWithIssues = nodes.find((n) => !n.data.hasValidInputs || !n.data.hasValidName);
 
 	const handleLayoutReset = () => {
 		setPaneContextMenu(null);
@@ -40,9 +40,6 @@ const PaneContextMenu = ({ paneContextMenu, setPaneContextMenu, nodes, setNodes,
 			y: paneContextMenu!.top,
 		});
 		const groupNode: SusiNode = createGroupNode(pos);
-		// groupNode.data.hasValidName = nodes.every(
-		// 	(node) => node.data.content !== groupNode.data.content || node.id === groupNode.id
-		// );
 		setNodes((_nodes) => [groupNode].concat(_nodes)); // group nodes must be at the start of the array
 		checkForDuplicateNodeNames(setNodes);
 		setCheckState(true);
