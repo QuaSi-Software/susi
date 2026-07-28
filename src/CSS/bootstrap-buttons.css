@@ -1,5 +1,9 @@
 :root {
 	--context-menu-color: #f9f9f9;
+	--outline-button-bg: #fff;
+}
+[data-theme='dark'] {
+	--outline-button-bg: #000;
 }
 
 .contextMenu {
@@ -32,6 +36,11 @@
 }
 .btn:disabled {
 	text-decoration: line-through;
+}
+
+.btn-outline-danger,
+.btn-outline-primary {
+	--bs-btn-bg: var(--outline-button-bg);
 }
 
 .canvas-button-section {
