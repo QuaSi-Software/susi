@@ -1,7 +1,6 @@
 export const InstructionMenu = () => {
 	return (
 		<>
-			{/* <div className="sidebar-heading">How to use Susi</div> */}
 			<div className="sidebar-subheading">Getting started</div>
 			<div>
 				To add new components, go to the Components menu in the sidebar and drag and drop the components onto

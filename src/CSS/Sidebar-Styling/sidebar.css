@@ -16,8 +16,11 @@
 	background: var(--sidebar-bg-color);
 	color: var(--sidebar-text-color);
 	overflow-y: auto;
-	min-width: 375px;
+	box-sizing: border-box;
+	min-width: 24em;
+	max-width: 100%;
 	width: 40%;
+	flex: 0 0 auto;
 	resize: horizontal;
 }
 
@@ -41,6 +44,7 @@
 	font-weight: 600;
 	padding-left: 0px;
 	color: var(--sidebar-text-color) !important;
+	white-space: nowrap;
 }
 .sidebar-subheading {
 	padding-top: 15px;
