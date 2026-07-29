@@ -33,7 +33,7 @@ interface Validation {
 }
 
 function checkNumberValidation(input: InputObject, otherInputs: InputObject[]): InputIssue | null {
-	if (!input.isIncluded) return null;
+	if (!input.isIncluded && !input.isRequired) return null;
 	const isNumberInput = input.type === InputObjectType.FLOAT || input.type === InputObjectType.INT;
 	const parsedValue = Number.parseFloat(input.value);
 	if (isNumberInput && Number.isNaN(parsedValue)) {
