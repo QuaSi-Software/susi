@@ -26,6 +26,11 @@ export function importResieParameterMenuInfo(
 	inputs.forEach((input) => {
 		input.checkInputValid(inputs);
 	});
+	categories.forEach((category) => {
+		if (!category.parameters && category.types) {
+			category.parameters = category.types;
+		}
+	});
 	checkParametersAndCategoriesMatch(inputs, categories, menuName);
 	return {
 		title: menuName,
