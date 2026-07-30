@@ -49,7 +49,7 @@ import LoadingOverlay from './Reactflow-Components/LoadingOverlay';
 import ErrorOverlay from './Reactflow-Components/ErrorScreenOverlay';
 
 /** API Data */
-import { fetchComponentInputs, getNodeInputsFromAPI } from './FetchingApiData/HandleAPICalls';
+import { fetchData } from './FetchingApiData/fetchData';
 import { type ApiCategory } from './FetchingApiData/ApiData';
 import type { ResieParameterMenuInfo } from './Sidebar/ResieParameters/ResieParameterMenuInfo';
 
@@ -100,21 +100,24 @@ const DnDFlow = () => {
 	const [componentCategories, setComponentCategories] = useState<ApiCategory[]>([]);
 	const [resieParameterMenus, setResieParameterMenus] = useState<ResieParameterMenuInfo[]>([]);
 
-	// const { onNodeDragStop } = useNodeDragHandlers();
 	document.documentElement.setAttribute('data-theme', theme);
 
-	fetchComponentInputs(
-		setLoadingMessage,
-		mediums,
-		componentTypes,
-		setComponentTypes,
-		setComponentCategories,
-		setResieParameterMenus,
-		setOverlayErrorMessage
-	);
-	const getNodeInputs = (componentType: string) => {
-		return getNodeInputsFromAPI(componentType, componentTypes);
-	};
+	/** if component types is not set, fetch the api data to set it as well as the other api data */
+	useEffect(() => {
+		if (componentTypes !== null) {
+			return;
+		}
+		fetchData({
+			setLoadingMessage,
+			mediums,
+			componentTypes,
+			setComponentTypes,
+			setComponentCategories,
+			setResieParameterMenus,
+			setOverlayError: setOverlayErrorMessage,
+		});
+	}, [componentTypes]);
+
 	/** Log error */
 	const logError = (message: string) => {
 		setErrorMessages((prevMessages) => [
@@ -236,7 +239,6 @@ const DnDFlow = () => {
 					setMediums: setMediums,
 					setErrorMessages: setErrorMessages,
 					setLoadingMessage: setLoadingMessage,
-					getNodeInputs: getNodeInputs,
 					setCheckState: setCheckState,
 					locale: locale,
 				}}
