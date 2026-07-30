@@ -61,6 +61,7 @@ import { Locale } from './Sidebar/SettingsMenu';
 import { ClearNodesButton } from './Reactflow-Components/ClearNodesButton';
 import logo from './assets/resie.svg';
 import { useContextMenuHandlers } from './Reactflow-Components/ContextMenus/useContextMenuHandlers';
+import { InputObject } from './Reactflow-Components/CustomInputWidgets/InputObject';
 
 const DnDFlow = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);
@@ -99,6 +100,8 @@ const DnDFlow = () => {
 	const [componentTypes, setComponentTypes] = useState<Record<string, NodeType> | null>(null);
 	const [componentCategories, setComponentCategories] = useState<ApiCategory[]>([]);
 	const [resieParameterMenus, setResieParameterMenus] = useState<ResieParameterMenuInfo[]>([]);
+	const [controlParameters, setControlParameters] = useState<ResieParameterMenuInfo | null>(null);
+	const [controlModules, setControlModules] = useState<Record<string, InputObject[]>>({});
 
 	document.documentElement.setAttribute('data-theme', theme);
 
@@ -115,6 +118,8 @@ const DnDFlow = () => {
 			setComponentCategories,
 			setResieParameterMenus,
 			setOverlayError: setOverlayErrorMessage,
+			setControlParameters,
+			setControlModules,
 		});
 	}, [componentTypes]);
 

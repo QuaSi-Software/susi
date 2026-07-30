@@ -7,13 +7,17 @@ import type { ApiCategory, ApiComponent, ApiReturn } from './ApiData';
 import type { Dispatch, SetStateAction } from 'react';
 import type { Medium } from '../NodeDataStructures/Mediums/Medium';
 import type { NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
+import type { InputObject } from '../Reactflow-Components/CustomInputWidgets/InputObject';
+import { getInputObjectFromAPIParameter } from './ImportInputObjects';
 
 export function processApiReturn(
 	data: ApiReturn,
 	mediums: Medium[],
 	setComponentTypes: Dispatch<SetStateAction<Record<string, NodeType> | null>>,
 	setComponentCategories: Dispatch<SetStateAction<ApiCategory[]>>,
-	setresieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>
+	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>,
+	setControlParameters: Dispatch<SetStateAction<ResieParameterMenuInfo | null>>,
+	setControlModules: Dispatch<SetStateAction<Record<string, InputObject[]>>>
 ) {
 	const apiComponents: Record<string, ApiComponent> = data.components.types;
 	const componentTypes: Record<string, NodeType> = getComponentTypes(
@@ -23,8 +27,26 @@ export function processApiReturn(
 	);
 	setComponentTypes(componentTypes);
 	setComponentCategories(data.components.type_categories);
+	/** Control parameters */
+	setControlParameters(
+		importResieParameterMenuInfo(
+			data.components.control_categories,
+			data.components.control,
+			'Control Parameters',
+			'control_parameters'
+		)
+	);
+	/** Control modules */
+	const controlModules: Record<string, InputObject[]> = {};
+	for (const [controlModuleName, parameters] of Object.entries(data.components.control_modules)) {
+		const inputObjects = Object.entries(parameters).map(([key, value]) =>
+			getInputObjectFromAPIParameter(key, value)
+		);
+		controlModules[controlModuleName] = inputObjects;
+	}
+	setControlModules(controlModules);
 	/** io settings and sim params */
-	setresieParameterMenus([
+	setResieParameterMenus([
 		importResieParameterMenuInfo(
 			data.general.io_categories,
 			data.general.io_settings,

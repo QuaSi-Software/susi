@@ -5,6 +5,7 @@ import type { ApiCategory, ApiReturn } from './ApiData';
 import type { NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
 import { type ResieParameterMenuInfo } from '../Sidebar/ResieParameters/ResieParameterMenuInfo';
 import { processApiReturn } from './processApiData';
+import type { InputObject } from '../Reactflow-Components/CustomInputWidgets/InputObject';
 
 const localResieParameterModules = import.meta.glob('../assets/resie_parameters.json');
 
@@ -33,6 +34,8 @@ interface useFetchDataProps {
 	setComponentCategories: Dispatch<SetStateAction<ApiCategory[]>>;
 	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
 	setOverlayError: Dispatch<SetStateAction<string | null>>;
+	setControlParameters: Dispatch<SetStateAction<ResieParameterMenuInfo | null>>;
+	setControlModules: Dispatch<SetStateAction<Record<string, InputObject[]>>>;
 }
 
 export function fetchData({
@@ -42,6 +45,8 @@ export function fetchData({
 	setComponentCategories,
 	setResieParameterMenus,
 	setOverlayError,
+	setControlParameters,
+	setControlModules,
 }: useFetchDataProps) {
 	setLoadingMessage('Loading Resie Data');
 	loadLocalFile()
@@ -64,7 +69,15 @@ export function fetchData({
 		})
 		.then((data: ApiReturn | null) => {
 			if (data === null) return;
-			processApiReturn(data, mediums, setComponentTypes, setComponentCategories, setResieParameterMenus);
+			processApiReturn(
+				data,
+				mediums,
+				setComponentTypes,
+				setComponentCategories,
+				setResieParameterMenus,
+				setControlParameters,
+				setControlModules
+			);
 			setLoadingMessage(null);
 		})
 		.catch((error) => {
