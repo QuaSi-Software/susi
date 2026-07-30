@@ -15,6 +15,7 @@ import {
 	duplicateEdgesWithinSelection,
 } from './ContextMenuUtils';
 import { resizeGroupNodeToFitChildren } from '../../NodeDataStructures/GroupNodes/ResizeGroupNodeToFitChildren';
+import type { ControlModule } from './ControlModules/ControlModulesMenu';
 
 interface NodeContextMenuInput {
 	nodeContextMenu: NodeContextMenuData | null;
@@ -25,6 +26,7 @@ interface NodeContextMenuInput {
 	setEdges: Dispatch<SetStateAction<SusiEdge[]>>;
 	getResieParameter: (menuName: string, inputName: string) => any;
 	edgeType: EdgeType;
+	controlModules: ControlModule[];
 }
 
 interface NodeContextMenuData {
@@ -41,6 +43,7 @@ const NodeContextMenu = ({
 	setNodes,
 	setEdges,
 	getResieParameter,
+	controlModules,
 }: NodeContextMenuInput) => {
 	const [showModal, setShowModal] = useState(false);
 	const setCheckState = useContext(AppContext)!.setCheckState;
@@ -165,6 +168,7 @@ const NodeContextMenu = ({
 				setNodes={setNodes}
 				setEdges={setEdges}
 				getResieParameter={getResieParameter}
+				controlModules={controlModules}
 			/>
 		</>
 	);

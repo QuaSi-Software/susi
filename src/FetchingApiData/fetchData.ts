@@ -5,7 +5,7 @@ import type { ApiCategory, ApiReturn } from './ApiData';
 import type { NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
 import { type ResieParameterMenuInfo } from '../Sidebar/ResieParameters/ResieParameterMenuInfo';
 import { processApiReturn } from './processApiData';
-import type { InputObject } from '../Reactflow-Components/CustomInputWidgets/InputObject';
+import type { ControlModule } from '../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 
 const localResieParameterModules = import.meta.glob('../assets/resie_parameters.json');
 
@@ -35,7 +35,7 @@ interface useFetchDataProps {
 	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
 	setOverlayError: Dispatch<SetStateAction<string | null>>;
 	setControlParameters: Dispatch<SetStateAction<ResieParameterMenuInfo | null>>;
-	setControlModules: Dispatch<SetStateAction<Record<string, InputObject[]>>>;
+	setControlModules: Dispatch<SetStateAction<ControlModule[]>>;
 }
 
 export function fetchData({

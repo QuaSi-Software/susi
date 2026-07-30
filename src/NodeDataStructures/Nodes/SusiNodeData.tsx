@@ -3,6 +3,7 @@ import { InputObjectType, type InputObject } from '../../Reactflow-Components/Cu
 import type { NodeType } from './SusiNodeTypes';
 import type { ApiCategory } from '../../FetchingApiData/ApiData';
 import { mutexSolver } from '../../Reactflow-Components/CustomInputWidgets/Validation/Mutex';
+import type { ControlModule } from '../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 
 interface MediumHandleDict {
 	source: string[];
@@ -13,6 +14,7 @@ export interface SusiNodeData extends Record<string, unknown> {
 	content: string;
 	componentType: string;
 	nodeInputs: InputObject[];
+	controlModules: ControlModule[];
 	emissionsInputs: InputObject[];
 	economicInputs: InputObject[];
 	inputCategories: ApiCategory[];
@@ -81,6 +83,7 @@ export function createSusiNodeData(nodeType: NodeType, content: string = ''): Su
 		content,
 		componentType: componentType,
 		nodeInputs: nodeInputs,
+		controlModules: [],
 		handleMediumDict: handleMediumDict,
 		busData: busData,
 		nodeCategory: nodeType.category,

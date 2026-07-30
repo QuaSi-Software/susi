@@ -19,6 +19,7 @@ import InputMenuWithCategories from '../CustomInputWidgets/InputMenuWithCategori
 import { InputMenu } from '../CustomInputWidgets/InputMenu';
 import { assignInputs, ComponentInputType, getInputs } from '../../NodeDataStructures/Nodes/ComponentInputTypes';
 import { checkForDuplicateNodeNames } from './ContextMenuUtils';
+import { ControleModulesMenu, type ControlModule } from './ControlModules/ControlModulesMenu';
 
 interface EditNodeModalInputs {
 	show: boolean;
@@ -29,6 +30,7 @@ interface EditNodeModalInputs {
 	setEdges: (edges: SusiEdge[]) => void;
 	handleClose: () => void;
 	getResieParameter: (menuName: string, inputName: string) => any;
+	controlModules: ControlModule[];
 }
 
 const EditNodeModal = ({
@@ -40,6 +42,7 @@ const EditNodeModal = ({
 	setEdges,
 	edges,
 	getResieParameter,
+	controlModules,
 }: EditNodeModalInputs) => {
 	const [editedNode, setEditedNode] = useState(deepCloneNode(node));
 	const [edgesToDelete, setEdgesToDelete] = useState<string[]>([]);
@@ -188,6 +191,11 @@ const EditNodeModal = ({
 					)}
 
 					<BusConnectionMenu node={node} nodes={nodes} onBusDataChange={onNodeBusDataChange} />
+					<ControleModulesMenu
+						node={node}
+						setEditedNode={setEditedNode}
+						controlModuleTypes={controlModules}
+					/>
 				</Modal.Body>
 				<Modal.Footer>
 					<span className="warning-text right-aligned-row">

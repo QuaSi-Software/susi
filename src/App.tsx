@@ -58,8 +58,8 @@ import { Locale } from './Sidebar/SettingsMenu';
 import { ClearNodesButton } from './Reactflow-Components/ClearNodesButton';
 import logo from './assets/resie.svg';
 import { useContextMenuHandlers } from './Reactflow-Components/ContextMenus/useContextMenuHandlers';
-import { InputObject } from './Reactflow-Components/CustomInputWidgets/InputObject';
 import { useDraghandlers } from './useDraghandlers';
+import type { ControlModule } from './Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 
 const DnDFlow = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);
@@ -99,7 +99,7 @@ const DnDFlow = () => {
 	const [componentCategories, setComponentCategories] = useState<ApiCategory[]>([]);
 	const [resieParameterMenus, setResieParameterMenus] = useState<ResieParameterMenuInfo[]>([]);
 	const [controlParameters, setControlParameters] = useState<ResieParameterMenuInfo | null>(null);
-	const [controlModules, setControlModules] = useState<Record<string, InputObject[]>>({});
+	const [controlModules, setControlModules] = useState<ControlModule[]>([]);
 
 	document.documentElement.setAttribute('data-theme', theme);
 
@@ -250,6 +250,7 @@ const DnDFlow = () => {
 					setNodes={setNodes}
 					setEdges={setEdges}
 					getResieParameter={getResieParameter}
+					controlModules={controlModules}
 				/>
 				<SelectionContextMenu
 					selectionContextMenu={selectionContextMenu}

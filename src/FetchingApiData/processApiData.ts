@@ -7,8 +7,8 @@ import type { ApiCategory, ApiComponent, ApiReturn } from './ApiData';
 import type { Dispatch, SetStateAction } from 'react';
 import type { Medium } from '../NodeDataStructures/Mediums/Medium';
 import type { NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
-import type { InputObject } from '../Reactflow-Components/CustomInputWidgets/InputObject';
 import { getInputObjectFromAPIParameter } from './ImportInputObjects';
+import type { ControlModule } from '../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 
 export function processApiReturn(
 	data: ApiReturn,
@@ -17,7 +17,7 @@ export function processApiReturn(
 	setComponentCategories: Dispatch<SetStateAction<ApiCategory[]>>,
 	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>,
 	setControlParameters: Dispatch<SetStateAction<ResieParameterMenuInfo | null>>,
-	setControlModules: Dispatch<SetStateAction<Record<string, InputObject[]>>>
+	setControlModules: Dispatch<SetStateAction<ControlModule[]>>
 ) {
 	const apiComponents: Record<string, ApiComponent> = data.components.types;
 	const componentTypes: Record<string, NodeType> = getComponentTypes(
@@ -37,12 +37,12 @@ export function processApiReturn(
 		)
 	);
 	/** Control modules */
-	const controlModules: Record<string, InputObject[]> = {};
+	const controlModules: ControlModule[] = [];
 	for (const [controlModuleName, parameters] of Object.entries(data.components.control_modules)) {
 		const inputObjects = Object.entries(parameters).map(([key, value]) =>
 			getInputObjectFromAPIParameter(key, value)
 		);
-		controlModules[controlModuleName] = inputObjects;
+		controlModules.push({ title: controlModuleName, parameters: inputObjects });
 	}
 	setControlModules(controlModules);
 	/** io settings and sim params */
