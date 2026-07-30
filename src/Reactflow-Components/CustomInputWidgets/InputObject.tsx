@@ -113,6 +113,10 @@ class InputObject implements InputObjectProps {
 		}
 		if (this.type === InputObjectType.DATE) {
 			return exportDate(this.value, startEndUnit);
+		} else if (this.type === InputObjectType.FLOAT) {
+			return Number.parseFloat(this.value);
+		} else if (this.type === InputObjectType.INT) {
+			return Number.parseInt(this.value);
 		}
 		return this.value;
 	}
