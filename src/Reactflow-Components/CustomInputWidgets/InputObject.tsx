@@ -62,12 +62,17 @@ class InputObject implements InputObjectProps {
 	conditionals: Conditional[] = [];
 	issue: InputIssue = { issueType: InputIssueType.None, message: '' };
 
-	constructor(props: InputObjectProps, isImport: boolean = false, startEndUnit: string | null = null) {
+	constructor(
+		props: InputObjectProps,
+		isImport: boolean = false,
+		startEndUnit: string | null = null,
+		mediums: Medium[] = []
+	) {
 		this.type = props.type;
 		this.resieName = props.resieName;
 		this.displayName = props.displayName;
 		Object.assign(this, props);
-		if (isImport) this.setValueOnImport(props.value, [], startEndUnit);
+		if (isImport) this.setValueOnImport(props.value, mediums, startEndUnit);
 	}
 
 	public setValueOnImport(value: any, mediums: Medium[] = [], startEndUnit: string | null): void {
