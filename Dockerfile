@@ -18,7 +18,7 @@ COPY . /tmp/build
 RUN npm run build
 
 # Stage 2: Serve static files
-FROM node:24-alpine AS runtime
+FROM node:24-alpine AS prod
 
 ENV NODE_ENV=production
 ENV BASE_DIR="/opt/susi"
