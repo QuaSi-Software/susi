@@ -94,6 +94,7 @@ const DnDFlow = () => {
 	const [theme, setTheme] = useState<'dark' | 'light'>('light');
 	const [locale, setLocale] = useState<Locale>(Locale.US);
 	const [edgeType, setEdgeType] = useState<EdgeType>(EdgeType.DEFAULT);
+	const [showEditNodeModal, setShowEditNodeModal] = useState(false);
 
 	/** Data imported from API */
 	const [componentTypes, setComponentTypes] = useState<Record<string, NodeType> | null>(null);
@@ -228,6 +229,19 @@ const DnDFlow = () => {
 		}
 	};
 
+	const onNodeDoubleClick = (_: React.MouseEvent, node: SusiNode) => {
+		setNodeContextMenu({
+			menuPosition: {
+				top: 0,
+				left: 0,
+				right: 0,
+				bottom: 0,
+			},
+			node: node,
+		});
+		setShowEditNodeModal(true);
+	};
+
 	return (
 		<div className="dndflow">
 			<AppContext.Provider
@@ -282,6 +296,7 @@ const DnDFlow = () => {
 					onPaneContextMenu={onPaneContextMenu}
 					onSelectionContextMenu={onSelectionContextMenu}
 					onPaneClick={clearAllMenus}
+					onNodeDoubleClick={onNodeDoubleClick}
 				>
 					<Controls showInteractive={false} />
 					<Background />
@@ -309,10 +324,12 @@ const DnDFlow = () => {
 					nodeContextMenu={nodeContextMenu}
 					nodes={nodes}
 					edges={edges}
+					showModal={showEditNodeModal}
 					edgeType={edgeType}
 					setNodeContextMenu={setNodeContextMenu}
 					setNodes={setNodes}
 					setEdges={setEdges}
+					setShowModal={setShowEditNodeModal}
 					getResieParameter={getResieParameter}
 				/>
 				<SelectionContextMenu

@@ -1,4 +1,4 @@
-import { useState, useEffect, type Dispatch, type SetStateAction, useContext, useCallback } from 'react';
+import { useEffect, type Dispatch, type SetStateAction, useContext, useCallback } from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/esm/ButtonGroup';
 
@@ -20,9 +20,11 @@ interface NodeContextMenuInput {
 	nodeContextMenu: NodeContextMenuData | null;
 	nodes: SusiNode[];
 	edges: SusiEdge[];
+	showModal: boolean;
 	setNodeContextMenu: (NodeContextMenuData: NodeContextMenuData | null) => void;
 	setNodes: Dispatch<SetStateAction<SusiNode[]>>;
 	setEdges: Dispatch<SetStateAction<SusiEdge[]>>;
+	setShowModal: Dispatch<SetStateAction<boolean>>;
 	getResieParameter: (menuName: string, inputName: string) => any;
 	edgeType: EdgeType;
 }
@@ -36,13 +38,14 @@ const NodeContextMenu = ({
 	nodeContextMenu,
 	nodes,
 	edges,
+	showModal,
 	edgeType,
 	setNodeContextMenu,
 	setNodes,
 	setEdges,
+	setShowModal,
 	getResieParameter,
 }: NodeContextMenuInput) => {
-	const [showModal, setShowModal] = useState(false);
 	const setCheckState = useContext(AppContext)!.setCheckState;
 	const mediums = useContext(AppContext)!.mediums;
 
