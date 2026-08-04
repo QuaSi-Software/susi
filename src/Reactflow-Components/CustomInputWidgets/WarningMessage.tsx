@@ -6,6 +6,7 @@ interface WarningMessageProps {
 
 export function WarningMessage({ redWarning, message, hoverMessage }: WarningMessageProps) {
 	if (!hoverMessage) hoverMessage = message;
+	if (message === '') hoverMessage = '';
 	let iconName = '';
 	let textClass = '';
 	if (redWarning) {
