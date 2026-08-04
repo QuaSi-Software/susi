@@ -20,7 +20,7 @@ export function importResieParameterMenuInfo(
 ): ResieParameterMenuInfo {
 	const inputs: InputObject[] = [];
 	for (const [paramName, paramObject] of Object.entries(parameters)) {
-		const input = getInputObjectFromAPIParameter(paramName, paramObject);
+		const input = getInputObjectFromAPIParameter(paramName, paramObject, []);
 		inputs.push(input);
 	}
 	inputs.forEach((input) => {
