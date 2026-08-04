@@ -1,0 +1,71 @@
+name: Image Creation
+on:
+  workflow_call:
+    inputs:
+      docker_file_context:
+        description: Context for the Dockerfile
+        type: string
+        required: true
+      docker_file_location:
+        description: Location of the Dockerfile
+        type: string
+        required: true
+      image_name:
+        description: FQ-Image-name for the registry
+        type: string
+        required: true
+      tag:
+        description: Imagetag for the Registry
+        type: string
+        required: true
+      branch:
+        description: Branch to build
+        type: string
+        required: true
+        default: develop
+      push:
+        description: Push to registry
+        type: boolean
+        default: false
+      build_target:
+        description: Build target for the Dockerfile
+        type: string
+        default: prod
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  createImage:
+    name: Image Creation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.branch }}
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build and push
+        uses: docker/build-push-action@v7
+        with:
+          context: ${{ inputs.docker_file_context }}
+          file: ${{ inputs.docker_file_location }}
+          target: ${{ inputs.build_target }}
+          push: ${{ inputs.push }}
+          tags: ${{ inputs.image_name }}:${{ inputs.tag }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/QuaSi-Software/susi
+          cache-from: type=gha,scope=${{ inputs.branch }}
+          cache-to: type=gha,mode=max,scope=${{ inputs.branch }}
+          platforms: linux/amd64
