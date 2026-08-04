@@ -20,7 +20,7 @@ jobs:
     with:
       docker_file_context: .
       docker_file_location: Dockerfile
-      image_name: ghcr.io/QuaSi-Software/susi
+      image_name: ghcr.io/quasi-software/susi
       tag: pr-${{ github.event.pull_request.number }}
       branch: ${{ github.head_ref }}
       push: false
