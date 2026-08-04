@@ -30,6 +30,8 @@ export interface ComponentData {
 	import_data?: ComponentImportData;
 	connections?: Connections;
 	output_refs?: string[] | Record<string, string>;
+	control_parameters?: Record<string, any>;
+	control_modules?: Record<string, any>[];
 	[key: string]: any;
 }
 

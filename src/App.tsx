@@ -198,15 +198,15 @@ const DnDFlow = () => {
 					nodeNamePrefix={nodeNamePrefix}
 					setNodeNamePrefix={setNodeNamePrefix}
 					resieParameterMenus={resieParameterMenus}
-					setresieParameterMenus={setResieParameterMenus}
+					setResieParameterMenus={setResieParameterMenus}
 					theme={theme}
 					setTheme={setTheme}
 					setLocale={setLocale}
 					nodeTypes={componentTypes}
 					categories={componentCategories}
-					setResieParameterMenus={setResieParameterMenus}
 					edgeType={edgeType}
 					setEdgeType={setEdgeType}
+					controlParameters={controlParameters}
 				/>
 				<ReactFlow
 					nodes={nodes}

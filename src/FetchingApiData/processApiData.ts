@@ -40,7 +40,7 @@ export function processApiReturn(
 	const controlModules: ControlModule[] = [];
 	for (const [controlModuleName, parameters] of Object.entries(data.components.control_modules)) {
 		const inputObjects = Object.entries(parameters).map(([key, value]) =>
-			getInputObjectFromAPIParameter(key, value)
+			getInputObjectFromAPIParameter(key, value, [])
 		);
 		controlModules.push({ title: controlModuleName, parameters: inputObjects });
 	}

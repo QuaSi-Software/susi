@@ -128,6 +128,17 @@ const exportState = ({ nodes, edges, mediums, resieParameterMenus }: ExportProps
 		const compDict: ComponentData = { type: node.data.componentType };
 		addNodeInputsToObject(node.data.nodeInputs, compDict, mediums, startEndUnit);
 
+		/** Control Parameters */
+		if (node.data.controlParameters) {
+			compDict.control_parameters = {};
+			addNodeInputsToObject(
+				node.data.controlParameters.inputs,
+				compDict.control_parameters,
+				mediums,
+				startEndUnit
+			);
+		}
+
 		// Add import data
 		compDict.import_data = {
 			node_position: { x: node.position.x, y: node.position.y },
