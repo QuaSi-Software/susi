@@ -9,6 +9,7 @@ import { flushSync } from 'react-dom';
 import { AppContext } from '../../AppContext';
 import type { NodeType } from '../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../ResieParameters/ResieParameterMenuInfo';
+import { WarningMessage } from '../../Reactflow-Components/CustomInputWidgets/WarningMessage';
 
 export interface ImportExportMenuProps {
 	setNodes: Dispatch<SetStateAction<SusiNode[]>>;
@@ -82,14 +83,11 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 	const exportWarning = !menusAndComponentsValid();
 	return (
 		<div className="import-export-menu">
-			<div
-				className="input-warning-message warning-text"
-				style={{ visibility: exportWarning ? 'visible' : 'hidden', whiteSpace: 'normal' }}
-			>
-				There are issues in your project that will cause your export file to be invalid.
-				<br />
-				Please check the Sidebar Menus and the Components for warning signs. ⚠️
-			</div>
+			<WarningMessage
+				redWarning={true}
+				message={exportWarning ? 'Warning: issues in project' : ''}
+				hoverMessage="There are issues in your project that may cause your export file to be invalid. Please check the Sidebar Menus and the Components for warning signs. ⚠️"
+			/>
 			<div className="import-export-buttons">
 				<Button variant="primary" onClick={handleImport} disabled={textContent === ''}>
 					Import

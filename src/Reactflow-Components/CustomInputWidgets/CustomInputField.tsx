@@ -13,8 +13,9 @@ import { Locale } from '../../Sidebar/SettingsMenu';
 
 import { de } from 'primelocale/js/de.js';
 import { en } from 'primelocale/js/en.js';
-import { InputIssueType, type InputIssue } from './Validation/InputChecking';
+import { InputIssueType } from './Validation/InputChecking';
 import { CustomCalendar } from './CustomCalendar';
+import { WarningMessage } from './WarningMessage';
 addLocale('de-DE', de);
 addLocale('en-US', en);
 
@@ -157,33 +158,15 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 		}
 	};
 
-	function getWarningMessage(issue: InputIssue) {
-		let iconName = '';
-		let textClass = '';
-		switch (issue.issueType) {
-			case InputIssueType.AtLeastOne:
-			case InputIssueType.Validity:
-				iconName = 'bi bi-exclamation-circle';
-				textClass = 'warning-text';
-				break;
-			case InputIssueType.Mutex:
-				iconName = 'bi bi-info-circle-fill';
-				textClass = 'mutex-warning';
-				break;
-		}
-		return (
-			<span title={issue.message} className={`input-warning-message ${textClass}`}>
-				{iconName && <i className={iconName} />}
-				<span> </span>
-				{issue.message}
-				<span style={{ visibility: 'hidden' }}>Placeholder</span>
-			</span>
-		);
-	}
-
 	return (
 		<>
-			{getWarningMessage(nodeInput.issue)}
+			<WarningMessage
+				message={nodeInput.issue.message}
+				redWarning={
+					nodeInput.issue.issueType == InputIssueType.AtLeastOne ||
+					nodeInput.issue.issueType == InputIssueType.Validity
+				}
+			/>
 
 			<div data-toggle="tooltip" data-placement="top" title={nodeInput.tooltip}>
 				{getInputFieldByType()}
