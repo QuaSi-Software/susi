@@ -1,9 +1,20 @@
 #!/bin/sh
-set -eu
 
-: "${API_BACKEND_URL:?Environment variable API_BACKEND_URL is required}"
+cd "$BASE_DIR/" || exit 1
 
-# Replace placeholder in nginx.conf.template with actual backend URL
-sed "s|{{API_BACKEND_URL}}|${API_BACKEND_URL%/}|g" /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
+# Generate config.json
+env_vars="VITE_RESI_DATA_URL"
 
-exec nginx -g 'daemon off;'
+JSON_STRING='{'
+for env_var in $env_vars; do
+  value=$(printenv "$env_var")
+  escaped_value=$(printf '%s' "$value" | sed 's/\\/\\\\/g; s/"/\\"/g')
+  JSON_STRING="$JSON_STRING \"$env_var\":\"$escaped_value\","
+done
+JSON_STRING=$(printf '%s' "$JSON_STRING" | sed 's/,$//')
+JSON_STRING="$JSON_STRING }"
+
+rm -f "$BASE_DIR/config.json"
+printf '%s\n' "$JSON_STRING" > "$BASE_DIR/config.json"
+
+exec docker-entrypoint.sh "$@"

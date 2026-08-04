@@ -1,0 +1,11 @@
+node_modules/
+.gitignore
+.prettierrc.cjs
+.env
+.env.template
+docker-compose.yml
+eslint.config.js
+LICENSE.md
+README.md
+dist/
+.idea/

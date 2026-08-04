@@ -35,11 +35,10 @@ This project can be deployed as a docker container, which avoids the needs to in
 
 1. Clone the repository: `git clone git@github.com:QuaSi-Software/susi.git`
 1. Switch into directory: `cd susi`
-1. Create a file called `.env` in this directory and fill it with content:
+1. Copy the `.env.template` file to `.env` and edit the values:
 
     ```
-    NODE_ENV=production
-    API_BACKEND_URL=http://example.com
+    VITE_RESI_DATA_URL=http://example.com
     ```
 
     - Use the URL of the simulation API instead of the example value
@@ -52,7 +51,7 @@ This project can be deployed as a docker container, which avoids the needs to in
 
 1. Build and run the docker container: `docker compose up`
     - You can also run SUSI in the background using `docker compose up -d`. You can turn it off using `docker compose down`
-    - To force a new build, for example after updates, you can use `docker compose up --build`
+    - The Container runs against a dev target by default. This means changes to the source code will be reflected in the running container and will be hot reloaded.
 
 ## Contributing
 
