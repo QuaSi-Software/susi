@@ -1,10 +1,10 @@
 import { Row, Col } from 'react-bootstrap';
-import Modal from 'react-bootstrap/Modal';
 import CustomInputField from './CustomInputField';
 import type { InputObject } from './InputObject';
 import React from 'react';
 import OptionalInputField from './OptionalInputField';
 import { InputIssueType } from './Validation/InputChecking';
+import { Accordion } from 'radix-ui';
 
 export interface InputMenuProps {
 	title: string;
@@ -52,42 +52,52 @@ export const InputMenu: React.FC<InputMenuProps> = ({
 	 * a confusing experience.
 	 */
 	return (
-		<Modal.Body className="side-padded-menu" key={`body-${title}`}>
-			<Modal.Header key={'input-menu-header'}>{title}</Modal.Header>
-			{rows.map((pair, pairIndex) => (
-				<Row key={`Key-${pairIndex}`} className="g-2 mt-1 mt-md-0 input-menu-row">
-					{pair.map((input, colIndex) => (
-						<Col key={`menu-item-${pairIndex}-${colIndex}`} md>
-							{input !== null && (
-								<div
-									key="warning-message-text"
-									style={{
-										visibility:
-											input.issue.issueType === InputIssueType.Conditional ? 'hidden' : 'visible',
-										height: '100%',
-									}}
-									className="input-menu-column"
-								>
-									{input.isRequired && (
-										<div className="required-input-row">
-											<CustomInputField nodeInput={input} onEdit={onValueChange} />
-										</div>
-									)}
-									{!input.isRequired && (
-										<OptionalInputField
-											key={input.resieName}
-											nodeInput={input}
-											onValueChange={onValueChange}
-											startIncluded={input.isIncluded}
-											onIncludedChange={onIncludedChange}
-										/>
-									)}
-								</div>
-							)}
-						</Col>
-					))}
-				</Row>
-			))}
-		</Modal.Body>
+		<Accordion.Item className="AccordionItem" value={title}>
+			<Accordion.Header className="AccordionHeader">
+				<Accordion.Trigger className="modal-header accordion-header-button">
+					{title}
+					<i className="bi bi-chevron-down"></i>
+				</Accordion.Trigger>
+			</Accordion.Header>
+
+			<Accordion.Content>
+				{rows.map((pair, pairIndex) => (
+					<Row key={`Key-${pairIndex}`} className="g-2 mt-1 mt-md-0 input-menu-row">
+						{pair.map((input, colIndex) => (
+							<Col key={`menu-item-${pairIndex}-${colIndex}`} md>
+								{input !== null && (
+									<div
+										key="warning-message-text"
+										style={{
+											visibility:
+												input.issue.issueType === InputIssueType.Conditional
+													? 'hidden'
+													: 'visible',
+											height: '100%',
+										}}
+										className="input-menu-column"
+									>
+										{input.isRequired && (
+											<div className="required-input-row">
+												<CustomInputField nodeInput={input} onEdit={onValueChange} />
+											</div>
+										)}
+										{!input.isRequired && (
+											<OptionalInputField
+												key={input.resieName}
+												nodeInput={input}
+												onValueChange={onValueChange}
+												startIncluded={input.isIncluded}
+												onIncludedChange={onIncludedChange}
+											/>
+										)}
+									</div>
+								)}
+							</Col>
+						))}
+					</Row>
+				))}
+			</Accordion.Content>
+		</Accordion.Item>
 	);
 };

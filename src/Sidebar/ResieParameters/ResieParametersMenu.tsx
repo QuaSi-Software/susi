@@ -1,6 +1,7 @@
 import { type Dispatch, type SetStateAction } from 'react';
 import type { ResieParameterMenuInfo } from './ResieParameterMenuInfo';
 import InputMenuWithCategories from '../../Reactflow-Components/CustomInputWidgets/InputMenuWithCategories';
+import { Accordion } from 'radix-ui';
 
 export interface ResieParametersMenuProps {
 	selectedMenu?: string;
@@ -33,14 +34,16 @@ export function ResieParametersMenu({
 		<>
 			<div className="sidebar-subheading">{menu?.title}</div>
 			<br />
-			<InputMenuWithCategories
-				title={menu!.title}
-				inputs={menu!.inputs}
-				inputCategories={menu!.categories}
-				onValueChange={(key, value) => changeInputListElement(menu!.title, key, value, false)}
-				onIncludedChange={(key, value) => changeInputListElement(menu!.title, key, value, true)}
-				numberOfColumns={1}
-			/>
+			<Accordion.Root className="AccordionRoot" type="multiple" defaultValue={[menu!.categories[0].heading]}>
+				<InputMenuWithCategories
+					title={menu!.title}
+					inputs={menu!.inputs}
+					inputCategories={menu!.categories}
+					onValueChange={(key, value) => changeInputListElement(menu!.title, key, value, false)}
+					onIncludedChange={(key, value) => changeInputListElement(menu!.title, key, value, true)}
+					numberOfColumns={1}
+				/>
+			</Accordion.Root>
 		</>
 	);
 }

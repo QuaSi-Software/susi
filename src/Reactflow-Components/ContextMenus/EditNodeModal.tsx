@@ -20,6 +20,7 @@ import { InputMenu } from '../CustomInputWidgets/InputMenu';
 import { assignInputs, ComponentInputType, getInputs } from '../../NodeDataStructures/Nodes/ComponentInputTypes';
 import { checkForDuplicateNodeNames } from './ContextMenuUtils';
 import { ControleModulesMenu, type ControlModule } from './ControlModules/ControlModulesMenu';
+import { Accordion } from 'radix-ui';
 
 interface EditNodeModalInputs {
 	show: boolean;
@@ -150,65 +151,76 @@ const EditNodeModal = ({
 							</FloatingLabel>
 						</Col>
 					</Row>
-					<InputMenuWithCategories
-						title="Component Inputs"
-						inputs={editedNode.data.nodeInputs}
-						inputCategories={editedNode.data.inputCategories}
-						onValueChange={(resieName, newValue) => {
-							onNodeInputValueChange(ComponentInputType.PARAMETER, resieName, newValue);
-						}}
-						onIncludedChange={(resieName, isIncluded) => {
-							onNodeInputIncludedChange(ComponentInputType.PARAMETER, resieName, isIncluded);
-						}}
-						numberOfColumns={2}
-					/>
-					{getResieParameter('economic', 'calculate_economy') && (
-						<InputMenu
-							title="Economic"
-							inputs={editedNode.data.economicInputs}
-							numberOfColumns={2}
-							onValueChange={(resieName, newValue) => {
-								onNodeInputValueChange(ComponentInputType.ECONOMIC, resieName, newValue);
-							}}
-							onIncludedChange={(resieName, isIncluded) => {
-								onNodeInputIncludedChange(ComponentInputType.ECONOMIC, resieName, isIncluded);
-							}}
-						/>
-					)}
-					{getResieParameter('emissions', 'calculate_emissions') && (
-						<InputMenu
-							title="Emissions"
-							inputs={editedNode.data.emissionsInputs}
-							numberOfColumns={2}
-							onValueChange={(resieName, newValue) => {
-								onNodeInputValueChange(ComponentInputType.EMISSIONS, resieName, newValue);
-							}}
-							onIncludedChange={(resieName, isIncluded) => {
-								onNodeInputIncludedChange(ComponentInputType.EMISSIONS, resieName, isIncluded);
-							}}
-						/>
-					)}
 
-					<BusConnectionMenu node={node} nodes={nodes} onBusDataChange={onNodeBusDataChange} />
-					<ControleModulesMenu
-						node={node}
-						setEditedNode={setEditedNode}
-						controlModuleTypes={controlModules}
-					/>
-					{editedNode.data.controlParameters && (
+					<Accordion.Root
+						className="AccordionRoot"
+						type="multiple"
+						defaultValue={[editedNode.data.inputCategories[0].heading]}
+					>
 						<InputMenuWithCategories
-							title="Control Parameters"
-							inputs={editedNode.data.controlParameters.inputs}
-							inputCategories={editedNode.data.controlParameters.categories}
-							numberOfColumns={2}
+							title="Component Inputs"
+							inputs={editedNode.data.nodeInputs}
+							inputCategories={editedNode.data.inputCategories}
 							onValueChange={(resieName, newValue) => {
-								onNodeInputValueChange(ComponentInputType.CONTROL_PARAMETERS, resieName, newValue);
+								onNodeInputValueChange(ComponentInputType.PARAMETER, resieName, newValue);
 							}}
 							onIncludedChange={(resieName, isIncluded) => {
-								onNodeInputIncludedChange(ComponentInputType.CONTROL_PARAMETERS, resieName, isIncluded);
+								onNodeInputIncludedChange(ComponentInputType.PARAMETER, resieName, isIncluded);
 							}}
+							numberOfColumns={2}
 						/>
-					)}
+						{getResieParameter('economic', 'calculate_economy') && (
+							<InputMenu
+								title="Economic"
+								inputs={editedNode.data.economicInputs}
+								numberOfColumns={2}
+								onValueChange={(resieName, newValue) => {
+									onNodeInputValueChange(ComponentInputType.ECONOMIC, resieName, newValue);
+								}}
+								onIncludedChange={(resieName, isIncluded) => {
+									onNodeInputIncludedChange(ComponentInputType.ECONOMIC, resieName, isIncluded);
+								}}
+							/>
+						)}
+						{getResieParameter('emissions', 'calculate_emissions') && (
+							<InputMenu
+								title="Emissions"
+								inputs={editedNode.data.emissionsInputs}
+								numberOfColumns={2}
+								onValueChange={(resieName, newValue) => {
+									onNodeInputValueChange(ComponentInputType.EMISSIONS, resieName, newValue);
+								}}
+								onIncludedChange={(resieName, isIncluded) => {
+									onNodeInputIncludedChange(ComponentInputType.EMISSIONS, resieName, isIncluded);
+								}}
+							/>
+						)}
+
+						<BusConnectionMenu node={node} nodes={nodes} onBusDataChange={onNodeBusDataChange} />
+						{/* <ControleModulesMenu
+							node={node}
+							setEditedNode={setEditedNode}
+							controlModuleTypes={controlModules}
+						/> */}
+						{editedNode.data.controlParameters && (
+							<InputMenuWithCategories
+								title="Control Parameters"
+								inputs={editedNode.data.controlParameters.inputs}
+								inputCategories={editedNode.data.controlParameters.categories}
+								numberOfColumns={2}
+								onValueChange={(resieName, newValue) => {
+									onNodeInputValueChange(ComponentInputType.CONTROL_PARAMETERS, resieName, newValue);
+								}}
+								onIncludedChange={(resieName, isIncluded) => {
+									onNodeInputIncludedChange(
+										ComponentInputType.CONTROL_PARAMETERS,
+										resieName,
+										isIncluded
+									);
+								}}
+							/>
+						)}
+					</Accordion.Root>
 				</Modal.Body>
 				<Modal.Footer>
 					<span className="warning-text right-aligned-row">
