@@ -1,5 +1,4 @@
 import type { Medium } from '../NodeDataStructures/Mediums/Medium';
-import { getUndefinedMedium } from '../NodeDataStructures/Mediums/MediumUtils';
 import { InputObjectType } from '../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { ApiCategory, ApiComponent } from './ApiData';
 import { type NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
@@ -14,19 +13,18 @@ export function getComponentTypes(
 	for (const [componentType, component] of Object.entries(apiComponents)) {
 		const nodeInputs = [];
 		for (const [nodeInputName, inputAttributes] of Object.entries(component.parameters)) {
-			const newInput = getInputObjectFromAPIParameter(nodeInputName, inputAttributes);
-			if (newInput.type === InputObjectType.MEDIUM) {
-				const medium = mediums.find((m) => m.name === newInput.value);
-				newInput.value = medium !== undefined ? medium!.key : getUndefinedMedium().key;
+			if (inputAttributes.widget_type === InputObjectType.MEDIUM) {
+				console.debug('importing medium');
 			}
+			const newInput = getInputObjectFromAPIParameter(nodeInputName, inputAttributes, mediums);
 			nodeInputs.push(newInput);
 		}
 		checkParametersAndCategoriesMatch(nodeInputs, component.param_categories, componentType);
 		const economic = Object.entries(component.economic).map(([inputName, attributes]) =>
-			getInputObjectFromAPIParameter(inputName, attributes)
+			getInputObjectFromAPIParameter(inputName, attributes, mediums)
 		);
 		const emissions = Object.entries(component.emissions).map(([inputName, attributes]) =>
-			getInputObjectFromAPIParameter(inputName, attributes)
+			getInputObjectFromAPIParameter(inputName, attributes, mediums)
 		);
 
 		let category = typeCategories.find((category) => category.types!.includes(componentType));

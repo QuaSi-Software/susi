@@ -31,7 +31,7 @@ import { getDefaultMediums } from './NodeDataStructures/Mediums/MediumUtils';
 
 /** Context Menus */
 import { EdgeContextMenu, type EdgeContextMenuData } from './Reactflow-Components/ContextMenus/EdgeContextMenu';
-import { type MenuPosition } from './Reactflow-Components/ContextMenus/Menus';
+import { createMenuPosition, type MenuPosition } from './Reactflow-Components/ContextMenus/Menus';
 import { NodeContextMenu, type NodeContextMenuData } from './Reactflow-Components/ContextMenus/NodeContextMenu';
 import PaneContextMenu from './Reactflow-Components/ContextMenus/PaneContextMenu';
 import {
@@ -93,6 +93,7 @@ const DnDFlow = () => {
 	const [theme, setTheme] = useState<'dark' | 'light'>('light');
 	const [locale, setLocale] = useState<Locale>(Locale.US);
 	const [edgeType, setEdgeType] = useState<EdgeType>(EdgeType.DEFAULT);
+	const [showEditNodeModal, setShowEditNodeModal] = useState(false);
 
 	/** Data imported from API */
 	const [componentTypes, setComponentTypes] = useState<Record<string, NodeType> | null>(null);
@@ -165,6 +166,14 @@ const DnDFlow = () => {
 		nodeNamePrefix,
 	});
 
+	const onNodeDoubleClick = (event: React.MouseEvent, node: SusiNode) => {
+		setNodeContextMenu({
+			menuPosition: createMenuPosition(event, ref),
+			node: node,
+		});
+		setShowEditNodeModal(true);
+	};
+
 	return (
 		<div className="dndflow">
 			<AppContext.Provider
@@ -218,6 +227,7 @@ const DnDFlow = () => {
 					onPaneContextMenu={onPaneContextMenu}
 					onSelectionContextMenu={onSelectionContextMenu}
 					onPaneClick={clearAllMenus}
+					onNodeDoubleClick={onNodeDoubleClick}
 				>
 					<Controls showInteractive={false} />
 					<Background />
@@ -245,10 +255,12 @@ const DnDFlow = () => {
 					nodeContextMenu={nodeContextMenu}
 					nodes={nodes}
 					edges={edges}
+					showModal={showEditNodeModal}
 					edgeType={edgeType}
 					setNodeContextMenu={setNodeContextMenu}
 					setNodes={setNodes}
 					setEdges={setEdges}
+					setShowModal={setShowEditNodeModal}
 					getResieParameter={getResieParameter}
 					controlModules={controlModules}
 				/>

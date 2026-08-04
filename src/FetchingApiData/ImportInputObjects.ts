@@ -1,9 +1,10 @@
+import type { Medium } from '../NodeDataStructures/Mediums/Medium';
 import { InputObject, InputObjectType } from '../Reactflow-Components/CustomInputWidgets/InputObject';
 import { importConditional } from '../Reactflow-Components/CustomInputWidgets/Validation/Conditionals';
 import { importValidation } from '../Reactflow-Components/CustomInputWidgets/Validation/NumberValidation';
 import type { ApiCategory, APIParameter } from './ApiData';
 
-export function getInputObjectFromAPIParameter(inputName: string, apiInput: APIParameter) {
+export function getInputObjectFromAPIParameter(inputName: string, apiInput: APIParameter, mediums: Medium[]) {
 	if (Array.isArray(apiInput.default) && apiInput.default.length > 0 && apiInput.default[0] === null)
 		apiInput.default = null;
 	const input = new InputObject(
@@ -21,7 +22,9 @@ export function getInputObjectFromAPIParameter(inputName: string, apiInput: APIP
 			conditionals:
 				apiInput.conditionals === undefined ? [] : apiInput.conditionals.map((x) => importConditional(x)),
 		},
-		true
+		true,
+		null,
+		mediums
 	);
 	return input;
 }
