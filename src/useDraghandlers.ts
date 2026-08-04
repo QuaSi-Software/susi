@@ -5,16 +5,25 @@ import { getPositionAfterParentChange } from './NodeDataStructures/GroupNodes/Ca
 import { useReactFlow } from '@xyflow/react';
 import createNodeFromType from './NodeDataStructures/Nodes/SusiNode';
 import type { NodeType } from './NodeDataStructures/Nodes/SusiNodeTypes';
+import type { ResieParameterMenuInfo } from './Sidebar/ResieParameters/ResieParameterMenuInfo';
 
 interface useDraghandlersProps {
 	nodes: SusiNode[];
+	controlParameters: ResieParameterMenuInfo | null;
 	setNodes: Dispatch<SetStateAction<SusiNode[]>>;
 	setCheckState: Dispatch<SetStateAction<boolean>>;
 	type: NodeType | null;
 	nodeNamePrefix: string;
 }
 
-export function useDraghandlers({ nodes, setNodes, setCheckState, type, nodeNamePrefix }: useDraghandlersProps) {
+export function useDraghandlers({
+	nodes,
+	setNodes,
+	setCheckState,
+	type,
+	nodeNamePrefix,
+	controlParameters,
+}: useDraghandlersProps) {
 	const { screenToFlowPosition } = useReactFlow();
 
 	const onNodeDragStop = useCallback(
@@ -54,7 +63,7 @@ export function useDraghandlers({ nodes, setNodes, setCheckState, type, nodeName
 			event.preventDefault();
 
 			// check if the dropped element is valid
-			if (!type) {
+			if (!type || !controlParameters) {
 				return;
 			}
 
@@ -65,7 +74,7 @@ export function useDraghandlers({ nodes, setNodes, setCheckState, type, nodeName
 				x: event.clientX,
 				y: event.clientY,
 			});
-			const newNode = createNodeFromType(nodes, type, position, nodeNamePrefix);
+			const newNode = createNodeFromType(nodes, type, position, nodeNamePrefix, controlParameters);
 			newNode.measured = {
 				width: 50,
 				height: 50,

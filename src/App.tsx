@@ -164,6 +164,7 @@ const DnDFlow = () => {
 		setCheckState,
 		type,
 		nodeNamePrefix,
+		controlParameters,
 	});
 
 	const onNodeDoubleClick = (event: React.MouseEvent, node: SusiNode) => {

@@ -161,7 +161,6 @@ const EditNodeModal = ({
 							onNodeInputIncludedChange(ComponentInputType.PARAMETER, resieName, isIncluded);
 						}}
 						numberOfColumns={2}
-						menuTypeName={editedNode.data.componentType}
 					/>
 					{getResieParameter('economic', 'calculate_economy') && (
 						<InputMenu
@@ -196,6 +195,20 @@ const EditNodeModal = ({
 						setEditedNode={setEditedNode}
 						controlModuleTypes={controlModules}
 					/>
+					{editedNode.data.controlParameters && (
+						<InputMenuWithCategories
+							title="Control Parameters"
+							inputs={editedNode.data.controlParameters.inputs}
+							inputCategories={editedNode.data.controlParameters.categories}
+							numberOfColumns={2}
+							onValueChange={(resieName, newValue) => {
+								onNodeInputValueChange(ComponentInputType.CONTROL_PARAMETERS, resieName, newValue);
+							}}
+							onIncludedChange={(resieName, isIncluded) => {
+								onNodeInputIncludedChange(ComponentInputType.CONTROL_PARAMETERS, resieName, isIncluded);
+							}}
+						/>
+					)}
 				</Modal.Body>
 				<Modal.Footer>
 					<span className="warning-text right-aligned-row">

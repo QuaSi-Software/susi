@@ -5,6 +5,7 @@ import { type SusiNodeData, createSusiNodeData } from './SusiNodeData';
 
 import _ from 'lodash';
 import { findNameForDuplicate } from '../../Reactflow-Components/ContextMenus/ContextMenuUtils';
+import type { ResieParameterMenuInfo } from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
 
 /**
  * SusiNode is a normal ReactFlow Node, but with data replaced by the interface SusiNodeData for clarity
@@ -17,6 +18,7 @@ const createNodeFromType = (
 	nodeType: NodeType,
 	position: XYPosition,
 	nodeNamePrefix: string,
+	controlParameters: ResieParameterMenuInfo,
 	content: string | null = null
 ): SusiNode => {
 	const timestamp = Date.now();
@@ -25,7 +27,7 @@ const createNodeFromType = (
 		const baseName = nodeNamePrefix + nodeType.segment + '_';
 		content = findNameForDuplicate(baseName, nodes);
 	}
-	const susiNodeData = createSusiNodeData(nodeType, content);
+	const susiNodeData = createSusiNodeData(nodeType, controlParameters, content);
 	return {
 		id: `${content}_${timestamp}`,
 		position: position,
