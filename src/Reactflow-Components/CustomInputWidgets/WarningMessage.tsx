@@ -11,13 +11,13 @@ export function WarningMessage({ redWarning, message, hoverMessage }: WarningMes
 	if (redWarning) {
 		iconName = 'bi bi-exclamation-circle';
 		textClass = 'warning-text';
-	} else if (message !== '') {
+	} else {
 		iconName = 'bi bi-info-circle-fill';
 		textClass = 'mutex-warning';
 	}
 	return (
 		<span title={hoverMessage} className={`input-warning-message ${textClass}`}>
-			{iconName && <i className={iconName} />}
+			{message !== '' && <i className={iconName} />}
 			<span> </span>
 			{message}
 			<span style={{ visibility: 'hidden' }}>Placeholder</span>
