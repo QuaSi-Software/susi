@@ -34,7 +34,7 @@ import { getDefaultMediums } from './NodeDataStructures/Mediums/MediumUtils';
 
 /** Context Menus */
 import { EdgeContextMenu, type EdgeContextMenuData } from './Reactflow-Components/ContextMenus/EdgeContextMenu';
-import { type MenuPosition } from './Reactflow-Components/ContextMenus/Menus';
+import { createMenuPosition, type MenuPosition } from './Reactflow-Components/ContextMenus/Menus';
 import { NodeContextMenu, type NodeContextMenuData } from './Reactflow-Components/ContextMenus/NodeContextMenu';
 import PaneContextMenu from './Reactflow-Components/ContextMenus/PaneContextMenu';
 import {
@@ -229,14 +229,9 @@ const DnDFlow = () => {
 		}
 	};
 
-	const onNodeDoubleClick = (_: React.MouseEvent, node: SusiNode) => {
+	const onNodeDoubleClick = (event: React.MouseEvent, node: SusiNode) => {
 		setNodeContextMenu({
-			menuPosition: {
-				top: 0,
-				left: 0,
-				right: 0,
-				bottom: 0,
-			},
+			menuPosition: createMenuPosition(event, ref),
 			node: node,
 		});
 		setShowEditNodeModal(true);
