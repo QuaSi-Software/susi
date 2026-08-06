@@ -1,7 +1,7 @@
 import { getUndefinedMedium } from '../../NodeDataStructures/Mediums/MediumUtils';
 import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
 import { type Validation } from './Validation/NumberValidation';
-import { type Conditional } from './Validation/Conditionals';
+import { ConditionalOperator, type Conditional } from './Validation/Conditionals';
 import { checkForInputIssues, InputIssueType, type InputIssue } from './Validation/InputChecking';
 import { exportDate, parseDate } from './DateParsing';
 
@@ -140,6 +140,23 @@ class InputObject implements InputObjectProps {
 
 	public isValid() {
 		return this.issue.issueType !== InputIssueType.Validity && this.issue.issueType !== InputIssueType.AtLeastOne;
+	}
+
+	public canHaveWarnings(): boolean {
+		/** does the type have type-specific validation errors */
+		switch (this.type) {
+			case InputObjectType.MEDIUM:
+			case InputObjectType.MULTISELECT:
+			case InputObjectType.BOOLEAN:
+			case InputObjectType.STRING:
+			case InputObjectType.DROPDOWN:
+				break;
+			default:
+				return true;
+		}
+		/** Does this input have validations or mutex operators */
+		const mutexConditionals = this.conditionals.filter((e) => e.operator === ConditionalOperator.mutex);
+		return this.validations.length !== 0 || mutexConditionals.length !== 0;
 	}
 }
 

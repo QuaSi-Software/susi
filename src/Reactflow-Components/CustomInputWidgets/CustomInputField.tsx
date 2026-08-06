@@ -160,13 +160,15 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 
 	return (
 		<>
-			<WarningMessage
-				message={nodeInput.issue.message}
-				redWarning={
-					nodeInput.issue.issueType == InputIssueType.AtLeastOne ||
-					nodeInput.issue.issueType == InputIssueType.Validity
-				}
-			/>
+			{nodeInput.canHaveWarnings() && (
+				<WarningMessage
+					message={nodeInput.issue.message}
+					redWarning={
+						nodeInput.issue.issueType == InputIssueType.AtLeastOne ||
+						nodeInput.issue.issueType == InputIssueType.Validity
+					}
+				/>
+			)}
 
 			<div data-toggle="tooltip" data-placement="top" title={nodeInput.tooltip}>
 				{getInputFieldByType()}
