@@ -103,14 +103,16 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 				);
 			case InputObjectType.BOOLEAN:
 				return (
-					<Form.Check
-						type="switch"
-						id={displayName}
-						label={displayName}
-						defaultChecked={Boolean(inputValue)}
-						onChange={(e) => onInputChanged(e.target.checked)}
-						disabled={disabledByMutex}
-					/>
+					<div className="boolean-input-container">
+						<Form.Check
+							type="switch"
+							id={displayName}
+							label={displayName}
+							defaultChecked={Boolean(inputValue)}
+							onChange={(e) => onInputChanged(e.target.checked)}
+							disabled={disabledByMutex}
+						/>
+					</div>
 				);
 			case InputObjectType.DROPDOWN:
 				return (

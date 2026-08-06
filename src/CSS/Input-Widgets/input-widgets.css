@@ -47,6 +47,11 @@
 
 .required-input-row {
 	padding: 0.25em;
+	height: 100%;
+}
+
+.form-check-label {
+	font-size: 1rem;
 }
 
 .mutex-warning {
@@ -55,4 +60,33 @@
 
 .warning-text {
 	color: #f00;
+}
+
+.boolean-input-container {
+	display: inline;
+	padding: 12px;
+	vertical-align: center;
+}
+
+.boolean-input-container .form-check {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1.5em;
+	margin: 0;
+	padding: 0;
+}
+
+.boolean-input-container .form-check-input {
+	cursor: pointer;
+	transform: scale(1.25);
+	margin: 0;
+	flex-shrink: 0;
+}
+
+.boolean-input-container .form-check-label {
+	font-size: 20px;
+	margin: 0;
+	cursor: pointer;
+	user-select: none;
 }

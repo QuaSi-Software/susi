@@ -119,7 +119,7 @@ const MediumMenu = ({ nodes, setNodes, edges, setEdges }: MediumMenuProps) => {
 						onClick={resetMenu}
 						disabled={mediumsAreDefault()}
 					>
-						<i className="bi bi-arrow-clockwise" /> Reset Medium Menu
+						<i className="bi bi-arrow-clockwise" /> Reset Mediums
 					</Button>
 				</div>
 			</Col>

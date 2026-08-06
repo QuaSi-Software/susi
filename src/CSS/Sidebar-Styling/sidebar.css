@@ -19,7 +19,7 @@
 	box-sizing: border-box;
 	min-width: 24em;
 	max-width: 100%;
-	width: 40%;
+	width: 24em;
 	flex: 0 0 auto;
 	resize: horizontal;
 }

@@ -142,7 +142,7 @@ const EditNodeModal = ({
 								<Form.Control
 									type="text"
 									as="textarea"
-									style={{ height: '100px' }}
+									style={{ height: '5em' }}
 									placeholder="Component Name"
 									value={editedNode.data.content}
 									onChange={onNodeContentChange}
