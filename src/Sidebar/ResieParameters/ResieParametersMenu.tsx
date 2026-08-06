@@ -41,7 +41,6 @@ export function ResieParametersMenu({
 					inputCategories={menu!.categories}
 					onValueChange={(key, value) => changeInputListElement(menu!.title, key, value, false)}
 					onIncludedChange={(key, value) => changeInputListElement(menu!.title, key, value, true)}
-					numberOfColumns={1}
 				/>
 			</Accordion.Root>
 		</>

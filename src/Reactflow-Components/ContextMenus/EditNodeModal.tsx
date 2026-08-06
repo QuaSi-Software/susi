@@ -167,13 +167,11 @@ const EditNodeModal = ({
 							onIncludedChange={(resieName, isIncluded) => {
 								onNodeInputIncludedChange(ComponentInputType.PARAMETER, resieName, isIncluded);
 							}}
-							numberOfColumns={2}
 						/>
 						{getResieParameter('economic', 'calculate_economy') && (
 							<InputMenu
 								title="Economic"
 								inputs={editedNode.data.economicInputs}
-								numberOfColumns={2}
 								onValueChange={(resieName, newValue) => {
 									onNodeInputValueChange(ComponentInputType.ECONOMIC, resieName, newValue);
 								}}
@@ -186,7 +184,6 @@ const EditNodeModal = ({
 							<InputMenu
 								title="Emissions"
 								inputs={editedNode.data.emissionsInputs}
-								numberOfColumns={2}
 								onValueChange={(resieName, newValue) => {
 									onNodeInputValueChange(ComponentInputType.EMISSIONS, resieName, newValue);
 								}}
@@ -207,7 +204,6 @@ const EditNodeModal = ({
 								title="Control Parameters"
 								inputs={editedNode.data.controlParameters.inputs}
 								inputCategories={editedNode.data.controlParameters.categories}
-								numberOfColumns={2}
 								onValueChange={(resieName, newValue) => {
 									onNodeInputValueChange(ComponentInputType.CONTROL_PARAMETERS, resieName, newValue);
 								}}

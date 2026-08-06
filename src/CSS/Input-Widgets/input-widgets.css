@@ -5,15 +5,17 @@
 	--input-border-color: #e6e6e6;
 }
 
-.input-menu-row {
-	margin: 6px 2px;
+.input-menu {
+	display: grid;
+	gap: 0.5em;
+	grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
 }
-.input-menu-column {
+.input-menu-item {
 	border-style: solid;
 	border-color: var(--input-border-color);
 	border-radius: 6px;
 	border-width: 2px;
-	min-width: 350px;
+	min-width: 0;
 }
 #unit-label {
 	position: absolute;
