@@ -1,0 +1,7 @@
+.add-module-button {
+	width: 3em;
+	height: 3em;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+}

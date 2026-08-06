@@ -22,25 +22,29 @@ export default function ControlModulesDropdown({ controlModuleTypes, setEditedNo
 
 	return (
 		<DropdownMenu.Root
-		//  open={true}
+		// open={true}
 		>
-			<DropdownMenu.Trigger asChild>
+			<DropdownMenu.Trigger asChild className="add-module-button">
 				<button className="IconButton" aria-label="Choose Sidebar Menu">
-					<i className="bi bi-plus-lg"></i>
+					<i
+						className="bi bi-plus-lg"
+						style={{
+							fontSize: 'x-large',
+						}}
+					></i>
 				</button>
 			</DropdownMenu.Trigger>
-			<DropdownMenu.Portal>
-				<DropdownMenu.Content className="DropdownMenuContent" sideOffset={15} align="start" side="right">
-					{controlModuleTypes.map((controlModule) => (
-						<DropdownMenu.Item
-							className="DropdownMenuItem"
-							onClick={() => addControleModule(controlModule)}
-						>
-							{controlModule.title}
-						</DropdownMenu.Item>
-					))}
-				</DropdownMenu.Content>
-			</DropdownMenu.Portal>
+			<DropdownMenu.Content className="DropdownMenuContent" sideOffset={15} align="start" side="right">
+				{controlModuleTypes.map((controlModule, index) => (
+					<DropdownMenu.Item
+						key={`control-module-${index}`}
+						className="DropdownMenuItem"
+						onClick={() => addControleModule(controlModule)}
+					>
+						{controlModule.title}
+					</DropdownMenu.Item>
+				))}
+			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	);
 }

@@ -194,11 +194,11 @@ const EditNodeModal = ({
 						)}
 
 						<BusConnectionMenu node={node} nodes={nodes} onBusDataChange={onNodeBusDataChange} />
-						{/* <ControleModulesMenu
+						<ControleModulesMenu
 							node={node}
 							setEditedNode={setEditedNode}
 							controlModuleTypes={controlModules}
-						/> */}
+						/>
 						{editedNode.data.controlParameters && (
 							<InputMenuWithCategories
 								title="Control Parameters"

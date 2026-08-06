@@ -23,6 +23,7 @@
 @import './Input-Widgets/input-widgets.css';
 @import './Input-Widgets/optional-input-rows.css';
 @import './Input-Widgets/accordion.css';
+@import './Input-Widgets/control-modules.css';
 
 /** Both */
 @import './bootstrap-buttons.css';
