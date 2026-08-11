@@ -4,8 +4,8 @@ import type { InputObject } from '../../CustomInputWidgets/InputObject';
 import ControlModulesDropdown from './ControlModulesDropdown';
 import { Accordion } from 'radix-ui';
 import { Button } from 'react-bootstrap';
-import { AccordionInputMenu } from '../../CustomInputWidgets/AccordionInputMenu';
 import { InputMenu } from '../../CustomInputWidgets/InputMenu';
+import _ from 'lodash';
 
 export interface ControlModule {
 	title: string;
@@ -21,12 +21,12 @@ interface ControleModulesMenuProps {
 
 export function ControleModulesMenu({ controlModuleTypes, node, setEditedNode }: ControleModulesMenuProps) {
 	const [selectedModuleKey, setSelectedModuleKey] = useState<string>('');
-	const controlModules = node.data.controlModules;
+	const controlModules = _.cloneDeep(node.data.controlModules);
 	const selectedModuleColor = '#afbdde';
 	const selectedModule = controlModules.find((e) => e.key === selectedModuleKey);
 	console.debug(`Selected Module key is ${selectedModuleKey}, so the selected module is ${selectedModule}`);
 
-	function setControleModuleParameter(paramName: string, value: any) {
+	function setControlModuleParameter(paramName: string, value: any, isIncludeChange: boolean) {
 		if (!selectedModule) return;
 		setEditedNode((node) => {
 			const input = selectedModule.parameters.find((e) => e.resieName === paramName);
@@ -34,7 +34,8 @@ export function ControleModulesMenu({ controlModuleTypes, node, setEditedNode }:
 				input !== undefined,
 				`Cannot find Module parameter ${paramName} on module ${selectedModule.title}`
 			);
-			input!.value = value;
+			if (isIncludeChange) input!.isIncluded = value;
+			else input!.value = value;
 			return { ...node, data: { ...node.data, controlModules: controlModules } };
 		});
 	}
@@ -82,13 +83,17 @@ export function ControleModulesMenu({ controlModuleTypes, node, setEditedNode }:
 						<ControlModulesDropdown controlModuleTypes={controlModuleTypes} setEditedNode={setEditedNode} />
 					</div>
 					{selectedModule && (
-						<div style={{ flex: '1 1 0', margin: '0.5em' }}>
+						<div style={{ flex: '1 1 0', margin: '0.5em' }} key={`${selectedModule.key ?? 'no-key'}`}>
 							<div className="modal-subheading">{selectedModule.title}</div>
 							<InputMenu
 								title={selectedModule.title}
 								inputs={selectedModule.parameters}
-								onIncludedChange={(resieName: string, isIncluded: boolean) => {}}
-								onValueChange={(resieName: string, newValue: string | number | boolean) => {}}
+								onIncludedChange={(resieName: string, isIncluded: boolean) =>
+									setControlModuleParameter(resieName, isIncluded, true)
+								}
+								onValueChange={(resieName: string, newValue: string | number | boolean) =>
+									setControlModuleParameter(resieName, newValue, false)
+								}
 							/>
 						</div>
 					)}

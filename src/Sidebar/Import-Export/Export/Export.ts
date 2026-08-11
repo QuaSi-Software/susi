@@ -7,6 +7,7 @@ import { getUndefinedMedium } from '../../../NodeDataStructures/Mediums/MediumUt
 import { InputIssueType } from '../../../Reactflow-Components/CustomInputWidgets/Validation/InputChecking';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
 import { getStartEndUnit } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
+import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 
 interface ExportProps {
 	nodes: SusiNode[];
@@ -103,6 +104,15 @@ function getNodeGroup(parentNode: SusiNode, nodes: SusiNode[]): NodeGroup {
 		},
 	};
 }
+function getControlModules(controlModules: ControlModule[]): Record<string, any>[] {
+	const exportModules: Record<string, any>[] = [];
+	controlModules.forEach((cm) => {
+		const dict = { name: cm.title };
+		addNodeInputsToObject(cm.parameters, dict, [], '');
+		exportModules.push(dict);
+	});
+	return exportModules;
+}
 
 const exportState = ({ nodes, edges, mediums, resieParameterMenus }: ExportProps): string => {
 	/** adding these node inputs doesn't really require the mediums, since they should not include medium inputs  */
@@ -137,6 +147,9 @@ const exportState = ({ nodes, edges, mediums, resieParameterMenus }: ExportProps
 				mediums,
 				startEndUnit
 			);
+		}
+		if (node.data.controlModules.length > 0) {
+			compDict.control_modules = getControlModules(node.data.controlModules);
 		}
 
 		// Add import data
