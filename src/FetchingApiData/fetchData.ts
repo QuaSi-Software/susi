@@ -6,6 +6,7 @@ import type { NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
 import { type ResieParameterMenuInfo } from '../Sidebar/ResieParameters/ResieParameterMenuInfo';
 import { processApiReturn } from './processApiData';
 import type { ControlModule } from '../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
+import { getEnv } from '../getEnv.ts';
 
 const localResieParameterModules = import.meta.glob('../assets/resie_parameters.json');
 
@@ -54,7 +55,7 @@ export function fetchData({
 			if (fileData) {
 				return fileData;
 			} else {
-				return fetch('/parameters/susi').then((response) => {
+				return fetch(getEnv('VITE_RESI_DATA_URL')).then((response) => {
 					if (!response.ok) {
 						console.error(`Status code ${response.status}: ${response.statusText}`);
 						setLoadingMessage(null);
