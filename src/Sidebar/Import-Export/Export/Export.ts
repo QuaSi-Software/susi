@@ -5,7 +5,11 @@ import type { InputObject } from '../../../Reactflow-Components/CustomInputWidge
 import type { ComponentData, Connections, ImportData, NodeGroup } from '../ExportDataStrucures';
 import { getUndefinedMedium } from '../../../NodeDataStructures/Mediums/MediumUtils';
 import { InputIssueType } from '../../../Reactflow-Components/CustomInputWidgets/Validation/InputChecking';
-import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
+import {
+	showEconomicParameters,
+	showEmissionsParameters,
+	type ResieParameterMenuInfo,
+} from '../../ResieParameters/ResieParameterMenuInfo';
 import { getStartEndUnit } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
 import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 
@@ -135,6 +139,16 @@ const exportState = ({ nodes, edges, mediums, resieParameterMenus }: ExportProps
 		}
 		const compDict: ComponentData = { type: node.data.componentType };
 		addNodeInputsToObject(node.data.nodeInputs, compDict, mediums, startEndUnit);
+
+		/** Economic and Emissions parameters */
+		if (showEconomicParameters(resieParameterMenus)) {
+			compDict.economic = {};
+			addNodeInputsToObject(node.data.economicInputs, compDict.economic, mediums, startEndUnit);
+		}
+		if (showEmissionsParameters(resieParameterMenus)) {
+			compDict.emissions = {};
+			addNodeInputsToObject(node.data.economicInputs, compDict.emissions, mediums, startEndUnit);
+		}
 
 		/** Control Parameters */
 		if (node.data.controlParameters) {
