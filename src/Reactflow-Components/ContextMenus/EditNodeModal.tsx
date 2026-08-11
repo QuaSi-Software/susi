@@ -16,7 +16,7 @@ import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import BusConnectionMenu from '../BusDataWidget/BusConnectionMenu';
 import { AppContext } from '../../AppContext';
 import InputMenuWithCategories from '../CustomInputWidgets/InputMenuWithCategories';
-import { InputMenu } from '../CustomInputWidgets/InputMenu';
+import { AccordionInputMenu } from '../CustomInputWidgets/AccordionInputMenu';
 import { assignInputs, ComponentInputType, getInputs } from '../../NodeDataStructures/Nodes/ComponentInputTypes';
 import { checkForDuplicateNodeNames } from './ContextMenuUtils';
 import { ControleModulesMenu, type ControlModule } from './ControlModules/ControlModulesMenu';
@@ -169,7 +169,7 @@ const EditNodeModal = ({
 							}}
 						/>
 						{getResieParameter('economic', 'calculate_economy') && (
-							<InputMenu
+							<AccordionInputMenu
 								title="Economic"
 								inputs={editedNode.data.economicInputs}
 								onValueChange={(resieName, newValue) => {
@@ -181,7 +181,7 @@ const EditNodeModal = ({
 							/>
 						)}
 						{getResieParameter('emissions', 'calculate_emissions') && (
-							<InputMenu
+							<AccordionInputMenu
 								title="Emissions"
 								inputs={editedNode.data.emissionsInputs}
 								onValueChange={(resieName, newValue) => {

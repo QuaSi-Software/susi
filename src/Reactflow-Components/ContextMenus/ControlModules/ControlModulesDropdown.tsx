@@ -13,6 +13,7 @@ export default function ControlModulesDropdown({ controlModuleTypes, setEditedNo
 		const duplicatedControlModule: ControlModule = {
 			title: controlModule.title,
 			parameters: controlModule.parameters.map((e) => e.copy()),
+			key: `${controlModule.title}_${new Date().getTime()}`,
 		};
 		setEditedNode((node) => ({
 			...node,
