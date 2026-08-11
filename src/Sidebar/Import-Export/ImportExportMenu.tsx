@@ -11,11 +11,13 @@ import type { NodeType } from '../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../ResieParameters/ResieParameterMenuInfo';
 import { WarningMessage } from '../../Reactflow-Components/CustomInputWidgets/WarningMessage';
 import { findUnconnectedNodes } from '../../NodeDataStructures/Nodes/FindUnconnectedNodes';
+import type { ControlModule } from '../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 
 export interface ImportExportMenuProps {
 	nodes: SusiNode[];
 	edges: SusiEdge[];
 	controlParameters: ResieParameterMenuInfo | null;
+	controlModules: ControlModule[];
 	resieParameterMenus: ResieParameterMenuInfo[];
 	nodeTypes: Record<string, NodeType> | null;
 	setNodes: Dispatch<SetStateAction<SusiNode[]>>;

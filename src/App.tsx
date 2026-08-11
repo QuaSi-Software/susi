@@ -207,6 +207,7 @@ const DnDFlow = () => {
 					edgeType={edgeType}
 					setEdgeType={setEdgeType}
 					controlParameters={controlParameters}
+					controlModules={controlModules}
 				/>
 				<ReactFlow
 					nodes={nodes}

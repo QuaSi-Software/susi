@@ -2,6 +2,9 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { Medium } from '../../../NodeDataStructures/Mediums/Medium';
 import type { InputObject } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
+import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
+import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
+import _ from 'lodash';
 
 export function setImportedValues(
 	inputs: InputObject[],
@@ -41,4 +44,29 @@ export function setListOfInputs(
 		});
 		return ResieParameterMenuInfo;
 	});
+}
+
+export function setControlModules(
+	importModules: Record<string, any>[],
+	node: SusiNode,
+	controlModules: ControlModule[],
+	logError: (message: string) => void
+) {
+	const nodeControlModules: ControlModule[] = [];
+	importModules.forEach((dict) => {
+		const controlModule = _.cloneDeep(controlModules.find((e) => e.title === dict.name));
+		if (!controlModule) {
+			logError(`Could not find control module with name ${dict.name}`);
+			return;
+		}
+		controlModule.key = `${controlModule.title}_${nodeControlModules.length}`;
+		controlModule.parameters.forEach((input) => {
+			if (dict[input.resieName]) {
+				input.setValueOnImport(dict[input.resieName], [], '');
+				input.isIncluded = true;
+			}
+		});
+		nodeControlModules.push(controlModule);
+	});
+	node.data.controlModules = nodeControlModules;
 }

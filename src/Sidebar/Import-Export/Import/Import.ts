@@ -13,7 +13,8 @@ import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
 import { createGroupNode } from '../../../NodeDataStructures/GroupNodes/GroupNode';
 import { getStartEndUnit } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
-import { setImportedValues, setListOfInputs } from './ImportInputs';
+import { setControlModules, setImportedValues, setListOfInputs } from './ImportInputs';
+import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 
 interface ImportStateProps {
 	stateJSON: string;
@@ -26,6 +27,7 @@ interface ImportStateProps {
 	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
 	nodeTypes: Record<string, NodeType>;
 	controlParameters: ResieParameterMenuInfo;
+	controlModules: ControlModule[];
 }
 
 function getOutputRefs(sourceNodeID: string, sourceNodeData: ComponentData): string[] {
@@ -82,6 +84,7 @@ const importState = ({
 	resieParameterMenus,
 	nodeTypes,
 	controlParameters,
+	controlModules,
 }: ImportStateProps): void => {
 	let importDict: ImportData;
 	try {
@@ -142,6 +145,8 @@ const importState = ({
 			setImportedValues(controlParameterInputs, importControlParameters, mediums, startEndUnit);
 			newNode.data.controlParameters!.inputs = controlParameterInputs;
 		}
+		/** set control modules */
+		if (nodeData.control_modules) setControlModules(nodeData.control_modules, newNode, controlModules, logError);
 
 		nodeArray.push(newNode);
 		nodeDict[nodeId] = newNode;
