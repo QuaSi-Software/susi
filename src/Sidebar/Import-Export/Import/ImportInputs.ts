@@ -66,6 +66,9 @@ export function setControlModules(
 				input.isIncluded = true;
 			}
 		});
+		controlModule.parameters.forEach((input) => {
+			input.checkInputValid(controlModule.parameters);
+		});
 		nodeControlModules.push(controlModule);
 	});
 	node.data.controlModules = nodeControlModules;

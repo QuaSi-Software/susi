@@ -1,5 +1,5 @@
 import { useState, type Dispatch, type SetStateAction } from 'react';
-import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
+import { checkNodeValidInputs, type SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type { InputObject } from '../../CustomInputWidgets/InputObject';
 import ControlModulesDropdown from './ControlModulesDropdown';
 import { Accordion } from 'radix-ui';
@@ -17,9 +17,15 @@ interface ControleModulesMenuProps {
 	controlModuleTypes: ControlModule[];
 	node: SusiNode;
 	setEditedNode: Dispatch<SetStateAction<SusiNode>>;
+	getResieParameter: (menuName: string, parameterName: string) => boolean;
 }
 
-export function ControleModulesMenu({ controlModuleTypes, node, setEditedNode }: ControleModulesMenuProps) {
+export function ControleModulesMenu({
+	controlModuleTypes,
+	node,
+	setEditedNode,
+	getResieParameter,
+}: ControleModulesMenuProps) {
 	const [selectedModuleKey, setSelectedModuleKey] = useState<string>('');
 	const controlModules = _.cloneDeep(node.data.controlModules);
 	const selectedModuleColor = '#afbdde';
@@ -36,7 +42,12 @@ export function ControleModulesMenu({ controlModuleTypes, node, setEditedNode }:
 			);
 			if (isIncludeChange) input!.isIncluded = value;
 			else input!.value = value;
-			return { ...node, data: { ...node.data, controlModules: controlModules } };
+			selectedModule.parameters.forEach((e) => {
+				e.checkInputValid(selectedModule.parameters);
+			});
+			const newNode = { ...node, data: { ...node.data, controlModules: controlModules } };
+			checkNodeValidInputs(newNode, getResieParameter);
+			return newNode;
 		});
 	}
 	function deleteControlModule(controleModule: ControlModule) {

@@ -28,7 +28,7 @@ const createNodeFromType = (
 		content = findNameForDuplicate(baseName, nodes);
 	}
 	const susiNodeData = createSusiNodeData(nodeType, controlParameters, content);
-	return {
+	const node: SusiNode = {
 		id: `${content}_${timestamp}`,
 		position: position,
 		data: susiNodeData,
@@ -50,15 +50,48 @@ const createNodeFromType = (
 			width: 'auto',
 		} as React.CSSProperties,
 	};
+	checkNodeValidInputs(node, null);
+	return node;
 };
 
-export function checkNodeValidInputs(node: SusiNode) {
+export function showEconomicParameters(getResieParameter: (menuName: string, parameterName: string) => boolean) {
+	return getResieParameter('economic', 'calculate_economy');
+}
+export function showEmissionsParameters(getResieParameter: (menuName: string, parameterName: string) => boolean) {
+	return getResieParameter('emissions', 'calculate_emissions');
+}
+
+/** Check all if all inputs in node are valid and assign node.data.hasValidInputs  */
+export function checkNodeValidInputs(
+	node: SusiNode,
+	getResieParameter: ((menuName: string, parameterName: string) => boolean) | null
+) {
 	console.assert(
 		node.data.nodeInputs !== undefined,
 		`Trying to access node inputs of group node: ${node.data.label}`
 	);
 	const hasValidInputs = node.data.nodeInputs!.every((input) => input.isValid());
-	node.data.hasValidInputs = hasValidInputs;
+	const hasValidControlModules = node.data.controlModules.every((m) => {
+		return m.parameters.every((input) => input.isValid());
+	});
+	const hasValidControlParameters = node.data.controlParameters?.inputs.every((input) => input.isValid()) ?? true;
+
+	/** check economic and emisions parameters */
+	let hasValidEconomicParameters = true;
+	let hasValidEmissionsParameters = true;
+	if (getResieParameter) {
+		hasValidEconomicParameters =
+			!showEconomicParameters(getResieParameter) || node.data.economicInputs.every((input) => input.isValid());
+		hasValidEmissionsParameters =
+			!showEmissionsParameters(getResieParameter) || node.data.emissionsInputs.every((input) => input.isValid());
+	}
+
+	node.data.hasValidInputs =
+		hasValidInputs &&
+		hasValidControlModules &&
+		hasValidControlParameters &&
+		hasValidEconomicParameters &&
+		hasValidEmissionsParameters;
 }
 
 export const deepCloneNode = (node: SusiNode): SusiNode => {

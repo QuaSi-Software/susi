@@ -7,7 +7,12 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import _ from 'lodash';
 
-import { deepCloneNode, deepCloneNodes, type SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
+import {
+	checkNodeValidInputs,
+	deepCloneNode,
+	deepCloneNodes,
+	type SusiNode,
+} from '../../NodeDataStructures/Nodes/SusiNode';
 import type BusData from '../../NodeDataStructures/Bus/BusData';
 import type { InputObject } from '../CustomInputWidgets/InputObject';
 import { getEdgesWithMediumMismatch } from '../../NodeDataStructures/Mediums/MediumUtils';
@@ -96,6 +101,7 @@ const EditNodeModal = ({
 		});
 		setEditedNode((editedNode: SusiNode) => {
 			assignInputs(componentInputType, editedNode, resieDataCopy);
+			checkNodeValidInputs(editedNode, getResieParameter);
 			return editedNode;
 		});
 		// remove edge if the medium change necessitates it
@@ -112,7 +118,7 @@ const EditNodeModal = ({
 
 	const handleSaveChanges = () => {
 		let updatedNodes = deepCloneNodes(nodes);
-		editedNode.data.hasValidInputs = editedNode.data.nodeInputs.every((input) => input.isValid());
+		checkNodeValidInputs(editedNode, getResieParameter);
 		updatedNodes = updatedNodes.map((n: SusiNode) => (n.id === editedNode.id ? editedNode : n));
 		edgesToDelete.forEach((edgeID) => {
 			const edge = edges.find((e) => e.id === edgeID);
@@ -128,7 +134,8 @@ const EditNodeModal = ({
 
 	const nameIsDuplicate =
 		nodes.find((node) => node.id !== editedNode.id && node.data.content === editedNode.data.content) !== undefined;
-	const allInputsValid = editedNode.data.nodeInputs.every((input) => input.isValid()) && !nameIsDuplicate;
+
+	const allInputsValid = editedNode.data.hasValidInputs && !nameIsDuplicate;
 	return (
 		<>
 			<Modal show={show} onHide={handleSaveChanges}>
@@ -198,6 +205,7 @@ const EditNodeModal = ({
 							node={editedNode}
 							setEditedNode={setEditedNode}
 							controlModuleTypes={controlModules}
+							getResieParameter={getResieParameter}
 						/>
 						{editedNode.data.controlParameters && (
 							<InputMenuWithCategories

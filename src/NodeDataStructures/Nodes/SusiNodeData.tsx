@@ -81,7 +81,7 @@ export function createSusiNodeData(
 		input.checkInputValid(nodeInputs);
 	});
 	mutexSolver(nodeInputs);
-	const hasValidInputs = nodeInputs.every((input) => input.isValid());
+	// const hasValidInputs = nodeInputs.every((input) => input.isValid());
 	const componentType = nodeType.type_name;
 	const busData = componentType.toLowerCase() === 'bus' ? new BusData() : null;
 	const handleMediumDict = getMediumHandleDict(nodeInputs, nodeType.nr_outputs, nodeType.nr_inputs);
@@ -98,7 +98,7 @@ export function createSusiNodeData(
 		nodeCategory: nodeType.category,
 		sourceHandles: nodeType.nr_outputs,
 		targetHandles: nodeType.nr_inputs,
-		hasValidInputs: hasValidInputs,
+		hasValidInputs: true,
 		hasValidName: true,
 		inputCategories: nodeType.inputCategories,
 		economicInputs: nodeType.economic.map((e) => e.copy()),
