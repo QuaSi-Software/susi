@@ -16,6 +16,7 @@ import {
 } from './ContextMenuUtils';
 import { resizeGroupNodeToFitChildren } from '../../NodeDataStructures/GroupNodes/ResizeGroupNodeToFitChildren';
 import type { ControlModule } from './ControlModules/ControlModulesMenu';
+import type { ResieParameterMenuInfo } from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
 
 interface NodeContextMenuInput {
 	nodeContextMenu: NodeContextMenuData | null;
@@ -26,7 +27,7 @@ interface NodeContextMenuInput {
 	setNodes: Dispatch<SetStateAction<SusiNode[]>>;
 	setEdges: Dispatch<SetStateAction<SusiEdge[]>>;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
-	getResieParameter: (menuName: string, inputName: string) => any;
+	resieParameterMenus: ResieParameterMenuInfo[];
 	edgeType: EdgeType;
 	controlModules: ControlModule[];
 }
@@ -46,7 +47,7 @@ const NodeContextMenu = ({
 	setNodes,
 	setEdges,
 	setShowModal,
-	getResieParameter,
+	resieParameterMenus,
 	controlModules,
 }: NodeContextMenuInput) => {
 	const setCheckState = useContext(AppContext)!.setCheckState;
@@ -170,7 +171,7 @@ const NodeContextMenu = ({
 				handleClose={closeEditNodeModal}
 				setNodes={setNodes}
 				setEdges={setEdges}
-				getResieParameter={getResieParameter}
+				resieParameterMenus={resieParameterMenus}
 				controlModules={controlModules}
 			/>
 		</>

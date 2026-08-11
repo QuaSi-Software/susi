@@ -39,3 +39,19 @@ export function importResieParameterMenuInfo(
 		exportKey,
 	};
 }
+
+/** check value in resie parameter menus */
+function getResieParameter(resieParameterMenus: ResieParameterMenuInfo[], menuExportKey: string, inputName: string) {
+	const menu = resieParameterMenus.find((e) => e.exportKey === menuExportKey);
+	if (!menu) return null;
+	const input = menu.inputs.find((e) => e.resieName === inputName);
+	if (!input) return null;
+	return input.value;
+}
+
+export function showEconomicParameters(resieParameterMenus: ResieParameterMenuInfo[]) {
+	return getResieParameter(resieParameterMenus, 'economic', 'calculate_economy');
+}
+export function showEmissionsParameters(resieParameterMenus: ResieParameterMenuInfo[]) {
+	return getResieParameter(resieParameterMenus, 'emissions', 'calculate_emissions');
+}

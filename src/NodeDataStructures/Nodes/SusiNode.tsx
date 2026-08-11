@@ -5,7 +5,11 @@ import { type SusiNodeData, createSusiNodeData } from './SusiNodeData';
 
 import _ from 'lodash';
 import { findNameForDuplicate } from '../../Reactflow-Components/ContextMenus/ContextMenuUtils';
-import type { ResieParameterMenuInfo } from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
+import {
+	showEconomicParameters,
+	showEmissionsParameters,
+	type ResieParameterMenuInfo,
+} from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
 
 /**
  * SusiNode is a normal ReactFlow Node, but with data replaced by the interface SusiNodeData for clarity
@@ -54,18 +58,8 @@ const createNodeFromType = (
 	return node;
 };
 
-export function showEconomicParameters(getResieParameter: (menuName: string, parameterName: string) => boolean) {
-	return getResieParameter('economic', 'calculate_economy');
-}
-export function showEmissionsParameters(getResieParameter: (menuName: string, parameterName: string) => boolean) {
-	return getResieParameter('emissions', 'calculate_emissions');
-}
-
 /** Check all if all inputs in node are valid and assign node.data.hasValidInputs  */
-export function checkNodeValidInputs(
-	node: SusiNode,
-	getResieParameter: ((menuName: string, parameterName: string) => boolean) | null
-) {
+export function checkNodeValidInputs(node: SusiNode, resieParameterMenus: ResieParameterMenuInfo[] | null) {
 	console.assert(
 		node.data.nodeInputs !== undefined,
 		`Trying to access node inputs of group node: ${node.data.label}`
@@ -79,11 +73,12 @@ export function checkNodeValidInputs(
 	/** check economic and emisions parameters */
 	let hasValidEconomicParameters = true;
 	let hasValidEmissionsParameters = true;
-	if (getResieParameter) {
+	if (resieParameterMenus) {
 		hasValidEconomicParameters =
-			!showEconomicParameters(getResieParameter) || node.data.economicInputs.every((input) => input.isValid());
+			!showEconomicParameters(resieParameterMenus) || node.data.economicInputs.every((input) => input.isValid());
 		hasValidEmissionsParameters =
-			!showEmissionsParameters(getResieParameter) || node.data.emissionsInputs.every((input) => input.isValid());
+			!showEmissionsParameters(resieParameterMenus) ||
+			node.data.emissionsInputs.every((input) => input.isValid());
 	}
 
 	node.data.hasValidInputs =

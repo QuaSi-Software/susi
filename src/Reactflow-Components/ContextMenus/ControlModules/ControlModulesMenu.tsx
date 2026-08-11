@@ -6,6 +6,7 @@ import { Accordion } from 'radix-ui';
 import { Button } from 'react-bootstrap';
 import { InputMenu } from '../../CustomInputWidgets/InputMenu';
 import _ from 'lodash';
+import type { ResieParameterMenuInfo } from '../../../Sidebar/ResieParameters/ResieParameterMenuInfo';
 
 export interface ControlModule {
 	title: string;
@@ -17,14 +18,14 @@ interface ControleModulesMenuProps {
 	controlModuleTypes: ControlModule[];
 	node: SusiNode;
 	setEditedNode: Dispatch<SetStateAction<SusiNode>>;
-	getResieParameter: (menuName: string, parameterName: string) => boolean;
+	resieParameterMenus: ResieParameterMenuInfo[];
 }
 
 export function ControleModulesMenu({
 	controlModuleTypes,
 	node,
 	setEditedNode,
-	getResieParameter,
+	resieParameterMenus,
 }: ControleModulesMenuProps) {
 	const [selectedModuleKey, setSelectedModuleKey] = useState<string>('');
 	const controlModules = _.cloneDeep(node.data.controlModules);
@@ -46,7 +47,7 @@ export function ControleModulesMenu({
 				e.checkInputValid(selectedModule.parameters);
 			});
 			const newNode = { ...node, data: { ...node.data, controlModules: controlModules } };
-			checkNodeValidInputs(newNode, getResieParameter);
+			checkNodeValidInputs(newNode, resieParameterMenus);
 			return newNode;
 		});
 	}
@@ -56,7 +57,7 @@ export function ControleModulesMenu({
 			return { ...node, data: { ...node.data, controlModules: filteredControlModules } };
 		});
 	}
-	/** Title, button to add more control modules, and a list of control modlues currently on the node with a way to delete them */
+	/** Title, button to add more control modules, and a list of control modules currently on the node with a way to delete them */
 	return (
 		<>
 			<Accordion.Item className="AccordionItem" value="Control Modules">

@@ -32,6 +32,8 @@ export interface ComponentData {
 	output_refs?: string[] | Record<string, string>;
 	control_parameters?: Record<string, any>;
 	control_modules?: Record<string, any>[];
+	emissions?: Record<string, any>;
+	economic?: Record<string, any>;
 	[key: string]: any;
 }
 

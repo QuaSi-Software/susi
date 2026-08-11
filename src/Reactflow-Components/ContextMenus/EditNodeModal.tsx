@@ -26,6 +26,11 @@ import { assignInputs, ComponentInputType, getInputs } from '../../NodeDataStruc
 import { checkForDuplicateNodeNames } from './ContextMenuUtils';
 import { ControleModulesMenu, type ControlModule } from './ControlModules/ControlModulesMenu';
 import { Accordion } from 'radix-ui';
+import {
+	showEconomicParameters,
+	showEmissionsParameters,
+	type ResieParameterMenuInfo,
+} from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
 
 interface EditNodeModalInputs {
 	show: boolean;
@@ -35,7 +40,7 @@ interface EditNodeModalInputs {
 	edges: SusiEdge[];
 	setEdges: (edges: SusiEdge[]) => void;
 	handleClose: () => void;
-	getResieParameter: (menuName: string, inputName: string) => any;
+	resieParameterMenus: ResieParameterMenuInfo[];
 	controlModules: ControlModule[];
 }
 
@@ -47,7 +52,7 @@ const EditNodeModal = ({
 	setNodes,
 	setEdges,
 	edges,
-	getResieParameter,
+	resieParameterMenus,
 	controlModules,
 }: EditNodeModalInputs) => {
 	const [editedNode, setEditedNode] = useState(deepCloneNode(node));
@@ -101,7 +106,7 @@ const EditNodeModal = ({
 		});
 		setEditedNode((editedNode: SusiNode) => {
 			assignInputs(componentInputType, editedNode, resieDataCopy);
-			checkNodeValidInputs(editedNode, getResieParameter);
+			checkNodeValidInputs(editedNode, resieParameterMenus);
 			return editedNode;
 		});
 		// remove edge if the medium change necessitates it
@@ -118,7 +123,7 @@ const EditNodeModal = ({
 
 	const handleSaveChanges = () => {
 		let updatedNodes = deepCloneNodes(nodes);
-		checkNodeValidInputs(editedNode, getResieParameter);
+		checkNodeValidInputs(editedNode, resieParameterMenus);
 		updatedNodes = updatedNodes.map((n: SusiNode) => (n.id === editedNode.id ? editedNode : n));
 		edgesToDelete.forEach((edgeID) => {
 			const edge = edges.find((e) => e.id === edgeID);
@@ -175,7 +180,7 @@ const EditNodeModal = ({
 								onNodeInputIncludedChange(ComponentInputType.PARAMETER, resieName, isIncluded);
 							}}
 						/>
-						{getResieParameter('economic', 'calculate_economy') && (
+						{showEconomicParameters(resieParameterMenus) && (
 							<AccordionInputMenu
 								title="Economic"
 								inputs={editedNode.data.economicInputs}
@@ -187,7 +192,7 @@ const EditNodeModal = ({
 								}}
 							/>
 						)}
-						{getResieParameter('emissions', 'calculate_emissions') && (
+						{showEmissionsParameters(resieParameterMenus) && (
 							<AccordionInputMenu
 								title="Emissions"
 								inputs={editedNode.data.emissionsInputs}
@@ -205,7 +210,7 @@ const EditNodeModal = ({
 							node={editedNode}
 							setEditedNode={setEditedNode}
 							controlModuleTypes={controlModules}
-							getResieParameter={getResieParameter}
+							resieParameterMenus={resieParameterMenus}
 						/>
 						{editedNode.data.controlParameters && (
 							<InputMenuWithCategories

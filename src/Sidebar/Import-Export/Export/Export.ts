@@ -13,8 +13,6 @@ interface ExportProps {
 	nodes: SusiNode[];
 	edges: SusiEdge[];
 	mediums: Medium[];
-	// simulationParameters: ResieParameterMenuInfo;
-	// ioSettings: ResieParameterMenuInfo;
 	resieParameterMenus: ResieParameterMenuInfo[];
 }
 
