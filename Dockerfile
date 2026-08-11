@@ -1,9 +1,9 @@
 # Multi-stage build for production deployment
 
 # Stage 1: Build the React app
-FROM node:20-alpine AS builder
+FROM node:24-alpine AS build
 
-WORKDIR /app
+WORKDIR /tmp/build
 
 # Copy package files
 COPY package.json package-lock.json ./
@@ -12,24 +12,40 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 # Copy source code
-COPY . .
+COPY . /tmp/build
 
 # Build the app
 RUN npm run build
 
-# Stage 2: Serve with nginx
-FROM nginx:alpine
+# Stage 2: Serve static files
+FROM node:24-alpine AS prod
 
-# Copy nginx configuration template and entrypoint script
-COPY nginx.conf.template /etc/nginx/nginx.conf.template
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+ENV NODE_ENV=production
+ENV BASE_DIR="/opt/susi"
+USER root
+RUN mkdir -p $BASE_DIR && chown -R 1000:1000 $BASE_DIR
+RUN npm install serve -g
+USER 1000:1000
 
-# Copy built application from builder stage
-COPY --from=builder /app/dist /usr/share/nginx/html
+WORKDIR $BASE_DIR
 
-# Expose port 5002
+COPY --from=build --chown=1000:1000 /tmp/build/dist $BASE_DIR
+COPY --chown=1000:1000 ./docker-entrypoint.sh /opt/custom-docker-entrypoint.sh
+RUN chmod +x /opt/custom-docker-entrypoint.sh
+
+
+ENTRYPOINT ["/opt/custom-docker-entrypoint.sh"]
+CMD ["serve", "-S", "-s", "-p", "5002", "."]
+
 EXPOSE 5002
 
-# Start nginx through entrypoint script
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+FROM build AS dev
+
+ENV BASE_DIR="/opt/susi"
+USER root
+RUN mv /tmp/build $BASE_DIR && chown -R 1000:1000 $BASE_DIR
+USER 1000:1000
+
+WORKDIR $BASE_DIR
+
+CMD ["npm", "run", "dev"]

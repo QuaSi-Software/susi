@@ -7,10 +7,21 @@ export const InformationMenu = () => {
 
 	return (
 		<>
-			<div className="sidebar-subheading">Steinbeis Innovation Zentrum</div>
-			<div>Lorem ipsum dolor</div>
+			<div className="sidebar-subheading">Steinbeis-Innovationszentrum energieplus</div>
+			<div>
+				<a href="https://siz-energieplus.de/">siz energieplus</a> develops practical solutions for
+				climate-neutral buildings, districts, and cities. Its work focuses on renewable energy, integrated
+				energy concepts, and sector coupling. By combining scientific expertise with real-world applications,
+				the research institute supports the effective transfer of knowledge from research into practice.
+			</div>
 			<div className="sidebar-subheading">Funding Disclaimer </div>
-			<div>Lorem ipsum dolor</div>
+			<div>
+				SUSI is part of the <a href="https://quasi-software.org/">QuaSi II research project</a>, funded by the
+				German Federal Ministry for Economic Affairs and Energy (BMWE), formerly known as the Federal Ministry
+				for Economic Affairs and Climate Action (BMWK), under grant number 03EN3053. You can visit the{' '}
+				<a href="https://www.enargus.de/detail/?id=10331935">EnEff:Stadt: QuaSi_II project page</a> on the
+				official funding platform for more details.
+			</div>
 			<br />
 			<button type="button" className="link-button sidebar-subheading" onClick={() => setShowModal(true)}>
 				<i className="bi bi-box-arrow-up-right"></i> Impressum

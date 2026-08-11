@@ -1,0 +1,25 @@
+name: "Publish Docker Image to GitHub Packages"
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Create Images and Push to Registry for ${{ github.ref_name }}
+    uses: ./.github/workflows/createImage.yaml
+    with:
+      docker_file_context: .
+      docker_file_location: Dockerfile
+      image_name: ghcr.io/quasi-software/susi
+      tag: latest
+      branch: ${{ github.ref_name }}
+      push: true

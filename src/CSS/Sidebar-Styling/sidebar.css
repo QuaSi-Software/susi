@@ -51,3 +51,11 @@
 	font-size: var(--large-font-size);
 	font-weight: 600;
 }
+
+code {
+	background-color: #dfdfdf;
+	color: #000;
+	border-radius: 3px;
+	padding: 2px 6px;
+	font-family: 'Courier New', monospace;
+}
