@@ -195,7 +195,7 @@ const EditNodeModal = ({
 
 						<BusConnectionMenu node={node} nodes={nodes} onBusDataChange={onNodeBusDataChange} />
 						<ControleModulesMenu
-							node={node}
+							node={editedNode}
 							setEditedNode={setEditedNode}
 							controlModuleTypes={controlModules}
 						/>
