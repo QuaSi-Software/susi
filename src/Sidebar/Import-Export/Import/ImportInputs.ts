@@ -26,7 +26,7 @@ export function setImportedValues(
 	}
 }
 
-export function setListOfInputs(
+export function setResieParametersMenus(
 	setter: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>,
 	menuKey: string,
 	importedValues: Record<string, any>,

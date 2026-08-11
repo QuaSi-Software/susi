@@ -13,7 +13,7 @@ import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
 import { createGroupNode } from '../../../NodeDataStructures/GroupNodes/GroupNode';
 import { getStartEndUnit } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
-import { setControlModules, setImportedValues, setListOfInputs } from './ImportInputs';
+import { setControlModules, setImportedValues, setResieParametersMenus } from './ImportInputs';
 import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 
 interface ImportStateProps {
@@ -102,7 +102,7 @@ const importState = ({
 	resieParameterMenus.forEach((menu) => {
 		const list = importDict[menu.exportKey];
 		if (list === undefined) return;
-		setListOfInputs(setResieParameterMenus, menu.exportKey, list, startEndUnit);
+		setResieParametersMenus(setResieParameterMenus, menu.exportKey, list, startEndUnit);
 	});
 	// Get or generate mediums
 	const mediums = getImportMediums(importDict, nodeTypes);
@@ -137,6 +137,13 @@ const importState = ({
 		const nodeInputs = newNode.data.nodeInputs;
 		setImportedValues(nodeInputs, nodeData, mediums, startEndUnit);
 		newNode.data.nodeInputs = nodeInputs;
+		/** economic and emissions inputs */
+		if (nodeData.economic) {
+			setImportedValues(newNode.data.economicInputs, nodeData.economic, mediums, startEndUnit);
+		}
+		if (nodeData.emissions) {
+			setImportedValues(newNode.data.emissionsInputs, nodeData.emissions, mediums, startEndUnit);
+		}
 
 		/** Set Control parameters */
 		const importControlParameters = nodeData.control_parameters;
