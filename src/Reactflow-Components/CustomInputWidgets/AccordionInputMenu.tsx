@@ -12,6 +12,7 @@ export interface InputMenuProps {
 
 export const AccordionInputMenu: React.FC<InputMenuProps> = ({ title, inputs, onValueChange, onIncludedChange }) => {
 	if (inputs.length === 0) return <></>;
+	const hasIssues = !inputs.every((e) => e.isValid());
 
 	/**
 	 * allConditionalsTrue is checked inside column, so the space where this input would be is reserved
@@ -23,6 +24,7 @@ export const AccordionInputMenu: React.FC<InputMenuProps> = ({ title, inputs, on
 			<Accordion.Header className="AccordionHeader">
 				<Accordion.Trigger className="modal-header accordion-header-button">
 					{title}
+					{hasIssues && '⚠️'}
 					<i className="bi bi-chevron-down"></i>
 				</Accordion.Trigger>
 			</Accordion.Header>
