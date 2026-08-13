@@ -1,35 +1,13 @@
 import { DropdownMenu } from 'radix-ui';
 import type { ControlModule } from './ControlModulesMenu';
-import type { Dispatch, SetStateAction } from 'react';
-import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import { getTitleFromKey } from '../ContextMenuUtils';
 
 interface ControlModulesDropdownProps {
 	controlModuleTypes: ControlModule[];
-	setEditedNode: Dispatch<SetStateAction<SusiNode>>;
+	addControlModule: (controlModule: ControlModule) => void;
 }
 
-export default function ControlModulesDropdown({ controlModuleTypes, setEditedNode }: ControlModulesDropdownProps) {
-	function addControleModule(controlModule: ControlModule) {
-		const duplicatedControlModule: ControlModule = {
-			title: controlModule.title,
-			parameters: controlModule.parameters.map((e) => e.copy()),
-			key: `${controlModule.title}_${new Date().getTime()}`,
-		};
-		duplicatedControlModule.parameters.forEach((param) => {
-			param.checkInputValid(duplicatedControlModule.parameters);
-		});
-		const newModuleValid = duplicatedControlModule.parameters.every((e) => e.isValid());
-		setEditedNode((node) => ({
-			...node,
-			data: {
-				...node.data,
-				hasValidInputs: node.data.hasValidInputs && newModuleValid,
-				controlModules: [...node.data.controlModules, duplicatedControlModule],
-			},
-		}));
-	}
-
+export default function ControlModulesDropdown({ controlModuleTypes, addControlModule }: ControlModulesDropdownProps) {
 	return (
 		<DropdownMenu.Root
 		// open={true}
@@ -49,7 +27,7 @@ export default function ControlModulesDropdown({ controlModuleTypes, setEditedNo
 					<DropdownMenu.Item
 						key={`control-module-${index}`}
 						className="DropdownMenuItem"
-						onClick={() => addControleModule(controlModule)}
+						onClick={() => addControlModule(controlModule)}
 					>
 						{getTitleFromKey(controlModule.title)}
 					</DropdownMenu.Item>

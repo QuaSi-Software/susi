@@ -60,6 +60,26 @@ export function ControleModulesMenu({
 			return newNode;
 		});
 	}
+	function addControlModule(controlModule: ControlModule) {
+		const duplicatedControlModule: ControlModule = {
+			title: controlModule.title,
+			parameters: controlModule.parameters.map((e) => e.copy()),
+			key: `${controlModule.title}_${new Date().getTime()}`,
+		};
+		duplicatedControlModule.parameters.forEach((param) => {
+			param.checkInputValid(duplicatedControlModule.parameters);
+		});
+		const newModuleValid = duplicatedControlModule.parameters.every((e) => e.isValid());
+		setEditedNode((node) => ({
+			...node,
+			data: {
+				...node.data,
+				hasValidInputs: node.data.hasValidInputs && newModuleValid,
+				controlModules: [...node.data.controlModules, duplicatedControlModule],
+			},
+		}));
+		setSelectedModuleKey(duplicatedControlModule.key!);
+	}
 
 	function hasIssues() {
 		return !node.data.controlModules.every((cm) => cm.parameters.every((input) => input.isValid()));
@@ -101,7 +121,10 @@ export function ControleModulesMenu({
 								</Button>
 							</div>
 						))}
-						<ControlModulesDropdown controlModuleTypes={controlModuleTypes} setEditedNode={setEditedNode} />
+						<ControlModulesDropdown
+							controlModuleTypes={controlModuleTypes}
+							addControlModule={addControlModule}
+						/>
 					</div>
 					{selectedModule && (
 						<div style={{ flex: '1 1 0', margin: '0.5em' }} key={`${selectedModule.key ?? 'no-key'}`}>
