@@ -9,7 +9,7 @@ export const InputMenu = ({ inputs, onValueChange, onIncludedChange }: InputMenu
 		<div className="input-menu">
 			{inputs.map((input, inputIndex) => (
 				<div
-					key={`input-item-${inputIndex}`}
+					key={`input-item-${inputIndex}-${input.resieName}`}
 					style={{
 						visibility: input.issue.issueType === InputIssueType.Conditional ? 'hidden' : 'visible',
 						height: '100%',

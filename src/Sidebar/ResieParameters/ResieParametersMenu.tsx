@@ -31,7 +31,7 @@ export function ResieParametersMenu({
 
 	const menu = resieParameterMenus.find((e) => e.title === selectedMenu);
 	return (
-		<>
+		<div key={`key-${selectedMenu}-menu`}>
 			<div className="sidebar-subheading">{menu?.title}</div>
 			<br />
 			<Accordion.Root className="AccordionRoot" type="multiple" defaultValue={[menu!.categories[0].heading]}>
@@ -43,6 +43,6 @@ export function ResieParametersMenu({
 					onIncludedChange={(key, value) => changeInputListElement(menu!.title, key, value, true)}
 				/>
 			</Accordion.Root>
-		</>
+		</div>
 	);
 }
