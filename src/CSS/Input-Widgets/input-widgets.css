@@ -65,18 +65,19 @@
 }
 
 .boolean-input-container {
-	display: inline;
+	display: flex;
 	padding: 12px;
-	vertical-align: center;
+	width: 100%;
 }
 
 .boolean-input-container .form-check {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 1.5em;
+	gap: 0.75em;
 	margin: 0;
 	padding: 0;
+	width: 100%;
 }
 
 .boolean-input-container .form-check-input {
@@ -87,8 +88,9 @@
 }
 
 .boolean-input-container .form-check-label {
-	font-size: 20px;
+	font-size: 1rem;
 	margin: 0;
 	cursor: pointer;
 	user-select: none;
+	flex-grow: 1;
 }
