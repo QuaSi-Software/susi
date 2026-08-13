@@ -121,10 +121,18 @@ function duplicateEdgesWithinSelection(
 	return newEdges;
 }
 
+function getTitleFromKey(key: string): string {
+	const words = key.split('_');
+	const capitalizedWords = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
+	const title = capitalizedWords.join(' ');
+	return title;
+}
+
 export {
 	deleteNode,
 	createDuplicateNode,
 	checkForDuplicateNodeNames,
 	duplicateEdgesWithinSelection,
 	findNameForDuplicate,
+	getTitleFromKey,
 };

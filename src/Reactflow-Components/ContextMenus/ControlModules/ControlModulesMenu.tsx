@@ -7,6 +7,7 @@ import { Button } from 'react-bootstrap';
 import { InputMenu } from '../../CustomInputWidgets/InputMenu';
 import _ from 'lodash';
 import type { ResieParameterMenuInfo } from '../../../Sidebar/ResieParameters/ResieParameterMenuInfo';
+import { getTitleFromKey } from '../ContextMenuUtils';
 
 export interface ControlModule {
 	title: string;
@@ -29,7 +30,7 @@ export function ControleModulesMenu({
 }: ControleModulesMenuProps) {
 	const [selectedModuleKey, setSelectedModuleKey] = useState<string>('');
 	const controlModules = _.cloneDeep(node.data.controlModules);
-	const selectedModuleColor = '#afbdde';
+	const selectedModuleColor = '#c5d0eb';
 	const selectedModule = controlModules.find((e) => e.key === selectedModuleKey);
 	console.debug(`Selected Module key is ${selectedModuleKey}, so the selected module is ${selectedModule}`);
 
@@ -93,7 +94,7 @@ export function ControleModulesMenu({
 									onClick={() => setSelectedModuleKey(controleModule.key!)}
 									style={{ flexGrow: 1, paddingRight: '2em' }}
 								>
-									{controleModule.title}
+									{getTitleFromKey(controleModule.title)}
 								</div>
 								<Button variant="danger" size="sm" onClick={() => deleteControlModule(controleModule)}>
 									Delete
@@ -104,7 +105,7 @@ export function ControleModulesMenu({
 					</div>
 					{selectedModule && (
 						<div style={{ flex: '1 1 0', margin: '0.5em' }} key={`${selectedModule.key ?? 'no-key'}`}>
-							<div className="modal-subheading">{selectedModule.title}</div>
+							<div className="modal-subheading">{getTitleFromKey(selectedModule.title)}</div>
 							<InputMenu
 								title={selectedModule.title}
 								inputs={selectedModule.parameters}

@@ -2,6 +2,7 @@ import { DropdownMenu } from 'radix-ui';
 import type { ControlModule } from './ControlModulesMenu';
 import type { Dispatch, SetStateAction } from 'react';
 import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
+import { getTitleFromKey } from '../ContextMenuUtils';
 
 interface ControlModulesDropdownProps {
 	controlModuleTypes: ControlModule[];
@@ -50,7 +51,7 @@ export default function ControlModulesDropdown({ controlModuleTypes, setEditedNo
 						className="DropdownMenuItem"
 						onClick={() => addControleModule(controlModule)}
 					>
-						{controlModule.title}
+						{getTitleFromKey(controlModule.title)}
 					</DropdownMenu.Item>
 				))}
 			</DropdownMenu.Content>
