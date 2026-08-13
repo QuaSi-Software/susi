@@ -2,6 +2,7 @@ import { type Dispatch, type SetStateAction } from 'react';
 import type { ResieParameterMenuInfo } from './ResieParameterMenuInfo';
 import InputMenuWithCategories from '../../Reactflow-Components/CustomInputWidgets/InputMenuWithCategories';
 import { Accordion } from 'radix-ui';
+import _ from 'lodash';
 
 export interface ResieParametersMenuProps {
 	selectedMenu?: string;
@@ -16,7 +17,8 @@ export function ResieParametersMenu({
 }: ResieParametersMenuProps) {
 	function changeInputListElement(menuTitle: string, key: string, value: any, isIncludedChange: boolean) {
 		setResieParameterMenus((resieParameterMenuInfo) => {
-			const menu = resieParameterMenus.find((e) => e.title === menuTitle);
+			resieParameterMenuInfo = _.cloneDeep(resieParameterMenuInfo);
+			const menu = resieParameterMenuInfo.find((e) => e.title === menuTitle);
 			const input = menu!.inputs.find((e) => e.resieName === key);
 			if (!input)
 				console.error(`Input with key ${key} should not be undefined in list ${resieParameterMenuInfo}`);
