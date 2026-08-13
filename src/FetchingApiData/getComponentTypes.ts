@@ -13,9 +13,6 @@ export function getComponentTypes(
 	for (const [componentType, component] of Object.entries(apiComponents)) {
 		const nodeInputs = [];
 		for (const [nodeInputName, inputAttributes] of Object.entries(component.parameters)) {
-			if (inputAttributes.widget_type === InputObjectType.MEDIUM) {
-				console.debug('importing medium');
-			}
 			const newInput = getInputObjectFromAPIParameter(nodeInputName, inputAttributes, mediums);
 			nodeInputs.push(newInput);
 		}

@@ -32,7 +32,6 @@ export function ControleModulesMenu({
 	const controlModules = _.cloneDeep(node.data.controlModules);
 	const selectedModuleColor = '#c5d0eb';
 	const selectedModule = controlModules.find((e) => e.key === selectedModuleKey);
-	console.debug(`Selected Module key is ${selectedModuleKey}, so the selected module is ${selectedModule}`);
 
 	function setControlModuleParameter(paramName: string, value: any, isIncludeChange: boolean) {
 		if (!selectedModule) return;
