@@ -54,9 +54,16 @@ export function ControleModulesMenu({
 	function deleteControlModule(controleModule: ControlModule) {
 		setEditedNode((node) => {
 			const filteredControlModules = node.data.controlModules.filter((e) => e.key !== controleModule.key);
-			return { ...node, data: { ...node.data, controlModules: filteredControlModules } };
+			const newNode = { ...node, data: { ...node.data, controlModules: filteredControlModules } };
+			checkNodeValidInputs(newNode, resieParameterMenus);
+			return newNode;
 		});
 	}
+
+	function hasIssues() {
+		return !node.data.controlModules.every((cm) => cm.parameters.every((input) => input.isValid()));
+	}
+
 	/** Title, button to add more control modules, and a list of control modules currently on the node with a way to delete them */
 	return (
 		<>
@@ -64,6 +71,7 @@ export function ControleModulesMenu({
 				<Accordion.Header className="AccordionHeader">
 					<Accordion.Trigger className="modal-header accordion-header-button">
 						Control Modules
+						{hasIssues() && '⚠️'}
 						<i className="bi bi-chevron-down"></i>
 					</Accordion.Trigger>
 				</Accordion.Header>
