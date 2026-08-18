@@ -6,7 +6,7 @@ Where not otherwise specified, the source code of this software is released unde
 
 MIT License
 
-Copyright (c) 2026 Authors: Etienne Ott, Sarah Werum
+Copyright (c) 2026 Authors: Timo Lösch, Etienne Ott, Sarah Werum
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -1,12 +1,17 @@
 import { useState } from 'react';
 import { ImpressumModal } from './ImpressumModal';
 import fundingDisclaimer from './../../assets/funding_disclaimer.png';
+import sizLogo from './../../assets/siz_energieplus_logo_ohne_claim-4x-295.png';
+import sizLogo_dark from './../../assets/siz_energieplus_logo_mit_claim_nobg_dark.png';
 
-export const InformationMenu = () => {
+export const InformationMenu = ({ theme }: { theme: 'dark' | 'light' }) => {
 	const [showModal, setShowModal] = useState<boolean>(false);
 
 	return (
 		<>
+			<a href="https://siz-energieplus.de/" target="_blank">
+				<img src={theme === 'light' ? sizLogo : sizLogo_dark} style={{ width: '13em', padding: '1em 0em' }} />
+			</a>
 			<div className="sidebar-subheading">Steinbeis-Innovationszentrum energieplus</div>
 			<div>
 				<a href="https://siz-energieplus.de/">siz energieplus</a> develops practical solutions for
@@ -28,7 +33,7 @@ export const InformationMenu = () => {
 			</button>
 			<br />
 			<div>
-				<img src={fundingDisclaimer} style={{ width: '80%', padding: '1em 0em' }} />
+				<img src={fundingDisclaimer} style={{ width: '13em', padding: '1em 0em' }} />
 			</div>
 
 			<ImpressumModal setShow={setShowModal} show={showModal} />

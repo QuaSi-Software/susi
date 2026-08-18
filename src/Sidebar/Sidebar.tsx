@@ -59,7 +59,7 @@ const Sidebar = (menuProps: SidebarProps) => {
 			case MenuType.Settings:
 				return <SettingsMenu {...menuProps} />;
 			case MenuType.Information:
-				return <InformationMenu />;
+				return <InformationMenu theme={menuProps.theme} />;
 			default:
 				return null;
 		}
