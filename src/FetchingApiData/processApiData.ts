@@ -17,8 +17,10 @@ export function processApiReturn(
 	setComponentCategories: Dispatch<SetStateAction<ApiCategory[]>>,
 	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>,
 	setControlParameters: Dispatch<SetStateAction<ResieParameterMenuInfo | null>>,
-	setControlModules: Dispatch<SetStateAction<ControlModule[]>>
+	setControlModules: Dispatch<SetStateAction<ControlModule[]>>,
+	setResieVersion: Dispatch<SetStateAction<string | undefined>>
 ) {
+	setResieVersion(data.resie_version);
 	const apiComponents: Record<string, ApiComponent> = data.components.types;
 	const componentTypes: Record<string, NodeType> = getComponentTypes(
 		apiComponents,

@@ -101,6 +101,7 @@ const DnDFlow = () => {
 	const [resieParameterMenus, setResieParameterMenus] = useState<ResieParameterMenuInfo[]>([]);
 	const [controlParameters, setControlParameters] = useState<ResieParameterMenuInfo | null>(null);
 	const [controlModules, setControlModules] = useState<ControlModule[]>([]);
+	const [resieVersion, setResieVersion] = useState<string>();
 
 	document.documentElement.setAttribute('data-theme', theme);
 
@@ -119,6 +120,7 @@ const DnDFlow = () => {
 			setOverlayError: setOverlayErrorMessage,
 			setControlParameters,
 			setControlModules,
+			setResieVersion,
 		});
 	}, [componentTypes]);
 
@@ -200,6 +202,7 @@ const DnDFlow = () => {
 					setEdgeType={setEdgeType}
 					controlParameters={controlParameters}
 					controlModules={controlModules}
+					resieVersion={resieVersion}
 				/>
 				<ReactFlow
 					nodes={nodes}

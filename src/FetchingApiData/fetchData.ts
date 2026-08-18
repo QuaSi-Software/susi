@@ -37,6 +37,7 @@ interface useFetchDataProps {
 	setOverlayError: Dispatch<SetStateAction<string | null>>;
 	setControlParameters: Dispatch<SetStateAction<ResieParameterMenuInfo | null>>;
 	setControlModules: Dispatch<SetStateAction<ControlModule[]>>;
+	setResieVersion: Dispatch<SetStateAction<string | undefined>>;
 }
 
 export function fetchData({
@@ -48,6 +49,7 @@ export function fetchData({
 	setOverlayError,
 	setControlParameters,
 	setControlModules,
+	setResieVersion,
 }: useFetchDataProps) {
 	setLoadingMessage('Loading Resie Data');
 	loadLocalFile()
@@ -77,7 +79,8 @@ export function fetchData({
 				setComponentCategories,
 				setResieParameterMenus,
 				setControlParameters,
-				setControlModules
+				setControlModules,
+				setResieVersion
 			);
 			setLoadingMessage(null);
 		})

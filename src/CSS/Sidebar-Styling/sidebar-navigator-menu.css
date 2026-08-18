@@ -13,7 +13,7 @@
 }
 .sidebar-menu-section {
 	padding: 20px;
-	border-bottom: 1px solid #e0e0e0;
+	border-bottom: 1px solid var(--text-color);
 	display: flex;
 	gap: 1rem;
 	align-items: center;
@@ -48,6 +48,7 @@
 
 .sidebar-menu-content {
 	padding: 20px;
+	/* padding-top: 0px; */
 	flex: 1;
 	overflow-y: auto;
 }

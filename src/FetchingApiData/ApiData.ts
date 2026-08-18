@@ -18,6 +18,7 @@ interface ApiReturn {
 		simulation: Record<string, APIParameter>;
 		simulation_categories: ApiCategory[];
 	};
+	resie_version: string;
 }
 
 interface ApiCategory {

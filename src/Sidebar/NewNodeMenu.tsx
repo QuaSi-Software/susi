@@ -6,9 +6,10 @@ import type { ApiCategory } from '../FetchingApiData/ApiData';
 export interface NewNodeMenuProps {
 	categories: ApiCategory[];
 	nodeTypes: Record<string, NodeType> | null;
+	resieVersion: string | undefined;
 }
 
-export default function NewNodeMenu({ categories, nodeTypes }: NewNodeMenuProps) {
+export default function NewNodeMenu({ categories, nodeTypes, resieVersion }: NewNodeMenuProps) {
 	if (nodeTypes === null) return <></>;
 	const [_, setType] = useDnD();
 
@@ -20,6 +21,7 @@ export default function NewNodeMenu({ categories, nodeTypes }: NewNodeMenuProps)
 	categories = categories.sort((a, b) => a.index - b.index);
 	return (
 		<>
+			{resieVersion && <div className="version-text"> ReSiE Version: {resieVersion}</div>}
 			{categories.map((category: ApiCategory) => (
 				<div key={category.heading}>
 					<div className="sidebar-subheading">{category.heading}</div>
