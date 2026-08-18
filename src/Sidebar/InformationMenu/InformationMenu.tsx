@@ -9,9 +9,9 @@ export const InformationMenu = ({ theme }: { theme: 'dark' | 'light' }) => {
 
 	return (
 		<>
-			<div>
+			<a href="https://siz-energieplus.de/" target="_blank">
 				<img src={theme === 'light' ? sizLogo : sizLogo_dark} style={{ width: '13em', padding: '1em 0em' }} />
-			</div>
+			</a>
 			<div className="sidebar-subheading">Steinbeis-Innovationszentrum energieplus</div>
 			<div>
 				<a href="https://siz-energieplus.de/">siz energieplus</a> develops practical solutions for
