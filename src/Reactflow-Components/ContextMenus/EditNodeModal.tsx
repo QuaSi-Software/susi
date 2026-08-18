@@ -220,7 +220,14 @@ const EditNodeModal = ({
 								title="Control Parameters"
 								inputs={editedNode.data.controlParameters.inputs}
 								nodeId={editedNode.id}
-								inputCategories={editedNode.data.controlParameters.categories}
+								inputCategories={
+									/** if there are no control modules, the aggregation category should not be shown in the menu */
+									editedNode.data.controlModules.length > 0
+										? editedNode.data.controlParameters.categories
+										: editedNode.data.controlParameters.categories.filter(
+												(category) => category.heading.toLowerCase() !== 'aggregation'
+											)
+								}
 								onValueChange={(resieName, newValue) => {
 									onNodeInputValueChange(ComponentInputType.CONTROL_PARAMETERS, resieName, newValue);
 								}}
