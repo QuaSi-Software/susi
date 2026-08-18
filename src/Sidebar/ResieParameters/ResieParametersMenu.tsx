@@ -41,6 +41,7 @@ export function ResieParametersMenu({
 					title={menu!.title}
 					inputs={menu!.inputs}
 					inputCategories={menu!.categories}
+					nodeId={null}
 					onValueChange={(key, value) => changeInputListElement(menu!.title, key, value, false)}
 					onIncludedChange={(key, value) => changeInputListElement(menu!.title, key, value, true)}
 				/>

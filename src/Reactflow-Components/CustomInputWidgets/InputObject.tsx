@@ -4,6 +4,7 @@ import { type Validation } from './Validation/NumberValidation';
 import { ConditionalOperator, type Conditional } from './Validation/Conditionals';
 import { checkForInputIssues, InputIssueType, type InputIssue } from './Validation/InputChecking';
 import { exportDate, parseDate } from './DateParsing';
+import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 
 const InputObjectType = {
 	INT: 'INT',
@@ -17,6 +18,7 @@ const InputObjectType = {
 	VECTOR_STRING: 'VECTOR_STRING',
 	DATE: 'DATE',
 	CUSTOM_OBJECT: 'CUSTOM_OBJECT',
+	COMPONENT_UAC: 'COMPONENT_UAC',
 	UNSET: 'UNSET',
 } as const;
 
@@ -109,7 +111,7 @@ class InputObject implements InputObjectProps {
 			}
 		}
 	}
-	public getNodeInputExportValue(mediums: Medium[], startEndUnit: string | null = null): any {
+	public getNodeInputExportValue(mediums: Medium[], startEndUnit: string | null = null, nodes: SusiNode[]): any {
 		if (this.type === InputObjectType.MEDIUM) {
 			const mediumKey = this.value;
 			const medium = mediums.find((m) => m.key === mediumKey);
@@ -122,6 +124,10 @@ class InputObject implements InputObjectProps {
 			return Number.parseFloat(this.value);
 		} else if (this.type === InputObjectType.INT) {
 			return Number.parseInt(this.value);
+		} else if (this.type === InputObjectType.COMPONENT_UAC) {
+			const node = nodes.find((e) => e.id === this.value);
+			const nodeName = node ? node.data.content : 'None';
+			return nodeName;
 		}
 		return this.value;
 	}
@@ -151,6 +157,7 @@ class InputObject implements InputObjectProps {
 			case InputObjectType.BOOLEAN:
 			case InputObjectType.STRING:
 			case InputObjectType.DROPDOWN:
+			case InputObjectType.COMPONENT_UAC:
 				break;
 			default:
 				return true;

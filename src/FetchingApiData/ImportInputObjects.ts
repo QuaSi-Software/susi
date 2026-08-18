@@ -7,6 +7,8 @@ import type { ApiCategory, APIParameter } from './ApiData';
 export function getInputObjectFromAPIParameter(inputName: string, apiInput: APIParameter, mediums: Medium[]) {
 	if (Array.isArray(apiInput.default) && apiInput.default.length > 0 && apiInput.default[0] === null)
 		apiInput.default = null;
+	/** TEMPORARY CODE: Remove when SIMON is updated */
+	if (inputName.substring(inputName.length - 4) === '_uac') apiInput.widget_type = InputObjectType.COMPONENT_UAC;
 	const input = new InputObject(
 		{
 			type: apiInput.widget_type, //getNodeInputType(inputName, apiInput),

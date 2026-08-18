@@ -16,15 +16,18 @@ import { en } from 'primelocale/js/en.js';
 import { InputIssueType } from './Validation/InputChecking';
 import { CustomCalendar } from './CustomCalendar';
 import { WarningMessage } from './WarningMessage';
+import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
+import { useReactFlow } from '@xyflow/react';
 addLocale('de-DE', de);
 addLocale('en-US', en);
 
 interface CustomInputFieldProps {
 	nodeInput: InputObject;
+	nodeId: string | null;
 	onEdit: (resieName: string, newValue: any) => void;
 }
 
-const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }) => {
+const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit, nodeId }) => {
 	const displayName = nodeInput.displayName;
 	const startValue = nodeInput.value;
 	let js_type = nodeInput.type;
@@ -32,6 +35,9 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 	const appContext = useContext(AppContext);
 	const mediums = appContext?.mediums || [];
 	const locale = appContext?.locale || Locale.US;
+	const allNodes: SusiNode[] = useReactFlow()
+		.getNodes()
+		.filter((n) => n.type !== 'group') as SusiNode[];
 
 	// Create a mutable copy for dropdown options
 	const nodeInputCopy = { ...nodeInput };
@@ -152,6 +158,18 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 						disabled={disabledByMutex}
 						displayName={displayName}
 						onInputChanged={onInputChanged}
+					/>
+				);
+			case InputObjectType.COMPONENT_UAC:
+				console.debug(`Node ID: ${nodeId}`);
+				const nodeList = allNodes.filter((e) => e.id !== nodeId);
+				return (
+					<CustomDropdown<string>
+						displayName={displayName}
+						startValue={startValue}
+						dropdown_options={['None'].concat(nodeList.map((n: SusiNode) => n.id))}
+						dropdown_options_display_names={['None'].concat(nodeList.map((n: SusiNode) => n.data.content))}
+						onEdit={onInputChanged}
 					/>
 				);
 			default:

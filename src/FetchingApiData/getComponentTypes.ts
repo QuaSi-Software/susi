@@ -1,5 +1,4 @@
 import type { Medium } from '../NodeDataStructures/Mediums/Medium';
-import { InputObjectType } from '../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { ApiCategory, ApiComponent } from './ApiData';
 import { type NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
 import { checkParametersAndCategoriesMatch, getInputObjectFromAPIParameter } from './ImportInputObjects';

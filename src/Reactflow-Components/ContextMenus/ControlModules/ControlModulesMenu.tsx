@@ -131,6 +131,7 @@ export function ControleModulesMenu({
 							<InputMenu
 								title={selectedModule.title}
 								inputs={selectedModule.parameters}
+								nodeId={node.id}
 								onIncludedChange={(resieName: string, isIncluded: boolean) =>
 									setControlModuleParameter(resieName, isIncluded, true)
 								}

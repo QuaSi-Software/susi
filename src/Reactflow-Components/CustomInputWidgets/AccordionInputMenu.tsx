@@ -6,11 +6,18 @@ import { InputMenu } from './InputMenu';
 export interface InputMenuProps {
 	title: string;
 	inputs: InputObject[];
+	nodeId: string | null;
 	onValueChange: (resieName: string, newValue: string | number | boolean) => void;
 	onIncludedChange: (resieName: string, isIncluded: boolean) => void;
 }
 
-export const AccordionInputMenu: React.FC<InputMenuProps> = ({ title, inputs, onValueChange, onIncludedChange }) => {
+export const AccordionInputMenu: React.FC<InputMenuProps> = ({
+	title,
+	inputs,
+	nodeId,
+	onValueChange,
+	onIncludedChange,
+}) => {
 	if (inputs.length === 0) return <></>;
 	const hasIssues = !inputs.every((e) => e.isValid());
 
@@ -33,6 +40,7 @@ export const AccordionInputMenu: React.FC<InputMenuProps> = ({ title, inputs, on
 				<InputMenu
 					title={title}
 					inputs={inputs}
+					nodeId={nodeId}
 					onValueChange={onValueChange}
 					onIncludedChange={onIncludedChange}
 				/>

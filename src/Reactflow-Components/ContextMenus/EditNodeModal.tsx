@@ -173,6 +173,7 @@ const EditNodeModal = ({
 							title="Component Inputs"
 							inputs={editedNode.data.nodeInputs}
 							inputCategories={editedNode.data.inputCategories}
+							nodeId={editedNode.id}
 							onValueChange={(resieName, newValue) => {
 								onNodeInputValueChange(ComponentInputType.PARAMETER, resieName, newValue);
 							}}
@@ -184,6 +185,7 @@ const EditNodeModal = ({
 							<AccordionInputMenu
 								title="Economic"
 								inputs={editedNode.data.economicInputs}
+								nodeId={editedNode.id}
 								onValueChange={(resieName, newValue) => {
 									onNodeInputValueChange(ComponentInputType.ECONOMIC, resieName, newValue);
 								}}
@@ -196,6 +198,7 @@ const EditNodeModal = ({
 							<AccordionInputMenu
 								title="Emissions"
 								inputs={editedNode.data.emissionsInputs}
+								nodeId={editedNode.id}
 								onValueChange={(resieName, newValue) => {
 									onNodeInputValueChange(ComponentInputType.EMISSIONS, resieName, newValue);
 								}}
@@ -216,6 +219,7 @@ const EditNodeModal = ({
 							<InputMenuWithCategories
 								title="Control Parameters"
 								inputs={editedNode.data.controlParameters.inputs}
+								nodeId={editedNode.id}
 								inputCategories={editedNode.data.controlParameters.categories}
 								onValueChange={(resieName, newValue) => {
 									onNodeInputValueChange(ComponentInputType.CONTROL_PARAMETERS, resieName, newValue);

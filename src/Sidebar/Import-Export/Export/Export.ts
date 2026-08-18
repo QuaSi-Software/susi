@@ -79,7 +79,8 @@ const addNodeInputsToObject = (
 	nodeInputs: InputObject[],
 	obj: Record<string, any>,
 	mediums: Medium[],
-	startEndUnit: string
+	startEndUnit: string,
+	nodes: SusiNode[]
 ) => {
 	nodeInputs.forEach((nodeInput) => {
 		if (!nodeInput.isIncluded && !nodeInput.isRequired) {
@@ -87,7 +88,7 @@ const addNodeInputsToObject = (
 		}
 		const issueType = nodeInput.issue.issueType;
 		if (issueType === InputIssueType.Conditional || issueType === InputIssueType.Mutex) return;
-		obj[nodeInput.resieName] = nodeInput.getNodeInputExportValue(mediums, startEndUnit);
+		obj[nodeInput.resieName] = nodeInput.getNodeInputExportValue(mediums, startEndUnit, nodes);
 	});
 	return obj;
 };
@@ -106,11 +107,11 @@ function getNodeGroup(parentNode: SusiNode, nodes: SusiNode[]): NodeGroup {
 		},
 	};
 }
-function getControlModules(controlModules: ControlModule[]): Record<string, any>[] {
+function getControlModules(controlModules: ControlModule[], nodes: SusiNode[]): Record<string, any>[] {
 	const exportModules: Record<string, any>[] = [];
 	controlModules.forEach((cm) => {
 		const dict = { name: cm.title };
-		addNodeInputsToObject(cm.parameters, dict, [], '');
+		addNodeInputsToObject(cm.parameters, dict, [], '', nodes);
 		exportModules.push(dict);
 	});
 	return exportModules;
@@ -126,7 +127,7 @@ const exportState = ({ nodes, edges, mediums, resieParameterMenus }: ExportProps
 	const startEndUnit = getStartEndUnit(resieParameterMenus);
 	resieParameterMenus.forEach((menu) => {
 		const obj = {};
-		addNodeInputsToObject(menu.inputs, obj, [], startEndUnit);
+		addNodeInputsToObject(menu.inputs, obj, [], startEndUnit, nodes);
 		exportDict[menu.exportKey] = obj;
 	});
 
@@ -138,16 +139,16 @@ const exportState = ({ nodes, edges, mediums, resieParameterMenus }: ExportProps
 			return;
 		}
 		const compDict: ComponentData = { type: node.data.componentType };
-		addNodeInputsToObject(node.data.nodeInputs, compDict, mediums, startEndUnit);
+		addNodeInputsToObject(node.data.nodeInputs, compDict, mediums, startEndUnit, nodes);
 
 		/** Economic and Emissions parameters */
 		if (showEconomicParameters(resieParameterMenus)) {
 			compDict.economic = {};
-			addNodeInputsToObject(node.data.economicInputs, compDict.economic, mediums, startEndUnit);
+			addNodeInputsToObject(node.data.economicInputs, compDict.economic, mediums, startEndUnit, nodes);
 		}
 		if (showEmissionsParameters(resieParameterMenus)) {
 			compDict.emissions = {};
-			addNodeInputsToObject(node.data.economicInputs, compDict.emissions, mediums, startEndUnit);
+			addNodeInputsToObject(node.data.economicInputs, compDict.emissions, mediums, startEndUnit, nodes);
 		}
 
 		/** Control Parameters */
@@ -157,11 +158,12 @@ const exportState = ({ nodes, edges, mediums, resieParameterMenus }: ExportProps
 				node.data.controlParameters.inputs,
 				compDict.control_parameters,
 				mediums,
-				startEndUnit
+				startEndUnit,
+				nodes
 			);
 		}
 		if (node.data.controlModules.length > 0) {
-			compDict.control_modules = getControlModules(node.data.controlModules);
+			compDict.control_modules = getControlModules(node.data.controlModules, nodes);
 		}
 
 		// Add import data

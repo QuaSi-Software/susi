@@ -3,7 +3,7 @@ import CustomInputField from './CustomInputField';
 import OptionalInputField from './OptionalInputField';
 import { InputIssueType } from './Validation/InputChecking';
 
-export const InputMenu = ({ inputs, onValueChange, onIncludedChange }: InputMenuProps) => {
+export const InputMenu = ({ inputs, nodeId, onValueChange, onIncludedChange }: InputMenuProps) => {
 	if (inputs.length === 0) return <></>;
 	return (
 		<div className="input-menu">
@@ -18,7 +18,7 @@ export const InputMenu = ({ inputs, onValueChange, onIncludedChange }: InputMenu
 				>
 					{input.isRequired && (
 						<div className="required-input-row">
-							<CustomInputField nodeInput={input} onEdit={onValueChange} />
+							<CustomInputField nodeInput={input} onEdit={onValueChange} nodeId={nodeId} />
 						</div>
 					)}
 					{!input.isRequired && (
