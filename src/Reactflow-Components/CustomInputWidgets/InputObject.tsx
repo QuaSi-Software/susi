@@ -19,6 +19,7 @@ const InputObjectType = {
 	DATE: 'DATE',
 	CUSTOM_OBJECT: 'CUSTOM_OBJECT',
 	COMPONENT_UAC: 'COMPONENT_UAC',
+	COMPONENT_UAC_LIST: 'COMPONENT_UAC_LIST',
 	UNSET: 'UNSET',
 } as const;
 
@@ -158,6 +159,9 @@ class InputObject implements InputObjectProps {
 			case InputObjectType.STRING:
 			case InputObjectType.DROPDOWN:
 			case InputObjectType.COMPONENT_UAC:
+			case InputObjectType.VECTOR_FLOAT:
+			case InputObjectType.VECTOR_STRING:
+			case InputObjectType.COMPONENT_UAC_LIST:
 				break;
 			default:
 				return true;

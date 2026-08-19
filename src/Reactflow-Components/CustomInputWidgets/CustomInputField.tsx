@@ -16,12 +16,12 @@ import { en } from 'primelocale/js/en.js';
 import { InputIssueType } from './Validation/InputChecking';
 import { CustomCalendar } from './CustomCalendar';
 import { WarningMessage } from './WarningMessage';
-import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
-import { useReactFlow } from '@xyflow/react';
+import { UacWidget } from './UacWidget';
+import ListWidget from './ListWidget';
 addLocale('de-DE', de);
 addLocale('en-US', en);
 
-interface CustomInputFieldProps {
+export interface CustomInputFieldProps {
 	nodeInput: InputObject;
 	nodeId: string | null;
 	onEdit: (resieName: string, newValue: any) => void;
@@ -35,9 +35,6 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit, 
 	const appContext = useContext(AppContext);
 	const mediums = appContext?.mediums || [];
 	const locale = appContext?.locale || Locale.US;
-	const allNodes: SusiNode[] = useReactFlow()
-		.getNodes()
-		.filter((n) => n.type !== 'group') as SusiNode[];
 
 	// Create a mutable copy for dropdown options
 	const nodeInputCopy = { ...nodeInput };
@@ -56,6 +53,8 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit, 
 		switch (js_type) {
 			case InputObjectType.VECTOR_FLOAT:
 			case InputObjectType.VECTOR_STRING:
+			case InputObjectType.COMPONENT_UAC_LIST:
+				return <ListWidget nodeInput={nodeInput} nodeId={nodeId} onEdit={onEdit} />;
 			case InputObjectType.CUSTOM_OBJECT:
 			case InputObjectType.STRING:
 				return (
@@ -162,16 +161,15 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit, 
 				);
 			case InputObjectType.COMPONENT_UAC:
 				console.debug(`Node ID: ${nodeId}`);
-				const nodeList = allNodes.filter((e) => e.id !== nodeId);
 				return (
-					<CustomDropdown<string>
+					<UacWidget
+						value={startValue}
+						onInputChanged={onInputChanged}
 						displayName={displayName}
-						startValue={startValue}
-						dropdown_options={['None'].concat(nodeList.map((n: SusiNode) => n.id))}
-						dropdown_options_display_names={['None'].concat(nodeList.map((n: SusiNode) => n.data.content))}
-						onEdit={onInputChanged}
+						nodeId={nodeId}
 					/>
 				);
+
 			default:
 				console.log('Input ' + displayName + ' has type that is not defined yet.');
 				return null;
