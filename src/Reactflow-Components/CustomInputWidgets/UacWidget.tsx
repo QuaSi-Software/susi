@@ -1,4 +1,4 @@
-import { useReactFlow } from 'reactflow';
+import { useReactFlow } from '@xyflow/react';
 import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import CustomDropdown from './CustomDropdown';
 

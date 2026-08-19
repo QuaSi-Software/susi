@@ -7,28 +7,36 @@ import { Form, FloatingLabel } from 'react-bootstrap';
 import { InputIssueType } from './Validation/InputChecking';
 import { AppContext } from '../../AppContext';
 import { Locale } from '../../Sidebar/SettingsMenu';
+import { useReactFlow } from '@xyflow/react';
 
 const DeletableListItem = ({
 	value,
 	index,
 	onDelete,
+	displayValue,
 }: {
 	value: any;
 	index: number;
 	onDelete: (value: any, index: number) => void;
+	displayValue?: string;
 }) => {
+	if (!displayValue) displayValue = value;
 	return (
 		<div key={`item-${index}-${value}`} className="list-item">
-			<div title={value}>{value}</div>
+			<div title={displayValue}>{displayValue}</div>
 			<button onClick={() => onDelete(value, index)}> x </button>
 		</div>
 	);
 };
 
 const ListWidget = ({ nodeInput, onEdit, nodeId }: CustomInputFieldProps) => {
-	const listValues = nodeInput.value;
+	let listValues = nodeInput.value;
 	console.assert(Array.isArray(listValues), `Node Input passed to ListWidget must be a list`);
 	if (!Array.isArray(listValues)) return;
+	const allNodes = useReactFlow()
+		.getNodes()
+		.filter((n) => n.type !== 'group');
+
 	const [editingValue, setEditingValue] = useState<string | number>();
 	const disabledByMutex = nodeInput.issue.issueType === InputIssueType.Mutex;
 	const appContext = useContext(AppContext);
@@ -46,6 +54,7 @@ const ListWidget = ({ nodeInput, onEdit, nodeId }: CustomInputFieldProps) => {
 		onEdit(nodeInput.resieName, newList);
 	}
 	function addItem(value: any) {
+		console.debug(`Adding ${value} to List`);
 		if (nodeInput.type === InputObjectType.VECTOR_FLOAT && Number.isNaN(Number.parseFloat(value))) return;
 		const newList: (string | number)[] = Object.assign([], listValues);
 		newList.push(value);
@@ -65,7 +74,17 @@ const ListWidget = ({ nodeInput, onEdit, nodeId }: CustomInputFieldProps) => {
 			{/** section with list items */}
 			<div className="list-item-container">
 				{listValues.map((item, index) => (
-					<DeletableListItem value={item} index={index} onDelete={deleteItem} />
+					<DeletableListItem
+						value={item}
+						index={index}
+						onDelete={deleteItem}
+						/** if it's a uac, we should display the node name, not the id */
+						displayValue={
+							nodeInput.type === InputObjectType.COMPONENT_UAC_LIST
+								? allNodes.find((n) => n.id === item)?.data.content
+								: item
+						}
+					/>
 				))}
 			</div>
 			{/** Input widget */
