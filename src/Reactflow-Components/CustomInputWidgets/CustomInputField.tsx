@@ -166,7 +166,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit, 
 						value={startValue}
 						onInputChanged={onInputChanged}
 						displayName={displayName}
-						nodeId={nodeId}
+						excludedNodeIds={nodeId ? [nodeId] : []}
 					/>
 				);
 

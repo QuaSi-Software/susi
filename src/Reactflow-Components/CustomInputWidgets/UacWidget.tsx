@@ -6,14 +6,14 @@ interface UacWidgetProps {
 	displayName: string;
 	onInputChanged: (newInput: any) => void;
 	value: string;
-	nodeId: string | null;
+	excludedNodeIds: string[];
 }
 
-export function UacWidget({ displayName, onInputChanged, value, nodeId }: UacWidgetProps) {
+export function UacWidget({ displayName, onInputChanged, value, excludedNodeIds }: UacWidgetProps) {
 	const allNodes: SusiNode[] = useReactFlow()
 		.getNodes()
 		.filter((n) => n.type !== 'group') as SusiNode[];
-	const nodeList = allNodes.filter((e) => e.id !== nodeId);
+	const nodeList = allNodes.filter((e) => !excludedNodeIds.includes(e.id));
 	return (
 		<CustomDropdown<string>
 			displayName={displayName}

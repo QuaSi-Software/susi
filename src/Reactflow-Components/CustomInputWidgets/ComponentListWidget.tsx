@@ -50,6 +50,8 @@ const ComponentListWidget = ({ nodeInput, onEdit, nodeId }: CustomInputFieldProp
 		onEdit(nodeInput.resieName, newList);
 	}
 
+	const excludedNodeIds = listValues;
+	if (nodeId) excludedNodeIds.concat(nodeId);
 	return (
 		<>
 			{/** section with list items */}
@@ -72,8 +74,8 @@ const ComponentListWidget = ({ nodeInput, onEdit, nodeId }: CustomInputFieldProp
 			/** If it's a list of uac components, add a uac widget. When you select a new uac, add
 			it to the list */}
 			<UacWidget
-				nodeId={nodeId}
-				value="None"
+				excludedNodeIds={excludedNodeIds}
+				value={'None'}
 				onInputChanged={addItem}
 				displayName={`Add value to ${nodeInput.displayName}`}
 			/>
