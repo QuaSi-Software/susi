@@ -41,7 +41,7 @@ function ListItem({
 				/>
 			)}
 			<button onClick={onDelete} style={{ fontSize: '1.25em', alignContent: 'center' }}>
-				x
+				<i className="bi bi-x"></i>
 			</button>
 		</div>
 	);
@@ -51,6 +51,7 @@ export function ListWidget({ nodeInput, onEdit }: CustomInputFieldProps) {
 	const listValues: string[] = nodeInput.value;
 	console.assert(Array.isArray(listValues), `Node Input passed to ListWidget must be a list`);
 	if (!Array.isArray(listValues)) return;
+	const itemType = nodeInput.type === InputObjectType.VECTOR_STRING ? InputObjectType.STRING : InputObjectType.FLOAT;
 
 	function onItemChange(index: number, value: string) {
 		const newList: string[] = Object.assign([], listValues);
@@ -64,11 +65,10 @@ export function ListWidget({ nodeInput, onEdit }: CustomInputFieldProps) {
 	}
 	function addItem() {
 		const newList: string[] = Object.assign([], listValues);
-		newList.push('');
+		newList.push(itemType === InputObjectType.STRING ? '' : '0');
 		onEdit(nodeInput.resieName, newList);
 	}
 
-	const itemType = nodeInput.type === InputObjectType.VECTOR_STRING ? InputObjectType.STRING : InputObjectType.FLOAT;
 	return (
 		<>
 			{/** title */}
@@ -85,8 +85,8 @@ export function ListWidget({ nodeInput, onEdit }: CustomInputFieldProps) {
 				</div>
 			))}
 			{/** add button */}
-			<Button variant="primary" onClick={addItem}>
-				+
+			<Button variant="primary" onClick={addItem} style={{ fontSize: '1.25em', padding: '0em 0.4em' }}>
+				<i className="bi bi-plus-lg"></i>
 			</Button>
 		</>
 	);

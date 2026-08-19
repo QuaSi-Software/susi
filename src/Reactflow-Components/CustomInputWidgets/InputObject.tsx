@@ -129,6 +129,9 @@ class InputObject implements InputObjectProps {
 			const node = nodes.find((e) => e.id === this.value);
 			const nodeName = node ? node.data.content : 'None';
 			return nodeName;
+		} else if (this.type === InputObjectType.VECTOR_FLOAT) {
+			const result = this.value.map((e: string) => Number.parseFloat(e));
+			return result.filter((e: string) => !Number.isNaN(e));
 		}
 		return this.value;
 	}
