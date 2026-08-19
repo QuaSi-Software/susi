@@ -33,7 +33,6 @@ const ListWidget = ({ nodeInput, onEdit, nodeId }: CustomInputFieldProps) => {
 	const disabledByMutex = nodeInput.issue.issueType === InputIssueType.Mutex;
 	const appContext = useContext(AppContext);
 	const locale = appContext?.locale || Locale.US;
-	const valueIsInvalid = false;
 
 	function deleteItem(value: string | number, index: number) {
 		let newList: Array<string | number> = Object.assign([], listValues);
@@ -57,12 +56,8 @@ const ListWidget = ({ nodeInput, onEdit, nodeId }: CustomInputFieldProps) => {
 		newValue = newValue.replaceAll('\n', '');
 		setEditingValue(newValue);
 	}
-	function isValidNumber(value: string | number | undefined, disabledByMutex: boolean = false): boolean {
-		return (
-			(!nodeInput.isRequired && !nodeInput.isIncluded) ||
-			!Number.isNaN(Number.parseFloat(value as string)) ||
-			disabledByMutex
-		);
+	function isValidNumber(value: string | number | undefined): boolean {
+		return !Number.isNaN(Number.parseFloat(value as string)) || disabledByMutex;
 	}
 
 	return (
@@ -107,7 +102,7 @@ const ListWidget = ({ nodeInput, onEdit, nodeId }: CustomInputFieldProps) => {
 						onChange={(e) => updateWidgetValue(e.target.value)}
 						step="0.01"
 						lang={locale}
-						isInvalid={!isValidNumber(editingValue, disabledByMutex)}
+						isValid={isValidNumber(editingValue)}
 						disabled={disabledByMutex}
 						onKeyDown={(e) => (e.key === 'Enter' ? addItem(editingValue) : null)}
 					/>
