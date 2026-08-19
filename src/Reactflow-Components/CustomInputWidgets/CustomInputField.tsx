@@ -18,6 +18,7 @@ import { CustomCalendar } from './CustomCalendar';
 import { WarningMessage } from './WarningMessage';
 import { UacWidget } from './UacWidget';
 import ComponentListWidget from './ComponentListWidget';
+import { ListWidget } from './ListWidget';
 addLocale('de-DE', de);
 addLocale('en-US', en);
 
@@ -55,6 +56,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit, 
 				return <ComponentListWidget nodeInput={nodeInput} nodeId={nodeId} onEdit={onEdit} />;
 			case InputObjectType.VECTOR_FLOAT:
 			case InputObjectType.VECTOR_STRING:
+				return <ListWidget nodeInput={nodeInput} onEdit={onEdit} nodeId={null} />;
 			case InputObjectType.CUSTOM_OBJECT:
 			case InputObjectType.STRING:
 				return (

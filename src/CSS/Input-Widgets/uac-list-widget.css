@@ -8,7 +8,7 @@
 }
 
 .list-item {
-	background-color: #ddd;
+	/* background-color: #ddd; */
 	border-radius: 4px;
 	flex-shrink: 0;
 	vertical-align: middle;
@@ -17,6 +17,7 @@
 	align-items: center;
 	gap: 0.1em;
 	flex-wrap: nowrap;
+	flex-shrink: 1;
 }
 .list-item button {
 	background-color: #ff0000;

@@ -1,4 +1,3 @@
-import '../../../src/CSS/Input-Widgets/list-widget.css';
 import type { CustomInputFieldProps } from './CustomInputField';
 import { InputObjectType } from './InputObject';
 import { UacWidget } from './UacWidget';
@@ -17,7 +16,7 @@ const DeletableListItem = ({
 }) => {
 	if (!displayValue) displayValue = value;
 	return (
-		<div key={`item-${index}-${value}`} className="list-item">
+		<div key={`item-${index}-${value}`} className="list-item" style={{ backgroundColor: '#ddd' }}>
 			<div title={displayValue}>{displayValue}</div>
 			<button onClick={() => onDelete(value, index)}> x </button>
 		</div>
@@ -26,7 +25,7 @@ const DeletableListItem = ({
 
 const ComponentListWidget = ({ nodeInput, onEdit, nodeId }: CustomInputFieldProps) => {
 	let listValues = nodeInput.value;
-	console.assert(Array.isArray(listValues), `Node Input passed to ListWidget must be a list`);
+	console.assert(Array.isArray(listValues), `Node Input passed to Component List Widget must be a list`);
 	if (!Array.isArray(listValues)) return;
 	const allNodes = useReactFlow()
 		.getNodes()
@@ -58,6 +57,7 @@ const ComponentListWidget = ({ nodeInput, onEdit, nodeId }: CustomInputFieldProp
 			<div className="list-item-container">
 				{listValues.map((item, index) => (
 					<DeletableListItem
+						key={`list-item-${index}-${item}`}
 						value={item}
 						index={index}
 						onDelete={deleteItem}
