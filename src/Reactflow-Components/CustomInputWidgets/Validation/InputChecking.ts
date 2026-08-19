@@ -39,16 +39,17 @@ function checkForInputIssues(input: InputObject, otherInputs: InputObject[]): In
 	const numberIssue = checkNumberValidation(input, otherInputs);
 	if (numberIssue) return numberIssue;
 	/** Check valid array or object string */
-	const parseIssue = checkCustomObject(input);
+	const parseIssue = checkObjectsAndArrays(input);
 	if (parseIssue) return parseIssue;
 	/** if no issues were found, return null */
 	return { issueType: InputIssueType.None, message: '' };
 }
 
-function checkCustomObject(input: InputObject): InputIssue | null {
+function checkObjectsAndArrays(input: InputObject): InputIssue | null {
 	if (!input.isIncluded) return null;
+	const shouldBeArray = input.type === InputObjectType.VECTOR_FLOAT || input.type === InputObjectType.VECTOR_STRING;
 	const shouldBeObject = input.type === InputObjectType.CUSTOM_OBJECT;
-	if (shouldBeObject) {
+	if (shouldBeArray || shouldBeObject) {
 		/** Check that they are valid JSON objects */
 		let obj;
 		try {
@@ -56,7 +57,12 @@ function checkCustomObject(input: InputObject): InputIssue | null {
 		} catch (error) {
 			obj = null;
 		}
-		if (shouldBeObject && (obj === null || Array.isArray(obj))) {
+		if (shouldBeArray && (obj === null || !Array.isArray(obj))) {
+			return {
+				issueType: InputIssueType.Validity,
+				message: `Input is not an array`,
+			};
+		} else if (shouldBeObject && (obj === null || Array.isArray(obj))) {
 			return {
 				issueType: InputIssueType.Validity,
 				message: `Input is not a dictionary`,

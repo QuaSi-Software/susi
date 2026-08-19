@@ -17,7 +17,7 @@ import { InputIssueType } from './Validation/InputChecking';
 import { CustomCalendar } from './CustomCalendar';
 import { WarningMessage } from './WarningMessage';
 import { UacWidget } from './UacWidget';
-import ListWidget from './ListWidget';
+import ComponentListWidget from './ComponentListWidget';
 addLocale('de-DE', de);
 addLocale('en-US', en);
 
@@ -51,10 +51,10 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit, 
 	const getInputFieldByType = (): React.ReactNode => {
 		const disabledByMutex = nodeInput.issue.issueType === InputIssueType.Mutex;
 		switch (js_type) {
+			case InputObjectType.COMPONENT_UAC_LIST:
+				return <ComponentListWidget nodeInput={nodeInput} nodeId={nodeId} onEdit={onEdit} />;
 			case InputObjectType.VECTOR_FLOAT:
 			case InputObjectType.VECTOR_STRING:
-			case InputObjectType.COMPONENT_UAC_LIST:
-				return <ListWidget nodeInput={nodeInput} nodeId={nodeId} onEdit={onEdit} />;
 			case InputObjectType.CUSTOM_OBJECT:
 			case InputObjectType.STRING:
 				return (
