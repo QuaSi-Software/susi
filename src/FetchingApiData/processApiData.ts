@@ -65,13 +65,13 @@ export function processApiReturn(
 			data.general.economic_categories,
 			data.general.economic,
 			'Economic Settings',
-			'economic'
+			'economic_parameters'
 		),
 		importResieParameterMenuInfo(
 			data.general.emissions_categories,
 			data.general.emissions,
 			'Emissions',
-			'emissions'
+			'emissions_parameters'
 		),
 	]);
 }
