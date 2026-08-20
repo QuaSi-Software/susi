@@ -1,17 +1,19 @@
 import { Button, Form } from 'react-bootstrap';
 import type { CustomInputFieldProps } from './CustomInputField';
 import { InputObjectType } from './InputObject';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AppContext } from '../../AppContext';
 import { Locale } from '../../Sidebar/SettingsMenu';
+import { useMotionValue, Reorder } from 'framer-motion';
+import { useRaisedShadow } from '../BusDataWidget/use-raised-shadow';
 
 function ListItem({
-	value,
+	value: item,
 	inputType,
 	onInputChange,
 	onDelete,
 }: {
-	value: string | number;
+	value: ListItemObject;
 	inputType: InputObjectType;
 	onInputChange: (value: string) => void;
 	onDelete: () => void;
@@ -19,54 +21,86 @@ function ListItem({
 	const appContext = useContext(AppContext);
 	const locale = appContext?.locale || Locale.US;
 
+	const y = useMotionValue<number>(0);
+	const boxShadow = useRaisedShadow(y);
+
 	return (
-		<div className="list-item">
+		<Reorder.Item value={item} id={item.key as string} style={{ boxShadow, y }} className="list-item">
 			{inputType === InputObjectType.STRING && (
 				<Form.Control
 					type="text"
 					as="textarea"
 					style={{ height: '1em' }}
-					value={String(value)}
+					value={String(item.value)}
 					onChange={(e) => onInputChange(e.target.value)}
 				/>
 			)}
 			{inputType === InputObjectType.FLOAT && (
 				<Form.Control
 					type="number"
-					value={value}
+					value={item.value}
 					onChange={(e) => onInputChange(e.target.value)}
 					step="0.01"
 					lang={locale}
-					isValid={!Number.isNaN(Number.parseFloat(value as string))}
+					isValid={!Number.isNaN(Number.parseFloat(item.value as string))}
 				/>
 			)}
 			<button onClick={onDelete} style={{ fontSize: '1.25em', alignContent: 'center' }}>
 				<i className="bi bi-x"></i>
 			</button>
-		</div>
+		</Reorder.Item>
 	);
 }
 
+/** List Item Object is created with a unique key,
+ * so the value can be changed and the reorder group can still have
+ * a unique identifier for each input field. The index and value both don't work
+ * as unique keys, because if the value is used, the autofocus when changing the input field deselects when the key changes*/
+interface ListItemObject {
+	value: string;
+	key: string;
+}
+
 export function ListWidget({ nodeInput, onEdit }: CustomInputFieldProps) {
-	const listValues: string[] = nodeInput.value;
-	console.assert(Array.isArray(listValues), `Node Input passed to ListWidget must be a list`);
-	if (!Array.isArray(listValues)) return;
+	const initialValues: string[] = nodeInput.value;
+	console.assert(Array.isArray(initialValues), `Node Input passed to ListWidget must be a list`);
+	if (!Array.isArray(initialValues)) return;
 	const itemType = nodeInput.type === InputObjectType.VECTOR_STRING ? InputObjectType.STRING : InputObjectType.FLOAT;
 
+	const [listValues, setListValues] = useState<ListItemObject[]>(
+		initialValues.map((e, index) => ({ value: e, key: `key-${e}-${index}` }))
+	);
+
 	function onItemChange(index: number, value: string) {
-		const newList: string[] = Object.assign([], listValues);
-		newList[index] = value;
-		onEdit(nodeInput.resieName, newList);
+		const newList = [...listValues];
+		newList[index].value = value;
+		setListValues(newList);
+		onEdit(
+			nodeInput.resieName,
+			newList.map((e) => e.value)
+		);
 	}
 	function onItemDelete(index: number) {
-		const newList = Object.assign([], listValues);
+		const newList = [...listValues];
 		newList.splice(index, 1);
-		onEdit(nodeInput.resieName, newList);
+		setListValues(newList);
+		onEdit(
+			nodeInput.resieName,
+			newList.map((e) => e.value)
+		);
 	}
 	function addItem() {
-		const newList: string[] = Object.assign([], listValues);
-		newList.push(itemType === InputObjectType.STRING ? '' : '0');
-		onEdit(nodeInput.resieName, newList);
+		const newList = [...listValues];
+		newList.push({ value: itemType === InputObjectType.STRING ? '' : '0', key: `key-${Date.now()}` });
+		setListValues(newList);
+		onEdit(
+			nodeInput.resieName,
+			newList.map((e) => e.value)
+		);
+	}
+	function onReorder(order: ListItemObject[]) {
+		setListValues(order);
+		onEdit(nodeInput.resieName, order);
 	}
 
 	return (
@@ -74,16 +108,18 @@ export function ListWidget({ nodeInput, onEdit }: CustomInputFieldProps) {
 			{/** title */}
 			<div>{nodeInput.displayName}</div>
 			{/** array of input fields */}
-			{listValues.map((input, index) => (
-				<div className="list-item-container">
-					<ListItem
-						value={input}
-						inputType={itemType}
-						onInputChange={(value: string) => onItemChange(index, value)}
-						onDelete={() => onItemDelete(index)}
-					/>
-				</div>
-			))}
+			<Reorder.Group axis="y" values={listValues} onReorder={onReorder} className="list-item-container">
+				{listValues.map((input, index) => (
+					<div className="list-item-container" key={`list-item-${input.key}`}>
+						<ListItem
+							value={input}
+							inputType={itemType}
+							onInputChange={(value: string) => onItemChange(index, value)}
+							onDelete={() => onItemDelete(index)}
+						/>
+					</div>
+				))}
+			</Reorder.Group>
 			{/** add button */}
 			<Button variant="primary" onClick={addItem} style={{ fontSize: '1.25em', padding: '0em 0.4em' }}>
 				<i className="bi bi-plus-lg"></i>
