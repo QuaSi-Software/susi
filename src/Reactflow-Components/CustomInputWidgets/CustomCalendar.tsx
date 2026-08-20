@@ -23,6 +23,7 @@ export function CustomCalendar({ date, locale, disabled, displayName, onInputCha
 				locale={locale}
 				disabled={disabled}
 				hideOnDateTimeSelect
+				hourFormat="24"
 			/>
 			<label htmlFor="intInputWidget" id="floating-label">
 				{displayName}

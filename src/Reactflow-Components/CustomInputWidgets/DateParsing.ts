@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import type { ResieParameterMenuInfo } from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
-const defaultDateFormat = 'dd.LL.yyyy hh:mm';
+const defaultDateFormat = 'dd.LL.yyyy HH:mm';
 function now(): Date {
 	const now = new Date();
 	now.setHours(0, 0, 0);
