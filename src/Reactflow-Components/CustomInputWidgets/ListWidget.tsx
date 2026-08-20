@@ -26,6 +26,7 @@ function ListItem({
 
 	return (
 		<Reorder.Item value={item} id={item.key as string} style={{ boxShadow, y }} className="list-item">
+			<i className="bi bi-grip-vertical drag-icon"></i>
 			{inputType === InputObjectType.STRING && (
 				<Form.Control
 					type="text"
@@ -110,14 +111,13 @@ export function ListWidget({ nodeInput, onEdit }: CustomInputFieldProps) {
 			{/** array of input fields */}
 			<Reorder.Group axis="y" values={listValues} onReorder={onReorder} className="list-item-container">
 				{listValues.map((input, index) => (
-					<div className="list-item-container" key={`list-item-${input.key}`}>
-						<ListItem
-							value={input}
-							inputType={itemType}
-							onInputChange={(value: string) => onItemChange(index, value)}
-							onDelete={() => onItemDelete(index)}
-						/>
-					</div>
+					<ListItem
+						key={`list-item-${input.key}`}
+						value={input}
+						inputType={itemType}
+						onInputChange={(value: string) => onItemChange(index, value)}
+						onDelete={() => onItemDelete(index)}
+					/>
 				))}
 			</Reorder.Group>
 			{/** add button */}
