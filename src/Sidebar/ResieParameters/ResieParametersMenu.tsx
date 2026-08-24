@@ -36,6 +36,7 @@ export function ResieParametersMenu({
 	const [test, setTest] = useState<string[]>([]);
 
 	const menu = resieParameterMenus.find((e) => e.title === selectedMenu);
+	const inputs = menu!.inputs.filter((e) => e.resieName !== 'start_end_unit');
 	return (
 		<div key={`key-${selectedMenu}-menu`}>
 			<div className="sidebar-subheading">{menu?.title}</div>
@@ -43,7 +44,7 @@ export function ResieParametersMenu({
 			<Accordion.Root className="AccordionRoot" type="multiple" defaultValue={[menu!.categories[0].heading]}>
 				<InputMenuWithCategories
 					title={menu!.title}
-					inputs={menu!.inputs}
+					inputs={inputs}
 					inputCategories={menu!.categories}
 					nodeId={null}
 					onValueChange={(key, value) => changeInputListElement(menu!.title, key, value, false)}

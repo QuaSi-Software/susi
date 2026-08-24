@@ -9,6 +9,7 @@ import type { Medium } from '../NodeDataStructures/Mediums/Medium';
 import type { NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
 import { getInputObjectFromAPIParameter } from './ImportInputObjects';
 import type { ControlModule } from '../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
+import { defaultDateFormat } from '../Reactflow-Components/CustomInputWidgets/DateParsing';
 
 export function processApiReturn(
 	data: ApiReturn,
@@ -48,6 +49,7 @@ export function processApiReturn(
 	}
 	setControlModules(controlModules);
 	/** io settings and sim params */
+	data.general.simulation['start_end_unit'].default = defaultDateFormat;
 	setResieParameterMenus([
 		importResieParameterMenuInfo(
 			data.general.io_categories,

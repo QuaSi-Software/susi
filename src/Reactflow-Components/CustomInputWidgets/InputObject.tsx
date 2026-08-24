@@ -112,7 +112,7 @@ class InputObject implements InputObjectProps {
 			}
 		}
 	}
-	public getNodeInputExportValue(mediums: Medium[], startEndUnit: string | null = null, nodes: SusiNode[]): any {
+	public getNodeInputExportValue(mediums: Medium[], nodes: SusiNode[]): any {
 		if (this.type === InputObjectType.MEDIUM) {
 			const mediumKey = this.value;
 			const medium = mediums.find((m) => m.key === mediumKey);
@@ -120,7 +120,7 @@ class InputObject implements InputObjectProps {
 			return medium.name;
 		}
 		if (this.type === InputObjectType.DATE) {
-			return exportDate(this.value, startEndUnit);
+			return exportDate(this.value);
 		} else if (this.type === InputObjectType.FLOAT) {
 			return Number.parseFloat(this.value);
 		} else if (this.type === InputObjectType.INT) {
