@@ -41,7 +41,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit, 
 	const nodeInputCopy = { ...nodeInput };
 
 	const onInputChanged = (newInput: any): void => {
-		let finalValue: string | number | boolean = newInput;
+		let finalValue: string | number | boolean | Date = newInput;
 		if (nodeInput.type === InputObjectType.BOOLEAN) {
 			finalValue = !inputValue;
 		}

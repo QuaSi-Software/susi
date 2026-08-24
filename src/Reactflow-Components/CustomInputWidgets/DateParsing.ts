@@ -25,9 +25,9 @@ export function parseDate(dateString: string | null | undefined, startEndUnit: s
 	return date.toJSDate();
 }
 
-export function exportDate(date: Date): string {
+export function exportDate(date: Date, dateFormat: string = defaultDateFormat): string {
 	const dateTime: DateTime = DateTime.fromJSDate(date);
-	const format = getDatetimeFormat(null);
+	const format = getDatetimeFormat(dateFormat);
 	return dateTime.toFormat(format);
 }
 
