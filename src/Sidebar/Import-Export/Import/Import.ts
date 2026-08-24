@@ -138,11 +138,11 @@ const importState = ({
 		setImportedValues(nodeInputs, nodeData, mediums, startEndUnit);
 		newNode.data.nodeInputs = nodeInputs;
 		/** economic and emissions inputs */
-		if (nodeData.economic) {
-			setImportedValues(newNode.data.economicInputs, nodeData.economic, mediums, startEndUnit);
+		if (nodeData.economic_parameters) {
+			setImportedValues(newNode.data.economicInputs, nodeData.economic_parameters, mediums, startEndUnit);
 		}
-		if (nodeData.emissions) {
-			setImportedValues(newNode.data.emissionsInputs, nodeData.emissions, mediums, startEndUnit);
+		if (nodeData.emissions_parameters) {
+			setImportedValues(newNode.data.emissionsInputs, nodeData.emissions_parameters, mediums, startEndUnit);
 		}
 
 		/** Set Control parameters */

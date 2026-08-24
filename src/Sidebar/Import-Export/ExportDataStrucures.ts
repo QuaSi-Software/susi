@@ -6,9 +6,9 @@ export interface ImportData {
 	groups?: NodeGroup[]; /** For importing back into susi only */
 	/** General Parameters */
 	io_settings?: Record<string, any>;
-	emissions?: Record<string, any>;
+	emissions_parameters?: Record<string, any>;
 	simulation_parameters?: Record<string, any>;
-	economic?: Record<string, any>;
+	economic_parameters?: Record<string, any>;
 	[key: string]: any;
 }
 
@@ -32,8 +32,8 @@ export interface ComponentData {
 	output_refs?: string[] | Record<string, string>;
 	control_parameters?: Record<string, any>;
 	control_modules?: Record<string, any>[];
-	emissions?: Record<string, any>;
-	economic?: Record<string, any>;
+	emissions_parameters?: Record<string, any>;
+	economic_parameters?: Record<string, any>;
 	[key: string]: any;
 }
 

@@ -50,8 +50,8 @@ function getResieParameter(resieParameterMenus: ResieParameterMenuInfo[], menuEx
 }
 
 export function showEconomicParameters(resieParameterMenus: ResieParameterMenuInfo[]) {
-	return getResieParameter(resieParameterMenus, 'economic', 'calculate_economy');
+	return getResieParameter(resieParameterMenus, 'economic_parameters', 'calculate_economy');
 }
 export function showEmissionsParameters(resieParameterMenus: ResieParameterMenuInfo[]) {
-	return getResieParameter(resieParameterMenus, 'emissions', 'calculate_emissions');
+	return getResieParameter(resieParameterMenus, 'emissions_parameters', 'calculate_emissions');
 }

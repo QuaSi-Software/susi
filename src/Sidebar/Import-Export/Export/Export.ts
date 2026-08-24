@@ -143,12 +143,18 @@ const exportState = ({ nodes, edges, mediums, resieParameterMenus }: ExportProps
 
 		/** Economic and Emissions parameters */
 		if (showEconomicParameters(resieParameterMenus)) {
-			compDict.economic = {};
-			addNodeInputsToObject(node.data.economicInputs, compDict.economic, mediums, startEndUnit, nodes);
+			compDict.economic_parameters = {};
+			addNodeInputsToObject(node.data.economicInputs, compDict.economic_parameters, mediums, startEndUnit, nodes);
 		}
 		if (showEmissionsParameters(resieParameterMenus)) {
-			compDict.emissions = {};
-			addNodeInputsToObject(node.data.economicInputs, compDict.emissions, mediums, startEndUnit, nodes);
+			compDict.emissions_parameters = {};
+			addNodeInputsToObject(
+				node.data.emissionsInputs,
+				compDict.emissions_parameters,
+				mediums,
+				startEndUnit,
+				nodes
+			);
 		}
 
 		/** Control Parameters */
