@@ -162,7 +162,6 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit, 
 					/>
 				);
 			case InputObjectType.COMPONENT_UAC:
-				console.debug(`Node ID: ${nodeId}`);
 				return (
 					<UacWidget
 						value={startValue}

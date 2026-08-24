@@ -1,5 +1,4 @@
 import type { Locale } from '../../Sidebar/SettingsMenu';
-import 'react-widgets/styles.css';
 import { useState } from 'react';
 import { exportDate } from './DateParsing';
 import { FloatLabel } from 'primereact/floatlabel';
