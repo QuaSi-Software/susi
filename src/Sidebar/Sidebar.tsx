@@ -14,7 +14,7 @@ import { ResieParameterSubMenu } from './ResieParameters/ResieParameterSubMenu';
 import { InformationMenu } from './InformationMenu/InformationMenu';
 
 export const MenuType = {
-	NewNodeMenu: 'Add New Components',
+	NewNodeMenu: 'Add Components',
 	MediumMenu: 'Medium Menu',
 	ResieParameters: 'Resie Parameters',
 	ImportExportMenu: 'Import/Export',

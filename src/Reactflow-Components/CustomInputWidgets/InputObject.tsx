@@ -165,6 +165,7 @@ class InputObject implements InputObjectProps {
 			case InputObjectType.VECTOR_FLOAT:
 			case InputObjectType.VECTOR_STRING:
 			case InputObjectType.COMPONENT_UAC_LIST:
+			case InputObjectType.DATE:
 				break;
 			default:
 				return true;

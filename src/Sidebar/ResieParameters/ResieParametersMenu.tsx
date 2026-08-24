@@ -40,7 +40,6 @@ export function ResieParametersMenu({
 	return (
 		<div key={`key-${selectedMenu}-menu`}>
 			<div className="sidebar-subheading">{menu?.title}</div>
-			<br />
 			<Accordion.Root className="AccordionRoot" type="multiple" defaultValue={[menu!.categories[0].heading]}>
 				<InputMenuWithCategories
 					title={menu!.title}
