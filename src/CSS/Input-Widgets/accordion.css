@@ -46,6 +46,7 @@ h3 {
 	justify-content: space-between;
 	font-size: var(--medium-font-size);
 	font-weight: 600;
+	width: stretch;
 }
 
 .AccordionTrigger {
