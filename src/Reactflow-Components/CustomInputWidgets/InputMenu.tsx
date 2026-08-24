@@ -28,6 +28,7 @@ export const InputMenu = ({ inputs, nodeId, onValueChange, onIncludedChange }: I
 							onValueChange={onValueChange}
 							startIncluded={input.isIncluded}
 							onIncludedChange={onIncludedChange}
+							nodeId={nodeId}
 						/>
 					)}
 				</div>

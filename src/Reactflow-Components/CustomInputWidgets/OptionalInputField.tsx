@@ -10,6 +10,7 @@ interface OptionalInputFieldProps {
 	onValueChange: (resieName: string, newValue: string | number | boolean) => void;
 	startIncluded: boolean;
 	onIncludedChange: (resieName: string, isIncluded: boolean) => void;
+	nodeId: string | null;
 }
 
 const OptionalInputField: React.FC<OptionalInputFieldProps> = ({
@@ -17,6 +18,7 @@ const OptionalInputField: React.FC<OptionalInputFieldProps> = ({
 	onValueChange,
 	startIncluded,
 	onIncludedChange,
+	nodeId,
 }) => {
 	const resieName = nodeInput.resieName;
 	const [isIncluded, setIncluded] = useState<boolean>(startIncluded);
@@ -46,7 +48,7 @@ const OptionalInputField: React.FC<OptionalInputFieldProps> = ({
 				/>
 			</Col>
 			<Col className="optional-input-input-field">
-				<CustomInputField nodeInput={nodeInput} onEdit={onValueFieldEdit} />
+				<CustomInputField nodeInput={nodeInput} onEdit={onValueFieldEdit} nodeId={nodeId} />
 			</Col>
 		</Row>
 	);

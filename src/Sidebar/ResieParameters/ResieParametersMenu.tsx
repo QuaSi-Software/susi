@@ -59,7 +59,7 @@ export function ResieParametersMenu({
 						})
 					}
 					nodeId={null}
-					onEdit={(resieName, newValue) => setTest(newValue)}
+					onEdit={(_, newValue) => setTest(newValue)}
 				/>
 			</Accordion.Root>
 		</div>
