@@ -3,7 +3,8 @@ import { Handle, Position } from '@xyflow/react';
 import Markdown from 'react-markdown';
 import type { SusiNodeData } from './SusiNodeData';
 import { AppContext } from '../../AppContext';
-import { getMedium } from '../Mediums/MediumUtils';
+import { getMedium, getMediumNodeInput } from '../Mediums/MediumUtils';
+import { InputIssueType } from '../../Reactflow-Components/CustomInputWidgets/Validation/InputChecking';
 
 const MemoizedMarkdown = memo(({ content }: { content: string }) => <Markdown>{content}</Markdown>);
 
@@ -51,6 +52,10 @@ function MarkdownNode(susiData: SusiNodeData, sourcePosition: boolean, targetPos
 		}
 		return medium.color;
 	}
+	function showHandle(handleName: string): boolean {
+		const input = getMediumNodeInput(handleName, susiData);
+		return input.issue.issueType !== InputIssueType.Conditional;
+	}
 
 	let isBus = susiData.componentType.toLowerCase() === 'bus';
 	let handleType = isBus ? 'bus-handle' : 'custom-handle';
@@ -58,17 +63,20 @@ function MarkdownNode(susiData: SusiNodeData, sourcePosition: boolean, targetPos
 		<>
 			<div className="node-handles">
 				{sourcePos &&
-					[...Array(sourceHandles)].map((_, i) => (
-						<Handle
-							id={`source-${i}`}
-							key={susiData.content + '_source-' + i}
-							className={handleType}
-							type="source"
-							position={sourcePos}
-							isConnectable
-							style={getHandleStyle(sourcePos, sourceHandles, i, getHandleColor('source-' + i))}
-						/>
-					))}
+					[...Array(sourceHandles)].map(
+						(_, i) =>
+							showHandle(`source-${i}`) && (
+								<Handle
+									id={`source-${i}`}
+									key={susiData.content + '_source-' + i}
+									className={handleType}
+									type="source"
+									position={sourcePos}
+									isConnectable
+									style={getHandleStyle(sourcePos, sourceHandles, i, getHandleColor('source-' + i))}
+								/>
+							)
+					)}
 			</div>
 
 			<div className="markdown-node">
@@ -77,17 +85,20 @@ function MarkdownNode(susiData: SusiNodeData, sourcePosition: boolean, targetPos
 
 			<div className="node-handles">
 				{targetPos &&
-					[...Array(targetHandles)].map((_, i) => (
-						<Handle
-							id={`target-${i}`}
-							key={susiData.content + '_target-' + i}
-							className={handleType}
-							type="target"
-							position={targetPos}
-							isConnectable
-							style={getHandleStyle(targetPos, targetHandles, i, getHandleColor('target-' + i))}
-						/>
-					))}
+					[...Array(targetHandles)].map(
+						(_, i) =>
+							showHandle(`target-${i}`) && (
+								<Handle
+									id={`target-${i}`}
+									key={susiData.content + '_target-' + i}
+									className={handleType}
+									type="target"
+									position={targetPos}
+									isConnectable
+									style={getHandleStyle(targetPos, targetHandles, i, getHandleColor('target-' + i))}
+								/>
+							)
+					)}
 			</div>
 			{(!susiData.hasValidInputs || !susiData.hasValidName) && (
 				<div className="invalid-input-warning-icon">⚠️</div>

@@ -2,6 +2,7 @@ import { createMedium, type Medium } from './Medium';
 import type { SusiNode } from '../Nodes/SusiNode';
 import type { SusiEdge } from '../Edges/SusiEdge';
 import type { SusiNodeData } from '../Nodes/SusiNodeData';
+import type { InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
 
 const HandleType = {
 	source: 'source',
@@ -52,12 +53,12 @@ function setMediumOfHandle(mediumKey: string, handleName: string, node: SusiNode
 }
 
 /**
- * Get the key of the medium associated with a specific handle on a node
+ * Get the node input of the medium associated with a specific handle on a node
  * @param {string} handleName the name of the handle
  * @param {Object} nodeData node.data for our node
- * @returns {Object} the key of the medium associated with this handle
+ * @returns {Object} the node input of the medium associated with this handle
  */
-function getMediumKey(handleName: string, nodeData: SusiNodeData) {
+function getMediumNodeInput(handleName: string, nodeData: SusiNodeData): InputObject {
 	const splitName = handleName.split('-');
 	const sourceOrTarget = splitName[0] as HandleType;
 	const handleIndex = parseInt(splitName[1], 10);
@@ -66,7 +67,17 @@ function getMediumKey(handleName: string, nodeData: SusiNodeData) {
 	const variableName = mediumPerHandle[handleIndex];
 	// find the medium that is set in this variable
 	const mediumNodeInput = nodeData.nodeInputs.find((x) => x.resieName === variableName);
-	return mediumNodeInput!.value;
+	return mediumNodeInput!;
+}
+
+/**
+ * Get the key of the medium associated with a specific handle on a node
+ * @param {string} handleName the name of the handle
+ * @param {Object} nodeData node.data for our node
+ * @returns {Object} the key of the medium associated with this handle
+ */
+function getMediumKey(handleName: string, nodeData: SusiNodeData) {
+	return getMediumNodeInput(handleName, nodeData).value;
 }
 
 /**
@@ -158,4 +169,5 @@ export {
 	getUndefinedMedium,
 	checkForDuplicateNames,
 	setMediumOfHandle,
+	getMediumNodeInput,
 };
