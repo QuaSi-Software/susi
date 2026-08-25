@@ -81,7 +81,6 @@ export function createSusiNodeData(
 		input.checkInputValid(nodeInputs);
 	});
 	mutexSolver(nodeInputs);
-	// const hasValidInputs = nodeInputs.every((input) => input.isValid());
 	const componentType = nodeType.type_name;
 	const busData = componentType.toLowerCase() === 'bus' ? new BusData() : null;
 	const handleMediumDict = getMediumHandleDict(nodeInputs, nodeType.nr_outputs, nodeType.nr_inputs);
