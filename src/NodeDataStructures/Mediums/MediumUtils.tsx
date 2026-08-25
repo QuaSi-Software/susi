@@ -81,19 +81,6 @@ function getMediumKey(handleName: string, nodeData: SusiNodeData) {
 }
 
 /**
- * Get the medium for the handle on a node
- * @param {string} handleName the name of the handle e.g. target-1 or source-2
- * @param {Object} nodeData node.data of some node, so we can get its resie_data
- * @param {List[Object]} mediums A list of the mediums
- * @returns {Object} the medium Objects with {key, name, color}
- */
-function getMedium(handleName: string, nodeData: SusiNodeData, mediums: Medium[]) {
-	let key = getMediumKey(handleName, nodeData);
-	let medium = mediums.find((x) => x.key === key);
-	return medium;
-}
-
-/**
  * find all edges, whose medium is controlled by the variable with name var_name on the given node
  * @param {List[Object]} edges a list of all existing edges
  * @param {Object} node the node, whose medium was changed
@@ -161,7 +148,6 @@ const checkForDuplicateNames = (mediums: Medium[]) => {
 
 export {
 	getDefaultMediums,
-	getMedium,
 	getMediumKey,
 	mediumsMatch,
 	getEdgesWithMediumMismatch,

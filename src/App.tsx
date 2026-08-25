@@ -143,7 +143,7 @@ const DnDFlow = () => {
 	const onConnect = useCallback(
 		(connection: Connection): void => {
 			const _nodes = deepCloneNodes(nodes);
-			const edge: SusiEdge | null = getNewEdge(connection, _nodes, edges, mediums, logError);
+			const edge: SusiEdge | null = getNewEdge(connection, _nodes, edges, logError);
 			if (edge === null) return;
 			setEdges((eds) => addEdge({ ...edge, type: edgeType }, eds));
 			setNodes(_nodes);
