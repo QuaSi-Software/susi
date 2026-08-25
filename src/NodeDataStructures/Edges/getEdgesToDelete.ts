@@ -26,28 +26,16 @@ function getEdgesOnHandle(_edges: SusiEdge[], nodeID: string, handleType: Handle
  * @param {string} mediumVarName the name of the medium variable that was changed
  * @returns {List[string]} a list of all the edge IDs that need to be deleted as a result of the medium change
  */
-function getEdgesWithMediumMismatch(edges: SusiEdge[], node: SusiNode, mediumVarName: string) {
+function getEdgesWithMediumMismatch(edges: SusiEdge[], node: SusiNode, mediumVarName: string): string[] {
 	// find all edges connected to this medium variables
 	const handleMediumDict = node.data.handleMediumDict;
-	const sourceEdgesToDelete = getEdgesToDelete(edges, node.id, mediumVarName, HandleType.source);
-	const targetEdgesToDelete = getEdgesToDelete(edges, node.id, mediumVarName, HandleType.target);
+	const sourceHandleIndex = handleMediumDict[HandleType.source].findIndex((e) => e === mediumVarName);
+	const sourceEdgesToDelete = getEdgesOnHandle(edges, node.id, HandleType.source, sourceHandleIndex);
+	const targetHandleIndex = handleMediumDict[HandleType.target].findIndex((e) => e === mediumVarName);
+	const targetEdgesToDelete = getEdgesOnHandle(edges, node.id, HandleType.target, targetHandleIndex);
 	// get just the edge IDs
 	const edgeIDs: string[] = sourceEdgesToDelete.concat(targetEdgesToDelete).map((e) => e.id);
 	return edgeIDs;
-
-	/**
-	 * Get a List of all edge objects that are on the handle controlled by this medium variable
-	 * @param {List[Object]} _edges a list of all the edges in the scene
-	 * @param {string} _nodeID the id of the node that's being edited
-	 * @param {string} _mediumVarName the name of the medium variable, whose value was just changed
-	 * @param {string} handleType 'source' or 'target'
-	 * @returns {List[Object]} List of all edge objects that are on the handle controlled by this medium variable
-	 */
-	function getEdgesToDelete(_edges: SusiEdge[], _nodeID: string, _mediumVarName: string, handleType: HandleType) {
-		const mediumVarNames: string[] = handleMediumDict[handleType];
-		const handleIndex = mediumVarNames.findIndex((e) => e === _mediumVarName);
-		return getEdgesOnHandle(_edges, _nodeID, handleType, handleIndex);
-	}
 }
 
 export { HandleType, getEdgesWithMediumMismatch };
