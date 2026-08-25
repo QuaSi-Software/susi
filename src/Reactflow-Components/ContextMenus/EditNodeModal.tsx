@@ -15,7 +15,6 @@ import {
 } from '../../NodeDataStructures/Nodes/SusiNode';
 import type BusData from '../../NodeDataStructures/Bus/BusData';
 import type { InputObject } from '../CustomInputWidgets/InputObject';
-import { getEdgesWithMediumMismatch } from '../../NodeDataStructures/Mediums/MediumUtils';
 import { updateBusDataOnEdgeDelete } from '../../NodeDataStructures/Bus/BusDataUtils';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import BusConnectionMenu from '../BusDataWidget/BusConnectionMenu';
@@ -31,6 +30,7 @@ import {
 	showEmissionsParameters,
 	type ResieParameterMenuInfo,
 } from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
+import { getEdgesWithMediumMismatch } from '../../NodeDataStructures/Edges/getEdgesToDelete';
 
 interface EditNodeModalInputs {
 	show: boolean;

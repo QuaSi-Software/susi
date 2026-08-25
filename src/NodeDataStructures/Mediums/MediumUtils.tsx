@@ -1,15 +1,8 @@
 import { createMedium, type Medium } from './Medium';
 import type { SusiNode } from '../Nodes/SusiNode';
-import type { SusiEdge } from '../Edges/SusiEdge';
 import type { SusiNodeData } from '../Nodes/SusiNodeData';
 import type { InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
-
-const HandleType = {
-	source: 'source',
-	target: 'target',
-} as const;
-
-type HandleType = (typeof HandleType)[keyof typeof HandleType];
+import type { HandleType } from '../Edges/getEdgesToDelete';
 
 const getUndefinedMedium = () => {
 	return createMedium('UNDEFINED', '#ffffff', 'UNDEFINED');
@@ -80,54 +73,6 @@ function getMediumKey(handleName: string, nodeData: SusiNodeData) {
 	return getMediumNodeInput(handleName, nodeData).value;
 }
 
-/**
- * find all edges, whose medium is controlled by the variable with name var_name on the given node
- * @param {List[Object]} edges a list of all existing edges
- * @param {Object} node the node, whose medium was changed
- * @param {string} mediumVarName the name of the medium variable that was changed
- * @returns {List[string]} a list of all the edge IDs that need to be deleted as a result of the medium change
- */
-function getEdgesWithMediumMismatch(edges: SusiEdge[], node: SusiNode, mediumVarName: string) {
-	// find all edges connected to this medium variables
-	const handleMediumDict = node.data.handleMediumDict;
-	const sourceEdgesToDelete = getEdgesToDelete(edges, node.id, mediumVarName, HandleType.source);
-	const targetEdgesToDelete = getEdgesToDelete(edges, node.id, mediumVarName, HandleType.target);
-	// get just the edge IDs
-	const edgeIDs: string[] = [];
-	sourceEdgesToDelete.concat(targetEdgesToDelete).forEach((e) => {
-		edgeIDs.push(e.id);
-	});
-	return edgeIDs;
-
-	/**
-	 * Get a List of all edge objects that are on the handle controlled by this medium variable
-	 * @param {List[Object]} _edges a list of all the edges in the scene
-	 * @param {string} _nodeID the id of the node that's being edited
-	 * @param {string} _mediumVarName the name of the medium variable, whose value was just changed
-	 * @param {string} handleType 'source' or 'target'
-	 * @returns {List[Object]} List of all edge objects that are on the handle controlled by this medium variable
-	 */
-	function getEdgesToDelete(_edges: SusiEdge[], _nodeID: string, _mediumVarName: string, handleType: HandleType) {
-		let listOfEdgesToDelete: SusiEdge[] = [];
-		//get the list of variable names
-		const mediumVarNames = handleMediumDict[handleType];
-		// multiple edges are possible for the bus node
-		for (let handleIndex = 0; handleIndex < mediumVarNames.length; handleIndex++) {
-			if (mediumVarNames[handleIndex] !== _mediumVarName) continue;
-			const handleID = handleType + '-' + handleIndex;
-			// find edges that connect to this handle on this node
-			const edgesOnHandle = _edges.filter((e) => {
-				return (
-					e[handleType] === _nodeID &&
-					e[handleType == HandleType.source ? 'sourceHandle' : 'targetHandle'] === handleID
-				);
-			});
-			listOfEdgesToDelete = listOfEdgesToDelete.concat(edgesOnHandle);
-		}
-		return listOfEdgesToDelete;
-	}
-}
-
 const getRandomColor = () => {
 	return `#${Math.floor(Math.random() * 0x1000000)
 		.toString(16)
@@ -150,7 +95,6 @@ export {
 	getDefaultMediums,
 	getMediumKey,
 	mediumsMatch,
-	getEdgesWithMediumMismatch,
 	getRandomColor,
 	getUndefinedMedium,
 	checkForDuplicateNames,
