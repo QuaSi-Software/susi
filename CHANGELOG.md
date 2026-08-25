@@ -85,3 +85,8 @@ The first release of SUSI with a whole number of features:
     - List of Component UACs
     - List of Floats and strings
 - UI and styling fixes and improvements
+
+## v1.2.0
+
+- Node Handles, whose mediums are invisible due to a conditional, are also hidden and cannot connect to edges
+- Fixed bug: on bus delete and undo with undo button, energy flow, input/output order are now restored properly
