@@ -34,7 +34,7 @@ export function UndoButton({ nodes, setNodes, edges, setEdges, checkState }: Und
 	useEffect(() => {
 		if (!checkState) return;
 		const newState: SusiState = {
-			nodes,
+			nodes: _.cloneDeep(nodes),
 			edges,
 			mediums: _.cloneDeep(mediums),
 		};
