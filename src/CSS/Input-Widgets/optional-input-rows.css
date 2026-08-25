@@ -18,6 +18,22 @@
 	margin: 2px;
 }
 
+.optional-input-checkbox .form-check {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 0px;
+}
+
+.optional-input-checkbox .form-check-label {
+	order: -1; /* Move label before checkbox */
+	margin-bottom: 4px;
+	font-size: 0.75em;
+}
+.form-switch .form-check-input {
+	margin: auto;
+}
+
 .optional-input-input-field {
 	flex: 1 1 0 !important; /* Grow to fill remaining space */
 	width: 0 !important; /* Required for flex to work properly */

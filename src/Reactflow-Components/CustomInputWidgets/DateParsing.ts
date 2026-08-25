@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import type { ResieParameterMenuInfo } from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
-const defaultDateFormat = 'dd.LL.yyyy hh:mm';
+export const defaultDateFormat = 'dd.mm.yyyy HH:MM'; //'dd.LL.yyyy HH:mm';
 function now(): Date {
 	const now = new Date();
 	now.setHours(0, 0, 0);
@@ -8,7 +8,7 @@ function now(): Date {
 }
 
 function getDatetimeFormat(startEndUnit: string | null): string {
-	if (!startEndUnit) return defaultDateFormat;
+	if (startEndUnit == null) startEndUnit = defaultDateFormat;
 	let result = startEndUnit.replaceAll('m', 'L');
 	result = result.replaceAll('M', 'm');
 	return result;
@@ -25,9 +25,9 @@ export function parseDate(dateString: string | null | undefined, startEndUnit: s
 	return date.toJSDate();
 }
 
-export function exportDate(date: Date, startEndUnit: string | null = null): string {
+export function exportDate(date: Date, dateFormat: string = defaultDateFormat): string {
 	const dateTime: DateTime = DateTime.fromJSDate(date);
-	const format = getDatetimeFormat(startEndUnit);
+	const format = getDatetimeFormat(dateFormat);
 	return dateTime.toFormat(format);
 }
 

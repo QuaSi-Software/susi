@@ -13,7 +13,8 @@ import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
 import { createGroupNode } from '../../../NodeDataStructures/GroupNodes/GroupNode';
 import { getStartEndUnit } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
-// import { getPositionAfterParentChange } from '../../../NodeDataStructures/GroupNodes/CalculateChildNodePosition';
+import { setControlModules, setImportedValues, setResieParametersMenus } from './ImportInputs';
+import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 
 interface ImportStateProps {
 	stateJSON: string;
@@ -23,8 +24,10 @@ interface ImportStateProps {
 	logError: (errorMessage: string) => void;
 	/** io settings and simulation parameters */
 	resieParameterMenus: ResieParameterMenuInfo[];
-	setresieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
+	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
 	nodeTypes: Record<string, NodeType>;
+	controlParameters: ResieParameterMenuInfo;
+	controlModules: ControlModule[];
 }
 
 function getOutputRefs(sourceNodeID: string, sourceNodeData: ComponentData): string[] {
@@ -38,26 +41,6 @@ function getOutputRefs(sourceNodeID: string, sourceNodeData: ComponentData): str
 		if (!sourceNodeData.output_refs) return [];
 		return sourceNodeData.output_refs;
 	}
-}
-
-function setListOfInputs(
-	setter: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>,
-	menuKey: string,
-	importedValues: Record<string, any>,
-	startEndUnit: string
-) {
-	setter((ResieParameterMenuInfo) => {
-		const menu = ResieParameterMenuInfo.find((e) => e.exportKey === menuKey);
-		menu!.inputs.forEach((input) => {
-			const importedValue = importedValues[input.resieName];
-			if (importedValue === undefined) {
-				input.isIncluded = false;
-			} else {
-				input.setValueOnImport(importedValue, [], startEndUnit);
-			}
-		});
-		return ResieParameterMenuInfo;
-	});
 }
 
 function setNodeGroups(groups: NodeGroup[], nodes: SusiNode[], logError: (errorMessage: string) => void): SusiNode[] {
@@ -97,9 +80,11 @@ const importState = ({
 	setEdges,
 	setMediums,
 	logError,
-	setresieParameterMenus,
+	setResieParameterMenus,
 	resieParameterMenus,
 	nodeTypes,
+	controlParameters,
+	controlModules,
 }: ImportStateProps): void => {
 	let importDict: ImportData;
 	try {
@@ -117,7 +102,7 @@ const importState = ({
 	resieParameterMenus.forEach((menu) => {
 		const list = importDict[menu.exportKey];
 		if (list === undefined) return;
-		setListOfInputs(setresieParameterMenus, menu.exportKey, list, startEndUnit);
+		setResieParametersMenus(setResieParameterMenus, menu.exportKey, list, startEndUnit);
 	});
 	// Get or generate mediums
 	const mediums = getImportMediums(importDict, nodeTypes);
@@ -139,23 +124,36 @@ const importState = ({
 			logError(`Node ${nodeId} has unknown component type: ${importData.node_type}`);
 			continue;
 		}
-		const newNode = createNodeFromType(nodeArray, nodeType, importData.node_position, '', nodeId);
+		const newNode = createNodeFromType(
+			nodeArray,
+			nodeType,
+			importData.node_position,
+			'',
+			controlParameters,
+			nodeId
+		);
 
 		// Fill in node inputs from import data
 		const nodeInputs = newNode.data.nodeInputs;
-		for (const nodeInput of nodeInputs) {
-			const value = nodeData[nodeInput.resieName];
-			if (value !== undefined) {
-				nodeInput.setValueOnImport(value, mediums, startEndUnit);
-				nodeInput.isIncluded = true;
-			} else {
-				nodeInput.isIncluded = false;
-			}
-		}
-		for (const nodeInput of nodeInputs) {
-			nodeInput.checkInputValid(nodeInputs);
-		}
+		setImportedValues(nodeInputs, nodeData, mediums, startEndUnit);
 		newNode.data.nodeInputs = nodeInputs;
+		/** economic and emissions inputs */
+		if (nodeData.economic_parameters) {
+			setImportedValues(newNode.data.economicInputs, nodeData.economic_parameters, mediums, startEndUnit);
+		}
+		if (nodeData.emissions_parameters) {
+			setImportedValues(newNode.data.emissionsInputs, nodeData.emissions_parameters, mediums, startEndUnit);
+		}
+
+		/** Set Control parameters */
+		const importControlParameters = nodeData.control_parameters;
+		if (importControlParameters) {
+			const controlParameterInputs = newNode.data.controlParameters!.inputs;
+			setImportedValues(controlParameterInputs, importControlParameters, mediums, startEndUnit);
+			newNode.data.controlParameters!.inputs = controlParameterInputs;
+		}
+		/** set control modules */
+		if (nodeData.control_modules) setControlModules(nodeData.control_modules, newNode, controlModules, logError);
 
 		nodeArray.push(newNode);
 		nodeDict[nodeId] = newNode;

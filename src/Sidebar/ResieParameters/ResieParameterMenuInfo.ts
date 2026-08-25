@@ -26,6 +26,11 @@ export function importResieParameterMenuInfo(
 	inputs.forEach((input) => {
 		input.checkInputValid(inputs);
 	});
+	categories.forEach((category) => {
+		if (!category.parameters && category.types) {
+			category.parameters = category.types;
+		}
+	});
 	checkParametersAndCategoriesMatch(inputs, categories, menuName);
 	return {
 		title: menuName,
@@ -33,4 +38,20 @@ export function importResieParameterMenuInfo(
 		categories,
 		exportKey,
 	};
+}
+
+/** check value in resie parameter menus */
+function getResieParameter(resieParameterMenus: ResieParameterMenuInfo[], menuExportKey: string, inputName: string) {
+	const menu = resieParameterMenus.find((e) => e.exportKey === menuExportKey);
+	if (!menu) return null;
+	const input = menu.inputs.find((e) => e.resieName === inputName);
+	if (!input) return null;
+	return input.value;
+}
+
+export function showEconomicParameters(resieParameterMenus: ResieParameterMenuInfo[]) {
+	return getResieParameter(resieParameterMenus, 'economic_parameters', 'calculate_economy');
+}
+export function showEmissionsParameters(resieParameterMenus: ResieParameterMenuInfo[]) {
+	return getResieParameter(resieParameterMenus, 'emissions_parameters', 'calculate_emissions');
 }

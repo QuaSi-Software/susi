@@ -1,9 +1,10 @@
 import { getUndefinedMedium } from '../../NodeDataStructures/Mediums/MediumUtils';
 import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
 import { type Validation } from './Validation/NumberValidation';
-import { type Conditional } from './Validation/Conditionals';
+import { ConditionalOperator, type Conditional } from './Validation/Conditionals';
 import { checkForInputIssues, InputIssueType, type InputIssue } from './Validation/InputChecking';
 import { exportDate, parseDate } from './DateParsing';
+import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 
 const InputObjectType = {
 	INT: 'INT',
@@ -17,6 +18,8 @@ const InputObjectType = {
 	VECTOR_STRING: 'VECTOR_STRING',
 	DATE: 'DATE',
 	CUSTOM_OBJECT: 'CUSTOM_OBJECT',
+	COMPONENT_UAC: 'COMPONENT_UAC',
+	COMPONENT_UAC_LIST: 'COMPONENT_UAC_LIST',
 	UNSET: 'UNSET',
 } as const;
 
@@ -109,7 +112,7 @@ class InputObject implements InputObjectProps {
 			}
 		}
 	}
-	public getNodeInputExportValue(mediums: Medium[], startEndUnit: string | null = null): any {
+	public getNodeInputExportValue(mediums: Medium[], nodes: SusiNode[]): any {
 		if (this.type === InputObjectType.MEDIUM) {
 			const mediumKey = this.value;
 			const medium = mediums.find((m) => m.key === mediumKey);
@@ -117,11 +120,18 @@ class InputObject implements InputObjectProps {
 			return medium.name;
 		}
 		if (this.type === InputObjectType.DATE) {
-			return exportDate(this.value, startEndUnit);
+			return exportDate(this.value);
 		} else if (this.type === InputObjectType.FLOAT) {
 			return Number.parseFloat(this.value);
 		} else if (this.type === InputObjectType.INT) {
 			return Number.parseInt(this.value);
+		} else if (this.type === InputObjectType.COMPONENT_UAC) {
+			const node = nodes.find((e) => e.id === this.value);
+			const nodeName = node ? node.data.content : 'None';
+			return nodeName;
+		} else if (this.type === InputObjectType.VECTOR_FLOAT) {
+			const result = this.value.map((e: string) => Number.parseFloat(e));
+			return result.filter((e: string) => !Number.isNaN(e));
 		}
 		return this.value;
 	}
@@ -139,7 +149,30 @@ class InputObject implements InputObjectProps {
 	}
 
 	public isValid() {
+		if (!this.isRequired && !this.isIncluded) return true;
 		return this.issue.issueType !== InputIssueType.Validity && this.issue.issueType !== InputIssueType.AtLeastOne;
+	}
+
+	public canHaveWarnings(): boolean {
+		/** does the type have type-specific validation errors */
+		switch (this.type) {
+			case InputObjectType.MEDIUM:
+			case InputObjectType.MULTISELECT:
+			case InputObjectType.BOOLEAN:
+			case InputObjectType.STRING:
+			case InputObjectType.DROPDOWN:
+			case InputObjectType.COMPONENT_UAC:
+			case InputObjectType.VECTOR_FLOAT:
+			case InputObjectType.VECTOR_STRING:
+			case InputObjectType.COMPONENT_UAC_LIST:
+			case InputObjectType.DATE:
+				break;
+			default:
+				return true;
+		}
+		/** Does this input have validations or mutex operators */
+		const mutexConditionals = this.conditionals.filter((e) => e.operator === ConditionalOperator.mutex);
+		return this.validations.length !== 0 || mutexConditionals.length !== 0;
 	}
 }
 

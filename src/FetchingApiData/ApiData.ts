@@ -4,7 +4,7 @@ interface ApiReturn {
 	components: {
 		control: Record<string, APIParameter>;
 		control_categories: ApiCategory[];
-		control_modules: Record<string, Object>;
+		control_modules: Record<string, Record<string, APIParameter>>;
 		type_categories: ApiCategory[];
 		types: Record<string, ApiComponent>;
 	};
@@ -18,6 +18,7 @@ interface ApiReturn {
 		simulation: Record<string, APIParameter>;
 		simulation_categories: ApiCategory[];
 	};
+	resie_version: string;
 }
 
 interface ApiCategory {

@@ -15,67 +15,68 @@ export const ImpressumModal = ({ show, setShow }: ImpressumModalProps) => {
 
 			<Modal.Body className="side-padded-menu">
 				<h3>Angaben gemäß § 5 DDG</h3>
-				Steinbeis-Innovationszentrum energieplus  <br/>
-				Hauptsitz Braunschweig  <br/>
-				OFFICE am RINGGLEIS  <br/>
-				Hamburger Straße 277  <br/>
-				38114 Braunschweig  <br/>
-
+				Steinbeis-Innovationszentrum energieplus <br />
+				Hauptsitz Braunschweig <br />
+				OFFICE am RINGGLEIS <br />
+				Hamburger Straße 277 <br />
+				38114 Braunschweig <br />
 				<h3>Vertreten durch</h3>
 				Etienne Ott
-
 				<h3>Kontakt</h3>
-				Telefon: + 49 531 793893-80  <br/>
-				Telefax: + 49 531 793893-98  <br/>
-				Email: info@siz-energieplus.de  <br/>
-
+				Telefon: + 49 531 793893-80 <br />
+				Telefax: + 49 531 793893-98 <br />
+				Email: info@siz-energieplus.de <br />
 				<h3>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h3>
-				Etienne Ott  <br/>
-				Steinbeis-Innovationszentrum energieplus  <br/>
-				OFFICE am RINGGLEIS  <br/>
-				Hamburger Straße 277  <br/>
-				38114 Braunschweig  <br/>
-
+				Etienne Ott <br />
+				Steinbeis-Innovationszentrum energieplus <br />
+				OFFICE am RINGGLEIS <br />
+				Hamburger Straße 277 <br />
+				38114 Braunschweig <br />
 				<h2>Haftungsausschluss</h2>
 				<h3>Haftung für Inhalte</h3>
-				Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit,
-				Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als
-				Diensteanbieter sind wir gemäß § 7 Abs.1 DDG für eigene Inhalte auf diesen Seiten nach den
-				allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir als Diensteanbieter
-				jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen
-				oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
-				Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den
-				allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst
-				ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden
-				von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen
-
+				Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit
+				und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß
+				§ 7 Abs.1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§
+				8 bis 10 DDG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte
+				fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit
+				hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den
+				allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem
+				Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden
+				Rechtsverletzungen werden wir diese Inhalte umgehend entfernen
 				<h3>Haftung für Links</h3>
-				Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen
-				Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen.
-				Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der
-				Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf
-				mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung
-				nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne
-				konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von
-				Rechtsverletzungen werden wir derartige Links umgehend entfernen.
-
+				Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben.
+				Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der
+				verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die
+				verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft.
+				Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche
+				Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht
+				zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.
 				<h2>Urheberrecht</h2>
-				Wo nicht anders angegeben sind Inhalte, Werke und der Quellcode der Seiten unter der MIT
-				Lizenz veröffentlicht. <a href="https://github.com/QuaSi-Software/susi/blob/main/LICENSE.md">Der Lizenztext</a> 
-				definiert die Nutzungsbedingungen die jeglicher Nutzung unterliegen. Die darin genannten Personen sind als
-				Autor*innen im Sinne des Urheberrechts zu verstehen. Dies umfasst nicht eingebundene und
-				verlinkte externe Inhalte. Nur Inhalte, die Teil des Repository der Seiten sind, sind von
-				der Lizenz gedeckt.<br/><br/>
-
-				Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die
-				Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter als solche
-				gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden,
-				bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden
-				wir derartige Inhalte umgehend entfernen.<br/><br/>
-
-				*Impressum vom <a href="https://www.impressum-generator.de">Impressum Generator</a> der 
-				<a href="https://www.kanzlei-hasselbach.de/rechtsgebiete/familienrecht/"> 
-				Kanzlei Hasselbach, Fachanwälte für Familienrecht</a>*
+				Wo nicht anders angegeben sind Inhalte, Werke und der Quellcode der Seiten unter der MIT Lizenz
+				veröffentlicht.{' '}
+				<a href="https://github.com/QuaSi-Software/susi/blob/main/LICENSE.md" target="_blank">
+					Der Lizenztext
+				</a>
+				definiert die Nutzungsbedingungen die jeglicher Nutzung unterliegen. Die darin genannten Personen sind
+				als Autor*innen im Sinne des Urheberrechts zu verstehen. Dies umfasst nicht eingebundene und verlinkte
+				externe Inhalte. Nur Inhalte, die Teil des Repository der Seiten sind, sind von der Lizenz gedeckt.
+				<br />
+				<br />
+				Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte
+				Dritter beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem
+				auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei
+				Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.
+				<br />
+				<br />
+				*Impressum vom{' '}
+				<a href="https://www.impressum-generator.de" target="_blank">
+					Impressum Generator
+				</a>{' '}
+				der
+				<a href="https://www.kanzlei-hasselbach.de/rechtsgebiete/familienrecht/" target="_blank">
+					Kanzlei Hasselbach, Fachanwälte für Familienrecht
+				</a>
+				*
 			</Modal.Body>
 		</Modal>
 	);

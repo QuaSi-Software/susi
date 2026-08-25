@@ -5,15 +5,17 @@
 	--input-border-color: #e6e6e6;
 }
 
-.input-menu-row {
-	margin: 6px 2px;
+.input-menu {
+	display: grid;
+	gap: 0.5em;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
-.input-menu-column {
+.input-menu-item {
 	border-style: solid;
 	border-color: var(--input-border-color);
 	border-radius: 6px;
 	border-width: 2px;
-	min-width: 350px;
+	min-width: 0;
 }
 #unit-label {
 	position: absolute;
@@ -46,8 +48,12 @@
 }
 
 .required-input-row {
-	padding: 0.5em;
-	padding-left: 10%;
+	padding: 0.25em;
+	height: 100%;
+}
+
+.form-check-label {
+	font-size: 1rem;
 }
 
 .mutex-warning {
@@ -56,4 +62,35 @@
 
 .warning-text {
 	color: #f00;
+}
+
+.boolean-input-container {
+	display: flex;
+	padding: 12px;
+	width: 100%;
+}
+
+.boolean-input-container .form-check {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.75em;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+.boolean-input-container .form-check-input {
+	cursor: pointer;
+	transform: scale(1.25);
+	margin: 0;
+	flex-shrink: 0;
+}
+
+.boolean-input-container .form-check-label {
+	font-size: 1rem;
+	margin: 0;
+	cursor: pointer;
+	user-select: none;
+	flex-grow: 1;
 }

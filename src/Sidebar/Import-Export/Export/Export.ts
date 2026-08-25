@@ -5,15 +5,17 @@ import type { InputObject } from '../../../Reactflow-Components/CustomInputWidge
 import type { ComponentData, Connections, ImportData, NodeGroup } from '../ExportDataStrucures';
 import { getUndefinedMedium } from '../../../NodeDataStructures/Mediums/MediumUtils';
 import { InputIssueType } from '../../../Reactflow-Components/CustomInputWidgets/Validation/InputChecking';
-import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
-import { getStartEndUnit } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
+import {
+	showEconomicParameters,
+	showEmissionsParameters,
+	type ResieParameterMenuInfo,
+} from '../../ResieParameters/ResieParameterMenuInfo';
+import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 
 interface ExportProps {
 	nodes: SusiNode[];
 	edges: SusiEdge[];
 	mediums: Medium[];
-	// simulationParameters: ResieParameterMenuInfo;
-	// ioSettings: ResieParameterMenuInfo;
 	resieParameterMenus: ResieParameterMenuInfo[];
 }
 
@@ -76,7 +78,7 @@ const addNodeInputsToObject = (
 	nodeInputs: InputObject[],
 	obj: Record<string, any>,
 	mediums: Medium[],
-	startEndUnit: string
+	nodes: SusiNode[]
 ) => {
 	nodeInputs.forEach((nodeInput) => {
 		if (!nodeInput.isIncluded && !nodeInput.isRequired) {
@@ -84,7 +86,7 @@ const addNodeInputsToObject = (
 		}
 		const issueType = nodeInput.issue.issueType;
 		if (issueType === InputIssueType.Conditional || issueType === InputIssueType.Mutex) return;
-		obj[nodeInput.resieName] = nodeInput.getNodeInputExportValue(mediums, startEndUnit);
+		obj[nodeInput.resieName] = nodeInput.getNodeInputExportValue(mediums, nodes);
 	});
 	return obj;
 };
@@ -103,6 +105,15 @@ function getNodeGroup(parentNode: SusiNode, nodes: SusiNode[]): NodeGroup {
 		},
 	};
 }
+function getControlModules(controlModules: ControlModule[], nodes: SusiNode[]): Record<string, any>[] {
+	const exportModules: Record<string, any>[] = [];
+	controlModules.forEach((cm) => {
+		const dict = { name: cm.title };
+		addNodeInputsToObject(cm.parameters, dict, [], nodes);
+		exportModules.push(dict);
+	});
+	return exportModules;
+}
 
 const exportState = ({ nodes, edges, mediums, resieParameterMenus }: ExportProps): string => {
 	/** adding these node inputs doesn't really require the mediums, since they should not include medium inputs  */
@@ -111,10 +122,9 @@ const exportState = ({ nodes, edges, mediums, resieParameterMenus }: ExportProps
 		groups: [],
 		mediums: getMediumListForExport(mediums),
 	};
-	const startEndUnit = getStartEndUnit(resieParameterMenus);
 	resieParameterMenus.forEach((menu) => {
 		const obj = {};
-		addNodeInputsToObject(menu.inputs, obj, [], startEndUnit);
+		addNodeInputsToObject(menu.inputs, obj, [], nodes);
 		exportDict[menu.exportKey] = obj;
 	});
 
@@ -126,7 +136,26 @@ const exportState = ({ nodes, edges, mediums, resieParameterMenus }: ExportProps
 			return;
 		}
 		const compDict: ComponentData = { type: node.data.componentType };
-		addNodeInputsToObject(node.data.nodeInputs, compDict, mediums, startEndUnit);
+		addNodeInputsToObject(node.data.nodeInputs, compDict, mediums, nodes);
+
+		/** Economic and Emissions parameters */
+		if (showEconomicParameters(resieParameterMenus)) {
+			compDict.economic_parameters = {};
+			addNodeInputsToObject(node.data.economicInputs, compDict.economic_parameters, mediums, nodes);
+		}
+		if (showEmissionsParameters(resieParameterMenus)) {
+			compDict.emissions_parameters = {};
+			addNodeInputsToObject(node.data.emissionsInputs, compDict.emissions_parameters, mediums, nodes);
+		}
+
+		/** Control Parameters */
+		if (node.data.controlParameters) {
+			compDict.control_parameters = {};
+			addNodeInputsToObject(node.data.controlParameters.inputs, compDict.control_parameters, mediums, nodes);
+		}
+		if (node.data.controlModules.length > 0) {
+			compDict.control_modules = getControlModules(node.data.controlModules, nodes);
+		}
 
 		// Add import data
 		compDict.import_data = {

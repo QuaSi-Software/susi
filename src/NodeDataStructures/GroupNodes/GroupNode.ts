@@ -45,6 +45,7 @@ function createGroupNode(
 		inputCategories: [],
 		economicInputs: [],
 		emissionsInputs: [],
+		controlModules: [],
 		colorIndex,
 	};
 	return {

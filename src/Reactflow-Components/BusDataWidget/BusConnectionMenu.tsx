@@ -1,10 +1,10 @@
 import DragAndDropMenu from './DragAndDropMenu';
 import { Col, Row } from 'react-bootstrap';
-import Modal from 'react-bootstrap/Modal';
 import EnergyFlowMatrix from './EnergyFlowMatrix';
 import type BusData from '../../NodeDataStructures/Bus/BusData';
 import React from 'react';
 import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
+import { Accordion } from 'radix-ui';
 
 interface BusConnectionMenuProps {
 	node: SusiNode;
@@ -73,35 +73,51 @@ const BusConnectionMenu: React.FC<BusConnectionMenuProps> = ({ node, nodes, onBu
 
 	return (
 		<>
-			<Modal.Body className="side-padded-menu">
-				<Modal.Header>Priorities</Modal.Header>
-				<Row className="g-2 mt-1 mt-md-0">
-					<Col md>
-						<DragAndDropMenu
-							title="Input Order"
-							nodeNames={getNodeNamesFromIDs(busData.inputOrder, nodes)}
-							onOrderChange={onInputOrderChange}
-						/>
-					</Col>
-					<Col md>
-						<DragAndDropMenu
-							title="Output Order"
-							nodeNames={getNodeNamesFromIDs(busData.outputOrder, nodes)}
-							onOrderChange={onOutputOrderChange}
-						/>
-					</Col>
-				</Row>
-			</Modal.Body>
+			<Accordion.Item className="AccordionItem" value="Priorities">
+				<Accordion.Header className="AccordionHeader">
+					<Accordion.Trigger className="modal-header accordion-header-button">
+						Priorities
+						<i className="bi bi-chevron-down"></i>
+					</Accordion.Trigger>
+				</Accordion.Header>
 
-			<Modal.Body>
-				<Modal.Header>Energy Flow Matrix</Modal.Header>
-				<EnergyFlowMatrix
-					input_order={getNodeNamesFromIDs(busData.inputOrder, nodes)}
-					output_order={getNodeNamesFromIDs(busData.outputOrder, nodes)}
-					initialEnergyFlow={busData.energyFlow}
-					onEnergyFlowChange={onEnergyFlowChange}
-				/>
-			</Modal.Body>
+				<Accordion.Content>
+					<Row className="g-2 mt-1 mt-md-0">
+						<Col md>
+							<DragAndDropMenu
+								title="Input Order"
+								nodeNames={getNodeNamesFromIDs(busData.inputOrder, nodes)}
+								onOrderChange={onInputOrderChange}
+							/>
+						</Col>
+						<Col md>
+							<DragAndDropMenu
+								title="Output Order"
+								nodeNames={getNodeNamesFromIDs(busData.outputOrder, nodes)}
+								onOrderChange={onOutputOrderChange}
+							/>
+						</Col>
+					</Row>
+				</Accordion.Content>
+			</Accordion.Item>
+
+			<Accordion.Item className="AccordionItem" value="Energy Flow Matrix">
+				<Accordion.Header className="AccordionHeader">
+					<Accordion.Trigger className="modal-header accordion-header-button">
+						Energy Flow Matrix
+						<i className="bi bi-chevron-down"></i>
+					</Accordion.Trigger>
+				</Accordion.Header>
+
+				<Accordion.Content>
+					<EnergyFlowMatrix
+						input_order={getNodeNamesFromIDs(busData.inputOrder, nodes)}
+						output_order={getNodeNamesFromIDs(busData.outputOrder, nodes)}
+						initialEnergyFlow={busData.energyFlow}
+						onEnergyFlowChange={onEnergyFlowChange}
+					/>
+				</Accordion.Content>
+			</Accordion.Item>
 		</>
 	);
 };

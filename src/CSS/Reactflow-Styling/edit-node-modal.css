@@ -1,6 +1,6 @@
 /** Modal */
 .modal-dialog {
-	max-width: 70%;
+	max-width: 85%;
 	display: flex;
 	max-height: 90vh;
 }

@@ -16,15 +16,19 @@ import { en } from 'primelocale/js/en.js';
 import { InputIssueType } from './Validation/InputChecking';
 import { CustomCalendar } from './CustomCalendar';
 import { WarningMessage } from './WarningMessage';
+import { UacWidget } from './UacWidget';
+import ComponentListWidget from './ComponentListWidget';
+import { ListWidget } from './ListWidget';
 addLocale('de-DE', de);
 addLocale('en-US', en);
 
-interface CustomInputFieldProps {
+export interface CustomInputFieldProps {
 	nodeInput: InputObject;
+	nodeId: string | null;
 	onEdit: (resieName: string, newValue: any) => void;
 }
 
-const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }) => {
+const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit, nodeId }) => {
 	const displayName = nodeInput.displayName;
 	const startValue = nodeInput.value;
 	let js_type = nodeInput.type;
@@ -37,7 +41,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 	const nodeInputCopy = { ...nodeInput };
 
 	const onInputChanged = (newInput: any): void => {
-		let finalValue: string | number | boolean = newInput;
+		let finalValue: string | number | boolean | Date = newInput;
 		if (nodeInput.type === InputObjectType.BOOLEAN) {
 			finalValue = !inputValue;
 		}
@@ -48,8 +52,11 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 	const getInputFieldByType = (): React.ReactNode => {
 		const disabledByMutex = nodeInput.issue.issueType === InputIssueType.Mutex;
 		switch (js_type) {
+			case InputObjectType.COMPONENT_UAC_LIST:
+				return <ComponentListWidget nodeInput={nodeInput} nodeId={nodeId} onEdit={onEdit} />;
 			case InputObjectType.VECTOR_FLOAT:
 			case InputObjectType.VECTOR_STRING:
+				return <ListWidget nodeInput={nodeInput} onEdit={onEdit} nodeId={null} />;
 			case InputObjectType.CUSTOM_OBJECT:
 			case InputObjectType.STRING:
 				return (
@@ -103,14 +110,16 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 				);
 			case InputObjectType.BOOLEAN:
 				return (
-					<Form.Check
-						type="switch"
-						id={displayName}
-						label={displayName}
-						defaultChecked={Boolean(inputValue)}
-						onChange={(e) => onInputChanged(e.target.checked)}
-						disabled={disabledByMutex}
-					/>
+					<div className="boolean-input-container">
+						<Form.Check
+							type="switch"
+							id={displayName}
+							label={displayName}
+							defaultChecked={Boolean(inputValue)}
+							onChange={(e) => onInputChanged(e.target.checked)}
+							disabled={disabledByMutex}
+						/>
+					</div>
 				);
 			case InputObjectType.DROPDOWN:
 				return (
@@ -152,6 +161,16 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 						onInputChanged={onInputChanged}
 					/>
 				);
+			case InputObjectType.COMPONENT_UAC:
+				return (
+					<UacWidget
+						value={startValue}
+						onInputChanged={onInputChanged}
+						displayName={displayName}
+						excludedNodeIds={nodeId ? [nodeId] : []}
+					/>
+				);
+
 			default:
 				console.log('Input ' + displayName + ' has type that is not defined yet.');
 				return null;
@@ -160,13 +179,15 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit }
 
 	return (
 		<>
-			<WarningMessage
-				message={nodeInput.issue.message}
-				redWarning={
-					nodeInput.issue.issueType == InputIssueType.AtLeastOne ||
-					nodeInput.issue.issueType == InputIssueType.Validity
-				}
-			/>
+			{nodeInput.canHaveWarnings() && (
+				<WarningMessage
+					message={nodeInput.issue.message}
+					redWarning={
+						nodeInput.issue.issueType == InputIssueType.AtLeastOne ||
+						nodeInput.issue.issueType == InputIssueType.Validity
+					}
+				/>
+			)}
 
 			<div data-toggle="tooltip" data-placement="top" title={nodeInput.tooltip}>
 				{getInputFieldByType()}

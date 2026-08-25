@@ -11,16 +11,19 @@ import type { NodeType } from '../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../ResieParameters/ResieParameterMenuInfo';
 import { WarningMessage } from '../../Reactflow-Components/CustomInputWidgets/WarningMessage';
 import { findUnconnectedNodes } from '../../NodeDataStructures/Nodes/FindUnconnectedNodes';
+import type { ControlModule } from '../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 
 export interface ImportExportMenuProps {
+	nodes: SusiNode[];
+	edges: SusiEdge[];
+	controlParameters: ResieParameterMenuInfo | null;
+	controlModules: ControlModule[];
+	resieParameterMenus: ResieParameterMenuInfo[];
+	nodeTypes: Record<string, NodeType> | null;
 	setNodes: Dispatch<SetStateAction<SusiNode[]>>;
 	setEdges: (edges: SusiEdge[]) => void;
 	logError: (errorMessage: string) => void;
-	nodes: SusiNode[];
-	edges: SusiEdge[];
-	resieParameterMenus: ResieParameterMenuInfo[];
-	setresieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
-	nodeTypes: Record<string, NodeType> | null;
+	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
 }
 
 const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
@@ -34,6 +37,7 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 	const { fitView } = useReactFlow();
 
 	const handleImport = useCallback(async () => {
+		if (menuProps.controlParameters === null) return;
 		try {
 			flushSync(() => setLoadingMessage('Importing file...'));
 			// Wait for the import to complete before clearing the loading message
@@ -44,6 +48,7 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 						stateJSON: textContent,
 						setMediums: setMediums,
 						nodeTypes: menuProps.nodeTypes!,
+						controlParameters: menuProps.controlParameters!,
 					});
 					resolve();
 				}, 0);

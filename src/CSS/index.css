@@ -17,11 +17,14 @@
 @import './Sidebar-Styling/sidebar-new-node-menu.css';
 @import './Sidebar-Styling/medium-menu.css';
 @import './Sidebar-Styling/simulation-menus.css';
-@import './Sidebar-Styling/radix-ui.css';
+@import './Sidebar-Styling/radix-dropdown-menu.css';
 
 /** Input Widget Styling */
 @import './Input-Widgets/input-widgets.css';
 @import './Input-Widgets/optional-input-rows.css';
+@import './Input-Widgets/accordion.css';
+@import './Input-Widgets/control-modules.css';
+@import './Input-Widgets/uac-list-widget.css';
 
 /** Both */
 @import './bootstrap-buttons.css';
@@ -41,7 +44,7 @@ body {
 :root {
 	--xsmall-font-size: clamp(12px, 0.7vw, 18px);
 	--small-font-size: clamp(14px, 0.8vw, 22px);
-	--medium-font-size: clamp(16px, 1vw, 26px);
+	--medium-font-size: clamp(18px, 1vw, 26px);
 	--large-font-size: clamp(20px, 1.2vw, 32px);
 	--xlarge-font-size: clamp(24px, 1.5vw, 42px);
 }

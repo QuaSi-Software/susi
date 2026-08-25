@@ -1,5 +1,4 @@
 import type { Medium } from '../NodeDataStructures/Mediums/Medium';
-import { InputObjectType } from '../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { ApiCategory, ApiComponent } from './ApiData';
 import { type NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
 import { checkParametersAndCategoriesMatch, getInputObjectFromAPIParameter } from './ImportInputObjects';
@@ -13,9 +12,6 @@ export function getComponentTypes(
 	for (const [componentType, component] of Object.entries(apiComponents)) {
 		const nodeInputs = [];
 		for (const [nodeInputName, inputAttributes] of Object.entries(component.parameters)) {
-			if (inputAttributes.widget_type === InputObjectType.MEDIUM) {
-				console.debug('importing medium');
-			}
 			const newInput = getInputObjectFromAPIParameter(nodeInputName, inputAttributes, mediums);
 			nodeInputs.push(newInput);
 		}

@@ -1,6 +1,8 @@
 import { type Dispatch, type SetStateAction } from 'react';
 import type { ResieParameterMenuInfo } from './ResieParameterMenuInfo';
 import InputMenuWithCategories from '../../Reactflow-Components/CustomInputWidgets/InputMenuWithCategories';
+import { Accordion } from 'radix-ui';
+import _ from 'lodash';
 
 export interface ResieParametersMenuProps {
 	selectedMenu?: string;
@@ -15,7 +17,8 @@ export function ResieParametersMenu({
 }: ResieParametersMenuProps) {
 	function changeInputListElement(menuTitle: string, key: string, value: any, isIncludedChange: boolean) {
 		setResieParameterMenus((resieParameterMenuInfo) => {
-			const menu = resieParameterMenus.find((e) => e.title === menuTitle);
+			resieParameterMenuInfo = _.cloneDeep(resieParameterMenuInfo);
+			const menu = resieParameterMenuInfo.find((e) => e.title === menuTitle);
 			const input = menu!.inputs.find((e) => e.resieName === key);
 			if (!input)
 				console.error(`Input with key ${key} should not be undefined in list ${resieParameterMenuInfo}`);
@@ -29,19 +32,20 @@ export function ResieParametersMenu({
 	}
 
 	const menu = resieParameterMenus.find((e) => e.title === selectedMenu);
+	const inputs = menu!.inputs.filter((e) => e.resieName !== 'start_end_unit');
 	return (
-		<>
+		<div key={`key-${selectedMenu}-menu`}>
 			<div className="sidebar-subheading">{menu?.title}</div>
-			<br />
-			<InputMenuWithCategories
-				title={menu!.title}
-				inputs={menu!.inputs}
-				inputCategories={menu!.categories}
-				onValueChange={(key, value) => changeInputListElement(menu!.title, key, value, false)}
-				onIncludedChange={(key, value) => changeInputListElement(menu!.title, key, value, true)}
-				numberOfColumns={1}
-				menuTypeName={menu!.title}
-			/>
-		</>
+			<Accordion.Root className="AccordionRoot" type="multiple" defaultValue={[menu!.categories[0].heading]}>
+				<InputMenuWithCategories
+					title={menu!.title}
+					inputs={inputs}
+					inputCategories={menu!.categories}
+					nodeId={null}
+					onValueChange={(key, value) => changeInputListElement(menu!.title, key, value, false)}
+					onIncludedChange={(key, value) => changeInputListElement(menu!.title, key, value, true)}
+				/>
+			</Accordion.Root>
+		</div>
 	);
 }

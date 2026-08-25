@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState, useEffect } from 'react';
-import type { FC, DragEvent as ReactDragEvent } from 'react';
+import type { FC } from 'react';
 import {
 	ReactFlow,
 	ReactFlowProvider,
@@ -7,7 +7,6 @@ import {
 	useNodesState,
 	useEdgesState,
 	Controls,
-	useReactFlow,
 	Background,
 } from '@xyflow/react';
 
@@ -15,10 +14,8 @@ import './CSS/index.css';
 
 /** Nodes */
 import { DnDProvider, useDnD } from './Sidebar/DnDContext';
-import createNodeFromType, { deepCloneNodes, type SusiNode } from './NodeDataStructures/Nodes/SusiNode';
+import { deepCloneNodes, type SusiNode } from './NodeDataStructures/Nodes/SusiNode';
 import MarkdownNode from './NodeDataStructures/Nodes/MarkdownNode';
-import { getIntersectionsWithGroupNode } from './NodeDataStructures/GroupNodes/IntersectionWithGroupNode';
-import { getPositionAfterParentChange } from './NodeDataStructures/GroupNodes/CalculateChildNodePosition';
 import GroupNodeComponent from './NodeDataStructures/GroupNodes/GroupNodeComponent';
 import type { NodeType } from './NodeDataStructures/Nodes/SusiNodeTypes';
 
@@ -49,7 +46,7 @@ import LoadingOverlay from './Reactflow-Components/LoadingOverlay';
 import ErrorOverlay from './Reactflow-Components/ErrorScreenOverlay';
 
 /** API Data */
-import { fetchComponentInputs, getNodeInputsFromAPI } from './FetchingApiData/HandleAPICalls';
+import { fetchData } from './FetchingApiData/fetchData';
 import { type ApiCategory } from './FetchingApiData/ApiData';
 import type { ResieParameterMenuInfo } from './Sidebar/ResieParameters/ResieParameterMenuInfo';
 
@@ -61,11 +58,13 @@ import { Locale } from './Sidebar/SettingsMenu';
 import { ClearNodesButton } from './Reactflow-Components/ClearNodesButton';
 import logo from './assets/resie.svg';
 import { useContextMenuHandlers } from './Reactflow-Components/ContextMenus/useContextMenuHandlers';
+import { useDraghandlers } from './useDraghandlers';
+import type { ControlModule } from './Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 
 const DnDFlow = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);
 	const [edges, setEdges, onEdgesChange] = useEdgesState<SusiEdge>([]);
-	const { screenToFlowPosition } = useReactFlow();
+
 	const [type] = useDnD();
 	const ref = useRef<HTMLInputElement>(null);
 
@@ -100,22 +99,31 @@ const DnDFlow = () => {
 	const [componentTypes, setComponentTypes] = useState<Record<string, NodeType> | null>(null);
 	const [componentCategories, setComponentCategories] = useState<ApiCategory[]>([]);
 	const [resieParameterMenus, setResieParameterMenus] = useState<ResieParameterMenuInfo[]>([]);
+	const [controlParameters, setControlParameters] = useState<ResieParameterMenuInfo | null>(null);
+	const [controlModules, setControlModules] = useState<ControlModule[]>([]);
+	const [resieVersion, setResieVersion] = useState<string>();
 
-	// const { onNodeDragStop } = useNodeDragHandlers();
 	document.documentElement.setAttribute('data-theme', theme);
 
-	fetchComponentInputs(
-		setLoadingMessage,
-		mediums,
-		componentTypes,
-		setComponentTypes,
-		setComponentCategories,
-		setResieParameterMenus,
-		setOverlayErrorMessage
-	);
-	const getNodeInputs = (componentType: string) => {
-		return getNodeInputsFromAPI(componentType, componentTypes);
-	};
+	/** if component types is not set, fetch the api data to set it as well as the other api data */
+	useEffect(() => {
+		if (componentTypes !== null) {
+			return;
+		}
+		fetchData({
+			setLoadingMessage,
+			mediums,
+			componentTypes,
+			setComponentTypes,
+			setComponentCategories,
+			setResieParameterMenus,
+			setOverlayError: setOverlayErrorMessage,
+			setControlParameters,
+			setControlModules,
+			setResieVersion,
+		});
+	}, [componentTypes]);
+
 	/** Log error */
 	const logError = (message: string) => {
 		setErrorMessages((prevMessages) => [
@@ -125,14 +133,6 @@ const DnDFlow = () => {
 				key: `id_${Math.random().toString(16).slice(2)}`,
 			},
 		]);
-	};
-	/** check value in resie parameter menus */
-	const getResieParameter = (menuExportKey: string, inputName: string) => {
-		const menu = resieParameterMenus.find((e) => e.exportKey === menuExportKey);
-		if (!menu) return null;
-		const input = menu.inputs.find((e) => e.resieName === inputName);
-		if (!input) return null;
-		return input.value;
 	};
 
 	// Update CSS variables whenever mediums change
@@ -151,83 +151,15 @@ const DnDFlow = () => {
 		},
 		[setEdges, nodes, edges, mediums]
 	);
-	const onNodeDragStop = useCallback(
-		(_: MouseEvent | TouchEvent, _draggedNode: SusiNode, draggedNodes: SusiNode[]) => {
-			draggedNodes.forEach((_node) => {
-				/** For the intersection check, you have to convert the node position into world space */
-				const prevParent = _node.parentId ? nodes.find((n) => n.id === _node.parentId) : undefined;
-				const intersections = getIntersectionsWithGroupNode(
-					{ ..._node, position: getPositionAfterParentChange(_node, prevParent, undefined) },
-					nodes
-				);
-				const newParent = intersections[0];
-				const parentId = newParent ? newParent?.id : undefined;
-				if (_node.parentId !== parentId) {
-					/** get node position */
-					const position = getPositionAfterParentChange(_node, prevParent, newParent);
-					/** update node with new or newly undefined parent */
-					setNodes((_nodes) =>
-						_nodes.map((n: SusiNode) =>
-							n.id === _node.id ? { ..._node, parentId: parentId, position } : n
-						)
-					);
-				}
-			});
-			setCheckState(true);
-		},
-		[setNodes, nodes]
-	);
 
-	const onDragOver = useCallback((event: ReactDragEvent<HTMLDivElement>) => {
-		event.preventDefault();
-		event.dataTransfer.dropEffect = 'move';
-	}, []);
-
-	const onDrop = useCallback(
-		(event: ReactDragEvent<HTMLDivElement>) => {
-			event.preventDefault();
-
-			// check if the dropped element is valid
-			if (!type) {
-				return;
-			}
-
-			// project was renamed to screenToFlowPosition
-			// and you don't need to subtract the reactFlowBounds.left/top anymore
-			// details: https://reactflow.dev/whats-new/2023-11-10
-			const position = screenToFlowPosition({
-				x: event.clientX,
-				y: event.clientY,
-			});
-			const newNode = createNodeFromType(nodes, type, position, nodeNamePrefix);
-			newNode.measured = {
-				width: 50,
-				height: 50,
-			}; // add estimated height and width, so getIntersectingNodes works right
-			newNode.selected = true;
-
-			/** check if node was dragged into a group */
-			const intersections = getIntersectionsWithGroupNode(newNode, nodes) as SusiNode[];
-			const newParent = intersections.length > 0 ? intersections[0] : undefined;
-			if (newParent) {
-				newNode.position = getPositionAfterParentChange(newNode, undefined, newParent);
-				newNode.parentId = newParent.id;
-			}
-
-			setNodes((nds) => nds.map((n) => ({ ...n, selected: false })));
-			setNodes((nds) => nds.concat(newNode));
-
-			setCheckState(true);
-		},
-		[screenToFlowPosition, type, setNodes, nodes, nodeNamePrefix]
-	);
-
-	const onDragStart = (event: ReactDragEvent<HTMLDivElement>) => {
-		if (type) {
-			event.dataTransfer.setData('text/plain', type.button_name as string);
-			event.dataTransfer.effectAllowed = 'move';
-		}
-	};
+	const { onDrop, onDragOver, onNodeDragStop, onDragStart } = useDraghandlers({
+		nodes,
+		setNodes,
+		setCheckState,
+		type,
+		nodeNamePrefix,
+		controlParameters,
+	});
 
 	const onNodeDoubleClick = (event: React.MouseEvent, node: SusiNode) => {
 		setNodeContextMenu({
@@ -245,7 +177,6 @@ const DnDFlow = () => {
 					setMediums: setMediums,
 					setErrorMessages: setErrorMessages,
 					setLoadingMessage: setLoadingMessage,
-					getNodeInputs: getNodeInputs,
 					setCheckState: setCheckState,
 					locale: locale,
 				}}
@@ -261,15 +192,17 @@ const DnDFlow = () => {
 					nodeNamePrefix={nodeNamePrefix}
 					setNodeNamePrefix={setNodeNamePrefix}
 					resieParameterMenus={resieParameterMenus}
-					setresieParameterMenus={setResieParameterMenus}
+					setResieParameterMenus={setResieParameterMenus}
 					theme={theme}
 					setTheme={setTheme}
 					setLocale={setLocale}
 					nodeTypes={componentTypes}
 					categories={componentCategories}
-					setResieParameterMenus={setResieParameterMenus}
 					edgeType={edgeType}
 					setEdgeType={setEdgeType}
+					controlParameters={controlParameters}
+					controlModules={controlModules}
+					resieVersion={resieVersion}
 				/>
 				<ReactFlow
 					nodes={nodes}
@@ -325,7 +258,8 @@ const DnDFlow = () => {
 					setNodes={setNodes}
 					setEdges={setEdges}
 					setShowModal={setShowEditNodeModal}
-					getResieParameter={getResieParameter}
+					resieParameterMenus={resieParameterMenus}
+					controlModules={controlModules}
 				/>
 				<SelectionContextMenu
 					selectionContextMenu={selectionContextMenu}

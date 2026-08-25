@@ -11,9 +11,13 @@ export const InstructionMenu = () => {
 			<div className="sidebar-subheading">Extended Documentation </div>
 			<div>
 				You can find an extended documentation of ReSiE{' '}
-				<a href="https://quasi-software.readthedocs.io/en/latest/">here</a>. A detailed description of every
-				component specific input parameter of ReSiE can be found in{' '}
-				<a href="https://quasi-software.readthedocs.io/en/latest/resie_component_parameters/">this chapter.</a>
+				<a href="https://quasi-software.readthedocs.io/en/latest/" target="_blank">
+					here
+				</a>
+				. A detailed description of every component specific input parameter of ReSiE can be found in{' '}
+				<a href="https://quasi-software.readthedocs.io/en/latest/resie_component_parameters/" target="_blank">
+					this chapter.
+				</a>
 			</div>
 			<div className="sidebar-subheading">Mediums </div>
 			<div>
@@ -29,7 +33,10 @@ export const InstructionMenu = () => {
 			<div>
 				SUSI currently cannot generate or export profile data. You can, however, enter paths to local profile
 				files, which ReSiE will read. For instructions on creating profile files, see the{' '}
-				<a href="https://quasi-software.readthedocs.io/en/latest/resie_input_file_format/#profile-file-format">
+				<a
+					href="https://quasi-software.readthedocs.io/en/latest/resie_input_file_format/#profile-file-format"
+					target="_blank"
+				>
 					related section in the documentation.
 				</a>
 			</div>

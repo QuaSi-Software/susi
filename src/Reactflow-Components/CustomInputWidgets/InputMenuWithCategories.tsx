@@ -1,8 +1,8 @@
 import type { ApiCategory } from '../../FetchingApiData/ApiData';
-import { type InputMenuProps, InputMenu } from './InputMenu';
+import { type InputMenuProps, AccordionInputMenu } from './AccordionInputMenu';
 import type { InputObject } from './InputObject';
 
-type Props = InputMenuProps & { inputCategories: ApiCategory[]; menuTypeName: string };
+type Props = InputMenuProps & { inputCategories: ApiCategory[] };
 
 export default function InputMenuWithCategories(props: Props) {
 	function getInputsInCategory(category: ApiCategory): InputObject[] {
@@ -16,7 +16,7 @@ export default function InputMenuWithCategories(props: Props) {
 	return (
 		<>
 			{props.inputCategories.map((category) => (
-				<InputMenu
+				<AccordionInputMenu
 					{...props}
 					title={category.heading}
 					inputs={getInputsInCategory(category)}

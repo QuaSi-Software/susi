@@ -3,6 +3,8 @@ import { InputObjectType, type InputObject } from '../../Reactflow-Components/Cu
 import type { NodeType } from './SusiNodeTypes';
 import type { ApiCategory } from '../../FetchingApiData/ApiData';
 import { mutexSolver } from '../../Reactflow-Components/CustomInputWidgets/Validation/Mutex';
+import type { ControlModule } from '../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
+import type { ResieParameterMenuInfo } from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
 
 interface MediumHandleDict {
 	source: string[];
@@ -13,6 +15,8 @@ export interface SusiNodeData extends Record<string, unknown> {
 	content: string;
 	componentType: string;
 	nodeInputs: InputObject[];
+	controlModules: ControlModule[];
+	controlParameters?: ResieParameterMenuInfo;
 	emissionsInputs: InputObject[];
 	economicInputs: InputObject[];
 	inputCategories: ApiCategory[];
@@ -67,26 +71,33 @@ function getMediumHandleDict(
 	}
 }
 
-export function createSusiNodeData(nodeType: NodeType, content: string = ''): SusiNodeData {
+export function createSusiNodeData(
+	nodeType: NodeType,
+	controlParameters: ResieParameterMenuInfo,
+	content: string = ''
+): SusiNodeData {
 	const nodeInputs = nodeType.inputs.map((e) => e.copy());
 	nodeInputs.forEach((input) => {
 		input.checkInputValid(nodeInputs);
 	});
 	mutexSolver(nodeInputs);
-	const hasValidInputs = nodeInputs.every((input) => input.isValid());
 	const componentType = nodeType.type_name;
 	const busData = componentType.toLowerCase() === 'bus' ? new BusData() : null;
 	const handleMediumDict = getMediumHandleDict(nodeInputs, nodeType.nr_outputs, nodeType.nr_inputs);
+	const copiedControlParameters = Object.assign({}, controlParameters);
+	copiedControlParameters.inputs = controlParameters.inputs.map((e) => e.copy());
 	return {
 		content,
 		componentType: componentType,
 		nodeInputs: nodeInputs,
+		controlModules: [],
+		controlParameters: copiedControlParameters,
 		handleMediumDict: handleMediumDict,
 		busData: busData,
 		nodeCategory: nodeType.category,
 		sourceHandles: nodeType.nr_outputs,
 		targetHandles: nodeType.nr_inputs,
-		hasValidInputs: hasValidInputs,
+		hasValidInputs: true,
 		hasValidName: true,
 		inputCategories: nodeType.inputCategories,
 		economicInputs: nodeType.economic.map((e) => e.copy()),

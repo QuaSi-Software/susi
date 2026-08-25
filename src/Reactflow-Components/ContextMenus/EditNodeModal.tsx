@@ -7,7 +7,12 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import _ from 'lodash';
 
-import { deepCloneNode, deepCloneNodes, type SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
+import {
+	checkNodeValidInputs,
+	deepCloneNode,
+	deepCloneNodes,
+	type SusiNode,
+} from '../../NodeDataStructures/Nodes/SusiNode';
 import type BusData from '../../NodeDataStructures/Bus/BusData';
 import type { InputObject } from '../CustomInputWidgets/InputObject';
 import { getEdgesWithMediumMismatch } from '../../NodeDataStructures/Mediums/MediumUtils';
@@ -16,9 +21,16 @@ import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import BusConnectionMenu from '../BusDataWidget/BusConnectionMenu';
 import { AppContext } from '../../AppContext';
 import InputMenuWithCategories from '../CustomInputWidgets/InputMenuWithCategories';
-import { InputMenu } from '../CustomInputWidgets/InputMenu';
+import { AccordionInputMenu } from '../CustomInputWidgets/AccordionInputMenu';
 import { assignInputs, ComponentInputType, getInputs } from '../../NodeDataStructures/Nodes/ComponentInputTypes';
 import { checkForDuplicateNodeNames } from './ContextMenuUtils';
+import { ControleModulesMenu, type ControlModule } from './ControlModules/ControlModulesMenu';
+import { Accordion } from 'radix-ui';
+import {
+	showEconomicParameters,
+	showEmissionsParameters,
+	type ResieParameterMenuInfo,
+} from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
 
 interface EditNodeModalInputs {
 	show: boolean;
@@ -28,7 +40,8 @@ interface EditNodeModalInputs {
 	edges: SusiEdge[];
 	setEdges: (edges: SusiEdge[]) => void;
 	handleClose: () => void;
-	getResieParameter: (menuName: string, inputName: string) => any;
+	resieParameterMenus: ResieParameterMenuInfo[];
+	controlModules: ControlModule[];
 }
 
 const EditNodeModal = ({
@@ -39,7 +52,8 @@ const EditNodeModal = ({
 	setNodes,
 	setEdges,
 	edges,
-	getResieParameter,
+	resieParameterMenus,
+	controlModules,
 }: EditNodeModalInputs) => {
 	const [editedNode, setEditedNode] = useState(deepCloneNode(node));
 	const [edgesToDelete, setEdgesToDelete] = useState<string[]>([]);
@@ -92,6 +106,7 @@ const EditNodeModal = ({
 		});
 		setEditedNode((editedNode: SusiNode) => {
 			assignInputs(componentInputType, editedNode, resieDataCopy);
+			checkNodeValidInputs(editedNode, resieParameterMenus);
 			return editedNode;
 		});
 		// remove edge if the medium change necessitates it
@@ -108,7 +123,7 @@ const EditNodeModal = ({
 
 	const handleSaveChanges = () => {
 		let updatedNodes = deepCloneNodes(nodes);
-		editedNode.data.hasValidInputs = editedNode.data.nodeInputs.every((input) => input.isValid());
+		checkNodeValidInputs(editedNode, resieParameterMenus);
 		updatedNodes = updatedNodes.map((n: SusiNode) => (n.id === editedNode.id ? editedNode : n));
 		edgesToDelete.forEach((edgeID) => {
 			const edge = edges.find((e) => e.id === edgeID);
@@ -124,7 +139,8 @@ const EditNodeModal = ({
 
 	const nameIsDuplicate =
 		nodes.find((node) => node.id !== editedNode.id && node.data.content === editedNode.data.content) !== undefined;
-	const allInputsValid = editedNode.data.nodeInputs.every((input) => input.isValid()) && !nameIsDuplicate;
+
+	const allInputsValid = editedNode.data.hasValidInputs && !nameIsDuplicate;
 	return (
 		<>
 			<Modal show={show} onHide={handleSaveChanges}>
@@ -138,7 +154,7 @@ const EditNodeModal = ({
 								<Form.Control
 									type="text"
 									as="textarea"
-									style={{ height: '100px' }}
+									style={{ height: '5em' }}
 									placeholder="Component Name"
 									value={editedNode.data.content}
 									onChange={onNodeContentChange}
@@ -147,47 +163,84 @@ const EditNodeModal = ({
 							</FloatingLabel>
 						</Col>
 					</Row>
-					<InputMenuWithCategories
-						title="Component Inputs"
-						inputs={editedNode.data.nodeInputs}
-						inputCategories={editedNode.data.inputCategories}
-						onValueChange={(resieName, newValue) => {
-							onNodeInputValueChange(ComponentInputType.PARAMETER, resieName, newValue);
-						}}
-						onIncludedChange={(resieName, isIncluded) => {
-							onNodeInputIncludedChange(ComponentInputType.PARAMETER, resieName, isIncluded);
-						}}
-						numberOfColumns={2}
-						menuTypeName={editedNode.data.componentType}
-					/>
-					{getResieParameter('economic', 'calculate_economy') && (
-						<InputMenu
-							title="Economic"
-							inputs={editedNode.data.economicInputs}
-							numberOfColumns={2}
-							onValueChange={(resieName, newValue) => {
-								onNodeInputValueChange(ComponentInputType.ECONOMIC, resieName, newValue);
-							}}
-							onIncludedChange={(resieName, isIncluded) => {
-								onNodeInputIncludedChange(ComponentInputType.ECONOMIC, resieName, isIncluded);
-							}}
-						/>
-					)}
-					{getResieParameter('emissions', 'calculate_emissions') && (
-						<InputMenu
-							title="Emissions"
-							inputs={editedNode.data.emissionsInputs}
-							numberOfColumns={2}
-							onValueChange={(resieName, newValue) => {
-								onNodeInputValueChange(ComponentInputType.EMISSIONS, resieName, newValue);
-							}}
-							onIncludedChange={(resieName, isIncluded) => {
-								onNodeInputIncludedChange(ComponentInputType.EMISSIONS, resieName, isIncluded);
-							}}
-						/>
-					)}
 
-					<BusConnectionMenu node={node} nodes={nodes} onBusDataChange={onNodeBusDataChange} />
+					<Accordion.Root
+						className="AccordionRoot"
+						type="multiple"
+						defaultValue={[editedNode.data.inputCategories[0].heading]}
+					>
+						<InputMenuWithCategories
+							title="Component Inputs"
+							inputs={editedNode.data.nodeInputs}
+							inputCategories={editedNode.data.inputCategories}
+							nodeId={editedNode.id}
+							onValueChange={(resieName, newValue) => {
+								onNodeInputValueChange(ComponentInputType.PARAMETER, resieName, newValue);
+							}}
+							onIncludedChange={(resieName, isIncluded) => {
+								onNodeInputIncludedChange(ComponentInputType.PARAMETER, resieName, isIncluded);
+							}}
+						/>
+						{showEconomicParameters(resieParameterMenus) && (
+							<AccordionInputMenu
+								title="Economic"
+								inputs={editedNode.data.economicInputs}
+								nodeId={editedNode.id}
+								onValueChange={(resieName, newValue) => {
+									onNodeInputValueChange(ComponentInputType.ECONOMIC, resieName, newValue);
+								}}
+								onIncludedChange={(resieName, isIncluded) => {
+									onNodeInputIncludedChange(ComponentInputType.ECONOMIC, resieName, isIncluded);
+								}}
+							/>
+						)}
+						{showEmissionsParameters(resieParameterMenus) && (
+							<AccordionInputMenu
+								title="Emissions"
+								inputs={editedNode.data.emissionsInputs}
+								nodeId={editedNode.id}
+								onValueChange={(resieName, newValue) => {
+									onNodeInputValueChange(ComponentInputType.EMISSIONS, resieName, newValue);
+								}}
+								onIncludedChange={(resieName, isIncluded) => {
+									onNodeInputIncludedChange(ComponentInputType.EMISSIONS, resieName, isIncluded);
+								}}
+							/>
+						)}
+
+						<BusConnectionMenu node={node} nodes={nodes} onBusDataChange={onNodeBusDataChange} />
+						<ControleModulesMenu
+							node={editedNode}
+							setEditedNode={setEditedNode}
+							controlModuleTypes={controlModules}
+							resieParameterMenus={resieParameterMenus}
+						/>
+						{editedNode.data.controlParameters && (
+							<InputMenuWithCategories
+								title="Control Parameters"
+								inputs={editedNode.data.controlParameters.inputs}
+								nodeId={editedNode.id}
+								inputCategories={
+									/** if there are no control modules, the aggregation category should not be shown in the menu */
+									editedNode.data.controlModules.length > 0
+										? editedNode.data.controlParameters.categories
+										: editedNode.data.controlParameters.categories.filter(
+												(category) => category.heading.toLowerCase() !== 'aggregation'
+											)
+								}
+								onValueChange={(resieName, newValue) => {
+									onNodeInputValueChange(ComponentInputType.CONTROL_PARAMETERS, resieName, newValue);
+								}}
+								onIncludedChange={(resieName, isIncluded) => {
+									onNodeInputIncludedChange(
+										ComponentInputType.CONTROL_PARAMETERS,
+										resieName,
+										isIncluded
+									);
+								}}
+							/>
+						)}
+					</Accordion.Root>
 				</Modal.Body>
 				<Modal.Footer>
 					<span className="warning-text right-aligned-row">

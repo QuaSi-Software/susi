@@ -47,9 +47,8 @@ function checkForInputIssues(input: InputObject, otherInputs: InputObject[]): In
 
 function checkObjectsAndArrays(input: InputObject): InputIssue | null {
 	if (!input.isIncluded) return null;
-	const shouldBeArray = input.type === InputObjectType.VECTOR_FLOAT || input.type === InputObjectType.VECTOR_STRING;
 	const shouldBeObject = input.type === InputObjectType.CUSTOM_OBJECT;
-	if (shouldBeArray || shouldBeObject) {
+	if (shouldBeObject) {
 		/** Check that they are valid JSON objects */
 		let obj;
 		try {
@@ -57,12 +56,7 @@ function checkObjectsAndArrays(input: InputObject): InputIssue | null {
 		} catch (error) {
 			obj = null;
 		}
-		if (shouldBeArray && (obj === null || !Array.isArray(obj))) {
-			return {
-				issueType: InputIssueType.Validity,
-				message: `Input is not an array`,
-			};
-		} else if (shouldBeObject && (obj === null || Array.isArray(obj))) {
+		if (shouldBeObject && (obj === null || Array.isArray(obj))) {
 			return {
 				issueType: InputIssueType.Validity,
 				message: `Input is not a dictionary`,

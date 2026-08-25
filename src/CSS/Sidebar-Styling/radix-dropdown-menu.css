@@ -1,3 +1,5 @@
+/** Source: https://www.radix-ui.com/primitives/docs/components/dropdown-menu under MIT License */
+
 /* reset */
 button {
 	all: unset;
@@ -15,6 +17,8 @@ button {
 	animation-duration: 400ms;
 	animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 	will-change: transform, opacity;
+	z-index: 1051;
+	position: relative;
 }
 .DropdownMenuContent[data-side='top'],
 .DropdownMenuSubContent[data-side='top'] {
