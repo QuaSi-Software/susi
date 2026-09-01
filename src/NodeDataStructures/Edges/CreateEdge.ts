@@ -1,8 +1,7 @@
 import type { Connection } from '@xyflow/react';
 import type { SusiNode } from '../Nodes/SusiNode';
 import { updateBusDataOnEdgeConnect } from '../Bus/BusDataUtils';
-import { getMedium, getMediumKey, getUndefinedMedium, mediumsMatch, setMediumOfHandle } from '../Mediums/MediumUtils';
-import type { Medium } from '../Mediums/Medium';
+import { getMediumKey, getUndefinedMedium, mediumsMatch, setMediumOfHandle } from '../Mediums/MediumUtils';
 import type { SusiEdge } from './SusiEdge';
 
 function getOrdinalNumberString(indexString: string): string {
@@ -47,7 +46,6 @@ const getNewEdge = (
 	connection: Connection,
 	nodes: SusiNode[],
 	edges: SusiEdge[],
-	mediums: Medium[],
 	logError: (error: string) => void
 ): SusiEdge | null => {
 	const sourceNode = nodes.find((e) => e.id === connection.source);
@@ -73,7 +71,7 @@ const getNewEdge = (
 		return null;
 	}
 	/** Set Mediums */
-	let sourceMediumKey = getMedium(connection.sourceHandle!, sourceNode!.data, mediums)!.key;
+	let sourceMediumKey = getMediumKey(connection.sourceHandle!, sourceNode!.data);
 	let targetMediumKey = getMediumKey(connection.targetHandle!, targetNode!.data);
 	/** if only one of the mediums is undefined, set it to be the same as the other medium */
 	const sourceMediumUndefined = sourceMediumKey === getUndefinedMedium().key;

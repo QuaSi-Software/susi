@@ -198,7 +198,6 @@ const importState = ({
 				},
 				nodeArray,
 				edgeArray,
-				mediums,
 				logError
 			);
 

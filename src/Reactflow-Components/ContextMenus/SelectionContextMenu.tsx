@@ -33,7 +33,6 @@ const SelectionContextMenu = ({
 	setEdges,
 }: SelectionContextMenuProps) => {
 	const setCheckState = useContext(AppContext)!.setCheckState;
-	const mediums = useContext(AppContext)!.mediums;
 
 	function deleteSelectionNodes() {
 		if (!selectionContextMenu) return;
@@ -56,7 +55,7 @@ const SelectionContextMenu = ({
 		const unselectedNodes: SusiNode[] = nodes.map((n) => ({ ...n, selected: false }));
 		const updatedNodes = unselectedNodes.concat(Object.values(duplicatedNodes));
 		/** duplicate edges where both source and target are in the selection nodes */
-		const newEdges: SusiEdge[] = duplicateEdgesWithinSelection(edges, duplicatedNodes, mediums, edgeType);
+		const newEdges: SusiEdge[] = duplicateEdgesWithinSelection(edges, duplicatedNodes, edgeType);
 		setNodes(updatedNodes);
 		setEdges((_edges) => _edges.concat(newEdges));
 		setCheckState(true);

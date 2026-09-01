@@ -15,7 +15,6 @@ import {
 } from '../../NodeDataStructures/Nodes/SusiNode';
 import type BusData from '../../NodeDataStructures/Bus/BusData';
 import type { InputObject } from '../CustomInputWidgets/InputObject';
-import { getEdgesWithMediumMismatch } from '../../NodeDataStructures/Mediums/MediumUtils';
 import { updateBusDataOnEdgeDelete } from '../../NodeDataStructures/Bus/BusDataUtils';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import BusConnectionMenu from '../BusDataWidget/BusConnectionMenu';
@@ -31,6 +30,7 @@ import {
 	showEmissionsParameters,
 	type ResieParameterMenuInfo,
 } from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
+import { getEdgesFromConditionalOff, getEdgesFromMediumVar } from '../../NodeDataStructures/Edges/getEdgesToDelete';
 
 interface EditNodeModalInputs {
 	show: boolean;
@@ -110,7 +110,7 @@ const EditNodeModal = ({
 			return editedNode;
 		});
 		// remove edge if the medium change necessitates it
-		let newEdgesToDelete = getEdgesWithMediumMismatch(edges, editedNode, resieName);
+		let newEdgesToDelete = getEdgesFromMediumVar(edges, editedNode, resieName);
 		newEdgesToDelete = newEdgesToDelete.concat(edgesToDelete);
 		setEdgesToDelete(newEdgesToDelete);
 	};
@@ -125,13 +125,15 @@ const EditNodeModal = ({
 		let updatedNodes = deepCloneNodes(nodes);
 		checkNodeValidInputs(editedNode, resieParameterMenus);
 		updatedNodes = updatedNodes.map((n: SusiNode) => (n.id === editedNode.id ? editedNode : n));
-		edgesToDelete.forEach((edgeID) => {
+		// remove edges if a change in conditionals makes its medium disappear
+		let allEdgesToDelete = edgesToDelete.concat(getEdgesFromConditionalOff(edges, editedNode));
+		allEdgesToDelete.forEach((edgeID) => {
 			const edge = edges.find((e) => e.id === edgeID);
 			updateBusDataOnEdgeDelete(updatedNodes, edge!);
 		});
 		setNodes(updatedNodes);
 		checkForDuplicateNodeNames(setNodes);
-		const updatedEdges = edges.filter((edge: SusiEdge) => edgesToDelete.findIndex((e) => e === edge.id) === -1);
+		const updatedEdges = edges.filter((edge: SusiEdge) => allEdgesToDelete.findIndex((e) => e === edge.id) === -1);
 		setEdges(updatedEdges);
 		setCheckState(true);
 		handleClose();

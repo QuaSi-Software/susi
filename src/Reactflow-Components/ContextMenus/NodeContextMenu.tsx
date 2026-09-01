@@ -51,7 +51,6 @@ const NodeContextMenu = ({
 	controlModules,
 }: NodeContextMenuInput) => {
 	const setCheckState = useContext(AppContext)!.setCheckState;
-	const mediums = useContext(AppContext)!.mediums;
 
 	// Check if the node still exists and if it was deleted somehow, close the context menu
 	// This can happen if the user clicked 'Clear Graph' while the context menu was open
@@ -101,7 +100,7 @@ const NodeContextMenu = ({
 					duplicateChild.selected = false;
 				}
 			});
-			const newEdges = duplicateEdgesWithinSelection(edges, duplicateChildren, mediums, edgeType);
+			const newEdges = duplicateEdgesWithinSelection(edges, duplicateChildren, edgeType);
 			setEdges((edges) => [...edges, ...newEdges]);
 		}
 		// update list of nodes: deselect original, keep new one selected
