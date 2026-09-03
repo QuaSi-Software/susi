@@ -63,3 +63,34 @@ code {
 .input-menu-row {
 	padding: 0.25em 0em;
 }
+
+/* Template Projects */
+.template-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+	margin-top: 0.5em;
+}
+
+.template-button {
+	text-align: left;
+	white-space: normal;
+	word-wrap: break-word;
+}
+
+.template-loading,
+.template-error,
+.template-empty {
+	padding: 0.5em;
+	font-style: italic;
+	color: var(--sidebar-text-color);
+	opacity: 0.8;
+}
+
+.template-error {
+	color: #dc3545;
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+	flex-wrap: wrap;
+}

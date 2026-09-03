@@ -1,4 +1,6 @@
-export const InstructionMenu = () => {
+import { TemplateProjects, type TemplateProjectsProps } from './TemplateProjects';
+
+export const InstructionMenu = (props: TemplateProjectsProps) => {
 	return (
 		<>
 			<div className="sidebar-subheading">Getting started</div>
@@ -62,6 +64,7 @@ export const InstructionMenu = () => {
 				it will not run in ReSiE. Some issues, such as duplicate component names, may also prevent the file from
 				being imported again.
 			</div>
+			<TemplateProjects {...props} />
 		</>
 	);
 };

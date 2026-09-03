@@ -55,7 +55,7 @@ const Sidebar = (menuProps: SidebarProps) => {
 			case MenuType.ResieParameters:
 				return <ResieParametersMenu {...menuProps} selectedMenu={selectedResieParamMenu} />;
 			case MenuType.Instructions:
-				return <InstructionMenu />;
+				return <InstructionMenu {...menuProps} />;
 			case MenuType.Settings:
 				return <SettingsMenu {...menuProps} />;
 			case MenuType.Information:
