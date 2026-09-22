@@ -68,9 +68,12 @@ const EditNodeModal = ({
 	}, [show, node.id]);
 
 	const onNodeContentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		let name = e.target.value;
+		name = name.replaceAll(' ', '_');
+		name = name.replaceAll('\n', '_');
 		setEditedNode((editedNode: SusiNode) => ({
 			...editedNode,
-			data: { ...editedNode.data, content: e.target.value },
+			data: { ...editedNode.data, content: name },
 		}));
 	};
 
