@@ -1,4 +1,3 @@
-import type { Dispatch, SetStateAction } from 'react';
 import type { Medium } from '../../../NodeDataStructures/Mediums/Medium';
 import type { InputObject } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
@@ -26,24 +25,23 @@ export function setImportedValues(
 	}
 }
 
-export function setResieParametersMenus(
-	setter: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>,
+export function setResieParametersMenusFromImport(
+	menus: ResieParameterMenuInfo[],
 	menuKey: string,
 	importedValues: Record<string, any>,
 	startEndUnit: string
-) {
-	setter((ResieParameterMenuInfo) => {
-		const menu = ResieParameterMenuInfo.find((e) => e.exportKey === menuKey);
-		menu!.inputs.forEach((input) => {
-			const importedValue = importedValues[input.resieName];
-			if (importedValue === undefined) {
-				input.isIncluded = false;
-			} else {
-				input.setValueOnImport(importedValue, [], startEndUnit);
-			}
-		});
-		return ResieParameterMenuInfo;
+): ResieParameterMenuInfo[] {
+	const menu = menus.find((e: ResieParameterMenuInfo) => e.exportKey === menuKey);
+	menu!.inputs.forEach((input) => {
+		const importedValue = importedValues[input.resieName];
+		if (importedValue === undefined) {
+			input.isIncluded = false;
+		} else {
+			input.setValueOnImport(importedValue, [], startEndUnit);
+			input.isIncluded = true;
+		}
 	});
+	return menus;
 }
 
 export function setControlModules(

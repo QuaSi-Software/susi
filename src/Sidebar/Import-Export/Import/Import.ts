@@ -1,6 +1,6 @@
 import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type { Medium } from '../../../NodeDataStructures/Mediums/Medium';
-import createNodeFromType from '../../../NodeDataStructures/Nodes/SusiNode';
+import createNodeFromType, { checkNodeValidInputs } from '../../../NodeDataStructures/Nodes/SusiNode';
 import getImportMediums from './ImportMediums';
 import type { ComponentData, ComponentImportData, ImportData, NodeGroup } from '../ExportDataStrucures';
 import { getComponentImportData } from './ImportData';
@@ -13,7 +13,7 @@ import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
 import { createGroupNode } from '../../../NodeDataStructures/GroupNodes/GroupNode';
 import { getStartEndUnit } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
-import { setControlModules, setImportedValues, setResieParametersMenus } from './ImportInputs';
+import { setControlModules, setImportedValues, setResieParametersMenusFromImport } from './ImportInputs';
 import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 
 interface ImportStateProps {
@@ -102,8 +102,14 @@ const importState = ({
 	resieParameterMenus.forEach((menu) => {
 		const list = importDict[menu.exportKey];
 		if (list === undefined) return;
-		setResieParametersMenus(setResieParameterMenus, menu.exportKey, list, startEndUnit);
+		resieParameterMenus = setResieParametersMenusFromImport(
+			resieParameterMenus,
+			menu.exportKey,
+			list,
+			startEndUnit
+		);
 	});
+	setResieParameterMenus(resieParameterMenus);
 	// Get or generate mediums
 	const mediums = getImportMediums(importDict, nodeTypes);
 	setMediums(mediums);
@@ -155,6 +161,7 @@ const importState = ({
 		/** set control modules */
 		if (nodeData.control_modules) setControlModules(nodeData.control_modules, newNode, controlModules, logError);
 
+		checkNodeValidInputs(newNode, resieParameterMenus);
 		nodeArray.push(newNode);
 		nodeDict[nodeId] = newNode;
 	}
