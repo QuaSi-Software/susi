@@ -166,83 +166,89 @@ const EditNodeModal = ({
 						</Col>
 					</Row>
 
-					<Accordion.Root
-						className="AccordionRoot"
-						type="multiple"
-						defaultValue={[editedNode.data.inputCategories[0].heading]}
-					>
-						<InputMenuWithCategories
-							title="Component Inputs"
-							inputs={editedNode.data.nodeInputs}
-							inputCategories={editedNode.data.inputCategories}
-							nodeId={editedNode.id}
-							onValueChange={(resieName, newValue) => {
-								onNodeInputValueChange(ComponentInputType.PARAMETER, resieName, newValue);
-							}}
-							onIncludedChange={(resieName, isIncluded) => {
-								onNodeInputIncludedChange(ComponentInputType.PARAMETER, resieName, isIncluded);
-							}}
-						/>
-						{showEconomicParameters(resieParameterMenus) && (
-							<AccordionInputMenu
-								title="Economic"
-								inputs={editedNode.data.economicInputs}
-								nodeId={editedNode.id}
-								onValueChange={(resieName, newValue) => {
-									onNodeInputValueChange(ComponentInputType.ECONOMIC, resieName, newValue);
-								}}
-								onIncludedChange={(resieName, isIncluded) => {
-									onNodeInputIncludedChange(ComponentInputType.ECONOMIC, resieName, isIncluded);
-								}}
-							/>
-						)}
-						{showEmissionsParameters(resieParameterMenus) && (
-							<AccordionInputMenu
-								title="Emissions"
-								inputs={editedNode.data.emissionsInputs}
-								nodeId={editedNode.id}
-								onValueChange={(resieName, newValue) => {
-									onNodeInputValueChange(ComponentInputType.EMISSIONS, resieName, newValue);
-								}}
-								onIncludedChange={(resieName, isIncluded) => {
-									onNodeInputIncludedChange(ComponentInputType.EMISSIONS, resieName, isIncluded);
-								}}
-							/>
-						)}
-
-						<BusConnectionMenu node={node} nodes={nodes} onBusDataChange={onNodeBusDataChange} />
-						<ControleModulesMenu
-							node={editedNode}
-							setEditedNode={setEditedNode}
-							controlModuleTypes={controlModules}
-							resieParameterMenus={resieParameterMenus}
-						/>
-						{editedNode.data.controlParameters && (
+					{editedNode.type !== 'group' && (
+						<Accordion.Root
+							className="AccordionRoot"
+							type="multiple"
+							defaultValue={[editedNode.data.inputCategories[0].heading]}
+						>
 							<InputMenuWithCategories
-								title="Control Parameters"
-								inputs={editedNode.data.controlParameters.inputs}
+								title="Component Inputs"
+								inputs={editedNode.data.nodeInputs}
+								inputCategories={editedNode.data.inputCategories}
 								nodeId={editedNode.id}
-								inputCategories={
-									/** if there are no control modules, the aggregation category should not be shown in the menu */
-									editedNode.data.controlModules.length > 0
-										? editedNode.data.controlParameters.categories
-										: editedNode.data.controlParameters.categories.filter(
-												(category) => category.heading.toLowerCase() !== 'aggregation'
-											)
-								}
 								onValueChange={(resieName, newValue) => {
-									onNodeInputValueChange(ComponentInputType.CONTROL_PARAMETERS, resieName, newValue);
+									onNodeInputValueChange(ComponentInputType.PARAMETER, resieName, newValue);
 								}}
 								onIncludedChange={(resieName, isIncluded) => {
-									onNodeInputIncludedChange(
-										ComponentInputType.CONTROL_PARAMETERS,
-										resieName,
-										isIncluded
-									);
+									onNodeInputIncludedChange(ComponentInputType.PARAMETER, resieName, isIncluded);
 								}}
 							/>
-						)}
-					</Accordion.Root>
+							{showEconomicParameters(resieParameterMenus) && (
+								<AccordionInputMenu
+									title="Economic"
+									inputs={editedNode.data.economicInputs}
+									nodeId={editedNode.id}
+									onValueChange={(resieName, newValue) => {
+										onNodeInputValueChange(ComponentInputType.ECONOMIC, resieName, newValue);
+									}}
+									onIncludedChange={(resieName, isIncluded) => {
+										onNodeInputIncludedChange(ComponentInputType.ECONOMIC, resieName, isIncluded);
+									}}
+								/>
+							)}
+							{showEmissionsParameters(resieParameterMenus) && (
+								<AccordionInputMenu
+									title="Emissions"
+									inputs={editedNode.data.emissionsInputs}
+									nodeId={editedNode.id}
+									onValueChange={(resieName, newValue) => {
+										onNodeInputValueChange(ComponentInputType.EMISSIONS, resieName, newValue);
+									}}
+									onIncludedChange={(resieName, isIncluded) => {
+										onNodeInputIncludedChange(ComponentInputType.EMISSIONS, resieName, isIncluded);
+									}}
+								/>
+							)}
+
+							<BusConnectionMenu node={node} nodes={nodes} onBusDataChange={onNodeBusDataChange} />
+							<ControleModulesMenu
+								node={editedNode}
+								setEditedNode={setEditedNode}
+								controlModuleTypes={controlModules}
+								resieParameterMenus={resieParameterMenus}
+							/>
+							{editedNode.data.controlParameters && (
+								<InputMenuWithCategories
+									title="Control Parameters"
+									inputs={editedNode.data.controlParameters.inputs}
+									nodeId={editedNode.id}
+									inputCategories={
+										/** if there are no control modules, the aggregation category should not be shown in the menu */
+										editedNode.data.controlModules.length > 0
+											? editedNode.data.controlParameters.categories
+											: editedNode.data.controlParameters.categories.filter(
+													(category) => category.heading.toLowerCase() !== 'aggregation'
+												)
+									}
+									onValueChange={(resieName, newValue) => {
+										onNodeInputValueChange(
+											ComponentInputType.CONTROL_PARAMETERS,
+											resieName,
+											newValue
+										);
+									}}
+									onIncludedChange={(resieName, isIncluded) => {
+										onNodeInputIncludedChange(
+											ComponentInputType.CONTROL_PARAMETERS,
+											resieName,
+											isIncluded
+										);
+									}}
+								/>
+							)}
+						</Accordion.Root>
+					)}
 				</Modal.Body>
 				<Modal.Footer>
 					<span className="warning-text right-aligned-row">
