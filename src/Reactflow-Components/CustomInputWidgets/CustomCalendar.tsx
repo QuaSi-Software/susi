@@ -1,5 +1,4 @@
 import type { Locale } from '../../Sidebar/SettingsMenu';
-import { useState } from 'react';
 import { exportDate } from './DateParsing';
 import { FloatLabel } from 'primereact/floatlabel';
 
@@ -11,9 +10,8 @@ interface CustomCalendarProps {
 	onInputChanged: (newInput: any) => void;
 }
 
-export function CustomCalendar({ date, disabled, displayName }: CustomCalendarProps) {
-	const [value, setValue] = useState<Date>(date);
-	const dateString = `${exportDate(value, 'yyyy-mm-dd')}T${exportDate(value, 'HH:MM')}`;
+export function CustomCalendar({ date, disabled, displayName, onInputChanged }: CustomCalendarProps) {
+	const dateString = `${exportDate(date, 'yyyy-mm-dd')}T${exportDate(date, 'HH:MM')}`;
 	const hasValue = dateString && dateString.length > 0;
 	return (
 		<>
@@ -28,7 +26,7 @@ export function CustomCalendar({ date, disabled, displayName }: CustomCalendarPr
 					style={{ height: '3.5em' }}
 					onChange={(e) => {
 						const newDate = new Date(e.target.value);
-						setValue(newDate);
+						onInputChanged(newDate);
 					}}
 				/>
 				<label htmlFor={displayName} id="floating-label">

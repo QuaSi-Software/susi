@@ -29,7 +29,8 @@ export function setResieParametersMenusFromImport(
 	menus: ResieParameterMenuInfo[],
 	menuKey: string,
 	importedValues: Record<string, any>,
-	startEndUnit: string
+	startEndUnit: string,
+	logError: (message: string) => void
 ): ResieParameterMenuInfo[] {
 	const menu = menus.find((e: ResieParameterMenuInfo) => e.exportKey === menuKey);
 	menu!.inputs.forEach((input) => {
@@ -37,7 +38,7 @@ export function setResieParametersMenusFromImport(
 		if (importedValue === undefined) {
 			input.isIncluded = false;
 		} else {
-			input.setValueOnImport(importedValue, [], startEndUnit);
+			input.setValueOnImport(importedValue, [], startEndUnit, logError);
 			input.isIncluded = true;
 		}
 	});
@@ -60,7 +61,7 @@ export function setControlModules(
 		controlModule.key = `${controlModule.title}_${nodeControlModules.length}`;
 		controlModule.parameters.forEach((input) => {
 			if (dict[input.resieName]) {
-				input.setValueOnImport(dict[input.resieName], [], '');
+				input.setValueOnImport(dict[input.resieName], [], '', logError);
 				input.isIncluded = true;
 			}
 		});

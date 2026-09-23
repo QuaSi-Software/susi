@@ -12,7 +12,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
 import { createGroupNode } from '../../../NodeDataStructures/GroupNodes/GroupNode';
-import { getStartEndUnit } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
+import { defaultDateFormat } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
 import { setControlModules, setImportedValues, setResieParametersMenusFromImport } from './ImportInputs';
 import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 
@@ -98,7 +98,10 @@ const importState = ({
 		logError('There is no dictionary of components defined in import file.');
 		return;
 	}
-	const startEndUnit = getStartEndUnit(resieParameterMenus);
+	/** Get start end unit from import data */
+	let startEndUnit = defaultDateFormat;
+	if (importDict['simulation_parameters'] && importDict['simulation_parameters']['start_end_unit'])
+		startEndUnit = importDict['simulation_parameters']['start_end_unit'];
 	resieParameterMenus.forEach((menu) => {
 		const list = importDict[menu.exportKey];
 		if (list === undefined) return;
@@ -106,9 +109,14 @@ const importState = ({
 			resieParameterMenus,
 			menu.exportKey,
 			list,
-			startEndUnit
+			startEndUnit,
+			logError
 		);
 	});
+	/** Reset start end unit to default value */
+	resieParameterMenus
+		.find((e) => e.exportKey === 'simulation_parameters')!
+		.inputs.find((e) => e.resieName === 'start_end_unit')!.value = defaultDateFormat;
 	setResieParameterMenus(resieParameterMenus);
 	// Get or generate mediums
 	const mediums = getImportMediums(importDict, nodeTypes);

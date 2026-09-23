@@ -14,13 +14,20 @@ function getDatetimeFormat(startEndUnit: string | null): string {
 	return result;
 }
 
-export function parseDate(dateString: string | null | undefined, startEndUnit: string | null): Date {
+export function parseDate(
+	dateString: string | null | undefined,
+	startEndUnit: string | null,
+	logError: (message: string) => void
+): Date {
 	if (!dateString) return now();
 	const format = getDatetimeFormat(startEndUnit);
 	let date = DateTime.fromFormat(dateString, format);
 	if (!date.isValid) {
 		date = DateTime.fromFormat(dateString, defaultDateFormat);
-		if (!date.isValid) return now();
+		if (!date.isValid) {
+			logError(`'${dateString}' is not a valid Date`);
+			return now();
+		}
 	}
 	return date.toJSDate();
 }

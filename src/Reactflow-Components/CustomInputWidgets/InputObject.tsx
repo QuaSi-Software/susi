@@ -78,7 +78,12 @@ class InputObject implements InputObjectProps {
 		if (isImport) this.setValueOnImport(props.value, mediums, startEndUnit);
 	}
 
-	public setValueOnImport(value: any, mediums: Medium[] = [], startEndUnit: string | null): void {
+	public setValueOnImport(
+		value: any,
+		mediums: Medium[] = [],
+		startEndUnit: string | null,
+		logError: (message: string) => void = () => {}
+	): void {
 		this.value = value;
 		if (this.type === InputObjectType.MEDIUM) {
 			const mediumWithKey = mediums.find((m) => m.key === this.value);
@@ -93,7 +98,7 @@ class InputObject implements InputObjectProps {
 			if (this.type === InputObjectType.STRING) this.value = '';
 		}
 		if (this.type === InputObjectType.DATE) {
-			const date: Date = parseDate(this.value, startEndUnit);
+			const date: Date = parseDate(this.value, startEndUnit, logError);
 			this.value = date;
 		}
 
