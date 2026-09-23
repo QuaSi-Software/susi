@@ -29,3 +29,10 @@ dist-ssr
 nginx.conf
 
 public/resie_parameters.json
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
