@@ -1,0 +1,94 @@
+{
+	"components": {
+		"BUS_03": {
+			"type": "Bus",
+			"medium": "m_c_g_natgas",
+			"economic_parameters": {},
+			"emissions_parameters": {},
+			"control_parameters": {
+				"consider_m_el_in": true,
+				"consider_m_el_out": true,
+				"consider_m_fuel_in": true,
+				"consider_m_gas_in": true,
+				"consider_m_h2_out": true,
+				"consider_m_heat_ht_out": true,
+				"consider_m_heat_in": true,
+				"consider_m_heat_lt_out": true,
+				"consider_m_heat_out": true,
+				"consider_m_o2_out": true
+			},
+			"import_data": {
+				"node_position": {
+					"x": 294.5,
+					"y": 43.5
+				},
+				"node_type": "Bus"
+			},
+			"connections": {
+				"input_order": ["BUS_01"],
+				"output_order": [],
+				"energy_flow": [[]]
+			}
+		},
+		"BUS_02": {
+			"type": "Bus",
+			"medium": "m_c_g_natgas",
+			"economic_parameters": {},
+			"emissions_parameters": {},
+			"control_parameters": {
+				"consider_m_el_in": true,
+				"consider_m_el_out": true,
+				"consider_m_fuel_in": true,
+				"consider_m_gas_in": true,
+				"consider_m_h2_out": true,
+				"consider_m_heat_ht_out": true,
+				"consider_m_heat_in": true,
+				"consider_m_heat_lt_out": true,
+				"consider_m_heat_out": true,
+				"consider_m_o2_out": true
+			},
+			"import_data": {
+				"node_position": {
+					"x": 44.5,
+					"y": 43.5
+				},
+				"node_type": "Bus"
+			},
+			"connections": {
+				"input_order": [],
+				"output_order": ["BUS_01"],
+				"energy_flow": []
+			}
+		},
+		"BUS_01": {
+			"type": "Bus",
+			"medium": "m_c_g_natgas",
+			"economic_parameters": {},
+			"emissions_parameters": {},
+			"control_parameters": {
+				"consider_m_el_in": true,
+				"consider_m_el_out": true,
+				"consider_m_fuel_in": true,
+				"consider_m_gas_in": true,
+				"consider_m_h2_out": true,
+				"consider_m_heat_ht_out": true,
+				"consider_m_heat_in": true,
+				"consider_m_heat_lt_out": true,
+				"consider_m_heat_out": true,
+				"consider_m_o2_out": true
+			},
+			"import_data": {
+				"node_position": {
+					"x": 169.5,
+					"y": 43.5
+				},
+				"node_type": "Bus"
+			},
+			"connections": {
+				"input_order": ["BUS_02"],
+				"output_order": ["BUS_03"],
+				"energy_flow": [[1]]
+			}
+		}
+	}
+}
