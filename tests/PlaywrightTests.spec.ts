@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { checkImportExport, dragNodeIn } from './testingUtils';
+import { checkImportExport, dragNodeIn, importConfig } from './testingUtils';
+import * as fs from 'fs';
 
 test('has title', async ({ page }) => {
 	await page.goto('');
@@ -58,5 +59,18 @@ test('Undo Create Node', async ({ page }) => {
 
 test('Import Export', async ({ page }) => {
 	await checkImportExport(page, 'tests/test_config.json');
+});
+
+test('Check delete Edges on Medium Change', async ({ page }) => {
+	await page.goto('http://localhost:5002/');
+	const configJsonString = fs.readFileSync('tests/row_of_buses.json', 'utf-8');
+	await importConfig(page, configJsonString);
+	await page.getByText('BUS_01').dblclick();
+	const mediumSelect = page.locator('#Medium-floatingSelect');
+	/** If this waitFor is left out, the test times out on webkit */
+	await mediumSelect.waitFor({ state: 'visible' });
+	await mediumSelect.selectOption('m_h_w_ht1_DEFAULT_KEY');
+	await page.getByRole('button', { name: 'Save Changes' }).click();
+	await expect(page.locator('.react-flow__edge-path')).toHaveCount(0);
 });
 
