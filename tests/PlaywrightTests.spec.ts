@@ -11,7 +11,7 @@ test('has title', async ({ page }) => {
 
 test('Open Edit Component Modal', async ({ page }) => {
 	await page.goto('');
-	dragNodeIn(page, 'Bus');
+	await dragNodeIn(page, 'Bus');
 	await page.getByText('BUS_01').dblclick();
 	await expect(page.getByText('Edit ComponentBUS_01Component')).toBeVisible();
 	await page.getByRole('button', { name: 'Close', exact: true }).click();
@@ -65,6 +65,8 @@ test('Check delete Edges on Medium Change', async ({ page }) => {
 	await page.goto('http://localhost:5002/');
 	const configJsonString = fs.readFileSync('tests/row_of_buses.json', 'utf-8');
 	await importConfig(page, configJsonString);
+	// Click on the canvas to deselect the Import/Export textbox before interacting with nodes
+	await page.locator('.react-flow__pane').click();
 	await page.getByText('BUS_01').dblclick();
 	const mediumSelect = page.locator('#Medium-floatingSelect');
 	/** If this waitFor is left out, the test times out on webkit */
