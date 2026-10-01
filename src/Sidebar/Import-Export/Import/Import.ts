@@ -1,6 +1,6 @@
 import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type { Medium } from '../../../NodeDataStructures/Mediums/Medium';
-import createNodeFromType from '../../../NodeDataStructures/Nodes/SusiNode';
+import createNodeFromType, { checkNodeValidInputs } from '../../../NodeDataStructures/Nodes/SusiNode';
 import getImportMediums from './ImportMediums';
 import type { ComponentData, ComponentImportData, ImportData, NodeGroup } from '../ExportDataStrucures';
 import { getComponentImportData } from './ImportData';
@@ -12,8 +12,8 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
 import { createGroupNode } from '../../../NodeDataStructures/GroupNodes/GroupNode';
-import { getStartEndUnit } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
-import { setControlModules, setImportedValues, setResieParametersMenus } from './ImportInputs';
+import { defaultDateFormat } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
+import { setControlModules, setImportedValues, setResieParametersMenusFromImport } from './ImportInputs';
 import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 
 interface ImportStateProps {
@@ -98,12 +98,26 @@ const importState = ({
 		logError('There is no dictionary of components defined in import file.');
 		return;
 	}
-	const startEndUnit = getStartEndUnit(resieParameterMenus);
+	/** Get start end unit from import data */
+	let startEndUnit = defaultDateFormat;
+	if (importDict['simulation_parameters'] && importDict['simulation_parameters']['start_end_unit'])
+		startEndUnit = importDict['simulation_parameters']['start_end_unit'];
 	resieParameterMenus.forEach((menu) => {
 		const list = importDict[menu.exportKey];
 		if (list === undefined) return;
-		setResieParametersMenus(setResieParameterMenus, menu.exportKey, list, startEndUnit);
+		resieParameterMenus = setResieParametersMenusFromImport(
+			resieParameterMenus,
+			menu.exportKey,
+			list,
+			startEndUnit,
+			logError
+		);
 	});
+	/** Reset start end unit to default value */
+	resieParameterMenus
+		.find((e) => e.exportKey === 'simulation_parameters')!
+		.inputs.find((e) => e.resieName === 'start_end_unit')!.value = defaultDateFormat;
+	setResieParameterMenus(resieParameterMenus);
 	// Get or generate mediums
 	const mediums = getImportMediums(importDict, nodeTypes);
 	setMediums(mediums);
@@ -155,6 +169,7 @@ const importState = ({
 		/** set control modules */
 		if (nodeData.control_modules) setControlModules(nodeData.control_modules, newNode, controlModules, logError);
 
+		checkNodeValidInputs(newNode, resieParameterMenus);
 		nodeArray.push(newNode);
 		nodeDict[nodeId] = newNode;
 	}
