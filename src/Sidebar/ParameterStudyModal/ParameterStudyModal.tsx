@@ -1,9 +1,9 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { Modal } from 'react-bootstrap';
-import { changeInputListElement, type ResieParameterMenuInfo } from './ResieParameters/ResieParameterMenuInfo';
-import type { InputObject } from '../Reactflow-Components/CustomInputWidgets/InputObject';
+import { changeInputListElement, type ResieParameterMenuInfo } from '../ResieParameters/ResieParameterMenuInfo';
+import type { InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
 import { Accordion } from 'radix-ui';
-import { AccordionInputMenu } from '../Reactflow-Components/CustomInputWidgets/AccordionInputMenu';
+import { AccordionInputMenu } from '../../Reactflow-Components/CustomInputWidgets/AccordionInputMenu';
 
 interface ModalProps {
 	show: boolean;
@@ -46,6 +46,19 @@ export const ParameterStudyModal = ({
 							onIncludedChange={(key, value) => updateMenu(menu!.title, key, value, true)}
 						/>
 					))}
+
+					{/** Parameter Study */}
+					<Accordion.Item className="AccordionItem" value="Parameter Study">
+						<Accordion.Header className="AccordionHeader">
+							<Accordion.Trigger className="modal-header accordion-header-button">
+								Parameter Study
+								{/* {hasIssues && '⚠️'} */}
+								<i className="bi bi-chevron-down"></i>
+							</Accordion.Trigger>
+						</Accordion.Header>
+
+						<Accordion.Content>{/** Parameter Study menu */}</Accordion.Content>
+					</Accordion.Item>
 				</Accordion.Root>
 			</Modal.Body>
 		</Modal>

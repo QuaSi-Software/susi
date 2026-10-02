@@ -3,11 +3,11 @@ import { checkNodeValidInputs, type SusiNode } from '../../../NodeDataStructures
 import type { InputObject } from '../../CustomInputWidgets/InputObject';
 import ControlModulesDropdown from './ControlModulesDropdown';
 import { Accordion } from 'radix-ui';
-import { Button } from 'react-bootstrap';
 import { InputMenu } from '../../CustomInputWidgets/InputMenu';
 import _ from 'lodash';
 import type { ResieParameterMenuInfo } from '../../../Sidebar/ResieParameters/ResieParameterMenuInfo';
 import { getTitleFromKey } from '../ContextMenuUtils';
+import { SelectableList } from './SelectableList';
 
 export interface ControlModule {
 	title: string;
@@ -30,7 +30,6 @@ export function ControleModulesMenu({
 }: ControleModulesMenuProps) {
 	const [selectedModuleKey, setSelectedModuleKey] = useState<string>('');
 	const controlModules = _.cloneDeep(node.data.controlModules);
-	const selectedModuleColor = '#c5d0eb';
 	const selectedModule = controlModules.find((e) => e.key === selectedModuleKey);
 
 	function setControlModuleParameter(paramName: string, value: any, isIncludeChange: boolean) {
@@ -51,9 +50,9 @@ export function ControleModulesMenu({
 			return newNode;
 		});
 	}
-	function deleteControlModule(controleModule: ControlModule) {
+	function deleteControlModule(controleModuleKey: string) {
 		setEditedNode((node) => {
-			const filteredControlModules = node.data.controlModules.filter((e) => e.key !== controleModule.key);
+			const filteredControlModules = node.data.controlModules.filter((e) => e.key !== controleModuleKey);
 			const newNode = { ...node, data: { ...node.data, controlModules: filteredControlModules } };
 			checkNodeValidInputs(newNode, resieParameterMenus);
 			return newNode;
@@ -97,34 +96,18 @@ export function ControleModulesMenu({
 				</Accordion.Header>
 
 				<Accordion.Content style={{ display: 'flex' }}>
-					<div className="controle-module-list">
-						<div className="modal-subheading">Modules on this Component</div>
-						{controlModules.map((controleModule, index) => (
-							<div
-								key={`controle-module-${index}`}
-								className="controle-module-item"
-								style={
-									controleModule.key === selectedModuleKey
-										? { backgroundColor: selectedModuleColor }
-										: {}
-								}
-							>
-								<div
-									onClick={() => setSelectedModuleKey(controleModule.key!)}
-									style={{ flexGrow: 1, paddingRight: '2em' }}
-								>
-									{getTitleFromKey(controleModule.title)}
-								</div>
-								<Button variant="danger" size="sm" onClick={() => deleteControlModule(controleModule)}>
-									Delete
-								</Button>
-							</div>
-						))}
+					<SelectableList
+						items={controlModules.map((e) => ({ key: e.key!, title: getTitleFromKey(e.title) }))}
+						onDelete={deleteControlModule}
+						selectedKey={selectedModuleKey}
+						setSelectedKey={setSelectedModuleKey}
+					>
 						<ControlModulesDropdown
 							controlModuleTypes={controlModuleTypes}
 							addControlModule={addControlModule}
 						/>
-					</div>
+					</SelectableList>
+
 					{selectedModule && (
 						<div style={{ flex: '1 1 0', margin: '0.5em' }} key={`${selectedModule.key ?? 'no-key'}`}>
 							<div className="modal-subheading">{getTitleFromKey(selectedModule.title)}</div>

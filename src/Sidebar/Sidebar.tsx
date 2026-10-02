@@ -12,7 +12,7 @@ import { AppContext } from '../AppContext';
 import { ResieParametersMenu, type ResieParametersMenuProps } from './ResieParameters/ResieParametersMenu';
 import { ResieParameterSubMenu } from './ResieParameters/ResieParameterSubMenu';
 import { InformationMenu } from './InformationMenu/InformationMenu';
-import { ParameterStudyModal, type ParameterStudyModalProps } from './ParameterStudyModal';
+import { ParameterStudyModal, type ParameterStudyModalProps } from './ParameterStudyModal/ParameterStudyModal';
 
 export const MenuType = {
 	NewNodeMenu: 'Add Components',

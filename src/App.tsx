@@ -61,7 +61,7 @@ import { useContextMenuHandlers } from './Reactflow-Components/ContextMenus/useC
 import { useDraghandlers } from './useDraghandlers';
 import type { ControlModule } from './Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 import { InputObject } from './Reactflow-Components/CustomInputWidgets/InputObject';
-import type { ParameterStudy } from './Sidebar/ParameterStudyModal';
+import type { ParameterStudy } from './Sidebar/ParameterStudyModal/ParameterStudyModal';
 
 const DnDFlow = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);
