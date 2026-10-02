@@ -60,6 +60,7 @@ import logo from './assets/resie.svg';
 import { useContextMenuHandlers } from './Reactflow-Components/ContextMenus/useContextMenuHandlers';
 import { useDraghandlers } from './useDraghandlers';
 import type { ControlModule } from './Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
+import { InputObject } from './Reactflow-Components/CustomInputWidgets/InputObject';
 
 const DnDFlow = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);
@@ -99,6 +100,8 @@ const DnDFlow = () => {
 	const [componentTypes, setComponentTypes] = useState<Record<string, NodeType> | null>(null);
 	const [componentCategories, setComponentCategories] = useState<ApiCategory[]>([]);
 	const [resieParameterMenus, setResieParameterMenus] = useState<ResieParameterMenuInfo[]>([]);
+	const [parameterStudyMenus, setParameterStudyMenus] = useState<ResieParameterMenuInfo[]>([]);
+	const [parameterStudy, setParameterStudy] = useState<InputObject[]>([]);
 	const [controlParameters, setControlParameters] = useState<ResieParameterMenuInfo | null>(null);
 	const [controlModules, setControlModules] = useState<ControlModule[]>([]);
 	const [resieVersion, setResieVersion] = useState<string>();
@@ -117,6 +120,8 @@ const DnDFlow = () => {
 			setComponentTypes,
 			setComponentCategories,
 			setResieParameterMenus,
+			setParameterStudyMenus,
+			setParameterStudy,
 			setOverlayError: setOverlayErrorMessage,
 			setControlParameters,
 			setControlModules,

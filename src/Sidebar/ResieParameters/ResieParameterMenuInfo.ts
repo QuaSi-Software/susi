@@ -12,8 +12,7 @@ export interface ResieParameterMenuInfo {
 	categories: ApiCategory[];
 }
 
-export function importResieParameterMenuInfo(
-	categories: ApiCategory[],
+export function importInputMenu(
 	parameters: Record<string, APIParameter>,
 	menuName: string,
 	exportKey: string
@@ -26,18 +25,29 @@ export function importResieParameterMenuInfo(
 	inputs.forEach((input) => {
 		input.checkInputValid(inputs);
 	});
+	return {
+		title: menuName,
+		inputs,
+		categories: [],
+		exportKey,
+	};
+}
+
+export function importResieParameterMenuInfo(
+	categories: ApiCategory[],
+	parameters: Record<string, APIParameter>,
+	menuName: string,
+	exportKey: string
+): ResieParameterMenuInfo {
+	const menu = importInputMenu(parameters, menuName, exportKey);
 	categories.forEach((category) => {
 		if (!category.parameters && category.types) {
 			category.parameters = category.types;
 		}
 	});
-	checkParametersAndCategoriesMatch(inputs, categories, menuName);
-	return {
-		title: menuName,
-		inputs,
-		categories,
-		exportKey,
-	};
+	checkParametersAndCategoriesMatch(menu.inputs, categories, menuName);
+	menu.categories = categories;
+	return menu;
 }
 
 /** check value in resie parameter menus */

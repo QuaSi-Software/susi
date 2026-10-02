@@ -9,6 +9,7 @@ interface ApiReturn {
 		types: Record<string, ApiComponent>;
 	};
 	general: {
+		/** General Parameters */
 		economic: Record<string, APIParameter>;
 		economic_categories: ApiCategory[];
 		emissions: Record<string, APIParameter>;
@@ -17,6 +18,12 @@ interface ApiReturn {
 		io_settings: Record<string, APIParameter>;
 		simulation: Record<string, APIParameter>;
 		simulation_categories: ApiCategory[];
+		/** Parameter Studies */
+		parameter_study: Record<string, APIParameter>;
+		parameter_study_optimisation: Record<string, APIParameter>;
+		parameter_variation: Record<string, APIParameter>;
+		refinement_optimisation: Record<string, APIParameter>;
+		sensitivity_analysis: Record<string, APIParameter>;
 	};
 	resie_version: string;
 }

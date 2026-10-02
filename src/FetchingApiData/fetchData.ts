@@ -7,6 +7,7 @@ import { type ResieParameterMenuInfo } from '../Sidebar/ResieParameters/ResiePar
 import { processApiReturn } from './processApiData';
 import type { ControlModule } from '../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 import { getEnv } from '../getEnv.ts';
+import type { InputObject } from '../Reactflow-Components/CustomInputWidgets/InputObject.tsx';
 
 const localResieParameterModules = import.meta.glob('../assets/resie_parameters.json');
 
@@ -27,13 +28,15 @@ const loadLocalFile = async (): Promise<ApiReturn | null> => {
 	}
 };
 
-interface useFetchDataProps {
+interface FetchDataProps {
 	setLoadingMessage: (isLoading: string | null) => void;
 	mediums: Medium[];
 	componentTypes: Record<string, NodeType> | null;
 	setComponentTypes: Dispatch<SetStateAction<Record<string, NodeType> | null>>;
 	setComponentCategories: Dispatch<SetStateAction<ApiCategory[]>>;
 	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
+	setParameterStudyMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
+	setParameterStudy: Dispatch<SetStateAction<InputObject[]>>;
 	setOverlayError: Dispatch<SetStateAction<string | null>>;
 	setControlParameters: Dispatch<SetStateAction<ResieParameterMenuInfo | null>>;
 	setControlModules: Dispatch<SetStateAction<ControlModule[]>>;
@@ -46,11 +49,13 @@ export function fetchData({
 	setComponentTypes,
 	setComponentCategories,
 	setResieParameterMenus,
+	setParameterStudyMenus,
+	setParameterStudy,
 	setOverlayError,
 	setControlParameters,
 	setControlModules,
 	setResieVersion,
-}: useFetchDataProps) {
+}: FetchDataProps) {
 	setLoadingMessage('Loading Resie Data');
 	loadLocalFile()
 		.then((fileData) => {
@@ -78,6 +83,8 @@ export function fetchData({
 				setComponentTypes,
 				setComponentCategories,
 				setResieParameterMenus,
+				setParameterStudyMenus,
+				setParameterStudy,
 				setControlParameters,
 				setControlModules,
 				setResieVersion

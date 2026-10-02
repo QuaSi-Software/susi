@@ -1,4 +1,5 @@
 import {
+	importInputMenu,
 	importResieParameterMenuInfo,
 	type ResieParameterMenuInfo,
 } from '../Sidebar/ResieParameters/ResieParameterMenuInfo';
@@ -10,6 +11,7 @@ import type { NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
 import { getInputObjectFromAPIParameter } from './ImportInputObjects';
 import type { ControlModule } from '../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 import { defaultDateFormat } from '../Reactflow-Components/CustomInputWidgets/DateParsing';
+import type { InputObject } from '../Reactflow-Components/CustomInputWidgets/InputObject';
 
 export function processApiReturn(
 	data: ApiReturn,
@@ -17,6 +19,8 @@ export function processApiReturn(
 	setComponentTypes: Dispatch<SetStateAction<Record<string, NodeType> | null>>,
 	setComponentCategories: Dispatch<SetStateAction<ApiCategory[]>>,
 	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>,
+	setParameterStudyMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>,
+	setParameterStudy: Dispatch<SetStateAction<InputObject[]>>,
 	setControlParameters: Dispatch<SetStateAction<ResieParameterMenuInfo | null>>,
 	setControlModules: Dispatch<SetStateAction<ControlModule[]>>,
 	setResieVersion: Dispatch<SetStateAction<string | undefined>>
@@ -76,4 +80,16 @@ export function processApiReturn(
 			'emissions_parameters'
 		),
 	]);
+
+	setParameterStudyMenus([
+		importInputMenu(
+			data.general.parameter_study_optimisation,
+			'Parameter Study Optimisation',
+			'parameter_study_optimisation'
+		),
+		importInputMenu(data.general.parameter_variation, 'Parameter Variation', 'parameter_variation'),
+		importInputMenu(data.general.refinement_optimisation, 'Refinement Optimisation', 'refinement_optimisation'),
+		importInputMenu(data.general.sensitivity_analysis, 'Sensitivity Analysis', 'sensitivity_analysis'),
+	]);
+	setParameterStudy(importInputMenu(data.general.parameter_study, '', '').inputs);
 }
