@@ -214,6 +214,7 @@ const DnDFlow = () => {
 					parameterStudyMenus={parameterStudyMenus}
 					parameterStudyOptions={parameterStudyOptions}
 					setParameterStudy={setParameterStudy}
+					setParameterStudyMenus={setParameterStudyMenus}
 				/>
 				<ReactFlow
 					nodes={nodes}

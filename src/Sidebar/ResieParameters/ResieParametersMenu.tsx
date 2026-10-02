@@ -1,5 +1,5 @@
 import { type Dispatch, type SetStateAction } from 'react';
-import type { ResieParameterMenuInfo } from './ResieParameterMenuInfo';
+import { changeInputListElement, type ResieParameterMenuInfo } from './ResieParameterMenuInfo';
 import InputMenuWithCategories from '../../Reactflow-Components/CustomInputWidgets/InputMenuWithCategories';
 import { Accordion } from 'radix-ui';
 import _ from 'lodash';
@@ -15,20 +15,8 @@ export function ResieParametersMenu({
 	resieParameterMenus,
 	setResieParameterMenus,
 }: ResieParametersMenuProps) {
-	function changeInputListElement(menuTitle: string, key: string, value: any, isIncludedChange: boolean) {
-		setResieParameterMenus((resieParameterMenuInfo) => {
-			resieParameterMenuInfo = _.cloneDeep(resieParameterMenuInfo);
-			const menu = resieParameterMenuInfo.find((e) => e.title === menuTitle);
-			const input = menu!.inputs.find((e) => e.resieName === key);
-			if (!input)
-				console.error(`Input with key ${key} should not be undefined in list ${resieParameterMenuInfo}`);
-			if (isIncludedChange) input!.isIncluded = value;
-			else input!.value = value;
-			menu!.inputs.forEach((e) => {
-				e.checkInputValid(menu!.inputs);
-			});
-			return resieParameterMenuInfo;
-		});
+	function updateMenu(menuTitle: string, key: string, value: any, isIncludedChange: boolean) {
+		changeInputListElement(setResieParameterMenus, menuTitle, key, value, isIncludedChange);
 	}
 
 	const menu = resieParameterMenus.find((e) => e.title === selectedMenu);
@@ -42,8 +30,8 @@ export function ResieParametersMenu({
 					inputs={inputs}
 					inputCategories={menu!.categories}
 					nodeId={null}
-					onValueChange={(key, value) => changeInputListElement(menu!.title, key, value, false)}
-					onIncludedChange={(key, value) => changeInputListElement(menu!.title, key, value, true)}
+					onValueChange={(key, value) => updateMenu(menu!.title, key, value, false)}
+					onIncludedChange={(key, value) => updateMenu(menu!.title, key, value, true)}
 				/>
 			</Accordion.Root>
 		</div>

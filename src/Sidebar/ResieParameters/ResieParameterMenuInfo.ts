@@ -4,6 +4,8 @@ import {
 	checkParametersAndCategoriesMatch,
 	getInputObjectFromAPIParameter,
 } from '../../FetchingApiData/ImportInputObjects';
+import type { Dispatch, SetStateAction } from 'react';
+import _ from 'lodash';
 
 export interface ResieParameterMenuInfo {
 	title: string;
@@ -48,6 +50,27 @@ export function importResieParameterMenuInfo(
 	checkParametersAndCategoriesMatch(menu.inputs, categories, menuName);
 	menu.categories = categories;
 	return menu;
+}
+
+export function changeInputListElement(
+	setter: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>,
+	menuTitle: string,
+	key: string,
+	value: any,
+	isIncludedChange: boolean
+) {
+	setter((menus) => {
+		menus = _.cloneDeep(menus);
+		const menu = menus.find((e) => e.title === menuTitle);
+		const input = menu!.inputs.find((e) => e.resieName === key);
+		if (!input) console.error(`Input with key ${key} should not be undefined in list ${menus}`);
+		if (isIncludedChange) input!.isIncluded = value;
+		else input!.value = value;
+		menu!.inputs.forEach((e) => {
+			e.checkInputValid(menu!.inputs);
+		});
+		return menus;
+	});
 }
 
 /** check value in resie parameter menus */
