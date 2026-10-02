@@ -61,6 +61,7 @@ import { useContextMenuHandlers } from './Reactflow-Components/ContextMenus/useC
 import { useDraghandlers } from './useDraghandlers';
 import type { ControlModule } from './Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 import { InputObject } from './Reactflow-Components/CustomInputWidgets/InputObject';
+import type { ParameterStudy } from './Sidebar/ParameterStudyModal';
 
 const DnDFlow = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);
@@ -95,13 +96,14 @@ const DnDFlow = () => {
 	const [locale, setLocale] = useState<Locale>(Locale.US);
 	const [edgeType, setEdgeType] = useState<EdgeType>(EdgeType.DEFAULT);
 	const [showEditNodeModal, setShowEditNodeModal] = useState(false);
+	const [parameterStudy, setParameterStudy] = useState<ParameterStudy>({});
 
 	/** Data imported from API */
 	const [componentTypes, setComponentTypes] = useState<Record<string, NodeType> | null>(null);
 	const [componentCategories, setComponentCategories] = useState<ApiCategory[]>([]);
 	const [resieParameterMenus, setResieParameterMenus] = useState<ResieParameterMenuInfo[]>([]);
 	const [parameterStudyMenus, setParameterStudyMenus] = useState<ResieParameterMenuInfo[]>([]);
-	const [parameterStudy, setParameterStudy] = useState<InputObject[]>([]);
+	const [parameterStudyOptions, setParameterStudyOptions] = useState<InputObject[]>([]);
 	const [controlParameters, setControlParameters] = useState<ResieParameterMenuInfo | null>(null);
 	const [controlModules, setControlModules] = useState<ControlModule[]>([]);
 	const [resieVersion, setResieVersion] = useState<string>();
@@ -121,7 +123,7 @@ const DnDFlow = () => {
 			setComponentCategories,
 			setResieParameterMenus,
 			setParameterStudyMenus,
-			setParameterStudy,
+			setParameterStudyOptions,
 			setOverlayError: setOverlayErrorMessage,
 			setControlParameters,
 			setControlModules,
@@ -208,6 +210,10 @@ const DnDFlow = () => {
 					controlParameters={controlParameters}
 					controlModules={controlModules}
 					resieVersion={resieVersion}
+					parameterStudy={parameterStudy}
+					parameterStudyMenus={parameterStudyMenus}
+					parameterStudyOptions={parameterStudyOptions}
+					setParameterStudy={setParameterStudy}
 				/>
 				<ReactFlow
 					nodes={nodes}

@@ -20,7 +20,7 @@ export function processApiReturn(
 	setComponentCategories: Dispatch<SetStateAction<ApiCategory[]>>,
 	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>,
 	setParameterStudyMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>,
-	setParameterStudy: Dispatch<SetStateAction<InputObject[]>>,
+	setParameterStudyOptions: Dispatch<SetStateAction<InputObject[]>>,
 	setControlParameters: Dispatch<SetStateAction<ResieParameterMenuInfo | null>>,
 	setControlModules: Dispatch<SetStateAction<ControlModule[]>>,
 	setResieVersion: Dispatch<SetStateAction<string | undefined>>
@@ -91,5 +91,5 @@ export function processApiReturn(
 		importInputMenu(data.general.refinement_optimisation, 'Refinement Optimisation', 'refinement_optimisation'),
 		importInputMenu(data.general.sensitivity_analysis, 'Sensitivity Analysis', 'sensitivity_analysis'),
 	]);
-	setParameterStudy(importInputMenu(data.general.parameter_study, '', '').inputs);
+	setParameterStudyOptions(importInputMenu(data.general.parameter_study, '', '').inputs);
 }

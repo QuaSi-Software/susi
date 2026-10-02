@@ -12,11 +12,13 @@ import { AppContext } from '../AppContext';
 import { ResieParametersMenu, type ResieParametersMenuProps } from './ResieParameters/ResieParametersMenu';
 import { ResieParameterSubMenu } from './ResieParameters/ResieParameterSubMenu';
 import { InformationMenu } from './InformationMenu/InformationMenu';
+import { ParameterStudyModal, type ParameterStudyModalProps } from './ParameterStudyModal';
 
 export const MenuType = {
 	NewNodeMenu: 'Add Components',
 	MediumMenu: 'Medium Menu',
 	ResieParameters: 'Resie Parameters',
+	ParameterStudy: 'Parameter Study',
 	ImportExportMenu: 'Import/Export',
 	Instructions: 'Instructions',
 	Settings: 'Settings',
@@ -29,12 +31,14 @@ type SidebarProps = ImportExportMenuProps &
 	MediumMenuProps &
 	SettingsMenuProps &
 	NewNodeMenuProps &
-	ResieParametersMenuProps;
+	ResieParametersMenuProps &
+	ParameterStudyModalProps;
 
 const Sidebar = (menuProps: SidebarProps) => {
 	if (menuProps.resieParameterMenus.length === 0) return <></>;
 	const [selectedMenu, setSelectedMenu] = useState<MenuType>(MenuType.NewNodeMenu);
 	const [selectedResieParamMenu, setSelectedResieParamMenu] = useState(menuProps.resieParameterMenus[0].title);
+	const [showParameterStudyModal, setShowParameterStudyModal] = useState<boolean>(false);
 	const mediums = useContext(AppContext)!.mediums;
 
 	const renderMenu = () => {
@@ -99,6 +103,13 @@ const Sidebar = (menuProps: SidebarProps) => {
 								setSelectedMenu={setSelectedMenu}
 								resieParameterMenus={menuProps.resieParameterMenus}
 							/>
+							<DropdownMenu.Item
+								className="DropdownMenuItem"
+								onClick={() => setShowParameterStudyModal(true)}
+							>
+								{MenuType.ParameterStudy as string}
+								{/* {hasWarning && <> ⚠️</>} */}
+							</DropdownMenu.Item>
 							{MenuItem(MenuType.ImportExportMenu)}
 							{MenuItem(MenuType.Instructions)}
 							{MenuItem(MenuType.Settings)}
@@ -109,6 +120,15 @@ const Sidebar = (menuProps: SidebarProps) => {
 				<span className="sidebar-heading">{selectedMenu}</span>
 			</div>
 			<div className="sidebar-menu-content">{renderMenu()}</div>
+			<ParameterStudyModal
+				show={showParameterStudyModal}
+				setShow={setShowParameterStudyModal}
+				// parameterStudy={menuProps.parameterStudy}
+				// parameterStudyMenus={menuProps.parameterStudyMenus}
+				// parameterStudyOptions={menuProps.parameterStudyOptions}
+				// setParameterStudy={}
+				{...menuProps}
+			/>
 		</aside>
 	);
 };

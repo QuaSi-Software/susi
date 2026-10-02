@@ -36,7 +36,7 @@ interface FetchDataProps {
 	setComponentCategories: Dispatch<SetStateAction<ApiCategory[]>>;
 	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
 	setParameterStudyMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
-	setParameterStudy: Dispatch<SetStateAction<InputObject[]>>;
+	setParameterStudyOptions: Dispatch<SetStateAction<InputObject[]>>;
 	setOverlayError: Dispatch<SetStateAction<string | null>>;
 	setControlParameters: Dispatch<SetStateAction<ResieParameterMenuInfo | null>>;
 	setControlModules: Dispatch<SetStateAction<ControlModule[]>>;
@@ -50,7 +50,7 @@ export function fetchData({
 	setComponentCategories,
 	setResieParameterMenus,
 	setParameterStudyMenus,
-	setParameterStudy,
+	setParameterStudyOptions,
 	setOverlayError,
 	setControlParameters,
 	setControlModules,
@@ -84,7 +84,7 @@ export function fetchData({
 				setComponentCategories,
 				setResieParameterMenus,
 				setParameterStudyMenus,
-				setParameterStudy,
+				setParameterStudyOptions,
 				setControlParameters,
 				setControlModules,
 				setResieVersion
