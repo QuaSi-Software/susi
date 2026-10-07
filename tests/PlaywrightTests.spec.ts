@@ -76,3 +76,8 @@ test('Check delete Edges on Medium Change', async ({ page }) => {
 	await expect(page.locator('.react-flow__edge-path')).toHaveCount(0);
 });
 
+test('Check importing invalid Connection', async ({ page }) => {
+	await page.goto('');
+	const configJsonString = fs.readFileSync('tests/Invalid_connection.json', 'utf-8');
+	await importConfig(page, configJsonString);
+});
