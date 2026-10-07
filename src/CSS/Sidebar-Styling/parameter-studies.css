@@ -1,0 +1,20 @@
+.add-parameter-study-section {
+	border: 1px solid #222;
+	border-radius: 5px;
+	padding: 0.5em;
+}
+
+.parameter-study-buttons {
+	display: flex;
+	gap: 1rem;
+	align-items: center;
+}
+.parameter-study-buttons > div {
+	min-width: 150px;
+	flex: 1;
+}
+
+.parameter-study-menu {
+	display: flex;
+	gap: 1rem;
+}

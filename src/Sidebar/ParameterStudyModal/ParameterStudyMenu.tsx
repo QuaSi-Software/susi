@@ -28,6 +28,9 @@ export function ParameterStudyMenu({
 	}
 	function onDelete(study?: ParameterStudy) {
 		if (!study) return;
+		setParameterStudies((studies) =>
+			studies.filter((e) => e.nodeId !== study.nodeId || e.resieName !== study.resieName)
+		);
 	}
 	function onAddParameterStudy(nodeId: string, resieName: string) {
 		setParameterStudies((paramStudies) => [
@@ -37,7 +40,7 @@ export function ParameterStudyMenu({
 	}
 
 	return (
-		<>
+		<div className="parameter-study-menu">
 			<SelectableList<ParameterStudy | undefined>
 				title="Parameter Studies"
 				selectedKey={selectedStudy}
@@ -45,9 +48,9 @@ export function ParameterStudyMenu({
 				items={parameterStudies.map((study) => ({ key: study, title: getParamStudyTitle(study) }))}
 				onDelete={onDelete}
 			/>
-			<div>
-				<AddParameterStudySection addParameterStudy={onAddParameterStudy} />
+			<div style={{ flex: 1 }}>
+				<AddParameterStudySection addParameterStudy={onAddParameterStudy} parameterStudies={parameterStudies} />
 			</div>
-		</>
+		</div>
 	);
 }

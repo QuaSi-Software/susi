@@ -18,6 +18,7 @@
 @import './Sidebar-Styling/medium-menu.css';
 @import './Sidebar-Styling/simulation-menus.css';
 @import './Sidebar-Styling/radix-dropdown-menu.css';
+@import './Sidebar-Styling/parameter-studies.css';
 
 /** Input Widget Styling */
 @import './Input-Widgets/input-widgets.css';
