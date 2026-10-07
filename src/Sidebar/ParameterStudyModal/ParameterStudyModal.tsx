@@ -4,19 +4,24 @@ import { changeInputListElement, type ResieParameterMenuInfo } from '../ResiePar
 import type { InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
 import { Accordion } from 'radix-ui';
 import { AccordionInputMenu } from '../../Reactflow-Components/CustomInputWidgets/AccordionInputMenu';
+import { ParameterStudyMenu } from './ParameterStudyMenu';
 
 interface ModalProps {
 	show: boolean;
 	setShow: Dispatch<SetStateAction<boolean>>;
 }
-export type ParameterStudy = Record<string, Record<string, InputObject[]>>;
+export interface ParameterStudy {
+	nodeId: string;
+	resieName: string;
+	inputs: InputObject[];
+}
 
 export interface ParameterStudyModalProps {
 	parameterStudyMenus: ResieParameterMenuInfo[];
 	setParameterStudyMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
 	parameterStudyOptions: InputObject[];
-	parameterStudy: ParameterStudy; // { node_id: { parameter_name: InputObject }}
-	setParameterStudy: Dispatch<SetStateAction<ParameterStudy>>;
+	parameterStudies: ParameterStudy[];
+	setParameterStudies: Dispatch<SetStateAction<ParameterStudy[]>>;
 }
 
 export const ParameterStudyModal = ({
@@ -24,6 +29,9 @@ export const ParameterStudyModal = ({
 	setShow,
 	parameterStudyMenus,
 	setParameterStudyMenus,
+	parameterStudies,
+	setParameterStudies,
+	parameterStudyOptions,
 }: ParameterStudyModalProps & ModalProps) => {
 	function updateMenu(menuTitle: string, key: string, value: any, isIncludedChange: boolean) {
 		changeInputListElement(setParameterStudyMenus, menuTitle, key, value, isIncludedChange);
@@ -57,7 +65,14 @@ export const ParameterStudyModal = ({
 							</Accordion.Trigger>
 						</Accordion.Header>
 
-						<Accordion.Content>{/** Parameter Study menu */}</Accordion.Content>
+						<Accordion.Content>
+							{/** Parameter Study menu */}
+							<ParameterStudyMenu
+								parameterStudies={parameterStudies}
+								setParameterStudies={setParameterStudies}
+								parameterStudyOptions={parameterStudyOptions}
+							/>
+						</Accordion.Content>
 					</Accordion.Item>
 				</Accordion.Root>
 			</Modal.Body>

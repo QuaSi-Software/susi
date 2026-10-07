@@ -96,7 +96,8 @@ export function ControleModulesMenu({
 				</Accordion.Header>
 
 				<Accordion.Content style={{ display: 'flex' }}>
-					<SelectableList
+					<SelectableList<string>
+						title="Modules on this Component"
 						items={controlModules.map((e) => ({ key: e.key!, title: getTitleFromKey(e.title) }))}
 						onDelete={deleteControlModule}
 						selectedKey={selectedModuleKey}

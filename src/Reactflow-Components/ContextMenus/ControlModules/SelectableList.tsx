@@ -1,24 +1,30 @@
 import { type Dispatch, type ReactNode, type SetStateAction } from 'react';
 import { Button } from 'react-bootstrap';
 
-interface ListItem {
+interface SelectableListProps<T> {
 	title: string;
-	key: string;
-}
-
-interface SelectableListProps {
-	items: ListItem[];
-	onDelete: (key: string) => void;
+	items: {
+		title: string;
+		key: T;
+	}[];
+	onDelete: (key: T) => void;
 	children?: ReactNode;
-	selectedKey: string;
-	setSelectedKey: Dispatch<SetStateAction<string>>;
+	selectedKey?: T;
+	setSelectedKey: Dispatch<SetStateAction<T>>;
 }
 
-export function SelectableList({ items, onDelete, children, selectedKey, setSelectedKey }: SelectableListProps) {
+export function SelectableList<T>({
+	title,
+	items,
+	onDelete,
+	children,
+	selectedKey,
+	setSelectedKey,
+}: SelectableListProps<T>) {
 	const selectedModuleColor = '#c5d0eb';
 	return (
 		<div className="controle-module-list">
-			<div className="modal-subheading">Modules on this Component</div>
+			<div className="modal-subheading">{title}</div>
 			{items.map((item, index) => (
 				<div
 					key={`controle-module-${index}`}

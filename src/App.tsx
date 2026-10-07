@@ -96,7 +96,7 @@ const DnDFlow = () => {
 	const [locale, setLocale] = useState<Locale>(Locale.US);
 	const [edgeType, setEdgeType] = useState<EdgeType>(EdgeType.DEFAULT);
 	const [showEditNodeModal, setShowEditNodeModal] = useState(false);
-	const [parameterStudy, setParameterStudy] = useState<ParameterStudy>({});
+	const [parameterStudies, setParameterStudies] = useState<ParameterStudy[]>([]);
 
 	/** Data imported from API */
 	const [componentTypes, setComponentTypes] = useState<Record<string, NodeType> | null>(null);
@@ -210,10 +210,10 @@ const DnDFlow = () => {
 					controlParameters={controlParameters}
 					controlModules={controlModules}
 					resieVersion={resieVersion}
-					parameterStudy={parameterStudy}
+					parameterStudies={parameterStudies}
 					parameterStudyMenus={parameterStudyMenus}
 					parameterStudyOptions={parameterStudyOptions}
-					setParameterStudy={setParameterStudy}
+					setParameterStudies={setParameterStudies}
 					setParameterStudyMenus={setParameterStudyMenus}
 				/>
 				<ReactFlow
