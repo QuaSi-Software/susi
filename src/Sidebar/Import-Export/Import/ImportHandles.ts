@@ -29,6 +29,12 @@ export function findTargetHandle(
 	const targetIsBus = targetNode.data.busData !== undefined;
 	/** Find the medium of the source node's handle */
 	const mediumVarName = sourceNode.data.handleMediumDict.source[sourceHandleIndex];
+	if (!mediumVarName) {
+		logError(
+			`Can't connect ${sourceNode.data.content} to ${targetNode.data.content}, because there is no available handle on ${sourceNode.data.content}`
+		);
+		return -1;
+	}
 	const mediumNodeInput = sourceNode.data.nodeInputs.find((input) => input.resieName === mediumVarName);
 	const sourceMediumKey = mediumNodeInput!.value;
 

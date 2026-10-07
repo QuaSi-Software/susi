@@ -60,6 +60,7 @@ function getMediumNodeInput(handleName: string, nodeData: SusiNodeData): InputOb
 	const variableName = mediumPerHandle[handleIndex];
 	// find the medium that is set in this variable
 	const mediumNodeInput = nodeData.nodeInputs.find((x) => x.resieName === variableName);
+	console.assert(mediumPerHandle !== undefined, `Handle ${handleName} on ${nodeData.content} has no medium`);
 	return mediumNodeInput!;
 }
 
