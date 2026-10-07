@@ -9,7 +9,7 @@ jobs:
         timeout-minutes: 60
         runs-on: ubuntu-latest
         env:
-            VITE_RESI_DATA_URL: /parameters/susi
+            VITE_RESI_DATA_URL: https://raw.githubusercontent.com/QuaSi-Software/simon/refs/heads/main/sim_api/data/rendered/susi/latest.json
         steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
