@@ -96,18 +96,20 @@ export function ControleModulesMenu({
 				</Accordion.Header>
 
 				<Accordion.Content style={{ display: 'flex' }}>
-					<SelectableList<string>
-						title="Modules on this Component"
-						items={controlModules.map((e) => ({ key: e.key!, title: getTitleFromKey(e.title) }))}
-						onDelete={deleteControlModule}
-						selectedKey={selectedModuleKey}
-						setSelectedKey={setSelectedModuleKey}
-					>
-						<ControlModulesDropdown
-							controlModuleTypes={controlModuleTypes}
-							addControlModule={addControlModule}
-						/>
-					</SelectableList>
+					<div style={{ marginRight: '2em' }}>
+						<SelectableList<string>
+							title="Modules on this Component"
+							items={controlModules.map((e) => ({ key: e.key!, title: getTitleFromKey(e.title) }))}
+							onDelete={deleteControlModule}
+							selectedKey={selectedModuleKey}
+							setSelectedKey={setSelectedModuleKey}
+						>
+							<ControlModulesDropdown
+								controlModuleTypes={controlModuleTypes}
+								addControlModule={addControlModule}
+							/>
+						</SelectableList>
+					</div>
 
 					{selectedModule && (
 						<div style={{ flex: '1 1 0', margin: '0.5em' }} key={`${selectedModule.key ?? 'no-key'}`}>

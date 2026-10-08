@@ -23,12 +23,12 @@ export function SelectableList<T>({
 }: SelectableListProps<T>) {
 	const selectedModuleColor = '#c5d0eb';
 	return (
-		<div className="controle-module-list">
+		<div className="selectable-list">
 			<div className="modal-subheading">{title}</div>
 			{items.map((item, index) => (
 				<div
-					key={`controle-module-${index}`}
-					className="controle-module-item"
+					key={`selectable-list-${index}`}
+					className="selectable-list-item"
 					style={item.key === selectedKey ? { backgroundColor: selectedModuleColor } : {}}
 				>
 					<div onClick={() => setSelectedKey(item.key!)} style={{ flexGrow: 1, paddingRight: '2em' }}>
