@@ -96,7 +96,7 @@ export function ControleModulesMenu({
 				</Accordion.Header>
 
 				<Accordion.Content style={{ display: 'flex' }}>
-					<div style={{ marginRight: '2em' }}>
+					<div style={{ marginRight: '2em', marginBottom: '2em' }}>
 						<SelectableList<string>
 							title="Modules on this Component"
 							items={controlModules.map((e) => ({ key: e.key!, title: getTitleFromKey(e.title) }))}

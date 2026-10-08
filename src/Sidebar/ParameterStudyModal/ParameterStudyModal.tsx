@@ -11,7 +11,7 @@ interface ModalProps {
 	setShow: Dispatch<SetStateAction<boolean>>;
 }
 export interface ParameterStudy {
-	nodeId: string;
+	title: string;
 	resieName: string;
 	inputs: InputObject[];
 }
@@ -34,7 +34,7 @@ export const ParameterStudyModal = ({
 	parameterStudyOptions,
 }: ParameterStudyModalProps & ModalProps) => {
 	function updateMenu(menuTitle: string, key: string, value: any, isIncludedChange: boolean) {
-		changeInputListElement(setParameterStudyMenus, menuTitle, key, value, isIncludedChange);
+		changeInputListElement<ResieParameterMenuInfo>(setParameterStudyMenus, menuTitle, key, value, isIncludedChange);
 	}
 
 	return (

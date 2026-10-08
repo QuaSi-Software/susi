@@ -19,7 +19,7 @@ export function AddParameterStudySection({ addParameterStudy, parameterStudies }
 
 	function getWarning(): string {
 		if (!selectedNode) return 'No Component Selected';
-		const duplicate = parameterStudies.find((e) => e.nodeId === nodeId && e.resieName === inputResieName);
+		const duplicate = parameterStudies.find((e) => e.title === nodeId && e.resieName === inputResieName);
 		if (duplicate !== undefined) return 'Parameter is already in List.';
 		return '';
 	}
