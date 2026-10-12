@@ -13,8 +13,15 @@ import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
 import { createGroupNode } from '../../../NodeDataStructures/GroupNodes/GroupNode';
 import { defaultDateFormat } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
-import { setControlModules, setImportedValues, setResieParametersMenusFromImport } from './ImportInputs';
+import {
+	importParameterStudies,
+	setControlModules,
+	setImportedValues,
+	setResieParametersMenusFromImport,
+} from './ImportInputs';
 import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
+import type { InputObject } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
+import type { ParameterStudy } from '../../ParameterStudyModal/ParameterStudyModal';
 
 interface ImportStateProps {
 	stateJSON: string;
@@ -28,6 +35,10 @@ interface ImportStateProps {
 	nodeTypes: Record<string, NodeType>;
 	controlParameters: ResieParameterMenuInfo;
 	controlModules: ControlModule[];
+	/** Parameter Studies */
+	setParameterStudyMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
+	parameterStudyOptions: InputObject[];
+	setParameterStudies: Dispatch<SetStateAction<ParameterStudy[]>>;
 }
 
 function getOutputRefs(sourceNodeID: string, sourceNodeData: ComponentData): string[] {
@@ -85,6 +96,9 @@ const importState = ({
 	nodeTypes,
 	controlParameters,
 	controlModules,
+	setParameterStudies,
+	setParameterStudyMenus,
+	parameterStudyOptions,
 }: ImportStateProps): void => {
 	let importDict: ImportData;
 	try {
@@ -232,6 +246,18 @@ const importState = ({
 			}
 		}
 	}
+	/** Import Parameter Studies */
+	importParameterStudies(
+		importDict,
+		nodeArray,
+		setParameterStudyMenus,
+		parameterStudyOptions,
+		setParameterStudies,
+		startEndUnit,
+		logError
+	);
+
+	/** Node Groups */
 	if (importDict.groups) {
 		const nodeArrayWithGroups = setNodeGroups(importDict.groups, nodeArray, logError);
 		setNodes(nodeArrayWithGroups);

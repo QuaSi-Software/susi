@@ -13,6 +13,7 @@ import { WarningMessage } from '../../Reactflow-Components/CustomInputWidgets/Wa
 import { findUnconnectedNodes } from '../../NodeDataStructures/Nodes/FindUnconnectedNodes';
 import type { ControlModule } from '../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 import type { ParameterStudy } from '../ParameterStudyModal/ParameterStudyModal';
+import type { InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
 
 export interface ImportExportMenuProps {
 	nodes: SusiNode[];
@@ -27,6 +28,9 @@ export interface ImportExportMenuProps {
 	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
 	parameterStudies: ParameterStudy[];
 	parameterStudyMenus: ResieParameterMenuInfo[];
+	setParameterStudyMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
+	parameterStudyOptions: InputObject[];
+	setParameterStudies: Dispatch<SetStateAction<ParameterStudy[]>>;
 }
 
 const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
