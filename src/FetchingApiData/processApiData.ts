@@ -82,14 +82,11 @@ export function processApiReturn(
 	]);
 
 	setParameterStudyMenus([
-		importInputMenu(
-			data.general.parameter_study_optimisation,
-			'Parameter Study Optimisation',
-			'parameter_study_optimisation'
-		),
+		importInputMenu(data.general.parameter_study, 'Parameter Study', 'parameter_study'),
+		importInputMenu(data.general.parameter_study_optimisation, 'Parameter Study Optimisation', 'optimisation'),
 		importInputMenu(data.general.parameter_variation, 'Parameter Variation', 'parameter_variation'),
 		importInputMenu(data.general.refinement_optimisation, 'Refinement Optimisation', 'refinement_optimisation'),
 		importInputMenu(data.general.sensitivity_analysis, 'Sensitivity Analysis', 'sensitivity_analysis'),
 	]);
-	setParameterStudyOptions(importInputMenu(data.general.parameter_study, '', '').inputs);
+	setParameterStudyOptions(importInputMenu(data.general.parameter_study_parameter, '', '').inputs);
 }

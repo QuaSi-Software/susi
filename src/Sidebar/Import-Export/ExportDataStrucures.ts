@@ -9,6 +9,17 @@ export interface ImportData {
 	emissions_parameters?: Record<string, any>;
 	simulation_parameters?: Record<string, any>;
 	economic_parameters?: Record<string, any>;
+	parameter_study?: {
+		parameters?: Record<string, Record<string, any>>; // for each component for each parameter to study
+		objective_params?: Record<string, string[]>;
+		sensitivity_analysis?: Record<string, any>;
+		optimisation: {
+			[key: string]: any;
+			refinement?: Record<string, any>;
+		};
+		parameter_variation: Record<string, any>;
+		[key: string]: any;
+	};
 	[key: string]: any;
 }
 

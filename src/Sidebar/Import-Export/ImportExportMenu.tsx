@@ -12,6 +12,7 @@ import type { ResieParameterMenuInfo } from '../ResieParameters/ResieParameterMe
 import { WarningMessage } from '../../Reactflow-Components/CustomInputWidgets/WarningMessage';
 import { findUnconnectedNodes } from '../../NodeDataStructures/Nodes/FindUnconnectedNodes';
 import type { ControlModule } from '../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
+import type { ParameterStudy } from '../ParameterStudyModal/ParameterStudyModal';
 
 export interface ImportExportMenuProps {
 	nodes: SusiNode[];
@@ -24,6 +25,8 @@ export interface ImportExportMenuProps {
 	setEdges: (edges: SusiEdge[]) => void;
 	logError: (errorMessage: string) => void;
 	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
+	parameterStudies: ParameterStudy[];
+	parameterStudyMenus: ResieParameterMenuInfo[];
 }
 
 const ImportExportMenu = (menuProps: ImportExportMenuProps) => {

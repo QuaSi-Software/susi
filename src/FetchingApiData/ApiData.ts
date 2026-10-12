@@ -21,6 +21,7 @@ interface ApiReturn {
 		/** Parameter Studies */
 		parameter_study: Record<string, APIParameter>;
 		parameter_study_optimisation: Record<string, APIParameter>;
+		parameter_study_parameter: Record<string, APIParameter>;
 		parameter_variation: Record<string, APIParameter>;
 		refinement_optimisation: Record<string, APIParameter>;
 		sensitivity_analysis: Record<string, APIParameter>;
