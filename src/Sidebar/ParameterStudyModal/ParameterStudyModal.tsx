@@ -5,13 +5,15 @@ import type { InputObject } from '../../Reactflow-Components/CustomInputWidgets/
 import { Accordion } from 'radix-ui';
 import { AccordionInputMenu } from '../../Reactflow-Components/CustomInputWidgets/AccordionInputMenu';
 import { ParameterStudyMenu } from './ParameterStudyMenu';
+import type { ComponentInputType } from '../../NodeDataStructures/Nodes/ComponentInputTypes';
 
 interface ModalProps {
 	show: boolean;
 	setShow: Dispatch<SetStateAction<boolean>>;
 }
 export interface ParameterStudy {
-	title: string;
+	nodeId: string;
+	inputType: ComponentInputType;
 	resieName: string;
 	inputs: InputObject[];
 }
@@ -34,7 +36,7 @@ export const ParameterStudyModal = ({
 	parameterStudyOptions,
 }: ParameterStudyModalProps & ModalProps) => {
 	function updateMenu(menuTitle: string, key: string, value: any, isIncludedChange: boolean) {
-		changeInputListElement<ResieParameterMenuInfo>(setParameterStudyMenus, menuTitle, key, value, isIncludedChange);
+		changeInputListElement(setParameterStudyMenus, menuTitle, key, value, isIncludedChange);
 	}
 
 	return (

@@ -52,8 +52,8 @@ export function importResieParameterMenuInfo(
 	return menu;
 }
 
-export function changeInputListElement<T extends { title: string; inputs: InputObject[] }>(
-	setter: Dispatch<SetStateAction<T[]>>,
+export function changeInputListElement(
+	setter: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>,
 	menuTitle: string,
 	key: string,
 	value: any,

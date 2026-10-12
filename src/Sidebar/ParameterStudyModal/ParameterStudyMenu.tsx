@@ -7,7 +7,7 @@ import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import { AddParameterStudySection } from './AddParameterStudySection';
 import _ from 'lodash';
 import { InputMenu } from '../../Reactflow-Components/CustomInputWidgets/InputMenu';
-import { changeInputListElement } from '../ResieParameters/ResieParameterMenuInfo';
+import { getInputs, type ComponentInputType } from '../../NodeDataStructures/Nodes/ComponentInputTypes';
 
 interface ParameterStudyMenuProps {
 	parameterStudyOptions: InputObject[];
@@ -22,30 +22,51 @@ export function ParameterStudyMenu({
 }: ParameterStudyMenuProps) {
 	const [selectedStudy, setSelectedStudy] = useState<ParameterStudy>();
 	const allNodes: SusiNode[] = useReactFlow().getNodes() as SusiNode[];
-	const selectedNode = allNodes.find((e) => e.id === selectedStudy?.title);
+	const selectedNode = allNodes.find((e) => e.id === selectedStudy?.nodeId);
 	const selectedNodeName = selectedNode?.data.content ?? '';
 	const selectedInputName =
 		selectedNode?.data.nodeInputs.find((e) => e.resieName === selectedStudy?.resieName)?.displayName ?? '';
 
 	function getParamStudyTitle(study: ParameterStudy) {
-		const node = allNodes.find((n) => study.title === n.id);
-		const input = node?.data.nodeInputs.find((e) => e.resieName === study.resieName);
-		return `${node?.data.content}: ${input?.displayName}`;
+		const node = allNodes.find((n) => study.nodeId === n.id);
+		const input = getInputs(study.inputType, node!).find((e) => e.resieName === study.resieName);
+		return `${node?.data.content}: ${input?.displayName}(${study.inputType})`;
 	}
 	function onDelete(study?: ParameterStudy) {
 		if (!study) return;
 		setParameterStudies((studies) =>
-			studies.filter((e) => e.title !== study.title || e.resieName !== study.resieName)
+			studies.filter(
+				(e) => e.nodeId !== study.nodeId || e.resieName !== study.resieName || e.inputType === study.inputType
+			)
 		);
 	}
-	function onAddParameterStudy(nodeId: string, resieName: string) {
+	function onAddParameterStudy(nodeId: string, inputType: ComponentInputType, resieName: string) {
 		setParameterStudies((paramStudies) => [
 			...paramStudies,
-			{ title: nodeId, resieName, inputs: _.cloneDeep(parameterStudyOptions) },
+			{ nodeId, inputType, resieName, inputs: _.cloneDeep(parameterStudyOptions) },
 		]);
 	}
-	function updateParameterStudyInput(nodeId: string, resieName: string, value: any, isIncludedChange: boolean) {
-		changeInputListElement<ParameterStudy>(setParameterStudies, nodeId, resieName, value, isIncludedChange);
+	function updateParameterStudyInput(
+		nodeId: string,
+		inputType: ComponentInputType,
+		parameterName: string,
+		key: string,
+		value: any,
+		isIncludedChange: boolean
+	) {
+		setParameterStudies((studies) => {
+			studies = _.cloneDeep(studies);
+			const study = studies.find(
+				(e) => e.nodeId === nodeId && e.resieName === parameterName && e.inputType === inputType
+			);
+			const input = study!.inputs.find((e) => e.resieName === key);
+			if (isIncludedChange) input!.isIncluded = value;
+			else input!.value = value;
+			study!.inputs.forEach((e) => {
+				e.checkInputValid(study!.inputs);
+			});
+			return studies;
+		});
 	}
 
 	return (
@@ -62,16 +83,30 @@ export function ParameterStudyMenu({
 				<div style={{ height: '1em' }} />
 				{selectedStudy && (
 					<div className="add-parameter-study-section">
-						<div className="modal-subheading">{`${selectedNodeName} ${selectedInputName} Study Variables`}</div>
+						<div className="modal-subheading">{`${selectedNodeName} ${selectedStudy.inputType} ${selectedInputName} Study Variables`}</div>
 						<InputMenu
-							title={`${selectedStudy.title} ${selectedStudy.resieName} Study Variables`}
+							title={`${selectedStudy.nodeId} ${selectedStudy.resieName} Study Variables`}
 							inputs={selectedStudy!.inputs}
 							nodeId={null}
 							onValueChange={(key, value) =>
-								updateParameterStudyInput(selectedStudy.title, key, value, false)
+								updateParameterStudyInput(
+									selectedStudy.nodeId,
+									selectedStudy.inputType,
+									selectedStudy.resieName,
+									key,
+									value,
+									false
+								)
 							}
 							onIncludedChange={(key, value) =>
-								updateParameterStudyInput(selectedStudy.title, key, value, true)
+								updateParameterStudyInput(
+									selectedStudy.nodeId,
+									selectedStudy.inputType,
+									selectedStudy.resieName,
+									key,
+									value,
+									true
+								)
 							}
 						/>
 					</div>

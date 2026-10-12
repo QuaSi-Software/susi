@@ -2,10 +2,10 @@ import type { InputObject } from '../../Reactflow-Components/CustomInputWidgets/
 import type { SusiNode } from './SusiNode';
 
 const ComponentInputType = {
-	PARAMETER: 'PARAMETER',
-	ECONOMIC: 'ECONOMIC',
-	EMISSIONS: 'EMISSIONS',
-	CONTROL_PARAMETERS: 'CONTROL_PARAMETERS',
+	PARAMETER: 'Default',
+	ECONOMIC: 'Economic',
+	EMISSIONS: 'Emissions',
+	CONTROL_PARAMETERS: 'Control Parameters',
 } as const;
 type ComponentInputType = (typeof ComponentInputType)[keyof typeof ComponentInputType];
 
