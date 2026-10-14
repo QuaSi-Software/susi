@@ -25,7 +25,8 @@
 	font-family: monospace;
 	font-size: var(--small-font-size);
 	resize: none;
-	height: 700px;
+	height: 100%;
+	min-height: 200px;
 	min-width: 300px;
 	width: 100%;
 }

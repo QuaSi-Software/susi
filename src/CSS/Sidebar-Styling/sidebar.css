@@ -22,6 +22,8 @@
 	width: 20em;
 	flex: 0 0 auto;
 	resize: horizontal;
+	display: flex;
+	flex-direction: column;
 }
 
 .dndflow aside .form-floating > textarea:focus ~ label::after,

@@ -40,11 +40,12 @@
 
 .input-warning-message {
 	font-size: medium;
-	overflow: hidden;
+	overflow-x: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	width: 100%;
 	display: block;
+	flex-shrink: 0;
 }
 
 .required-input-row {
