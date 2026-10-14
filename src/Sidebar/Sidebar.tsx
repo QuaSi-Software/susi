@@ -12,7 +12,11 @@ import { AppContext } from '../AppContext';
 import { ResieParametersMenu, type ResieParametersMenuProps } from './ResieParameters/ResieParametersMenu';
 import { ResieParameterSubMenu } from './ResieParameters/ResieParameterSubMenu';
 import { InformationMenu } from './InformationMenu/InformationMenu';
-import { ParameterStudyModal, type ParameterStudyModalProps } from './ParameterStudyModal/ParameterStudyModal';
+import {
+	ParameterStudyModal,
+	parameterStudyModalHasWarning,
+	type ParameterStudyModalProps,
+} from './ParameterStudyModal/ParameterStudyModal';
 
 export const MenuType = {
 	NewNodeMenu: 'Add Components',
@@ -108,7 +112,10 @@ const Sidebar = (menuProps: SidebarProps) => {
 								onClick={() => setShowParameterStudyModal(true)}
 							>
 								{MenuType.ParameterStudy as string}
-								{/* {hasWarning && <> ⚠️</>} */}
+								{parameterStudyModalHasWarning(
+									menuProps.parameterStudies,
+									menuProps.parameterStudyMenus
+								) && <> ⚠️</>}
 							</DropdownMenu.Item>
 							{MenuItem(MenuType.ImportExportMenu)}
 							{MenuItem(MenuType.Instructions)}

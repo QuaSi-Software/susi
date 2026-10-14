@@ -18,6 +18,22 @@ export interface ParameterStudy {
 	inputs: InputObject[];
 }
 
+function parameterStudiesHaveWarning(parameterStudies: ParameterStudy[]) {
+	return !parameterStudies.every((study) => study.inputs.every((input) => input.isValid()));
+}
+
+export function parameterStudyModalHasWarning(
+	parameterStudies: ParameterStudy[],
+	parameterStudyMenus: ResieParameterMenuInfo[]
+): boolean {
+	for (const menu of parameterStudyMenus) {
+		/** If not every input is valid, return  true*/
+		if (!menu.inputs.every((input) => input.isValid())) return true;
+	}
+	if (parameterStudiesHaveWarning(parameterStudies)) return true;
+	return false;
+}
+
 export interface ParameterStudyModalProps {
 	parameterStudyMenus: ResieParameterMenuInfo[];
 	setParameterStudyMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
@@ -62,7 +78,7 @@ export const ParameterStudyModal = ({
 						<Accordion.Header className="AccordionHeader">
 							<Accordion.Trigger className="modal-header accordion-header-button">
 								Parameter Study
-								{/* {hasIssues && '⚠️'} */}
+								{parameterStudiesHaveWarning(parameterStudies) && '⚠️'}
 								<i className="bi bi-chevron-down"></i>
 							</Accordion.Trigger>
 						</Accordion.Header>
