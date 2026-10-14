@@ -62,6 +62,7 @@ import { useDraghandlers } from './useDraghandlers';
 import type { ControlModule } from './Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 import { InputObject } from './Reactflow-Components/CustomInputWidgets/InputObject';
 import type { ParameterStudy } from './Sidebar/ParameterStudyModal/ParameterStudyModal';
+import { ObjectiveParamOption } from './Sidebar/ParameterStudyModal/ObjectiveParams';
 
 const DnDFlow = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);
@@ -97,6 +98,7 @@ const DnDFlow = () => {
 	const [edgeType, setEdgeType] = useState<EdgeType>(EdgeType.DEFAULT);
 	const [showEditNodeModal, setShowEditNodeModal] = useState(false);
 	const [parameterStudies, setParameterStudies] = useState<ParameterStudy[]>([]);
+	const [objectiveParams, setObjectiveParams] = useState<ObjectiveParamOption[]>([]);
 
 	/** Data imported from API */
 	const [componentTypes, setComponentTypes] = useState<Record<string, NodeType> | null>(null);
@@ -215,6 +217,8 @@ const DnDFlow = () => {
 					parameterStudyOptions={parameterStudyOptions}
 					setParameterStudies={setParameterStudies}
 					setParameterStudyMenus={setParameterStudyMenus}
+					objectiveParams={objectiveParams}
+					setObjectiveParams={setObjectiveParams}
 				/>
 				<ReactFlow
 					nodes={nodes}

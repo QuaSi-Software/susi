@@ -22,6 +22,7 @@ import {
 import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 import type { InputObject } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { ParameterStudy } from '../../ParameterStudyModal/ParameterStudyModal';
+import { importObjectiveParams, type ObjectiveParamOption } from '../../ParameterStudyModal/ObjectiveParams';
 
 interface ImportStateProps {
 	stateJSON: string;
@@ -39,6 +40,7 @@ interface ImportStateProps {
 	setParameterStudyMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
 	parameterStudyOptions: InputObject[];
 	setParameterStudies: Dispatch<SetStateAction<ParameterStudy[]>>;
+	setObjectiveParams: Dispatch<SetStateAction<ObjectiveParamOption[]>>;
 }
 
 function getOutputRefs(sourceNodeID: string, sourceNodeData: ComponentData): string[] {
@@ -99,6 +101,7 @@ const importState = ({
 	setParameterStudies,
 	setParameterStudyMenus,
 	parameterStudyOptions,
+	setObjectiveParams,
 }: ImportStateProps): void => {
 	let importDict: ImportData;
 	try {
@@ -256,6 +259,7 @@ const importState = ({
 		startEndUnit,
 		logError
 	);
+	importObjectiveParams(importDict, setObjectiveParams, logError);
 
 	/** Node Groups */
 	if (importDict.groups) {

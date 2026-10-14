@@ -6,6 +6,8 @@ import { Accordion } from 'radix-ui';
 import { AccordionInputMenu } from '../../Reactflow-Components/CustomInputWidgets/AccordionInputMenu';
 import { ParameterStudyMenu } from './ParameterStudyMenu';
 import type { ComponentInputType } from '../../NodeDataStructures/Nodes/ComponentInputTypes';
+import { ObjectiveParamOption } from './ObjectiveParams';
+import { Multiselect } from '../../Reactflow-Components/CustomInputWidgets/MultiSelect';
 
 interface ModalProps {
 	show: boolean;
@@ -40,6 +42,8 @@ export interface ParameterStudyModalProps {
 	parameterStudyOptions: InputObject[];
 	parameterStudies: ParameterStudy[];
 	setParameterStudies: Dispatch<SetStateAction<ParameterStudy[]>>;
+	objectiveParams: ObjectiveParamOption[];
+	setObjectiveParams: Dispatch<SetStateAction<ObjectiveParamOption[]>>;
 }
 
 export const ParameterStudyModal = ({
@@ -50,6 +54,8 @@ export const ParameterStudyModal = ({
 	parameterStudies,
 	setParameterStudies,
 	parameterStudyOptions,
+	objectiveParams,
+	setObjectiveParams,
 }: ParameterStudyModalProps & ModalProps) => {
 	function updateMenu(menuTitle: string, key: string, value: any, isIncludedChange: boolean) {
 		changeInputListElement(setParameterStudyMenus, menuTitle, key, value, isIncludedChange);
@@ -72,6 +78,26 @@ export const ParameterStudyModal = ({
 							onIncludedChange={(key, value) => updateMenu(menu!.title, key, value, true)}
 						/>
 					))}
+					{/** Objective Params */}
+					<Accordion.Item className="AccordionItem" value="Objective Parameter">
+						<Accordion.Header className="AccordionHeader">
+							<Accordion.Trigger className="modal-header accordion-header-button">
+								Objective Parameters
+								<i className="bi bi-chevron-down"></i>
+							</Accordion.Trigger>
+						</Accordion.Header>
+
+						<Accordion.Content>
+							<div className="input-menu">
+								<Multiselect
+									displayName={'Objective Parameters'}
+									startValues={objectiveParams}
+									dropdown_options={Object.values(ObjectiveParamOption)}
+									onEdit={(value: string[]) => setObjectiveParams(value as ObjectiveParamOption[])}
+								/>
+							</div>
+						</Accordion.Content>
+					</Accordion.Item>
 
 					{/** Parameter Study */}
 					<Accordion.Item className="AccordionItem" value="Parameter Study">

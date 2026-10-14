@@ -94,3 +94,7 @@
 	user-select: none;
 	flex-grow: 1;
 }
+
+.p-multiselect-panel {
+	z-index: 1060 !important;
+}

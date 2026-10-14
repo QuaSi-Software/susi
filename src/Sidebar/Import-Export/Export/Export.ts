@@ -12,6 +12,7 @@ import {
 } from '../../ResieParameters/ResieParameterMenuInfo';
 import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 import type { ParameterStudy } from '../../ParameterStudyModal/ParameterStudyModal';
+import { exportObjectiveParams, type ObjectiveParamOption } from '../../ParameterStudyModal/ObjectiveParams';
 
 interface ExportProps {
 	nodes: SusiNode[];
@@ -20,6 +21,7 @@ interface ExportProps {
 	resieParameterMenus: ResieParameterMenuInfo[];
 	parameterStudies: ParameterStudy[];
 	parameterStudyMenus: ResieParameterMenuInfo[];
+	objectiveParams: ObjectiveParamOption[];
 }
 
 function getNodeNameFromID(nodeID: string, nodes: SusiNode[]) {
@@ -123,7 +125,8 @@ function exportParameterStudy(
 	data: ImportData,
 	nodes: SusiNode[],
 	parameterStudies: ParameterStudy[],
-	parameterStudyMenus: ResieParameterMenuInfo[]
+	parameterStudyMenus: ResieParameterMenuInfo[],
+	objectiveParams: ObjectiveParamOption[]
 ) {
 	data.parameter_study = {
 		parameters: {},
@@ -144,6 +147,8 @@ function exportParameterStudy(
 		parameters[nodeName][study.resieName] = addNodeInputsToObject(study.inputs, [], []);
 	});
 
+	exportObjectiveParams(data, objectiveParams);
+
 	function exportMenu(parameterStudyMenus: ResieParameterMenuInfo[], key: string) {
 		const menu = parameterStudyMenus.find((e) => e.exportKey === key);
 		console.assert(menu !== undefined, `Parameter Study Menu key ${key} was not found`);
@@ -158,6 +163,7 @@ const exportState = ({
 	resieParameterMenus,
 	parameterStudies,
 	parameterStudyMenus,
+	objectiveParams,
 }: ExportProps): string => {
 	/** adding these node inputs doesn't really require the mediums, since they should not include medium inputs  */
 	const exportDict: ImportData = {
@@ -165,7 +171,7 @@ const exportState = ({
 		groups: [],
 		mediums: getMediumListForExport(mediums),
 	};
-	exportParameterStudy(exportDict, nodes, parameterStudies, parameterStudyMenus);
+	exportParameterStudy(exportDict, nodes, parameterStudies, parameterStudyMenus, objectiveParams);
 	resieParameterMenus.forEach((menu) => {
 		const obj = addNodeInputsToObject(menu.inputs, [], nodes);
 		exportDict[menu.exportKey] = obj;

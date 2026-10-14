@@ -14,6 +14,7 @@ import { findUnconnectedNodes } from '../../NodeDataStructures/Nodes/FindUnconne
 import type { ControlModule } from '../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 import type { ParameterStudy } from '../ParameterStudyModal/ParameterStudyModal';
 import type { InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
+import type { ObjectiveParamOption } from '../ParameterStudyModal/ObjectiveParams';
 
 export interface ImportExportMenuProps {
 	nodes: SusiNode[];
@@ -31,6 +32,8 @@ export interface ImportExportMenuProps {
 	setParameterStudyMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
 	parameterStudyOptions: InputObject[];
 	setParameterStudies: Dispatch<SetStateAction<ParameterStudy[]>>;
+	objectiveParams: ObjectiveParamOption[];
+	setObjectiveParams: Dispatch<SetStateAction<ObjectiveParamOption[]>>;
 }
 
 const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
