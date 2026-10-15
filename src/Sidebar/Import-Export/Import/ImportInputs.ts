@@ -1,5 +1,5 @@
 import type { Medium } from '../../../NodeDataStructures/Mediums/Medium';
-import type { InputObject } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
+import { InputObject } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
 import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
@@ -20,9 +20,7 @@ export function setImportedValues(
 			nodeInput.isIncluded = false;
 		}
 	}
-	for (const nodeInput of inputs) {
-		nodeInput.checkInputValid(inputs);
-	}
+	InputObject.checkInputsValid(inputs);
 }
 
 export function setResieParametersMenusFromImport(
@@ -65,9 +63,7 @@ export function setControlModules(
 				input.isIncluded = true;
 			}
 		});
-		controlModule.parameters.forEach((input) => {
-			input.checkInputValid(controlModule.parameters);
-		});
+		InputObject.checkInputsValid(controlModule.parameters);
 		nodeControlModules.push(controlModule);
 	});
 	node.data.controlModules = nodeControlModules;
