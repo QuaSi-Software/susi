@@ -13,7 +13,12 @@ import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
 import { createGroupNode } from '../../../NodeDataStructures/GroupNodes/GroupNode';
 import { defaultDateFormat } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
-import { setControlModules, setImportedValues, setResieParametersMenusFromImport } from './ImportInputs';
+import {
+	replaceComponentUACsWithIDs,
+	setControlModules,
+	setImportedValues,
+	setResieParametersMenusFromImport,
+} from './ImportInputs';
 import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 
 interface ImportStateProps {
@@ -173,6 +178,7 @@ const importState = ({
 		nodeArray.push(newNode);
 		nodeDict[nodeId] = newNode;
 	}
+	replaceComponentUACsWithIDs(nodeArray, logError);
 
 	// Second pass: create edges
 	const edgeArray: SusiEdge[] = [];

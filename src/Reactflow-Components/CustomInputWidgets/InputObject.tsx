@@ -134,6 +134,13 @@ class InputObject implements InputObjectProps {
 			const node = nodes.find((e) => e.id === this.value);
 			const nodeName = node ? node.data.content : 'None';
 			return nodeName;
+		} else if (this.type === InputObjectType.COMPONENT_UAC_LIST) {
+			console.assert(
+				Array.isArray(this.value),
+				`Input ${this.resieName} has component UAC List that is not a list`
+			);
+			const uacNames = this.value.map((id: string) => nodes.find((n) => n.id === id)?.data.content);
+			return uacNames;
 		} else if (this.type === InputObjectType.VECTOR_FLOAT) {
 			const result = this.value.map((e: string) => Number.parseFloat(e));
 			return result.filter((e: string) => !Number.isNaN(e));
