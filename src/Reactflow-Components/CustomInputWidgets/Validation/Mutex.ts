@@ -23,11 +23,15 @@ function checkMutex(input: InputObject, otherInputs: InputObject[]): InputIssue 
 	return null;
 }
 
-function mutexSolver(inputs: InputObject[]) {
+function mutexSolver(inputs: InputObject[], logError?: (msg: string) => void, nodeName?: string) {
 	inputs.forEach((input) => {
 		/** If this input is included and mutex, uninclude it */
 		if (input.isIncluded && input.issue.issueType === InputIssueType.Mutex) {
 			input.isIncluded = false;
+			if (logError)
+				logError(
+					`On Component ${nodeName}, input ${input.displayName} was disabled, because ${input.issue.message}`
+				);
 		}
 	});
 	InputObject.checkInputsValid(inputs);

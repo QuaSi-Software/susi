@@ -20,6 +20,7 @@ import {
 	setResieParametersMenusFromImport,
 } from './ImportInputs';
 import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
+import { mutexSolver } from '../../../Reactflow-Components/CustomInputWidgets/Validation/Mutex';
 
 interface ImportStateProps {
 	stateJSON: string;
@@ -155,6 +156,7 @@ const importState = ({
 		// Fill in node inputs from import data
 		const nodeInputs = newNode.data.nodeInputs;
 		setImportedValues(nodeInputs, nodeData, mediums, startEndUnit);
+		mutexSolver(nodeInputs, logError, newNode.data.content);
 		newNode.data.nodeInputs = nodeInputs;
 		/** economic and emissions inputs */
 		if (nodeData.economic_parameters) {
