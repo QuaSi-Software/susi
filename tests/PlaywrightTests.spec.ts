@@ -81,3 +81,7 @@ test('Check importing invalid Connection', async ({ page }) => {
 	const configJsonString = fs.readFileSync('tests/Invalid_connection.json', 'utf-8');
 	await importConfig(page, configJsonString);
 });
+
+test('Import Export Control Module UAC', async ({ page }) => {
+	await checkImportExport(page, 'tests/control_module_uac.json');
+});
