@@ -77,8 +77,8 @@ function getValidationComparisonValue(validation: Validation, otherInputs: Input
 	}
 }
 function isValid(input: InputObject, validation: Validation, otherInputs: InputObject[]): boolean {
-	const value = input.value;
-	const other = getValidationComparisonValue(validation, otherInputs, input.resieName);
+	const value = Number.parseFloat(input.value);
+	const other = Number.parseFloat(getValidationComparisonValue(validation, otherInputs, input.resieName));
 	switch (validation.operator) {
 		case ValidationOperator.LESS_THAN:
 		case ValidationOperator.LESS_THAN_OR_NULL:
