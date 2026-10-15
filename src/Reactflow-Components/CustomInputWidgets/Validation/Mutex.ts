@@ -1,4 +1,4 @@
-import type { InputObject } from '../InputObject';
+import { InputObject } from '../InputObject';
 import { ConditionalOperator } from './Conditionals';
 import { InputIssueType, type InputIssue } from './InputChecking';
 
@@ -30,9 +30,7 @@ function mutexSolver(inputs: InputObject[]) {
 			input.isIncluded = false;
 		}
 	});
-	inputs.forEach((input) => {
-		input.checkInputValid(inputs);
-	});
+	InputObject.checkInputsValid(inputs);
 }
 
 export { mutexSolver, checkMutex };

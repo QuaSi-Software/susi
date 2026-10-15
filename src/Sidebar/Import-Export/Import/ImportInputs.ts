@@ -1,5 +1,5 @@
 import type { Medium } from '../../../NodeDataStructures/Mediums/Medium';
-import type { InputObject } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
+import { InputObject, InputObjectType } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
 import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
@@ -20,9 +20,7 @@ export function setImportedValues(
 			nodeInput.isIncluded = false;
 		}
 	}
-	for (const nodeInput of inputs) {
-		nodeInput.checkInputValid(inputs);
-	}
+	InputObject.checkInputsValid(inputs);
 }
 
 export function setResieParametersMenusFromImport(
@@ -65,10 +63,44 @@ export function setControlModules(
 				input.isIncluded = true;
 			}
 		});
-		controlModule.parameters.forEach((input) => {
-			input.checkInputValid(controlModule.parameters);
-		});
+		InputObject.checkInputsValid(controlModule.parameters);
 		nodeControlModules.push(controlModule);
 	});
 	node.data.controlModules = nodeControlModules;
+}
+/**Iterate over all control modules in all nodes and replace the node names in the UAC components with node IDs */
+export function replaceComponentUACsWithIDs(nodeArray: SusiNode[], logError: (msg: string) => void) {
+	nodeArray.forEach((node) => {
+		node.data.controlModules.forEach((controlModule) => {
+			controlModule.parameters.forEach((input) => {
+				if (input.type === InputObjectType.COMPONENT_UAC) {
+					const uacNode = nodeArray.find((n) => n.data.content === input.value);
+					if (uacNode === undefined)
+						logError(
+							`Component UAC ${input.displayName} "${input.value}" in Control modules of component ${node?.data.content} is not in list of components`
+						);
+					input.value = uacNode?.id;
+				} else if (input.type === InputObjectType.COMPONENT_UAC_LIST) {
+					const nameList = input.value;
+					if (!Array.isArray(nameList)) {
+						logError(
+							`Component UAC List ${input.displayName} on component ${node?.data.content} is not a list.`
+						);
+						return;
+					}
+					const idList = [];
+					nameList.forEach((nodeName) => {
+						const uacNode = nodeArray.find((n) => n.data.content === input.value);
+						if (uacNode === undefined) {
+							logError(
+								`Component UAC List ${input.displayName} in Control modules of component ${node?.data.content} has unknown UAC in it: "${nodeName}"`
+							);
+							return;
+						}
+						idList.push(uacNode!.id);
+					});
+				}
+			});
+		});
+	});
 }

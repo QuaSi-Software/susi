@@ -1,0 +1,32 @@
+{
+	"components": {
+		"BUS_01": {
+			"type": "Bus",
+			"medium": "m_e_ac_230v",
+			"import_data": {
+				"node_position": {
+					"x": 373,
+					"y": 235
+				},
+				"node_type": "Bus"
+			},
+			"connections": {
+				"input_order": [],
+				"output_order": ["GRSI_01"],
+				"energy_flow": []
+			}
+		},
+		"GRSI_01": {
+			"type": "GridSupply",
+			"medium": "m_e_ac_230v",
+			"import_data": {
+				"node_position": {
+					"x": 503.5,
+					"y": 224.75
+				},
+				"node_type": "GridSupply"
+			},
+			"output_refs": {}
+		}
+	}
+}

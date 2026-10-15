@@ -3,6 +3,7 @@ import type { ResieParameterMenuInfo } from './ResieParameterMenuInfo';
 import InputMenuWithCategories from '../../Reactflow-Components/CustomInputWidgets/InputMenuWithCategories';
 import { Accordion } from 'radix-ui';
 import _ from 'lodash';
+import { InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
 
 export interface ResieParametersMenuProps {
 	selectedMenu?: string;
@@ -24,9 +25,7 @@ export function ResieParametersMenu({
 				console.error(`Input with key ${key} should not be undefined in list ${resieParameterMenuInfo}`);
 			if (isIncludedChange) input!.isIncluded = value;
 			else input!.value = value;
-			menu!.inputs.forEach((e) => {
-				e.checkInputValid(menu!.inputs);
-			});
+			InputObject.checkInputsValid(menu!.inputs);
 			return resieParameterMenuInfo;
 		});
 	}

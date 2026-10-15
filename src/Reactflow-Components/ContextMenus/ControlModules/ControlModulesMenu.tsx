@@ -1,6 +1,6 @@
 import { useState, type Dispatch, type SetStateAction } from 'react';
 import { checkNodeValidInputs, type SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
-import type { InputObject } from '../../CustomInputWidgets/InputObject';
+import { InputObject } from '../../CustomInputWidgets/InputObject';
 import ControlModulesDropdown from './ControlModulesDropdown';
 import { Accordion } from 'radix-ui';
 import { Button } from 'react-bootstrap';
@@ -43,9 +43,7 @@ export function ControleModulesMenu({
 			);
 			if (isIncludeChange) input!.isIncluded = value;
 			else input!.value = value;
-			selectedModule.parameters.forEach((e) => {
-				e.checkInputValid(selectedModule.parameters);
-			});
+			InputObject.checkInputsValid(selectedModule.parameters);
 			const newNode = { ...node, data: { ...node.data, controlModules: controlModules } };
 			checkNodeValidInputs(newNode, resieParameterMenus);
 			return newNode;
@@ -65,9 +63,7 @@ export function ControleModulesMenu({
 			parameters: controlModule.parameters.map((e) => e.copy()),
 			key: `${controlModule.title}_${new Date().getTime()}`,
 		};
-		duplicatedControlModule.parameters.forEach((param) => {
-			param.checkInputValid(duplicatedControlModule.parameters);
-		});
+		InputObject.checkInputsValid(duplicatedControlModule.parameters);
 		const newModuleValid = duplicatedControlModule.parameters.every((e) => e.isValid());
 		setEditedNode((node) => ({
 			...node,
