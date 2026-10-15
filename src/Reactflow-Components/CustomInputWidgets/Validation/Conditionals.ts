@@ -57,11 +57,11 @@ function checkConditional(conditional: Conditional, inputs: InputObject[], input
 		`Conditional can't find parameter ${conditional.targetParameterName} on input ${inputName}`
 	);
 	if (targetParameter === undefined) return false;
-	if (
-		targetParameter.issue.issueType === InputIssueType.Conditional &&
-		conditional.operator !== ConditionalOperator.is_nothing
-	)
-		return false;
+	if (targetParameter.issue.issueType === InputIssueType.Conditional)
+		return (
+			conditional.operator === ConditionalOperator.is_nothing ||
+			conditional.operator === ConditionalOperator.mutex
+		);
 	const targetValue = targetParameter!.value;
 	switch (conditional.operator) {
 		case ConditionalOperator.is:
