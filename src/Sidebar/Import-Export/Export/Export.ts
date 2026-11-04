@@ -1,10 +1,8 @@
 import type { Medium } from '../../../NodeDataStructures/Mediums/Medium';
 import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type { SusiEdge } from '../../../NodeDataStructures/Edges/SusiEdge';
-import type { InputObject } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { ComponentData, Connections, ImportData, NodeGroup } from '../ExportDataStrucures';
 import { getUndefinedMedium } from '../../../NodeDataStructures/Mediums/MediumUtils';
-import { InputIssueType } from '../../../Reactflow-Components/CustomInputWidgets/Validation/InputChecking';
 import {
 	showEconomicParameters,
 	showEmissionsParameters,
@@ -12,7 +10,9 @@ import {
 } from '../../ResieParameters/ResieParameterMenuInfo';
 import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 import type { ParameterStudy } from '../../ParameterStudyModal/ParameterStudyModal';
-import { exportObjectiveParams, type ObjectiveParamOption } from '../../ParameterStudyModal/ObjectiveParams';
+import { type ObjectiveParamOption } from '../../ParameterStudyModal/ObjectiveParams';
+import { addNodeInputsToObject, getNodeNameFromID } from './ExportInputs';
+import { exportParameterStudy } from './ExportParameterStudies';
 
 interface ExportProps {
 	nodes: SusiNode[];
@@ -22,10 +22,6 @@ interface ExportProps {
 	parameterStudies: ParameterStudy[];
 	parameterStudyMenus: ResieParameterMenuInfo[];
 	objectiveParams: ObjectiveParamOption[];
-}
-
-function getNodeNameFromID(nodeID: string, nodes: SusiNode[]) {
-	return nodes.find((n) => n.id === nodeID)!.data.content;
 }
 
 /**
@@ -79,23 +75,6 @@ const getBusConnections = (node: SusiNode, nodes: SusiNode[]): Connections => {
 	};
 };
 
-const addNodeInputsToObject = (
-	nodeInputs: InputObject[],
-	mediums: Medium[],
-	nodes: SusiNode[],
-	obj: Record<string, any> = {}
-): Record<string, any> => {
-	nodeInputs.forEach((nodeInput) => {
-		if (!nodeInput.isIncluded && !nodeInput.isRequired) {
-			return;
-		}
-		const issueType = nodeInput.issue.issueType;
-		if (issueType === InputIssueType.Conditional || issueType === InputIssueType.Mutex) return;
-		obj[nodeInput.resieName] = nodeInput.getNodeInputExportValue(mediums, nodes);
-	});
-	return obj;
-};
-
 function getNodeGroup(parentNode: SusiNode, nodes: SusiNode[]): NodeGroup {
 	const childNodes = nodes.filter((n) => n.parentId === parentNode.id);
 	return {
@@ -118,42 +97,6 @@ function getControlModules(controlModules: ControlModule[], nodes: SusiNode[]): 
 		exportModules.push(dict);
 	});
 	return exportModules;
-}
-
-/** */
-function exportParameterStudy(
-	data: ImportData,
-	nodes: SusiNode[],
-	parameterStudies: ParameterStudy[],
-	parameterStudyMenus: ResieParameterMenuInfo[],
-	objectiveParams: ObjectiveParamOption[]
-) {
-	data.parameter_study = {
-		parameters: {},
-		sensitivity_analysis: exportMenu(parameterStudyMenus, 'sensitivity_analysis'),
-		optimisation: exportMenu(parameterStudyMenus, 'optimisation'),
-		parameter_variation: exportMenu(parameterStudyMenus, 'parameter_variation'),
-	};
-	data.parameter_study.optimisation.refinement = exportMenu(parameterStudyMenus, 'refinement_optimisation');
-
-	const parameters = data.parameter_study!.parameters!;
-	parameterStudies.forEach((study) => {
-		const nodeName = getNodeNameFromID(study.nodeId, nodes);
-		if (!(nodeName in parameters)) parameters[nodeName] = {};
-		console.assert(
-			!(study.resieName in parameters[nodeName]),
-			`Parameter Study list contains the same parameter multiple times: ${study.resieName} on component ${nodeName}`
-		);
-		parameters[nodeName][study.resieName] = addNodeInputsToObject(study.inputs, [], []);
-	});
-
-	exportObjectiveParams(data, objectiveParams);
-
-	function exportMenu(parameterStudyMenus: ResieParameterMenuInfo[], key: string) {
-		const menu = parameterStudyMenus.find((e) => e.exportKey === key);
-		console.assert(menu !== undefined, `Parameter Study Menu key ${key} was not found`);
-		return addNodeInputsToObject(menu!.inputs, [], []);
-	}
 }
 
 const exportState = ({
