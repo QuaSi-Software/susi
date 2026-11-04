@@ -1,3 +1,4 @@
+import { ComponentInputType } from '../../../NodeDataStructures/Nodes/ComponentInputTypes';
 import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import { exportObjectiveParams, ObjectiveParamOption } from '../../ParameterStudyModal/ObjectiveParams';
 import type { ParameterStudy } from '../../ParameterStudyModal/ParameterStudyModal';
@@ -13,6 +14,7 @@ export function exportParameterStudy(
 	parameterStudyMenus: ResieParameterMenuInfo[],
 	objectiveParams: ObjectiveParamOption[]
 ) {
+	/** Export the parameter study inputs that aren't dependent on the components */
 	data.parameter_study = {
 		parameters: {},
 		sensitivity_analysis: exportMenu(parameterStudyMenus, 'sensitivity_analysis'),
@@ -21,6 +23,7 @@ export function exportParameterStudy(
 	};
 	data.parameter_study.optimisation.refinement = exportMenu(parameterStudyMenus, 'refinement_optimisation');
 
+	/** export the parameter studies for each component input */
 	const parameters = data.parameter_study!.parameters!;
 	parameterStudies.forEach((study) => {
 		const nodeName = getNodeNameFromID(study.nodeId, nodes);
@@ -29,7 +32,13 @@ export function exportParameterStudy(
 			!(study.resieName in parameters[nodeName]),
 			`Parameter Study list contains the same parameter multiple times: ${study.resieName} on component ${nodeName}`
 		);
-		parameters[nodeName][study.resieName] = addNodeInputsToObject(study.inputs, [], []);
+		/** For nested parameters (economic and emissions), change the export key */
+		let parameterExportName = study.resieName;
+		if (study.inputType === ComponentInputType.ECONOMIC)
+			parameterExportName = `economic_parameters.${study.resieName}`;
+		if (study.inputType === ComponentInputType.EMISSIONS)
+			parameterExportName = `emissions_parameters.${study.resieName}`;
+		parameters[nodeName][parameterExportName] = addNodeInputsToObject(study.inputs, [], []);
 	});
 
 	exportObjectiveParams(data, objectiveParams);
