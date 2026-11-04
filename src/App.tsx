@@ -189,10 +189,11 @@ const DnDFlow = () => {
 			<AppContext.Provider
 				value={{
 					mediums: mediums,
-					setMediums: setMediums,
-					setErrorMessages: setErrorMessages,
-					setLoadingMessage: setLoadingMessage,
-					setCheckState: setCheckState,
+					setMediums,
+					setErrorMessages,
+					setLoadingMessage,
+					setCheckState,
+					setOverwriteState,
 					locale: locale,
 				}}
 			>
@@ -257,6 +258,9 @@ const DnDFlow = () => {
 							checkState={checkState}
 							setNodes={setNodes}
 							setEdges={setEdges}
+							parameterStudies={parameterStudies}
+							setParameterStudies={setParameterStudies}
+							overwriteState={overwriteState}
 						/>
 						<ClearNodesButton nodes={nodes} setNodes={setNodes} setEdges={setEdges} />
 					</div>

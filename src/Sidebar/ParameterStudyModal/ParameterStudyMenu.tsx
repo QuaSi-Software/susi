@@ -1,4 +1,4 @@
-import { useState, type Dispatch, type SetStateAction } from 'react';
+import { useContext, useState, type Dispatch, type SetStateAction } from 'react';
 import type { InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { ParameterStudy } from './ParameterStudyModal';
 import { SelectableList } from '../../Reactflow-Components/ContextMenus/ControlModules/SelectableList';
@@ -9,6 +9,7 @@ import _ from 'lodash';
 import { InputMenu } from '../../Reactflow-Components/CustomInputWidgets/InputMenu';
 import { getInputs, type ComponentInputType } from '../../NodeDataStructures/Nodes/ComponentInputTypes';
 import type { ResieParameterMenuInfo } from '../ResieParameters/ResieParameterMenuInfo';
+import { AppContext } from '../../AppContext';
 
 interface ParameterStudyMenuProps {
 	parameterStudyOptions: InputObject[];
@@ -25,6 +26,7 @@ export function ParameterStudyMenu({
 }: ParameterStudyMenuProps) {
 	const [selectedStudy, setSelectedStudy] = useState<ParameterStudy>();
 	const allNodes: SusiNode[] = useReactFlow().getNodes() as SusiNode[];
+	const setOverwriteState = useContext(AppContext)?.setOverwriteState;
 	const selectedNode = allNodes.find((e) => e.id === selectedStudy?.nodeId);
 	const selectedNodeName = selectedNode?.data.content ?? '';
 	const selectedInputName =
@@ -42,12 +44,14 @@ export function ParameterStudyMenu({
 				(e) => e.nodeId !== study.nodeId || e.resieName !== study.resieName || e.inputType === study.inputType
 			)
 		);
+		if (setOverwriteState) setOverwriteState(true);
 	}
 	function onAddParameterStudy(nodeId: string, inputType: ComponentInputType, resieName: string) {
 		setParameterStudies((paramStudies) => [
 			...paramStudies,
 			{ nodeId, inputType, resieName, inputs: _.cloneDeep(parameterStudyOptions) },
 		]);
+		if (setOverwriteState) setOverwriteState(true);
 	}
 	function updateParameterStudyInput(
 		nodeId: string,
@@ -70,6 +74,7 @@ export function ParameterStudyMenu({
 			});
 			return studies;
 		});
+		if (setOverwriteState) setOverwriteState(true);
 	}
 
 	return (

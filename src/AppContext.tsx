@@ -9,6 +9,7 @@ interface AppContextType {
 	setErrorMessages: (messages: ErrorMessage[]) => void;
 	setLoadingMessage: (isLoading: string | null) => void;
 	setCheckState: Dispatch<SetStateAction<boolean>>;
+	setOverwriteState: Dispatch<SetStateAction<boolean>>;
 	locale: Locale;
 }
 export const AppContext = createContext<AppContextType | null>(null);
