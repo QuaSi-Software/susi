@@ -2,6 +2,7 @@ import type { Medium } from '../NodeDataStructures/Mediums/Medium';
 import type { ApiCategory, ApiComponent } from './ApiData';
 import { type NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
 import { checkParametersAndCategoriesMatch, getInputObjectFromAPIParameter } from './ImportInputObjects';
+import { InputObject } from '../Reactflow-Components/CustomInputWidgets/InputObject';
 
 export function getComponentTypes(
 	apiComponents: Record<string, ApiComponent>,
@@ -19,9 +20,11 @@ export function getComponentTypes(
 		const economic = Object.entries(component.economic).map(([inputName, attributes]) =>
 			getInputObjectFromAPIParameter(inputName, attributes, mediums)
 		);
+		InputObject.checkInputsValid(economic);
 		const emissions = Object.entries(component.emissions).map(([inputName, attributes]) =>
 			getInputObjectFromAPIParameter(inputName, attributes, mediums)
 		);
+		InputObject.checkInputsValid(emissions);
 
 		let category = typeCategories.find((category) => category.types!.includes(componentType));
 		console.assert(category !== undefined, `Component ${componentType} is not assigned a category`);
