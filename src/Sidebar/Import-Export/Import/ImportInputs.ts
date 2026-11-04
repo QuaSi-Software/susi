@@ -133,6 +133,7 @@ export function importParameterStudies(
 			return parameterStudyMenus;
 		});
 	}
+	/** Import component parameter studies */
 	if (data.parameter_study?.parameters) {
 		const parameterStudies: ParameterStudy[] = [];
 		for (const [nodeName, nodeParameterStudyDict] of Object.entries(data.parameter_study.parameters)) {
@@ -142,19 +143,42 @@ export function importParameterStudies(
 				continue;
 			}
 
-			for (const [resieName, parameterStudyDict] of Object.entries(nodeParameterStudyDict)) {
-				const nodeInput = getInputs(ComponentInputType.PARAMETER, node);
+			for (const [importKey, parameterStudyDict] of Object.entries(nodeParameterStudyDict)) {
+				/** using the importKey, determine what kind of input it is and what it's resie name is */
+				const splitKey = importKey.split('.');
+				let resieName: string;
+				let inputType: ComponentInputType;
+				if (splitKey.length === 1) {
+					resieName = importKey;
+					inputType = ComponentInputType.PARAMETER;
+				} else if (splitKey.length > 2) {
+					logError(`The parameter study key ${importKey} is invalid`);
+					continue;
+				} else {
+					if (splitKey[0] === 'emissions_parameters') {
+						resieName = splitKey[1];
+						inputType = ComponentInputType.EMISSIONS;
+					} else if (splitKey[0] === 'economic_parameters') {
+						resieName = splitKey[0];
+						inputType = ComponentInputType.ECONOMIC;
+					} else {
+						logError(`The parameter study key ${importKey} is invalid`);
+						continue;
+					}
+				}
+				const nodeInput = getInputs(inputType, node).find((n) => n.resieName === resieName);
 				if (!nodeInput) {
 					logError(
 						`Invalid Parameter Study: The input ${resieName} does not exist on the component ${nodeName}.`
 					);
 					continue;
 				}
+				/** Use the input to import the parameter study */
 				const inputs = _.cloneDeep(parameterStudyOptions);
 				setImportedValues(inputs, parameterStudyDict, [], startEndUnit);
 				const parameterStudy: ParameterStudy = {
 					inputs,
-					inputType: ComponentInputType.PARAMETER,
+					inputType: inputType,
 					nodeId: node!.id,
 					resieName,
 				};
