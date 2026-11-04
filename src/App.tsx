@@ -65,8 +65,16 @@ import type { ParameterStudy } from './Sidebar/ParameterStudyModal/ParameterStud
 import { ObjectiveParamOption } from './Sidebar/ParameterStudyModal/ObjectiveParams';
 
 const DnDFlow = () => {
+	/** Resie data that defines the user configuration */
 	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);
 	const [edges, setEdges, onEdgesChange] = useEdgesState<SusiEdge>([]);
+	const [mediums, setMediums] = useState<Medium[]>(getDefaultMediums());
+	const [resieParameterMenus, setResieParameterMenus] = useState<ResieParameterMenuInfo[]>([]);
+	const [controlParameters, setControlParameters] = useState<ResieParameterMenuInfo | null>(null);
+	const [controlModules, setControlModules] = useState<ControlModule[]>([]);
+	const [parameterStudyMenus, setParameterStudyMenus] = useState<ResieParameterMenuInfo[]>([]);
+	const [parameterStudies, setParameterStudies] = useState<ParameterStudy[]>([]);
+	const [objectiveParams, setObjectiveParams] = useState<ObjectiveParamOption[]>([]);
 
 	const [type] = useDnD();
 	const ref = useRef<HTMLInputElement>(null);
@@ -86,28 +94,26 @@ const DnDFlow = () => {
 			setSelectionContextMenu,
 		});
 
-	/**  */
-	const [mediums, setMediums] = useState<Medium[]>(getDefaultMediums());
+	/** UI Variables */
 	const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([]);
 	const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
 	const [overlayErrorMessage, setOverlayErrorMessage] = useState<string | null>(null);
-	const [nodeNamePrefix, setNodeNamePrefix] = useState<string>('');
-	const [checkState, setCheckState] = useState<boolean>(false);
-	const [theme, setTheme] = useState<'dark' | 'light'>('light');
 	const [locale, setLocale] = useState<Locale>(Locale.US);
-	const [edgeType, setEdgeType] = useState<EdgeType>(EdgeType.DEFAULT);
 	const [showEditNodeModal, setShowEditNodeModal] = useState(false);
-	const [parameterStudies, setParameterStudies] = useState<ParameterStudy[]>([]);
-	const [objectiveParams, setObjectiveParams] = useState<ObjectiveParamOption[]>([]);
+
+	/** State history */
+	const [checkState, setCheckState] = useState<boolean>(false);
+	const [overwriteState, setOverwriteState] = useState<boolean>(false);
+
+	/** Graph Settings */
+	const [nodeNamePrefix, setNodeNamePrefix] = useState<string>('');
+	const [theme, setTheme] = useState<'dark' | 'light'>('light');
+	const [edgeType, setEdgeType] = useState<EdgeType>(EdgeType.DEFAULT);
 
 	/** Data imported from API */
 	const [componentTypes, setComponentTypes] = useState<Record<string, NodeType> | null>(null);
 	const [componentCategories, setComponentCategories] = useState<ApiCategory[]>([]);
-	const [resieParameterMenus, setResieParameterMenus] = useState<ResieParameterMenuInfo[]>([]);
-	const [parameterStudyMenus, setParameterStudyMenus] = useState<ResieParameterMenuInfo[]>([]);
 	const [parameterStudyOptions, setParameterStudyOptions] = useState<InputObject[]>([]);
-	const [controlParameters, setControlParameters] = useState<ResieParameterMenuInfo | null>(null);
-	const [controlModules, setControlModules] = useState<ControlModule[]>([]);
 	const [resieVersion, setResieVersion] = useState<string>();
 
 	document.documentElement.setAttribute('data-theme', theme);
