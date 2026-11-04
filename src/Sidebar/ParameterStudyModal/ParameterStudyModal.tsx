@@ -44,6 +44,7 @@ export interface ParameterStudyModalProps {
 	setParameterStudies: Dispatch<SetStateAction<ParameterStudy[]>>;
 	objectiveParams: ObjectiveParamOption[];
 	setObjectiveParams: Dispatch<SetStateAction<ObjectiveParamOption[]>>;
+	resieParameterMenus: ResieParameterMenuInfo[];
 }
 
 export const ParameterStudyModal = ({
@@ -56,6 +57,7 @@ export const ParameterStudyModal = ({
 	parameterStudyOptions,
 	objectiveParams,
 	setObjectiveParams,
+	resieParameterMenus,
 }: ParameterStudyModalProps & ModalProps) => {
 	function updateMenu(menuTitle: string, key: string, value: any, isIncludedChange: boolean) {
 		changeInputListElement(setParameterStudyMenus, menuTitle, key, value, isIncludedChange);
@@ -115,6 +117,7 @@ export const ParameterStudyModal = ({
 								parameterStudies={parameterStudies}
 								setParameterStudies={setParameterStudies}
 								parameterStudyOptions={parameterStudyOptions}
+								resieParameterMenus={resieParameterMenus}
 							/>
 						</Accordion.Content>
 					</Accordion.Item>

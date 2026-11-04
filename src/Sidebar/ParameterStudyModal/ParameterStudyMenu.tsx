@@ -8,17 +8,20 @@ import { AddParameterStudySection } from './AddParameterStudySection';
 import _ from 'lodash';
 import { InputMenu } from '../../Reactflow-Components/CustomInputWidgets/InputMenu';
 import { getInputs, type ComponentInputType } from '../../NodeDataStructures/Nodes/ComponentInputTypes';
+import type { ResieParameterMenuInfo } from '../ResieParameters/ResieParameterMenuInfo';
 
 interface ParameterStudyMenuProps {
 	parameterStudyOptions: InputObject[];
 	parameterStudies: ParameterStudy[];
 	setParameterStudies: Dispatch<SetStateAction<ParameterStudy[]>>;
+	resieParameterMenus: ResieParameterMenuInfo[];
 }
 
 export function ParameterStudyMenu({
 	parameterStudies,
 	setParameterStudies,
 	parameterStudyOptions,
+	resieParameterMenus,
 }: ParameterStudyMenuProps) {
 	const [selectedStudy, setSelectedStudy] = useState<ParameterStudy>();
 	const allNodes: SusiNode[] = useReactFlow().getNodes() as SusiNode[];
@@ -30,7 +33,7 @@ export function ParameterStudyMenu({
 	function getParamStudyTitle(study: ParameterStudy) {
 		const node = allNodes.find((n) => study.nodeId === n.id);
 		const input = getInputs(study.inputType, node!).find((e) => e.resieName === study.resieName);
-		return `${node?.data.content}: ${input?.displayName}(${study.inputType})`;
+		return `${node?.data.content}: ${input?.displayName} (${study.inputType})`;
 	}
 	function onDelete(study?: ParameterStudy) {
 		if (!study) return;
@@ -79,7 +82,11 @@ export function ParameterStudyMenu({
 				onDelete={onDelete}
 			/>
 			<div style={{ flex: 1 }}>
-				<AddParameterStudySection addParameterStudy={onAddParameterStudy} parameterStudies={parameterStudies} />
+				<AddParameterStudySection
+					addParameterStudy={onAddParameterStudy}
+					parameterStudies={parameterStudies}
+					resieParameterMenus={resieParameterMenus}
+				/>
 				<div style={{ height: '1em' }} />
 				{selectedStudy && (
 					<div className="add-parameter-study-section">

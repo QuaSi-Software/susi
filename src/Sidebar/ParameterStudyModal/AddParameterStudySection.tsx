@@ -6,21 +6,35 @@ import { useReactFlow } from '@xyflow/react';
 import { Button } from 'react-bootstrap';
 import type { ParameterStudy } from './ParameterStudyModal';
 import { ComponentInputType, getInputs } from '../../NodeDataStructures/Nodes/ComponentInputTypes';
+import {
+	showEconomicParameters,
+	showEmissionsParameters,
+	type ResieParameterMenuInfo,
+} from '../ResieParameters/ResieParameterMenuInfo';
 
 interface Props {
 	addParameterStudy: (nodeId: string, inputType: ComponentInputType, resieName: string) => void;
 	parameterStudies: ParameterStudy[];
+	resieParameterMenus: ResieParameterMenuInfo[];
 }
 
-export function AddParameterStudySection({ addParameterStudy, parameterStudies }: Props) {
+export function AddParameterStudySection({ addParameterStudy, parameterStudies, resieParameterMenus }: Props) {
 	const [nodeId, setNodeId] = useState<string>('');
 	const allNodes: SusiNode[] = useReactFlow().getNodes() as SusiNode[];
 	const selectedNode = nodeId === '' ? undefined : allNodes.find((n) => n.id === nodeId);
 	/** Get input type options */
 	const inputTypeOptions: ComponentInputType[] = [ComponentInputType.PARAMETER];
-	if (selectedNode?.data.economicInputs && selectedNode!.data.economicInputs.length > 0)
+	if (
+		showEconomicParameters(resieParameterMenus) &&
+		selectedNode?.data.economicInputs &&
+		selectedNode!.data.economicInputs.length > 0
+	)
 		inputTypeOptions.push(ComponentInputType.ECONOMIC);
-	if (selectedNode?.data.emissionsInputs && selectedNode!.data.emissionsInputs.length > 0)
+	if (
+		showEmissionsParameters(resieParameterMenus) &&
+		selectedNode?.data.emissionsInputs &&
+		selectedNode!.data.emissionsInputs.length > 0
+	)
 		inputTypeOptions.push(ComponentInputType.EMISSIONS);
 
 	const [inputType, setInputType] = useState<ComponentInputType>(inputTypeOptions[0]);
