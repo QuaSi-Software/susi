@@ -276,6 +276,7 @@ const DnDFlow = () => {
 					setShowModal={setShowEditNodeModal}
 					resieParameterMenus={resieParameterMenus}
 					controlModules={controlModules}
+					setParameterStudies={setParameterStudies}
 				/>
 				<SelectionContextMenu
 					selectionContextMenu={selectionContextMenu}

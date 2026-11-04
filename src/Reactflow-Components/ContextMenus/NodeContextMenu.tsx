@@ -17,6 +17,7 @@ import {
 import { resizeGroupNodeToFitChildren } from '../../NodeDataStructures/GroupNodes/ResizeGroupNodeToFitChildren';
 import type { ControlModule } from './ControlModules/ControlModulesMenu';
 import type { ResieParameterMenuInfo } from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
+import type { ParameterStudy } from '../../Sidebar/ParameterStudyModal/ParameterStudyModal';
 
 interface NodeContextMenuInput {
 	nodeContextMenu: NodeContextMenuData | null;
@@ -30,6 +31,7 @@ interface NodeContextMenuInput {
 	resieParameterMenus: ResieParameterMenuInfo[];
 	edgeType: EdgeType;
 	controlModules: ControlModule[];
+	setParameterStudies: Dispatch<SetStateAction<ParameterStudy[]>>;
 }
 
 interface NodeContextMenuData {
@@ -49,6 +51,7 @@ const NodeContextMenu = ({
 	setShowModal,
 	resieParameterMenus,
 	controlModules,
+	setParameterStudies,
 }: NodeContextMenuInput) => {
 	const setCheckState = useContext(AppContext)!.setCheckState;
 
@@ -70,7 +73,7 @@ const NodeContextMenu = ({
 	const handleDeleteNode = () => {
 		if (!nodeContextMenu) return;
 		if (nodeContextMenu.node.deletable) {
-			deleteNode(nodeContextMenu.node, edges, setNodes, setEdges);
+			deleteNode(nodeContextMenu.node, edges, setNodes, setEdges, setParameterStudies);
 			checkForDuplicateNodeNames(setNodes);
 		}
 		setCheckState(true);

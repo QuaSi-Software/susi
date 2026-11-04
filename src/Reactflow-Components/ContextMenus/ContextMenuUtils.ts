@@ -9,13 +9,14 @@ import {
 } from '../../NodeDataStructures/GroupNodes/CalculateChildNodePosition';
 import { getNewEdge } from '../../NodeDataStructures/Edges/CreateEdge';
 import type { Connection } from '@xyflow/react';
+import type { ParameterStudy } from '../../Sidebar/ParameterStudyModal/ParameterStudyModal';
 
 function deleteNode(
 	node: SusiNode,
-	// allNodes: SusiNode[],
 	allEdges: SusiEdge[],
 	setNodes: Dispatch<SetStateAction<SusiNode[]>>,
-	setEdges: Dispatch<SetStateAction<SusiEdge[]>>
+	setEdges: Dispatch<SetStateAction<SusiEdge[]>>,
+	setParameterStudies: Dispatch<SetStateAction<ParameterStudy[]>>
 ) {
 	if (node.deletable) {
 		setNodes((nodes) => {
@@ -35,6 +36,7 @@ function deleteNode(
 			const updatedEdges = edges.filter((edge) => edge.source !== node.id && edge.target !== node.id);
 			return updatedEdges;
 		});
+		setParameterStudies((studies) => studies.filter((study) => study.nodeId !== node.id));
 	}
 }
 /**
