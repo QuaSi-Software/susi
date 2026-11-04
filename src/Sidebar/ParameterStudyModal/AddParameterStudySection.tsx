@@ -11,6 +11,7 @@ import {
 	showEmissionsParameters,
 	type ResieParameterMenuInfo,
 } from '../ResieParameters/ResieParameterMenuInfo';
+import { InputIssueType } from '../../Reactflow-Components/CustomInputWidgets/Validation/InputChecking';
 
 interface Props {
 	addParameterStudy: (nodeId: string, inputType: ComponentInputType, resieName: string) => void;
@@ -39,7 +40,11 @@ export function AddParameterStudySection({ addParameterStudy, parameterStudies, 
 
 	const [inputType, setInputType] = useState<ComponentInputType>(inputTypeOptions[0]);
 	const [inputResieName, setInputResieName] = useState<string>('');
-	const inputs = selectedNode ? getInputs(inputType, selectedNode) : [];
+	let inputs = selectedNode ? getInputs(inputType, selectedNode) : [];
+	inputs = inputs.filter(
+		(input) =>
+			input.issue.issueType !== InputIssueType.Conditional && input.issue.issueType !== InputIssueType.Mutex
+	);
 	const addButtonWarning = getWarning();
 
 	function getWarning(): string {

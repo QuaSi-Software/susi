@@ -102,10 +102,10 @@ export const ParameterStudyModal = ({
 					</Accordion.Item>
 
 					{/** Parameter Study */}
-					<Accordion.Item className="AccordionItem" value="Parameter Study">
+					<Accordion.Item className="AccordionItem" value="Manage Parameters Section">
 						<Accordion.Header className="AccordionHeader">
 							<Accordion.Trigger className="modal-header accordion-header-button">
-								Parameter Study
+								Manage Parameters
 								{parameterStudiesHaveWarning(parameterStudies) && '⚠️'}
 								<i className="bi bi-chevron-down"></i>
 							</Accordion.Trigger>
