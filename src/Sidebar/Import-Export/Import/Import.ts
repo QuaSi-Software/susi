@@ -151,6 +151,7 @@ const importState = ({
 			importData.node_position,
 			'',
 			controlParameters,
+			resieParameterMenus,
 			nodeId
 		);
 

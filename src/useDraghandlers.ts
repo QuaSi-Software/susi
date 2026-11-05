@@ -14,6 +14,7 @@ interface useDraghandlersProps {
 	setCheckState: Dispatch<SetStateAction<boolean>>;
 	type: ComponentType | null;
 	nodeNamePrefix: string;
+	resieParameterMenus: ResieParameterMenuInfo[];
 }
 
 export function useDraghandlers({
@@ -23,6 +24,7 @@ export function useDraghandlers({
 	type,
 	nodeNamePrefix,
 	controlParameters,
+	resieParameterMenus,
 }: useDraghandlersProps) {
 	const { screenToFlowPosition } = useReactFlow();
 
@@ -74,7 +76,14 @@ export function useDraghandlers({
 				x: event.clientX,
 				y: event.clientY,
 			});
-			const newNode = createNodeFromType(nodes, type, position, nodeNamePrefix, controlParameters);
+			const newNode = createNodeFromType(
+				nodes,
+				type,
+				position,
+				nodeNamePrefix,
+				controlParameters,
+				resieParameterMenus
+			);
 			newNode.measured = {
 				width: 50,
 				height: 50,

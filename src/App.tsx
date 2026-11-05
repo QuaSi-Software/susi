@@ -159,6 +159,7 @@ const DnDFlow = () => {
 		type,
 		nodeNamePrefix,
 		controlParameters,
+		resieParameterMenus,
 	});
 
 	const onNodeDoubleClick = (event: React.MouseEvent, node: SusiNode) => {

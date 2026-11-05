@@ -28,7 +28,7 @@ export function checkEconomicAndEmissionsNodeValidInputs(
 }
 
 /** Check all if all inputs in node are valid and assign node.data.hasValidInputs  */
-export function checkNodeValidInputs(node: SusiNode, resieParameterMenus: ResieParameterMenuInfo[] | null): void {
+export function checkNodeValidInputs(node: SusiNode, resieParameterMenus: ResieParameterMenuInfo[]): void {
 	console.assert(
 		node.data.nodeInputs !== undefined,
 		`Trying to access node inputs of group node: ${node.data.label}`

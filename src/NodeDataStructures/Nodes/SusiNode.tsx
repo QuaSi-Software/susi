@@ -20,6 +20,7 @@ const createNodeFromType = (
 	position: XYPosition,
 	nodeNamePrefix: string,
 	controlParameters: ResieParameterMenuInfo,
+	resieParameterMenus: ResieParameterMenuInfo[],
 	content: string | null = null
 ): SusiNode => {
 	const timestamp = Date.now();
@@ -51,7 +52,7 @@ const createNodeFromType = (
 			width: 'auto',
 		} as React.CSSProperties,
 	};
-	checkNodeValidInputs(node, null);
+	checkNodeValidInputs(node, resieParameterMenus);
 	return node;
 };
 
