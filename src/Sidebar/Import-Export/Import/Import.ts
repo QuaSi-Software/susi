@@ -1,6 +1,6 @@
 import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type { Medium } from '../../../NodeDataStructures/Mediums/Medium';
-import createNodeFromType, { checkNodeValidInputs } from '../../../NodeDataStructures/Nodes/SusiNode';
+import createNodeFromType from '../../../NodeDataStructures/Nodes/SusiNode';
 import getImportMediums from './ImportMediums';
 import type { ComponentData, ComponentImportData, ImportData, NodeGroup } from '../ExportDataStrucures';
 import { getComponentImportData } from './ImportData';
@@ -21,6 +21,7 @@ import {
 } from './ImportInputs';
 import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 import { mutexSolver } from '../../../Reactflow-Components/CustomInputWidgets/Validation/Mutex';
+import { checkNodeValidInputs } from '../../../NodeDataStructures/Nodes/ValidateSusiNode';
 
 interface ImportStateProps {
 	stateJSON: string;

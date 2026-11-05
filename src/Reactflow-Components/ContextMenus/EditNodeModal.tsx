@@ -7,12 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import _ from 'lodash';
 
-import {
-	checkNodeValidInputs,
-	deepCloneNode,
-	deepCloneNodes,
-	type SusiNode,
-} from '../../NodeDataStructures/Nodes/SusiNode';
+import { deepCloneNode, deepCloneNodes, type SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import type BusData from '../../NodeDataStructures/Bus/BusData';
 import { InputObject } from '../CustomInputWidgets/InputObject';
 import { updateBusDataOnEdgeDelete } from '../../NodeDataStructures/Bus/BusDataUtils';
@@ -33,6 +28,7 @@ import {
 import { getEdgesFromConditionalOff, getEdgesFromMediumVar } from '../../NodeDataStructures/Edges/getEdgesToDelete';
 import { WarningMessage } from '../CustomInputWidgets/WarningMessage';
 import type { ComponentType } from '../../NodeDataStructures/Nodes/SusiNodeTypes';
+import { checkNodeValidInputs } from '../../NodeDataStructures/Nodes/ValidateSusiNode';
 
 interface EditNodeModalInputs {
 	show: boolean;
