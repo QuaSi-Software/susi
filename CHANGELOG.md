@@ -112,3 +112,12 @@ The first release of SUSI with a whole number of features:
     - null strings from the API are changed to empty strings.
     - Chrome issue with datepicker, where keyboard input gave the year 5 digits instead of switching to the hour input.
     - Mutex issues didn't show up in economic or emissions section until something is changed.
+
+## v1.2.3
+
+- UI updates
+    - Edit Component Modal now has the component type and a link to the documentation in the header
+    - There's a warning message if the user sets the component name to be empty or a duplicate of another component
+- Fixes:
+    - issues with economic and emissions inputs are checked for when they are economic/emissions are enabled in the sidebar
+    - at_least_one issues cause a warning icon on the save button and component itself
