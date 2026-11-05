@@ -31,6 +31,7 @@ import {
 	type ResieParameterMenuInfo,
 } from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
 import { getEdgesFromConditionalOff, getEdgesFromMediumVar } from '../../NodeDataStructures/Edges/getEdgesToDelete';
+import { WarningMessage } from '../CustomInputWidgets/WarningMessage';
 
 interface EditNodeModalInputs {
 	show: boolean;
@@ -140,8 +141,12 @@ const EditNodeModal = ({
 
 	const nameIsDuplicate =
 		nodes.find((node) => node.id !== editedNode.id && node.data.content === editedNode.data.content) !== undefined;
+	const nameIsEmpty = editedNode.data.content.trim() === '';
+	let nameWarningMessage = '';
+	if (nameIsDuplicate) nameWarningMessage = 'Component name cannot be a duplicate.';
+	else if (nameIsEmpty) nameWarningMessage = 'Component name cannot be empty.';
 
-	const allInputsValid = editedNode.data.hasValidInputs && !nameIsDuplicate;
+	const allInputsValid = editedNode.data.hasValidInputs && !nameIsDuplicate && !nameIsEmpty;
 	return (
 		<>
 			<Modal show={show} onHide={handleSaveChanges}>
@@ -151,6 +156,7 @@ const EditNodeModal = ({
 				<Modal.Body className="side-padded-menu">
 					<Row className="g-2">
 						<Col md>
+							<WarningMessage redWarning message={nameWarningMessage} />
 							<FloatingLabel controlId="floatingInput" label="Component Name">
 								<Form.Control
 									type="text"
