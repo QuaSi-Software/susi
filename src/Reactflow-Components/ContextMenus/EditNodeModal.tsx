@@ -14,7 +14,7 @@ import {
 	type SusiNode,
 } from '../../NodeDataStructures/Nodes/SusiNode';
 import type BusData from '../../NodeDataStructures/Bus/BusData';
-import type { InputObject } from '../CustomInputWidgets/InputObject';
+import { InputObject } from '../CustomInputWidgets/InputObject';
 import { updateBusDataOnEdgeDelete } from '../../NodeDataStructures/Bus/BusDataUtils';
 import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import BusConnectionMenu from '../BusDataWidget/BusConnectionMenu';
@@ -68,9 +68,7 @@ const EditNodeModal = ({
 	}, [show, node.id]);
 
 	const onNodeContentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		let name = e.target.value;
-		name = name.replaceAll(' ', '_');
-		name = name.replaceAll('\n', '_');
+		const name = e.target.value.replace(/\s/g, '_');
 		setEditedNode((editedNode: SusiNode) => ({
 			...editedNode,
 			data: { ...editedNode.data, content: name },
@@ -104,9 +102,7 @@ const EditNodeModal = ({
 			nodeInput!.isIncluded = value;
 		}
 		/** check all conditionals */
-		resieDataCopy.forEach((input) => {
-			input.checkInputValid(resieDataCopy);
-		});
+		InputObject.checkInputsValid(resieDataCopy);
 		setEditedNode((editedNode: SusiNode) => {
 			assignInputs(componentInputType, editedNode, resieDataCopy);
 			checkNodeValidInputs(editedNode, resieParameterMenus);

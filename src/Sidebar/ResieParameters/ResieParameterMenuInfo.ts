@@ -1,4 +1,4 @@
-import type { InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
+import { InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { ApiCategory, APIParameter } from '../../FetchingApiData/ApiData';
 import {
 	checkParametersAndCategoriesMatch,
@@ -23,9 +23,7 @@ export function importResieParameterMenuInfo(
 		const input = getInputObjectFromAPIParameter(paramName, paramObject, []);
 		inputs.push(input);
 	}
-	inputs.forEach((input) => {
-		input.checkInputValid(inputs);
-	});
+	InputObject.checkInputsValid(inputs);
 	categories.forEach((category) => {
 		if (!category.parameters && category.types) {
 			category.parameters = category.types;

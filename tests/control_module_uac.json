@@ -1,0 +1,129 @@
+{
+	"components": {
+		"FB_01": {
+			"type": "FuelBoiler",
+			"m_fuel_in": "UNDEFINED",
+			"power_th": null,
+			"control_parameters": {
+				"consider_m_el_in": true,
+				"consider_m_el_out": true,
+				"consider_m_fuel_in": true,
+				"consider_m_gas_in": true,
+				"consider_m_h2_out": true,
+				"consider_m_heat_ht_out": true,
+				"consider_m_heat_in": true,
+				"consider_m_heat_lt_out": true,
+				"consider_m_heat_out": true,
+				"consider_m_o2_out": true
+			},
+			"control_modules": [
+				{
+					"name": "storage_driven",
+					"storage_uac": "BT_01"
+				}
+			],
+			"import_data": {
+				"node_position": {
+					"x": 42,
+					"y": 45
+				},
+				"node_type": "FuelBoiler"
+			},
+			"output_refs": {
+				"m_heat_out": "BUS_01"
+			}
+		},
+		"BT_01": {
+			"type": "BufferTank",
+			"consider_losses": false,
+			"control_parameters": {
+				"consider_m_el_in": true,
+				"consider_m_el_out": true,
+				"consider_m_fuel_in": true,
+				"consider_m_gas_in": true,
+				"consider_m_h2_out": true,
+				"consider_m_heat_ht_out": true,
+				"consider_m_heat_in": true,
+				"consider_m_heat_lt_out": true,
+				"consider_m_heat_out": true,
+				"consider_m_o2_out": true
+			},
+			"import_data": {
+				"node_position": {
+					"x": 292,
+					"y": 45
+				},
+				"node_type": "BufferTank"
+			},
+			"output_refs": {}
+		},
+		"BUS_01": {
+			"type": "Bus",
+			"medium": "m_h_w_ht1",
+			"control_parameters": {
+				"consider_m_el_in": true,
+				"consider_m_el_out": true,
+				"consider_m_fuel_in": true,
+				"consider_m_gas_in": true,
+				"consider_m_h2_out": true,
+				"consider_m_heat_ht_out": true,
+				"consider_m_heat_in": true,
+				"consider_m_heat_lt_out": true,
+				"consider_m_heat_out": true,
+				"consider_m_o2_out": true
+			},
+			"import_data": {
+				"node_position": {
+					"x": 167,
+					"y": 45
+				},
+				"node_type": "Bus"
+			},
+			"connections": {
+				"input_order": ["FB_01"],
+				"output_order": ["BT_01"],
+				"energy_flow": [[1]]
+			}
+		}
+	},
+	"groups": [],
+	"mediums": [
+		["m_e_ac_230v", "#ffee00"],
+		["m_h_w_lt1", "#ff6c6c"],
+		["m_h_w_ht1", "#940000"],
+		["m_c_g_h2", "#00d346"],
+		["m_c_g_o2", "#ff0000"],
+		["m_c_g_natgas", "#6e00d4"]
+	],
+	"io_settings": {
+		"auxiliary_info": false,
+		"auxiliary_plots": false,
+		"csv_output_weather": false,
+		"output_economic_csv": true,
+		"output_emissions_csv": true,
+		"output_parameter_study_csv": true,
+		"output_parameter_study_plots": true,
+		"plot_economic_cashflows": true,
+		"plot_economic_present_values": true,
+		"plot_emission_results": true,
+		"plot_price_and_emission_profiles": false,
+		"plot_weather_data": false,
+		"show_detailed_errors": false,
+		"write_csv_continuously": false,
+		"write_parameter_study_csv_continuously": false,
+		"write_summary_csv": true
+	},
+	"simulation_parameters": {
+		"end": "15.10.2026 00:00",
+		"force_profiles_to_repeat": false,
+		"start": "15.10.2026 00:00",
+		"start_end_unit": "dd.mm.yyyy HH:MM"
+	},
+	"economic_parameters": {
+		"calculate_economy": false
+	},
+	"emissions_parameters": {
+		"calculate_emissions": false,
+		"include_embodied_emissions": true
+	}
+}

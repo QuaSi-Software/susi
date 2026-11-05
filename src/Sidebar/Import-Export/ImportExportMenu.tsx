@@ -41,16 +41,20 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 		try {
 			flushSync(() => setLoadingMessage('Importing file...'));
 			// Wait for the import to complete before clearing the loading message
-			await new Promise<void>((resolve) => {
+			await new Promise<void>((resolve, reject) => {
 				setTimeout(() => {
-					importState({
-						...menuProps,
-						stateJSON: textContent,
-						setMediums: setMediums,
-						nodeTypes: menuProps.nodeTypes!,
-						controlParameters: menuProps.controlParameters!,
-					});
-					resolve();
+					try {
+						importState({
+							...menuProps,
+							stateJSON: textContent,
+							setMediums: setMediums,
+							nodeTypes: menuProps.nodeTypes!,
+							controlParameters: menuProps.controlParameters!,
+						});
+						resolve();
+					} catch (error) {
+						reject(error);
+					}
 				}, 0);
 			});
 			setLoadingMessage(null);
@@ -59,7 +63,8 @@ const ImportExportMenu = (menuProps: ImportExportMenuProps) => {
 			setTextContent('');
 		} catch (error) {
 			setLoadingMessage(null);
-			console.error('Import failed:', error);
+			console.error(`Import failed: ${error}`);
+			menuProps.logError(`File could not be imported. Please file a bug report with the import file attached.`);
 		}
 	}, [textContent, menuProps, setMediums, setLoadingMessage, fitView]);
 

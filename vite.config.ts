@@ -7,13 +7,6 @@ export default defineConfig({
 	server: {
 		host: '0.0.0.0',
 		port: 5002,
-		proxy: {
-			'/parameters': {
-				target: 'http://vm-siz-sim-001.stzegs.ads:5000',
-				changeOrigin: true,
-				rewrite: (path) => path.replace(/^\/parameters/, '/parameters'),
-			},
-		},
 	},
 	build: {
 		rollupOptions: {
@@ -26,4 +19,3 @@ export default defineConfig({
 		},
 	},
 });
-

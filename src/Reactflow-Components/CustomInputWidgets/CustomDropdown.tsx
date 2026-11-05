@@ -31,14 +31,16 @@ const CustomDropdown = <T extends string | number>({
 		onEdit(value);
 	};
 
+	const id = `${displayName}-floatingSelect`;
 	return (
 		<div className="form-floating">
 			<select
 				className="form-select"
-				id="floatingSelect"
+				id={id}
 				defaultValue={String(selectedOption)}
 				aria-label="Floating label select"
 				onChange={(e) => onOptionSelected(e.target.value as T)}
+				data-testid={`${displayName}-select`}
 			>
 				{dropdown_options.map((option, index) => (
 					<option key={`${option}-${index}`} value={option}>
@@ -46,7 +48,7 @@ const CustomDropdown = <T extends string | number>({
 					</option>
 				))}
 			</select>
-			<label htmlFor="floatingSelect">{displayName}</label>
+			<label htmlFor={id}>{displayName}</label>
 		</div>
 	);
 };
