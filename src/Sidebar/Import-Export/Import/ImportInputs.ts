@@ -159,7 +159,7 @@ export function importParameterStudies(
 						resieName = splitKey[1];
 						inputType = ComponentInputType.EMISSIONS;
 					} else if (splitKey[0] === 'economic_parameters') {
-						resieName = splitKey[0];
+						resieName = splitKey[1];
 						inputType = ComponentInputType.ECONOMIC;
 					} else {
 						logError(`The parameter study key ${importKey} is invalid`);
