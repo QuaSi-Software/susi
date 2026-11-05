@@ -94,14 +94,21 @@ The first release of SUSI with a whole number of features:
 ## v1.2.1
 
 - Implemented a set of Playwright tests to be checked automatically to merge a new branch
-  - Has title: a basic check to see if the page has loaded correctly
-  - Open Edit Component Modal: drag a node in and double click it to open the modal
-  - Change Group Node Name
-  - Dragging some Nodes onto the Pane
-  - Undo Create Node
-  - Import Export: import a configuration json and export it and check that the file is the same
-  - Check delete Edges on Medium Change
-  - Import a file with an invalid connection Bus --> Grid Supply
+    - Has title: a basic check to see if the page has loaded correctly
+    - Open Edit Component Modal: drag a node in and double click it to open the modal
+    - Change Group Node Name
+    - Dragging some Nodes onto the Pane
+    - Undo Create Node
+    - Import Export: import a configuration json and export it and check that the file is the same
+    - Check delete Edges on Medium Change
+    - Import a file with an invalid connection Bus --> Grid Supply
 - Improved error handling on import to fix several issues
 - Fix an issue with inconsistent number comparisons in validation
 - Fix that it was possible to enter a node UAC containing whitespace, which is not a valid UAC for ReSiE simulations
+
+## v1.2.2
+
+- Bug Fixes:
+    - null strings from the API are changed to empty strings.
+    - Chrome issue with datepicker, where keyboard input gave the year 5 digits instead of switching to the hour input.
+    - Mutex issues didn't show up in economic or emissions section until something is changed.
