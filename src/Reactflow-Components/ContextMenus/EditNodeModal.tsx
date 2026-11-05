@@ -32,6 +32,7 @@ import {
 } from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
 import { getEdgesFromConditionalOff, getEdgesFromMediumVar } from '../../NodeDataStructures/Edges/getEdgesToDelete';
 import { WarningMessage } from '../CustomInputWidgets/WarningMessage';
+import type { NodeType } from '../../NodeDataStructures/Nodes/SusiNodeTypes';
 
 interface EditNodeModalInputs {
 	show: boolean;
@@ -43,6 +44,7 @@ interface EditNodeModalInputs {
 	handleClose: () => void;
 	resieParameterMenus: ResieParameterMenuInfo[];
 	controlModules: ControlModule[];
+	componentTypes: Record<string, NodeType>;
 }
 
 const EditNodeModal = ({
@@ -55,6 +57,7 @@ const EditNodeModal = ({
 	edges,
 	resieParameterMenus,
 	controlModules,
+	componentTypes,
 }: EditNodeModalInputs) => {
 	const [editedNode, setEditedNode] = useState(deepCloneNode(node));
 	const [edgesToDelete, setEdgesToDelete] = useState<string[]>([]);
@@ -139,19 +142,26 @@ const EditNodeModal = ({
 		handleClose();
 	};
 
+	/** Get node type data to add to UI */
+	const componentType = componentTypes[editedNode.data.componentType];
+	console.assert(
+		componentType !== undefined,
+		`Component ${editedNode.data.componentType} is not in the list of components`
+	);
+
+	/** Check if the inputs are valid */
 	const nameIsDuplicate =
 		nodes.find((node) => node.id !== editedNode.id && node.data.content === editedNode.data.content) !== undefined;
 	const nameIsEmpty = editedNode.data.content.trim() === '';
 	let nameWarningMessage = '';
 	if (nameIsDuplicate) nameWarningMessage = 'Component name cannot be a duplicate.';
 	else if (nameIsEmpty) nameWarningMessage = 'Component name cannot be empty.';
-
 	const allInputsValid = editedNode.data.hasValidInputs && !nameIsDuplicate && !nameIsEmpty;
 	return (
 		<>
 			<Modal show={show} onHide={handleSaveChanges}>
 				<Modal.Header closeButton style={{ padding: '20px 10%' }}>
-					<Modal.Title>Edit Component</Modal.Title>
+					<Modal.Title>Edit Component : {componentType?.button_name}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body className="side-padded-menu">
 					<Row className="g-2">

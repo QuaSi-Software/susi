@@ -86,13 +86,13 @@ export function createSusiNodeData(
 	copiedControlParameters.inputs = controlParameters.inputs.map((e) => e.copy());
 	return {
 		content,
-		componentType: componentType,
 		nodeInputs: nodeInputs,
 		controlModules: [],
 		controlParameters: copiedControlParameters,
 		handleMediumDict: handleMediumDict,
 		busData: busData,
 		nodeCategory: nodeType.category,
+		componentType: nodeType.type_name,
 		sourceHandles: nodeType.nr_outputs,
 		targetHandles: nodeType.nr_inputs,
 		hasValidInputs: true,

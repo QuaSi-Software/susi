@@ -248,19 +248,22 @@ const DnDFlow = () => {
 					setEdges={setEdges}
 					setNodes={setNodes}
 				/>
-				<NodeContextMenu
-					nodeContextMenu={nodeContextMenu}
-					nodes={nodes}
-					edges={edges}
-					showModal={showEditNodeModal}
-					edgeType={edgeType}
-					setNodeContextMenu={setNodeContextMenu}
-					setNodes={setNodes}
-					setEdges={setEdges}
-					setShowModal={setShowEditNodeModal}
-					resieParameterMenus={resieParameterMenus}
-					controlModules={controlModules}
-				/>
+				{componentTypes && (
+					<NodeContextMenu
+						nodeContextMenu={nodeContextMenu}
+						nodes={nodes}
+						edges={edges}
+						showModal={showEditNodeModal}
+						edgeType={edgeType}
+						setNodeContextMenu={setNodeContextMenu}
+						setNodes={setNodes}
+						setEdges={setEdges}
+						setShowModal={setShowEditNodeModal}
+						resieParameterMenus={resieParameterMenus}
+						controlModules={controlModules}
+						componentTypes={componentTypes}
+					/>
+				)}
 				<SelectionContextMenu
 					selectionContextMenu={selectionContextMenu}
 					nodes={nodes}

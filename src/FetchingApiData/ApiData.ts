@@ -30,6 +30,7 @@ interface ApiCategory {
 
 interface ApiComponent {
 	display_name: string;
+	documentation_link: string;
 	economic: Record<string, APIParameter>;
 	emissions: Record<string, APIParameter>;
 	nr_inputs: number;
