@@ -16,7 +16,7 @@ export const checkImportExport = async (page: Page, fileName: string) => {
 	// Read the JSON file as a string to preserve formatting
 	const configJsonString = fs.readFileSync(fileName, 'utf-8');
 	/** Navigate to import export menu */
-	await page.goto('http://localhost:5002/');
+	await page.goto('/');
 	await importConfig(page, configJsonString);
 	const exportButton = page.getByRole('button', { name: 'Export' });
 	const textarea = page.getByRole('textbox', { name: 'Paste import file here to' });
