@@ -32,7 +32,7 @@ import {
 } from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
 import { getEdgesFromConditionalOff, getEdgesFromMediumVar } from '../../NodeDataStructures/Edges/getEdgesToDelete';
 import { WarningMessage } from '../CustomInputWidgets/WarningMessage';
-import type { NodeType } from '../../NodeDataStructures/Nodes/SusiNodeTypes';
+import type { ComponentType } from '../../NodeDataStructures/Nodes/SusiNodeTypes';
 
 interface EditNodeModalInputs {
 	show: boolean;
@@ -44,7 +44,7 @@ interface EditNodeModalInputs {
 	handleClose: () => void;
 	resieParameterMenus: ResieParameterMenuInfo[];
 	controlModules: ControlModule[];
-	componentTypes: Record<string, NodeType>;
+	componentTypes: Record<string, ComponentType>;
 }
 
 const EditNodeModal = ({

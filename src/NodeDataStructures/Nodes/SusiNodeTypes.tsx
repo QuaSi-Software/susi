@@ -4,7 +4,7 @@
 import type { ApiCategory } from '../../FetchingApiData/ApiData';
 import type { InputObject } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
 
-export interface NodeType {
+export interface ComponentType {
 	type_name: string;
 	button_name: string;
 	// inputs and outputs are the RESIE input and outputs, not how it should be displayed in the graph

@@ -1,5 +1,5 @@
 import type { Node, XYPosition } from '@xyflow/react';
-import type { NodeType } from './SusiNodeTypes';
+import type { ComponentType } from './SusiNodeTypes';
 import { Position } from '@xyflow/react';
 import { type SusiNodeData, createSusiNodeData } from './SusiNodeData';
 
@@ -19,7 +19,7 @@ export type SusiNode = Node & { data: SusiNodeData };
 
 const createNodeFromType = (
 	nodes: SusiNode[],
-	nodeType: NodeType,
+	nodeType: ComponentType,
 	position: XYPosition,
 	nodeNamePrefix: string,
 	controlParameters: ResieParameterMenuInfo,

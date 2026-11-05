@@ -1,6 +1,6 @@
 import BusData from '../Bus/BusData';
 import { InputObject, InputObjectType } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
-import type { NodeType } from './SusiNodeTypes';
+import type { ComponentType } from './SusiNodeTypes';
 import type { ApiCategory } from '../../FetchingApiData/ApiData';
 import { mutexSolver } from '../../Reactflow-Components/CustomInputWidgets/Validation/Mutex';
 import type { ControlModule } from '../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
@@ -72,7 +72,7 @@ function getMediumHandleDict(
 }
 
 export function createSusiNodeData(
-	nodeType: NodeType,
+	nodeType: ComponentType,
 	controlParameters: ResieParameterMenuInfo,
 	content: string = ''
 ): SusiNodeData {

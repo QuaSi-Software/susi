@@ -17,7 +17,7 @@ import { DnDProvider, useDnD } from './Sidebar/DnDContext';
 import { deepCloneNodes, type SusiNode } from './NodeDataStructures/Nodes/SusiNode';
 import MarkdownNode from './NodeDataStructures/Nodes/MarkdownNode';
 import GroupNodeComponent from './NodeDataStructures/GroupNodes/GroupNodeComponent';
-import type { NodeType } from './NodeDataStructures/Nodes/SusiNodeTypes';
+import type { ComponentType } from './NodeDataStructures/Nodes/SusiNodeTypes';
 
 /** Edges */
 import type { Connection } from '@xyflow/react';
@@ -96,7 +96,7 @@ const DnDFlow = () => {
 	const [showEditNodeModal, setShowEditNodeModal] = useState(false);
 
 	/** Data imported from API */
-	const [componentTypes, setComponentTypes] = useState<Record<string, NodeType> | null>(null);
+	const [componentTypes, setComponentTypes] = useState<Record<string, ComponentType> | null>(null);
 	const [componentCategories, setComponentCategories] = useState<ApiCategory[]>([]);
 	const [resieParameterMenus, setResieParameterMenus] = useState<ResieParameterMenuInfo[]>([]);
 	const [controlParameters, setControlParameters] = useState<ResieParameterMenuInfo | null>(null);

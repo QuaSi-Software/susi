@@ -4,7 +4,7 @@ import { getIntersectionsWithGroupNode } from './NodeDataStructures/GroupNodes/I
 import { getPositionAfterParentChange } from './NodeDataStructures/GroupNodes/CalculateChildNodePosition';
 import { useReactFlow } from '@xyflow/react';
 import createNodeFromType from './NodeDataStructures/Nodes/SusiNode';
-import type { NodeType } from './NodeDataStructures/Nodes/SusiNodeTypes';
+import type { ComponentType } from './NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from './Sidebar/ResieParameters/ResieParameterMenuInfo';
 
 interface useDraghandlersProps {
@@ -12,7 +12,7 @@ interface useDraghandlersProps {
 	controlParameters: ResieParameterMenuInfo | null;
 	setNodes: Dispatch<SetStateAction<SusiNode[]>>;
 	setCheckState: Dispatch<SetStateAction<boolean>>;
-	type: NodeType | null;
+	type: ComponentType | null;
 	nodeNamePrefix: string;
 }
 

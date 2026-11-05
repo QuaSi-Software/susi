@@ -17,7 +17,7 @@ import {
 import { resizeGroupNodeToFitChildren } from '../../NodeDataStructures/GroupNodes/ResizeGroupNodeToFitChildren';
 import type { ControlModule } from './ControlModules/ControlModulesMenu';
 import type { ResieParameterMenuInfo } from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
-import type { NodeType } from '../../NodeDataStructures/Nodes/SusiNodeTypes';
+import type { ComponentType } from '../../NodeDataStructures/Nodes/SusiNodeTypes';
 
 interface NodeContextMenuInput {
 	nodeContextMenu: NodeContextMenuData | null;
@@ -31,7 +31,7 @@ interface NodeContextMenuInput {
 	resieParameterMenus: ResieParameterMenuInfo[];
 	edgeType: EdgeType;
 	controlModules: ControlModule[];
-	componentTypes: Record<string, NodeType>;
+	componentTypes: Record<string, ComponentType>;
 }
 
 interface NodeContextMenuData {

@@ -7,7 +7,7 @@ import type { SusiEdge } from '../../NodeDataStructures/Edges/SusiEdge';
 import { useReactFlow } from '@xyflow/react';
 import { flushSync } from 'react-dom';
 import { AppContext } from '../../AppContext';
-import type { NodeType } from '../../NodeDataStructures/Nodes/SusiNodeTypes';
+import type { ComponentType } from '../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../ResieParameters/ResieParameterMenuInfo';
 import { WarningMessage } from '../../Reactflow-Components/CustomInputWidgets/WarningMessage';
 import { findUnconnectedNodes } from '../../NodeDataStructures/Nodes/FindUnconnectedNodes';
@@ -19,7 +19,7 @@ export interface ImportExportMenuProps {
 	controlParameters: ResieParameterMenuInfo | null;
 	controlModules: ControlModule[];
 	resieParameterMenus: ResieParameterMenuInfo[];
-	nodeTypes: Record<string, NodeType> | null;
+	nodeTypes: Record<string, ComponentType> | null;
 	setNodes: Dispatch<SetStateAction<SusiNode[]>>;
 	setEdges: (edges: SusiEdge[]) => void;
 	logError: (errorMessage: string) => void;
