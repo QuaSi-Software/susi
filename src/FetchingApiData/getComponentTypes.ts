@@ -31,6 +31,7 @@ export function getComponentTypes(
 		const nodeType: ComponentType = {
 			type_name: componentType,
 			button_name: component.display_name,
+			documentationLink: component.documentation_link,
 			nr_inputs: component.nr_inputs,
 			nr_outputs: component.nr_outputs,
 			segment: component.segment,

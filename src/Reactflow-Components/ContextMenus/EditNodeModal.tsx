@@ -161,7 +161,19 @@ const EditNodeModal = ({
 		<>
 			<Modal show={show} onHide={handleSaveChanges}>
 				<Modal.Header closeButton style={{ padding: '20px 10%' }}>
-					<Modal.Title>Edit Component : {componentType?.button_name}</Modal.Title>
+					<Modal.Title>
+						Edit Component : {componentType?.button_name}{' '}
+						{componentType.documentationLink && (
+							<a
+								href={componentType.documentationLink}
+								target="_blank"
+								title="Link to Documentation"
+								style={{ color: '#6c6c6c' }}
+							>
+								<i className="bi bi-question-circle"></i>
+							</a>
+						)}
+					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body className="side-padded-menu">
 					<Row className="g-2">
