@@ -53,3 +53,9 @@ export function showEconomicParameters(resieParameterMenus: ResieParameterMenuIn
 export function showEmissionsParameters(resieParameterMenus: ResieParameterMenuInfo[]) {
 	return getResieParameter(resieParameterMenus, 'emissions_parameters', 'calculate_emissions');
 }
+export function isEconomicOrEmissionsParameter(menuName: string, resieName: string) {
+	return (
+		(menuName === 'economic_parameters' && resieName === 'calculate_economy') ||
+		(menuName === 'emissions_parameters' && resieName === 'calculate_emissions')
+	);
+}
