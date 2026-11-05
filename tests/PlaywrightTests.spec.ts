@@ -3,14 +3,14 @@ import { checkImportExport, dragNodeIn, importConfig } from './testingUtils';
 import * as fs from 'fs';
 
 test('has title', async ({ page }) => {
-	await page.goto('');
+	await page.goto('/');
 
 	// Expect a title "to contain" a substring.
 	await expect(page).toHaveTitle('SUSI - UI tool for ReSiE simulations');
 });
 
 test('Open Edit Component Modal', async ({ page }) => {
-	await page.goto('');
+	await page.goto('/');
 	await dragNodeIn(page, 'Bus');
 	await page.getByText('BUS_01').dblclick();
 	await expect(page.getByText('Edit ComponentBUS_01Component')).toBeVisible();
@@ -18,7 +18,7 @@ test('Open Edit Component Modal', async ({ page }) => {
 });
 
 test('Change Group Node Name', async ({ page }) => {
-	await page.goto('');
+	await page.goto('/');
 	await page.locator('.react-flow__pane').click({
 		button: 'right',
 	});
@@ -32,7 +32,7 @@ test('Change Group Node Name', async ({ page }) => {
 });
 
 test('Dragging some Nodes onto the Pane', async ({ page }) => {
-	await page.goto('');
+	await page.goto('/');
 	await dragNodeIn(page, 'Bus');
 	await dragNodeIn(page, 'Bus');
 	await dragNodeIn(page, 'Grid Supply');
@@ -50,9 +50,10 @@ test('Dragging some Nodes onto the Pane', async ({ page }) => {
 });
 
 test('Undo Create Node', async ({ page }) => {
-	await page.goto('http://localhost:5002/');
+	await page.goto('/');
 	await dragNodeIn(page, 'Bus');
 	await dragNodeIn(page, 'Grid Supply', 300, 300);
+	await expect(page.getByText('GRSU_01')).toHaveCount(1);
 	await page.getByRole('button', { name: ' Undo' }).click();
 	await expect(page.getByText('GRSU_01')).toHaveCount(0);
 });
@@ -62,9 +63,10 @@ test('Import Export', async ({ page }) => {
 });
 
 test('Check delete Edges on Medium Change', async ({ page }) => {
-	await page.goto('http://localhost:5002/');
+	await page.goto('/');
 	const configJsonString = fs.readFileSync('tests/row_of_buses.json', 'utf-8');
 	await importConfig(page, configJsonString);
+	await expect(page.locator('.react-flow__edge-path')).toHaveCount(2);
 	// Click on the canvas to deselect the Import/Export textbox before interacting with nodes
 	await page.locator('.react-flow__pane').click();
 	await page.getByText('BUS_01').dblclick();
@@ -77,7 +79,7 @@ test('Check delete Edges on Medium Change', async ({ page }) => {
 });
 
 test('Check importing invalid Connection', async ({ page }) => {
-	await page.goto('');
+	await page.goto('/');
 	const configJsonString = fs.readFileSync('tests/Invalid_connection.json', 'utf-8');
 	await importConfig(page, configJsonString);
 });
