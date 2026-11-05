@@ -94,8 +94,8 @@ class InputObject implements InputObjectProps {
 		}
 		if (this.value === undefined) this.value = null;
 
-		if (this.value === null && !this.isRequired) {
-			if (this.type === InputObjectType.STRING) this.value = '';
+		if (this.value === null && this.type === InputObjectType.STRING) {
+			this.value = '';
 		}
 		if (this.type === InputObjectType.DATE) {
 			const date: Date = parseDate(this.value, startEndUnit, logError);

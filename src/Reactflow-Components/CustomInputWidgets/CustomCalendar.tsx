@@ -24,6 +24,7 @@ export function CustomCalendar({ date, disabled, displayName, onInputChanged }: 
 					disabled={disabled}
 					value={dateString}
 					style={{ height: '3.5em' }}
+					max={`9999-12-31T23:59`}
 					onChange={(e) => {
 						const newDate = new Date(e.target.value);
 						onInputChanged(newDate);
