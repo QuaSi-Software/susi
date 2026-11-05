@@ -53,6 +53,7 @@ test('Undo Create Node', async ({ page }) => {
 	await page.goto('/');
 	await dragNodeIn(page, 'Bus');
 	await dragNodeIn(page, 'Grid Supply', 300, 300);
+	await expect(page.getByText('GRSU_01')).toHaveCount(1);
 	await page.getByRole('button', { name: ' Undo' }).click();
 	await expect(page.getByText('GRSU_01')).toHaveCount(0);
 });
@@ -65,6 +66,7 @@ test('Check delete Edges on Medium Change', async ({ page }) => {
 	await page.goto('/');
 	const configJsonString = fs.readFileSync('tests/row_of_buses.json', 'utf-8');
 	await importConfig(page, configJsonString);
+	await expect(page.locator('.react-flow__edge-path')).toHaveCount(2);
 	// Click on the canvas to deselect the Import/Export textbox before interacting with nodes
 	await page.locator('.react-flow__pane').click();
 	await page.getByText('BUS_01').dblclick();
