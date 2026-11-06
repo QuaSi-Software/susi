@@ -49,7 +49,7 @@ export function processApiReturn(
 	}
 	setControlModules(controlModules);
 	/** io settings and sim params */
-	data.general.simulation['start_end_unit'].default = defaultDateFormat;
+	data.general.simulation['start_date_format'].default = defaultDateFormat;
 	setResieParameterMenus([
 		importResieParameterMenuInfo(
 			data.general.io_categories,
