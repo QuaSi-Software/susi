@@ -112,3 +112,7 @@ The first release of SUSI with a whole number of features:
     - null strings from the API are changed to empty strings.
     - Chrome issue with datepicker, where keyboard input gave the year 5 digits instead of switching to the hour input.
     - Mutex issues didn't show up in economic or emissions section until something is changed.
+
+## v1.2.3
+
+- Fix broken app initialisation and importing due to updates of parameter API to ReSiE v1.1.0
