@@ -31,7 +31,7 @@ export function ResieParametersMenu({
 	}
 
 	const menu = resieParameterMenus.find((e) => e.title === selectedMenu);
-	const inputs = menu!.inputs.filter((e) => e.resieName !== 'start_end_unit');
+	const inputs = menu!.inputs.filter((e) => e.resieName !== 'start_date_format');
 	return (
 		<div key={`key-${selectedMenu}-menu`}>
 			<div className="sidebar-subheading">{menu?.title}</div>

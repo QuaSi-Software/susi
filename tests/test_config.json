@@ -492,7 +492,7 @@
 		"epsilon": 0.000001,
 		"force_profiles_to_repeat": false,
 		"start": "01.01.2024 00:00",
-		"start_end_unit": "dd.mm.yyyy HH:MM",
+		"start_date_format": "dd.mm.yyyy HH:MM",
 		"time_step": 60,
 		"time_step_unit": "minutes",
 		"weather_file_path": "./profiles/weather/TRY2015_Stuttgart.epw"

@@ -104,10 +104,10 @@ const importState = ({
 		logError('There is no dictionary of components defined in import file.');
 		return;
 	}
-	/** Get start end unit from import data */
-	let startEndUnit = defaultDateFormat;
-	if (importDict['simulation_parameters'] && importDict['simulation_parameters']['start_end_unit'])
-		startEndUnit = importDict['simulation_parameters']['start_end_unit'];
+	/** Get start date format from import data */
+	let startDateFormat = defaultDateFormat;
+	if (importDict['simulation_parameters'] && importDict['simulation_parameters']['start_date_format'])
+		startDateFormat = importDict['simulation_parameters']['start_date_format'];
 	resieParameterMenus.forEach((menu) => {
 		const list = importDict[menu.exportKey];
 		if (list === undefined) return;
@@ -115,14 +115,14 @@ const importState = ({
 			resieParameterMenus,
 			menu.exportKey,
 			list,
-			startEndUnit,
+			startDateFormat,
 			logError
 		);
 	});
 	/** Reset start end unit to default value */
 	resieParameterMenus
 		.find((e) => e.exportKey === 'simulation_parameters')!
-		.inputs.find((e) => e.resieName === 'start_end_unit')!.value = defaultDateFormat;
+		.inputs.find((e) => e.resieName === 'start_date_format')!.value = defaultDateFormat;
 	setResieParameterMenus(resieParameterMenus);
 	// Get or generate mediums
 	const mediums = getImportMediums(importDict, nodeTypes);
@@ -155,22 +155,22 @@ const importState = ({
 
 		// Fill in node inputs from import data
 		const nodeInputs = newNode.data.nodeInputs;
-		setImportedValues(nodeInputs, nodeData, mediums, startEndUnit);
+		setImportedValues(nodeInputs, nodeData, mediums, startDateFormat);
 		mutexSolver(nodeInputs, logError, newNode.data.content);
 		newNode.data.nodeInputs = nodeInputs;
 		/** economic and emissions inputs */
 		if (nodeData.economic_parameters) {
-			setImportedValues(newNode.data.economicInputs, nodeData.economic_parameters, mediums, startEndUnit);
+			setImportedValues(newNode.data.economicInputs, nodeData.economic_parameters, mediums, startDateFormat);
 		}
 		if (nodeData.emissions_parameters) {
-			setImportedValues(newNode.data.emissionsInputs, nodeData.emissions_parameters, mediums, startEndUnit);
+			setImportedValues(newNode.data.emissionsInputs, nodeData.emissions_parameters, mediums, startDateFormat);
 		}
 
 		/** Set Control parameters */
 		const importControlParameters = nodeData.control_parameters;
 		if (importControlParameters) {
 			const controlParameterInputs = newNode.data.controlParameters!.inputs;
-			setImportedValues(controlParameterInputs, importControlParameters, mediums, startEndUnit);
+			setImportedValues(controlParameterInputs, importControlParameters, mediums, startDateFormat);
 			newNode.data.controlParameters!.inputs = controlParameterInputs;
 		}
 		/** set control modules */

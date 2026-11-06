@@ -117,7 +117,7 @@
 		"end": "15.10.2026 00:00",
 		"force_profiles_to_repeat": false,
 		"start": "15.10.2026 00:00",
-		"start_end_unit": "dd.mm.yyyy HH:MM"
+		"start_date_format": "dd.mm.yyyy HH:MM"
 	},
 	"economic_parameters": {
 		"calculate_economy": false
