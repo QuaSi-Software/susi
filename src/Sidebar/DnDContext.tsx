@@ -1,11 +1,11 @@
 import { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
-import type { NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
+import type { ComponentType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
 
-const DnDContext = createContext<[NodeType | null, (type: NodeType | null) => void]>([null, () => {}]);
+const DnDContext = createContext<[ComponentType | null, (type: ComponentType | null) => void]>([null, () => {}]);
 
 export const DnDProvider = ({ children }: { children: ReactNode }) => {
-	const [type, setType] = useState<NodeType | null>(null);
+	const [type, setType] = useState<ComponentType | null>(null);
 
 	return <DnDContext.Provider value={[type, setType]}>{children}</DnDContext.Provider>;
 };

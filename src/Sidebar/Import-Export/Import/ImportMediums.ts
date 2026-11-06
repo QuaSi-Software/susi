@@ -3,9 +3,9 @@ import { InputObjectType } from '../../../Reactflow-Components/CustomInputWidget
 import { getDefaultMediums, getRandomColor } from '../../../NodeDataStructures/Mediums/MediumUtils';
 import type { ComponentData, ImportData } from '../ExportDataStrucures';
 import { getComponentImportData } from './ImportData';
-import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
+import type { ComponentType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 
-export default function getImportMediums(importDict: ImportData, nodeTypes: Record<string, NodeType>) {
+export default function getImportMediums(importDict: ImportData, nodeTypes: Record<string, ComponentType>) {
 	let mediums: Medium[] = getDefaultMediums();
 	const importedMediums = importDict.mediums || generateMediumListFromComponents(importDict.components, nodeTypes);
 
@@ -33,7 +33,7 @@ const createMediumFromImport = (name: string, color: string | null) => {
 
 function generateMediumListFromComponents(
 	components: Record<string, ComponentData>,
-	nodeTypes: Record<string, NodeType>
+	nodeTypes: Record<string, ComponentType>
 ): Array<[string, string | null]> {
 	const mediums: string[] = [];
 

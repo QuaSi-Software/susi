@@ -17,7 +17,7 @@ import { DnDProvider, useDnD } from './Sidebar/DnDContext';
 import { deepCloneNodes, type SusiNode } from './NodeDataStructures/Nodes/SusiNode';
 import MarkdownNode from './NodeDataStructures/Nodes/MarkdownNode';
 import GroupNodeComponent from './NodeDataStructures/GroupNodes/GroupNodeComponent';
-import type { NodeType } from './NodeDataStructures/Nodes/SusiNodeTypes';
+import type { ComponentType } from './NodeDataStructures/Nodes/SusiNodeTypes';
 
 /** Edges */
 import type { Connection } from '@xyflow/react';
@@ -96,7 +96,7 @@ const DnDFlow = () => {
 	const [showEditNodeModal, setShowEditNodeModal] = useState(false);
 
 	/** Data imported from API */
-	const [componentTypes, setComponentTypes] = useState<Record<string, NodeType> | null>(null);
+	const [componentTypes, setComponentTypes] = useState<Record<string, ComponentType> | null>(null);
 	const [componentCategories, setComponentCategories] = useState<ApiCategory[]>([]);
 	const [resieParameterMenus, setResieParameterMenus] = useState<ResieParameterMenuInfo[]>([]);
 	const [controlParameters, setControlParameters] = useState<ResieParameterMenuInfo | null>(null);
@@ -159,6 +159,7 @@ const DnDFlow = () => {
 		type,
 		nodeNamePrefix,
 		controlParameters,
+		resieParameterMenus,
 	});
 
 	const onNodeDoubleClick = (event: React.MouseEvent, node: SusiNode) => {
@@ -248,19 +249,22 @@ const DnDFlow = () => {
 					setEdges={setEdges}
 					setNodes={setNodes}
 				/>
-				<NodeContextMenu
-					nodeContextMenu={nodeContextMenu}
-					nodes={nodes}
-					edges={edges}
-					showModal={showEditNodeModal}
-					edgeType={edgeType}
-					setNodeContextMenu={setNodeContextMenu}
-					setNodes={setNodes}
-					setEdges={setEdges}
-					setShowModal={setShowEditNodeModal}
-					resieParameterMenus={resieParameterMenus}
-					controlModules={controlModules}
-				/>
+				{componentTypes && (
+					<NodeContextMenu
+						nodeContextMenu={nodeContextMenu}
+						nodes={nodes}
+						edges={edges}
+						showModal={showEditNodeModal}
+						edgeType={edgeType}
+						setNodeContextMenu={setNodeContextMenu}
+						setNodes={setNodes}
+						setEdges={setEdges}
+						setShowModal={setShowEditNodeModal}
+						resieParameterMenus={resieParameterMenus}
+						controlModules={controlModules}
+						componentTypes={componentTypes}
+					/>
+				)}
 				<SelectionContextMenu
 					selectionContextMenu={selectionContextMenu}
 					nodes={nodes}

@@ -116,3 +116,12 @@ The first release of SUSI with a whole number of features:
 ## v1.2.3
 
 - Fix broken app initialisation and importing due to updates of parameter API to ReSiE v1.1.0
+
+## v1.2.4
+
+- UI updates
+    - Edit Component Modal now has the component type and a link to the documentation in the header
+    - There's a warning message if the user sets the component name to be empty or a duplicate of another component
+- Fixes:
+    - issues with economic and emissions inputs are checked for when they are economic/emissions are enabled in the sidebar
+    - at_least_one issues cause a warning icon on the save button and component itself

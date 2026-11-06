@@ -1,5 +1,5 @@
 import { useState, type Dispatch, type SetStateAction } from 'react';
-import { checkNodeValidInputs, type SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
+import { type SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import { InputObject } from '../../CustomInputWidgets/InputObject';
 import ControlModulesDropdown from './ControlModulesDropdown';
 import { Accordion } from 'radix-ui';
@@ -8,6 +8,7 @@ import { InputMenu } from '../../CustomInputWidgets/InputMenu';
 import _ from 'lodash';
 import type { ResieParameterMenuInfo } from '../../../Sidebar/ResieParameters/ResieParameterMenuInfo';
 import { getTitleFromKey } from '../ContextMenuUtils';
+import { checkNodeValidInputs } from '../../../NodeDataStructures/Nodes/ValidateSusiNode';
 
 export interface ControlModule {
 	title: string;

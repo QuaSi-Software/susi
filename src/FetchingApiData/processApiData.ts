@@ -6,7 +6,7 @@ import { getComponentTypes } from './getComponentTypes';
 import type { ApiCategory, ApiComponent, ApiReturn } from './ApiData';
 import type { Dispatch, SetStateAction } from 'react';
 import type { Medium } from '../NodeDataStructures/Mediums/Medium';
-import type { NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
+import type { ComponentType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
 import { getInputObjectFromAPIParameter } from './ImportInputObjects';
 import type { ControlModule } from '../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 import { defaultDateFormat } from '../Reactflow-Components/CustomInputWidgets/DateParsing';
@@ -14,7 +14,7 @@ import { defaultDateFormat } from '../Reactflow-Components/CustomInputWidgets/Da
 export function processApiReturn(
 	data: ApiReturn,
 	mediums: Medium[],
-	setComponentTypes: Dispatch<SetStateAction<Record<string, NodeType> | null>>,
+	setComponentTypes: Dispatch<SetStateAction<Record<string, ComponentType> | null>>,
 	setComponentCategories: Dispatch<SetStateAction<ApiCategory[]>>,
 	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>,
 	setControlParameters: Dispatch<SetStateAction<ResieParameterMenuInfo | null>>,
@@ -23,7 +23,7 @@ export function processApiReturn(
 ) {
 	setResieVersion(data.resie_version);
 	const apiComponents: Record<string, ApiComponent> = data.components.types;
-	const componentTypes: Record<string, NodeType> = getComponentTypes(
+	const componentTypes: Record<string, ComponentType> = getComponentTypes(
 		apiComponents,
 		data.components.type_categories,
 		mediums

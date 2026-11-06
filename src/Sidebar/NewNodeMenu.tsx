@@ -1,11 +1,11 @@
 import React from 'react';
 import { useDnD } from './DnDContext';
-import { type NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
+import { type ComponentType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ApiCategory } from '../FetchingApiData/ApiData';
 
 export interface NewNodeMenuProps {
 	categories: ApiCategory[];
-	nodeTypes: Record<string, NodeType> | null;
+	nodeTypes: Record<string, ComponentType> | null;
 	resieVersion: string | undefined;
 }
 
@@ -13,7 +13,7 @@ export default function NewNodeMenu({ categories, nodeTypes, resieVersion }: New
 	if (nodeTypes === null) return <></>;
 	const [_, setType] = useDnD();
 
-	const onDragStart = (event: React.DragEvent<HTMLDivElement>, nodeType: NodeType) => {
+	const onDragStart = (event: React.DragEvent<HTMLDivElement>, nodeType: ComponentType) => {
 		setType!(nodeType);
 		event.dataTransfer.effectAllowed = 'move';
 	};
