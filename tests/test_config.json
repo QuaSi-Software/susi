@@ -222,7 +222,7 @@
 		"Ambient_heat": {
 			"type": "GridSupply",
 			"medium": "m_h_w_lt1",
-			"temperature_from_global_file": "temp_ambient_air",
+			"use_ambient_temperature_from_weather_file": true,
 			"economic_parameters": {
 				"capex_specific": "const:0.0",
 				"capex_specific_scale": 1,
@@ -374,6 +374,7 @@
 		"Building_el_GRI": {
 			"type": "GridSupply",
 			"medium": "m_e_ac_230v",
+			"use_ambient_temperature_from_weather_file": false,
 			"economic_parameters": {
 				"capex_specific": "const:0.0",
 				"capex_specific_scale": 1,
@@ -412,6 +413,7 @@
 		"Building_el_GRO": {
 			"type": "GridSink",
 			"medium": "m_e_ac_230v",
+			"use_ambient_temperature_from_weather_file": false,
 			"economic_parameters": {
 				"capex_specific": "const:0.0",
 				"capex_specific_scale": 1,
@@ -456,7 +458,7 @@
 	],
 	"io_settings": {
 		"auxiliary_info": true,
-		"auxiliary_info_file": "./output/auxiliary_info.md",
+		"auxiliary_info_file_path": "./output/auxiliary_info.md",
 		"auxiliary_plots": false,
 		"csv_output": "all_incl_flows",
 		"csv_output_file_path": "./output/out.csv",
@@ -467,6 +469,7 @@
 		"economic_plot_present_values_file_path": "./output/economic_results_present_values.html",
 		"emissions_csv_file_path": "./output/emissions_results.csv",
 		"emissions_plot_file_path": "./output/emissions_plot.html",
+		"enable_plot_downsampling": true,
 		"output_economic_csv": true,
 		"output_emissions_csv": true,
 		"output_parameter_study_csv": true,

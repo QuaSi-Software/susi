@@ -99,6 +99,7 @@
 		"auxiliary_info": false,
 		"auxiliary_plots": false,
 		"csv_output_weather": false,
+		"enable_plot_downsampling": true,
 		"output_economic_csv": true,
 		"output_emissions_csv": true,
 		"output_parameter_study_csv": true,
