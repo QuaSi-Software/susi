@@ -13,7 +13,7 @@ test('Open Edit Component Modal', async ({ page }) => {
 	await page.goto('/');
 	await dragNodeIn(page, 'Bus');
 	await page.getByText('BUS_01').dblclick();
-	await expect(page.getByText('Edit ComponentBUS_01Component')).toBeVisible();
+	await expect(page.getByText('Edit Component : Bus')).toBeVisible();
 	await page.getByRole('button', { name: 'Close', exact: true }).click();
 });
 
@@ -25,7 +25,7 @@ test('Change Group Node Name', async ({ page }) => {
 	await page.getByRole('button', { name: ' Create Component Group' }).click();
 	const groupNode = page.locator('.react-flow__node');
 	await groupNode.dblclick();
-	await page.getByText('Edit ComponentNew').click();
+	await page.getByText('Edit Component').click();
 	await page.getByRole('textbox', { name: 'Component Name' }).fill('Testing_Group_Node');
 	await page.getByRole('button', { name: 'Save Changes' }).click();
 	await expect(groupNode).toContainText('Testing_Group_Node');
