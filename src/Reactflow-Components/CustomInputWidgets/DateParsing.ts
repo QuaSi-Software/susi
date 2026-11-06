@@ -38,9 +38,9 @@ export function exportDate(date: Date, dateFormat: string = defaultDateFormat): 
 	return dateTime.toFormat(format);
 }
 
-export function getStartEndUnit(resieParameterMenus: ResieParameterMenuInfo[]): string {
+export function getStartDateFormat(resieParameterMenus: ResieParameterMenuInfo[]): string {
 	const simParams = resieParameterMenus.find((e) => e.exportKey === 'simulation_parameters');
-	const startEndUnit = simParams?.inputs.find((e) => e.resieName === 'start_end_unit');
-	if (!startEndUnit) return defaultDateFormat;
-	return startEndUnit.value;
+	const startDateFormat = simParams?.inputs.find((e) => e.resieName === 'start_date_format');
+	if (!startDateFormat) return defaultDateFormat;
+	return startDateFormat.value;
 }
