@@ -9,7 +9,20 @@ export function getComponentTypes(
 	typeCategories: ApiCategory[],
 	mediums: Medium[]
 ): Record<string, ComponentType> {
-	const nodeTypes: Record<string, ComponentType> = {};
+	const groupNodeType : ComponentType = {
+		type_name: "GroupNode",
+		button_name: "Group Node",
+		documentationLink: "",
+		nr_inputs: 0,
+		nr_outputs: 0,
+		segment: "",
+		category: "Other",
+		inputs: [],
+		inputCategories: [],
+		economic: [],
+		emissions: [],
+	};
+	const nodeTypes: Record<string, ComponentType> = {"GroupNode": groupNodeType};
 	for (const [componentType, component] of Object.entries(apiComponents)) {
 		const nodeInputs = [];
 		for (const [nodeInputName, inputAttributes] of Object.entries(component.parameters)) {

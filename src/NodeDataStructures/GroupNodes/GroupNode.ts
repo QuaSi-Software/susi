@@ -30,7 +30,7 @@ function createGroupNode(
 	}
 	const susiNodeData: SusiNodeData = {
 		content,
-		componentType: '',
+		componentType: 'GroupNode',
 		nodeInputs: [],
 		handleMediumDict: {
 			source: [],
