@@ -2,7 +2,7 @@ import { type Dispatch, type SetStateAction } from 'react';
 import type { Medium } from '../NodeDataStructures/Mediums/Medium';
 import _ from 'lodash';
 import type { ApiCategory, ApiReturn } from './ApiData';
-import type { NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
+import type { ComponentType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
 import { type ResieParameterMenuInfo } from '../Sidebar/ResieParameters/ResieParameterMenuInfo';
 import { processApiReturn } from './processApiData';
 import type { ControlModule } from '../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
@@ -30,8 +30,8 @@ const loadLocalFile = async (): Promise<ApiReturn | null> => {
 interface useFetchDataProps {
 	setLoadingMessage: (isLoading: string | null) => void;
 	mediums: Medium[];
-	componentTypes: Record<string, NodeType> | null;
-	setComponentTypes: Dispatch<SetStateAction<Record<string, NodeType> | null>>;
+	componentTypes: Record<string, ComponentType> | null;
+	setComponentTypes: Dispatch<SetStateAction<Record<string, ComponentType> | null>>;
 	setComponentCategories: Dispatch<SetStateAction<ApiCategory[]>>;
 	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
 	setOverlayError: Dispatch<SetStateAction<string | null>>;

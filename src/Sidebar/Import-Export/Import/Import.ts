@@ -1,6 +1,6 @@
 import type { SusiNode } from '../../../NodeDataStructures/Nodes/SusiNode';
 import type { Medium } from '../../../NodeDataStructures/Mediums/Medium';
-import createNodeFromType, { checkNodeValidInputs } from '../../../NodeDataStructures/Nodes/SusiNode';
+import createNodeFromType from '../../../NodeDataStructures/Nodes/SusiNode';
 import getImportMediums from './ImportMediums';
 import type { ComponentData, ComponentImportData, ImportData, NodeGroup } from '../ExportDataStrucures';
 import { getComponentImportData } from './ImportData';
@@ -9,7 +9,7 @@ import type { SusiEdge } from '../../../NodeDataStructures/Edges/SusiEdge';
 import { createSourceHandleDict, findTargetHandle, initializeTakenHandles } from './ImportHandles';
 import { getNewEdge } from '../../../NodeDataStructures/Edges/CreateEdge';
 import type { Dispatch, SetStateAction } from 'react';
-import type { NodeType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
+import type { ComponentType } from '../../../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ResieParameterMenuInfo } from '../../ResieParameters/ResieParameterMenuInfo';
 import { createGroupNode } from '../../../NodeDataStructures/GroupNodes/GroupNode';
 import { defaultDateFormat } from '../../../Reactflow-Components/CustomInputWidgets/DateParsing';
@@ -21,6 +21,7 @@ import {
 } from './ImportInputs';
 import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 import { mutexSolver } from '../../../Reactflow-Components/CustomInputWidgets/Validation/Mutex';
+import { checkNodeValidInputs } from '../../../NodeDataStructures/Nodes/ValidateSusiNode';
 
 interface ImportStateProps {
 	stateJSON: string;
@@ -31,7 +32,7 @@ interface ImportStateProps {
 	/** io settings and simulation parameters */
 	resieParameterMenus: ResieParameterMenuInfo[];
 	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
-	nodeTypes: Record<string, NodeType>;
+	nodeTypes: Record<string, ComponentType>;
 	controlParameters: ResieParameterMenuInfo;
 	controlModules: ControlModule[];
 }
@@ -150,6 +151,7 @@ const importState = ({
 			importData.node_position,
 			'',
 			controlParameters,
+			resieParameterMenus,
 			nodeId
 		);
 

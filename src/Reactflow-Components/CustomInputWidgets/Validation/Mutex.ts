@@ -1,4 +1,4 @@
-import { InputObject } from '../InputObject';
+import { InputObject, InputObjectType } from '../InputObject';
 import { ConditionalOperator } from './Conditionals';
 import { InputIssueType, type InputIssue } from './InputChecking';
 
@@ -13,7 +13,11 @@ function checkMutex(input: InputObject, otherInputs: InputObject[]): InputIssue 
 			targetParameter !== undefined,
 			`Conditional can't find parameter ${conditional.targetParameterName} on input ${input.resieName}`
 		);
-		if (targetParameter!.isIncluded) {
+		const isTargetEnabled =
+			targetParameter!.type === InputObjectType.BOOLEAN
+				? targetParameter!.value === true
+				: targetParameter!.isIncluded;
+		if (isTargetEnabled) {
 			return {
 				issueType: InputIssueType.Mutex,
 				message: `Input cannot be enabled if ${targetParameter!.displayName} is enabled`,

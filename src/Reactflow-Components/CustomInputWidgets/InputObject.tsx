@@ -167,9 +167,14 @@ class InputObject implements InputObjectProps {
 		}
 	}
 
-	public isValid() {
-		if (!this.isRequired && !this.isIncluded) return true;
-		return this.issue.issueType !== InputIssueType.Validity && this.issue.issueType !== InputIssueType.AtLeastOne;
+	public isValid(): boolean {
+		if (this.issue.issueType === InputIssueType.AtLeastOne) {
+			return false;
+		}
+		if (this.isRequired || this.isIncluded) {
+			return this.issue.issueType !== InputIssueType.Validity;
+		}
+		return true;
 	}
 
 	public canHaveWarnings(): boolean {

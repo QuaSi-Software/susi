@@ -1,6 +1,6 @@
 import type { Medium } from '../NodeDataStructures/Mediums/Medium';
 import type { ApiCategory, ApiComponent } from './ApiData';
-import { type NodeType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
+import { type ComponentType as ComponentType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
 import { checkParametersAndCategoriesMatch, getInputObjectFromAPIParameter } from './ImportInputObjects';
 import { InputObject } from '../Reactflow-Components/CustomInputWidgets/InputObject';
 
@@ -8,8 +8,21 @@ export function getComponentTypes(
 	apiComponents: Record<string, ApiComponent>,
 	typeCategories: ApiCategory[],
 	mediums: Medium[]
-): Record<string, NodeType> {
-	const nodeTypes: Record<string, NodeType> = {};
+): Record<string, ComponentType> {
+	const groupNodeType : ComponentType = {
+		type_name: "GroupNode",
+		button_name: "Group Node",
+		documentationLink: "",
+		nr_inputs: 0,
+		nr_outputs: 0,
+		segment: "",
+		category: "Other",
+		inputs: [],
+		inputCategories: [],
+		economic: [],
+		emissions: [],
+	};
+	const nodeTypes: Record<string, ComponentType> = {"GroupNode": groupNodeType};
 	for (const [componentType, component] of Object.entries(apiComponents)) {
 		const nodeInputs = [];
 		for (const [nodeInputName, inputAttributes] of Object.entries(component.parameters)) {
@@ -28,9 +41,10 @@ export function getComponentTypes(
 
 		let category = typeCategories.find((category) => category.types!.includes(componentType));
 		console.assert(category !== undefined, `Component ${componentType} is not assigned a category`);
-		const nodeType: NodeType = {
+		const nodeType: ComponentType = {
 			type_name: componentType,
 			button_name: component.display_name,
+			documentationLink: component.documentation_link,
 			nr_inputs: component.nr_inputs,
 			nr_outputs: component.nr_outputs,
 			segment: component.segment,

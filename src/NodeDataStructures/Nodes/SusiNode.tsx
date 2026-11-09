@@ -1,15 +1,12 @@
 import type { Node, XYPosition } from '@xyflow/react';
-import type { NodeType } from './SusiNodeTypes';
+import type { ComponentType } from './SusiNodeTypes';
 import { Position } from '@xyflow/react';
 import { type SusiNodeData, createSusiNodeData } from './SusiNodeData';
 
 import _ from 'lodash';
 import { findNameForDuplicate } from '../../Reactflow-Components/ContextMenus/ContextMenuUtils';
-import {
-	showEconomicParameters,
-	showEmissionsParameters,
-	type ResieParameterMenuInfo,
-} from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
+import { type ResieParameterMenuInfo } from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
+import { checkNodeValidInputs } from './ValidateSusiNode';
 
 /**
  * SusiNode is a normal ReactFlow Node, but with data replaced by the interface SusiNodeData for clarity
@@ -19,10 +16,11 @@ export type SusiNode = Node & { data: SusiNodeData };
 
 const createNodeFromType = (
 	nodes: SusiNode[],
-	nodeType: NodeType,
+	nodeType: ComponentType,
 	position: XYPosition,
 	nodeNamePrefix: string,
 	controlParameters: ResieParameterMenuInfo,
+	resieParameterMenus: ResieParameterMenuInfo[],
 	content: string | null = null
 ): SusiNode => {
 	const timestamp = Date.now();
@@ -54,40 +52,9 @@ const createNodeFromType = (
 			width: 'auto',
 		} as React.CSSProperties,
 	};
-	checkNodeValidInputs(node, null);
+	checkNodeValidInputs(node, resieParameterMenus);
 	return node;
 };
-
-/** Check all if all inputs in node are valid and assign node.data.hasValidInputs  */
-export function checkNodeValidInputs(node: SusiNode, resieParameterMenus: ResieParameterMenuInfo[] | null) {
-	console.assert(
-		node.data.nodeInputs !== undefined,
-		`Trying to access node inputs of group node: ${node.data.label}`
-	);
-	const hasValidInputs = node.data.nodeInputs!.every((input) => input.isValid());
-	const hasValidControlModules = node.data.controlModules.every((m) => {
-		return m.parameters.every((input) => input.isValid());
-	});
-	const hasValidControlParameters = node.data.controlParameters?.inputs.every((input) => input.isValid()) ?? true;
-
-	/** check economic and emisions parameters */
-	let hasValidEconomicParameters = true;
-	let hasValidEmissionsParameters = true;
-	if (resieParameterMenus) {
-		hasValidEconomicParameters =
-			!showEconomicParameters(resieParameterMenus) || node.data.economicInputs.every((input) => input.isValid());
-		hasValidEmissionsParameters =
-			!showEmissionsParameters(resieParameterMenus) ||
-			node.data.emissionsInputs.every((input) => input.isValid());
-	}
-
-	node.data.hasValidInputs =
-		hasValidInputs &&
-		hasValidControlModules &&
-		hasValidControlParameters &&
-		hasValidEconomicParameters &&
-		hasValidEmissionsParameters;
-}
 
 export const deepCloneNode = (node: SusiNode): SusiNode => {
 	const newNode = _.cloneDeep(node);

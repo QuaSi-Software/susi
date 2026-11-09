@@ -7,12 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import _ from 'lodash';
 
-import {
-	checkNodeValidInputs,
-	deepCloneNode,
-	deepCloneNodes,
-	type SusiNode,
-} from '../../NodeDataStructures/Nodes/SusiNode';
+import { deepCloneNode, deepCloneNodes, type SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import type BusData from '../../NodeDataStructures/Bus/BusData';
 import { InputObject } from '../CustomInputWidgets/InputObject';
 import { updateBusDataOnEdgeDelete } from '../../NodeDataStructures/Bus/BusDataUtils';
@@ -31,6 +26,9 @@ import {
 	type ResieParameterMenuInfo,
 } from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
 import { getEdgesFromConditionalOff, getEdgesFromMediumVar } from '../../NodeDataStructures/Edges/getEdgesToDelete';
+import { WarningMessage } from '../CustomInputWidgets/WarningMessage';
+import type { ComponentType } from '../../NodeDataStructures/Nodes/SusiNodeTypes';
+import { checkNodeValidInputs } from '../../NodeDataStructures/Nodes/ValidateSusiNode';
 
 interface EditNodeModalInputs {
 	show: boolean;
@@ -42,6 +40,7 @@ interface EditNodeModalInputs {
 	handleClose: () => void;
 	resieParameterMenus: ResieParameterMenuInfo[];
 	controlModules: ControlModule[];
+	componentTypes: Record<string, ComponentType>;
 }
 
 const EditNodeModal = ({
@@ -54,6 +53,7 @@ const EditNodeModal = ({
 	edges,
 	resieParameterMenus,
 	controlModules,
+	componentTypes,
 }: EditNodeModalInputs) => {
 	const [editedNode, setEditedNode] = useState(deepCloneNode(node));
 	const [edgesToDelete, setEdgesToDelete] = useState<string[]>([]);
@@ -138,19 +138,43 @@ const EditNodeModal = ({
 		handleClose();
 	};
 
+	/** Get node type data to add to UI */
+	const componentType = componentTypes[editedNode.data.componentType];
+	console.assert(
+		componentType !== undefined,
+		`Component ${editedNode.data.componentType} is not in the list of components`
+	);
+
+	/** Check if the inputs are valid */
 	const nameIsDuplicate =
 		nodes.find((node) => node.id !== editedNode.id && node.data.content === editedNode.data.content) !== undefined;
-
-	const allInputsValid = editedNode.data.hasValidInputs && !nameIsDuplicate;
+	const nameIsEmpty = editedNode.data.content.trim() === '';
+	let nameWarningMessage = '';
+	if (nameIsDuplicate) nameWarningMessage = 'Component name cannot be a duplicate.';
+	else if (nameIsEmpty) nameWarningMessage = 'Component name cannot be empty.';
+	const allInputsValid = editedNode.data.hasValidInputs && !nameIsDuplicate && !nameIsEmpty;
 	return (
 		<>
 			<Modal show={show} onHide={handleSaveChanges}>
 				<Modal.Header closeButton style={{ padding: '20px 10%' }}>
-					<Modal.Title>Edit Component</Modal.Title>
+					<Modal.Title>
+						Edit Component : {componentType?.button_name}{' '}
+						{componentType.documentationLink && (
+							<a
+								href={componentType.documentationLink}
+								target="_blank"
+								title="Link to Documentation"
+								style={{ color: '#6c6c6c' }}
+							>
+								<i className="bi bi-question-circle"></i>
+							</a>
+						)}
+					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body className="side-padded-menu">
 					<Row className="g-2">
 						<Col md>
+							<WarningMessage redWarning message={nameWarningMessage} />
 							<FloatingLabel controlId="floatingInput" label="Component Name">
 								<Form.Control
 									type="text"
