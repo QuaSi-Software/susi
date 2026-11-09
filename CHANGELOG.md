@@ -125,3 +125,4 @@ The first release of SUSI with a whole number of features:
 - Fixes:
     - issues with economic and emissions inputs are checked for when they are economic/emissions are enabled in the sidebar
     - at_least_one issues cause a warning icon on the save button and component itself
+    - at_least_one validations and mutex conditionals not working correctly with boolean parameters
