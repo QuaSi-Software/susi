@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { getMediumNodeInput, getUndefinedMedium } from '../Mediums/MediumUtils';
-import { InputIssueType } from '../../Reactflow-Components/CustomInputWidgets/Validation/InputChecking';
+import { InputIssueType } from '../../Reactflow-Components/CustomInputWidgets/InputIssues/InputChecking';
 import type { SusiNodeData } from './SusiNodeData';
 import { AppContext } from '../../AppContext';
 

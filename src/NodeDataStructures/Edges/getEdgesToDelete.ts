@@ -1,5 +1,5 @@
 import { InputObjectType } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
-import { InputIssueType } from '../../Reactflow-Components/CustomInputWidgets/Validation/InputChecking';
+import { InputIssueType } from '../../Reactflow-Components/CustomInputWidgets/InputIssues/InputChecking';
 import type { SusiNode } from '../Nodes/SusiNode';
 import type { SusiEdge } from './SusiEdge';
 

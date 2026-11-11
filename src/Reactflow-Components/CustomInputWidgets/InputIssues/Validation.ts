@@ -32,7 +32,7 @@ interface Validation {
 	otherParameterNames?: string[];
 }
 
-function checkNumberValidation(input: InputObject, otherInputs: InputObject[]): InputIssue | null {
+function checkValidation(input: InputObject, otherInputs: InputObject[]): InputIssue | null {
 	if (!input.isIncluded && !input.isRequired) return null;
 	const isNumberInput = input.type === InputObjectType.FLOAT || input.type === InputObjectType.INT;
 	const parsedValue = Number.parseFloat(input.value);
@@ -150,4 +150,4 @@ function importValidation(importValidation: (string | number)[]): Validation {
 	return result;
 }
 
-export { type Validation, ValidationOperator, ValidationTarget, importValidation, checkNumberValidation };
+export { type Validation, ValidationOperator, ValidationTarget, importValidation, checkValidation };
