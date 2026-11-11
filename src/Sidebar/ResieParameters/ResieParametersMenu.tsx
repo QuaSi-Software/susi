@@ -21,17 +21,23 @@ export function ResieParametersMenu({
 	setNodes,
 }: ResieParametersMenuProps) {
 	function changeInputListElement(menuTitle: string, key: string, value: any, isIncludedChange: boolean) {
-		const newResieParametersMenus = _.cloneDeep(resieParameterMenus);
-		const menu = newResieParametersMenus.find((e) => e.title === menuTitle);
-		const input = menu!.inputs.find((e) => e.resieName === key);
-		if (!input) console.error(`Input with key ${key} should not be undefined in list ${newResieParametersMenus}`);
-		if (isIncludedChange) input!.isIncluded = value;
-		else input!.value = value;
-		InputObject.checkInputsValid(menu!.inputs);
-		setResieParameterMenus(newResieParametersMenus);
-		if (isEconomicOrEmissionsParameter(menu!.exportKey, key)) {
-			checkEconomicAndEmissionsNodeValidInputs(setNodes, newResieParametersMenus);
-		}
+		/** The setState setResieParameterMenus must be used as a callback, because in this same frame, it may be called
+		 * once to set the value and once to set isIncluded. If they don't use the setter callback, they may overwrite each other.
+		 */
+		setResieParameterMenus((resieParameterMenus) => {
+			const newResieParametersMenus = _.cloneDeep(resieParameterMenus);
+			const menu = newResieParametersMenus.find((e) => e.title === menuTitle);
+			const input = menu!.inputs.find((e) => e.resieName === key);
+			if (!input)
+				console.error(`Input with key ${key} should not be undefined in list ${newResieParametersMenus}`);
+			if (isIncludedChange) input!.isIncluded = value;
+			else input!.value = value;
+			InputObject.checkInputsValid(menu!.inputs);
+			if (isEconomicOrEmissionsParameter(menu!.exportKey, key)) {
+				checkEconomicAndEmissionsNodeValidInputs(setNodes, newResieParametersMenus);
+			}
+			return newResieParametersMenus;
+		});
 	}
 
 	const menu = resieParameterMenus.find((e) => e.title === selectedMenu);
