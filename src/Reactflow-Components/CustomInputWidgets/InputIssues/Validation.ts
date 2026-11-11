@@ -20,6 +20,7 @@ const ValidationOperator = {
 	LESS_EQUAL_THAN_OTHER_INPUT: 'value_lte_rel',
 	GREATER_THAN_OTHER_INPUT: 'value_gt_rel',
 	GREATER_EQUAL_THAN_OTHER_INPUT: 'value_gte_rel',
+	IS_NOT_EMPTY_STRING: 'is_no_empty_string',
 } as const;
 
 type ValidationOperator = (typeof ValidationOperator)[keyof typeof ValidationOperator];
@@ -77,25 +78,27 @@ function getValidationComparisonValue(validation: Validation, otherInputs: Input
 	}
 }
 function isValid(input: InputObject, validation: Validation, otherInputs: InputObject[]): boolean {
-	const value = Number.parseFloat(input.value);
+	const valueAsFloat = Number.parseFloat(input.value);
 	const other = Number.parseFloat(getValidationComparisonValue(validation, otherInputs, input.resieName));
 	switch (validation.operator) {
 		case ValidationOperator.LESS_THAN:
 		case ValidationOperator.LESS_THAN_OR_NULL:
 		case ValidationOperator.LESS_THAN_OTHER_INPUT:
-			return value < other;
+			return valueAsFloat < other;
 		case ValidationOperator.LESS_OR_EQUAL_THAN:
 		case ValidationOperator.LESS_OR_EQUAL_OR_NULL:
 		case ValidationOperator.LESS_EQUAL_THAN_OTHER_INPUT:
-			return value <= other;
+			return valueAsFloat <= other;
 		case ValidationOperator.GREATER_THAN:
 		case ValidationOperator.GREATER_OR_NULL:
 		case ValidationOperator.GREATER_THAN_OTHER_INPUT:
-			return value > other;
+			return valueAsFloat > other;
 		case ValidationOperator.GREATER_EQUAL:
 		case ValidationOperator.GREATER_EQUAL_OR_NULL:
 		case ValidationOperator.GREATER_EQUAL_THAN_OTHER_INPUT:
-			return value >= other;
+			return valueAsFloat >= other;
+		case ValidationOperator.IS_NOT_EMPTY_STRING:
+			return input.value.toString().trim() !== '';
 		default:
 			return true;
 	}
@@ -122,6 +125,9 @@ function getValidationMessage(validation: Validation): string {
 		case ValidationOperator.GREATER_EQUAL_OR_NULL:
 		case ValidationOperator.GREATER_EQUAL_THAN_OTHER_INPUT:
 			message += 'Value must be greater than or equal to ';
+			break;
+		case ValidationOperator.IS_NOT_EMPTY_STRING:
+			return 'Value cannot be an empty string';
 	}
 	switch (validation.operator) {
 		case ValidationOperator.LESS_THAN_OTHER_INPUT:
