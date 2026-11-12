@@ -1,7 +1,7 @@
 import type { Medium } from '../NodeDataStructures/Mediums/Medium';
 import { InputObject, InputObjectType } from '../Reactflow-Components/CustomInputWidgets/InputObject';
-import { importConditional } from '../Reactflow-Components/CustomInputWidgets/Validation/Conditionals';
-import { importValidation } from '../Reactflow-Components/CustomInputWidgets/Validation/NumberValidation';
+import { importConditional } from '../Reactflow-Components/CustomInputWidgets/InputIssues/Conditionals';
+import { importValidation } from '../Reactflow-Components/CustomInputWidgets/InputIssues/Validation';
 import type { ApiCategory, APIParameter } from './ApiData';
 
 export function getInputObjectFromAPIParameter(inputName: string, apiInput: APIParameter, mediums: Medium[]) {

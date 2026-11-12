@@ -13,7 +13,7 @@ import { Locale } from '../../Sidebar/SettingsMenu';
 
 import { de } from 'primelocale/js/de.js';
 import { en } from 'primelocale/js/en.js';
-import { InputIssueType } from './Validation/InputChecking';
+import { InputIssueType } from './InputIssues/InputChecking';
 import { CustomCalendar } from './CustomCalendar';
 import { WarningMessage } from './WarningMessage';
 import { UacWidget } from './UacWidget';

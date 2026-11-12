@@ -130,3 +130,8 @@ The first release of SUSI with a whole number of features:
 ## v1.2.5
 
 - Fix: When a value in the sidebar Resie Parameter menus is updated, it is automatically included. That isInclude status was not persisting when the user left the menu and returned.
+
+## v1.2.6
+
+- Added support for is_no_empty_string validation
+- Adjust UI to have enough room for long input names

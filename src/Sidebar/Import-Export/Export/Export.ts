@@ -4,7 +4,7 @@ import type { SusiEdge } from '../../../NodeDataStructures/Edges/SusiEdge';
 import type { InputObject } from '../../../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { ComponentData, Connections, ImportData, NodeGroup } from '../ExportDataStrucures';
 import { getUndefinedMedium } from '../../../NodeDataStructures/Mediums/MediumUtils';
-import { InputIssueType } from '../../../Reactflow-Components/CustomInputWidgets/Validation/InputChecking';
+import { InputIssueType } from '../../../Reactflow-Components/CustomInputWidgets/InputIssues/InputChecking';
 import {
 	showEconomicParameters,
 	showEmissionsParameters,
