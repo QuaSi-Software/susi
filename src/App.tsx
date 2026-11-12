@@ -54,7 +54,7 @@ import type { ResieParameterMenuInfo } from './Sidebar/ResieParameters/ResiePara
 import Sidebar from './Sidebar/Sidebar';
 import { AppContext } from './AppContext';
 import { UndoButton } from './Reactflow-Components/UndoButton';
-import { Locale } from './Sidebar/SettingsMenu';
+import { Locale } from './Modals/SettingsMenu';
 import { ClearNodesButton } from './Reactflow-Components/ClearNodesButton';
 import logo from './assets/resie.svg';
 import { useContextMenuHandlers } from './Reactflow-Components/ContextMenus/useContextMenuHandlers';
@@ -191,17 +191,10 @@ const DnDFlow = () => {
 					edges={edges}
 					setEdges={setEdges}
 					logError={logError}
-					nodeNamePrefix={nodeNamePrefix}
-					setNodeNamePrefix={setNodeNamePrefix}
 					resieParameterMenus={resieParameterMenus}
 					setResieParameterMenus={setResieParameterMenus}
-					theme={theme}
-					setTheme={setTheme}
-					setLocale={setLocale}
 					nodeTypes={componentTypes}
 					categories={componentCategories}
-					edgeType={edgeType}
-					setEdgeType={setEdgeType}
 					controlParameters={controlParameters}
 					controlModules={controlModules}
 					resieVersion={resieVersion}
@@ -241,7 +234,16 @@ const DnDFlow = () => {
 						<ClearNodesButton nodes={nodes} setNodes={setNodes} setEdges={setEdges} />
 					</div>
 					<div className="top-right-ui-container">
-						<TopRightButtonsMenu theme={theme} />
+						<TopRightButtonsMenu
+							edgeType={edgeType}
+							nodeNamePrefix={nodeNamePrefix}
+							setEdges={setEdges}
+							setEdgeType={setEdgeType}
+							setLocale={setLocale}
+							setNodeNamePrefix={setNodeNamePrefix}
+							setTheme={setTheme}
+							theme={theme}
+						/>
 						<ErrorMenu messages={errorMessages} setMessages={setErrorMessages} />
 					</div>
 					<a href="https://quasi-software.readthedocs.io/en/latest/" className="resie-logo" target="_blank">

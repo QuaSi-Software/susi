@@ -9,7 +9,7 @@ import CustomDropdown from './CustomDropdown';
 import { InputObjectType, type InputObject } from './InputObject';
 import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
 import { Multiselect } from './MultiSelect';
-import { Locale } from '../../Sidebar/SettingsMenu';
+import { Locale } from '../../Modals/SettingsMenu';
 
 import { de } from 'primelocale/js/de.js';
 import { en } from 'primelocale/js/en.js';

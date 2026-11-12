@@ -3,7 +3,7 @@ import type { CustomInputFieldProps } from './CustomInputField';
 import { InputObjectType } from './InputObject';
 import { useContext, useState } from 'react';
 import { AppContext } from '../../AppContext';
-import { Locale } from '../../Sidebar/SettingsMenu';
+import { Locale } from '../../Modals/SettingsMenu';
 import { useMotionValue, Reorder } from 'framer-motion';
 import { useRaisedShadow } from '../BusDataWidget/use-raised-shadow';
 

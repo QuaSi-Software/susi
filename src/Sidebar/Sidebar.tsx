@@ -6,7 +6,6 @@ import type { ImportExportMenuProps } from './Import-Export/ImportExportMenu';
 import ImportExportMenu from './Import-Export/ImportExportMenu';
 import MediumMenu, { type MediumMenuProps } from './Mediums/MediumMenu';
 import NewNodeMenu, { type NewNodeMenuProps } from './NewNodeMenu';
-import { SettingsMenu, type SettingsMenuProps } from './SettingsMenu';
 import { AppContext } from '../AppContext';
 import { ResieParametersMenu, type ResieParametersMenuProps } from './ResieParameters/ResieParametersMenu';
 import { ResieParameterSubMenu } from './ResieParameters/ResieParameterSubMenu';
@@ -16,16 +15,11 @@ export const MenuType = {
 	MediumMenu: 'Medium Menu',
 	ResieParameters: 'Resie Parameters',
 	ImportExportMenu: 'Import/Export',
-	Settings: 'Settings',
 } as const;
 
 export type MenuType = (typeof MenuType)[keyof typeof MenuType];
 
-type SidebarProps = ImportExportMenuProps &
-	MediumMenuProps &
-	SettingsMenuProps &
-	NewNodeMenuProps &
-	ResieParametersMenuProps;
+type SidebarProps = ImportExportMenuProps & MediumMenuProps & NewNodeMenuProps & ResieParametersMenuProps;
 
 const Sidebar = (menuProps: SidebarProps) => {
 	if (menuProps.resieParameterMenus.length === 0) return <></>;
@@ -50,8 +44,6 @@ const Sidebar = (menuProps: SidebarProps) => {
 				return <ImportExportMenu {...menuProps} />;
 			case MenuType.ResieParameters:
 				return <ResieParametersMenu {...menuProps} selectedMenu={selectedResieParamMenu} />;
-			case MenuType.Settings:
-				return <SettingsMenu {...menuProps} />;
 			default:
 				return null;
 		}
@@ -92,7 +84,6 @@ const Sidebar = (menuProps: SidebarProps) => {
 								resieParameterMenus={menuProps.resieParameterMenus}
 							/>
 							{MenuItem(MenuType.ImportExportMenu)}
-							{MenuItem(MenuType.Settings)}
 						</DropdownMenu.Content>
 					</DropdownMenu.Portal>
 				</DropdownMenu.Root>

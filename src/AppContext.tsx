@@ -1,7 +1,7 @@
 import { createContext, type Dispatch, type SetStateAction } from 'react';
 import type { Medium } from './NodeDataStructures/Mediums/Medium';
 import type { ErrorMessage } from './Reactflow-Components/Errors/ErrorMessage';
-import type { Locale } from './Sidebar/SettingsMenu';
+import type { Locale } from './Modals/SettingsMenu';
 
 interface AppContextType {
 	mediums: Medium[];

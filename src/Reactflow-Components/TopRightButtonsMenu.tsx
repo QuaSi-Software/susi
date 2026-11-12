@@ -3,6 +3,7 @@ import { CustomModal } from '../Modals/CustomModal';
 import { InformationMenu } from '../Modals/InformationMenu/InformationMenu';
 import { Impressum } from '../Modals/InformationMenu/Impressum';
 import { Instructions } from '../Modals/Instructions';
+import { SettingsMenu, type SettingsMenuProps } from '../Modals/SettingsMenu';
 
 export const ModalType = {
 	Instructions: 'Instructions',
@@ -11,11 +12,11 @@ export const ModalType = {
 } as const;
 export type ModalType = (typeof ModalType)[keyof typeof ModalType];
 
-interface Props {
+type Props = {
 	theme: 'dark' | 'light';
-}
+} & SettingsMenuProps;
 
-export function TopRightButtonsMenu({ theme }: Props) {
+export function TopRightButtonsMenu(props: Props) {
 	const [modalType, setModalType] = useState<ModalType>();
 
 	function closeModal() {
@@ -42,11 +43,14 @@ export function TopRightButtonsMenu({ theme }: Props) {
 			{/** Modals */}
 			<>
 				<CustomModal show={modalType === ModalType.ProjectInfo} closeModal={closeModal} title="Project Info">
-					<InformationMenu theme={theme} />
+					<InformationMenu theme={props.theme} />
 					<Impressum />
 				</CustomModal>
 				<CustomModal show={modalType === ModalType.Instructions} closeModal={closeModal} title="Instructions">
 					<Instructions />
+				</CustomModal>
+				<CustomModal show={modalType === ModalType.Settings} closeModal={closeModal} title="Settings">
+					<SettingsMenu {...props} />
 				</CustomModal>
 			</>
 		</>
