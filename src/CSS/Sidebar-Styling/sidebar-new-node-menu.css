@@ -12,6 +12,7 @@
 }
 
 .version-text {
+	font-size: var(--small-font-size);
 	color: #5b5b5b;
 }
 [data-theme='dark'] {
