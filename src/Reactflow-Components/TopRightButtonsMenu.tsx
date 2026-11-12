@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { CustomModal } from '../Modals/CustomModal';
 import { InformationMenu } from '../Modals/InformationMenu/InformationMenu';
 import { Impressum } from '../Modals/InformationMenu/Impressum';
+import { Instructions } from '../Modals/Instructions';
 
 export const ModalType = {
 	Instructions: 'Instructions',
@@ -25,13 +26,16 @@ export function TopRightButtonsMenu({ theme }: Props) {
 		<>
 			{/** Buttons */}
 			<div className="top-right-button-container">
-				<button onClick={() => setModalType(ModalType.ProjectInfo)}>
+				<button onClick={() => setModalType(ModalType.ProjectInfo)} title="Project Information">
 					<i className="bi bi-info-circle"></i>
 				</button>
-				<button onClick={() => setModalType(ModalType.Instructions)}>
+				<button
+					onClick={() => setModalType(ModalType.Instructions)}
+					title="Instructions for creating and editing a configuration"
+				>
 					<i className="bi bi-question-circle"></i>
 				</button>
-				<button onClick={() => setModalType(ModalType.Settings)}>
+				<button onClick={() => setModalType(ModalType.Settings)} title="Settings">
 					<i className="bi bi-gear-fill"></i>
 				</button>
 			</div>
@@ -40,6 +44,9 @@ export function TopRightButtonsMenu({ theme }: Props) {
 				<CustomModal show={modalType === ModalType.ProjectInfo} closeModal={closeModal} title="Project Info">
 					<InformationMenu theme={theme} />
 					<Impressum />
+				</CustomModal>
+				<CustomModal show={modalType === ModalType.Instructions} closeModal={closeModal} title="Instructions">
+					<Instructions />
 				</CustomModal>
 			</>
 		</>

@@ -1,4 +1,4 @@
-export const InstructionMenu = () => {
+export const Instructions = () => {
 	return (
 		<>
 			<div className="sidebar-subheading">Getting started</div>

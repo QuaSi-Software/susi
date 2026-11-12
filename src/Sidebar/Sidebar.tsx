@@ -6,7 +6,6 @@ import type { ImportExportMenuProps } from './Import-Export/ImportExportMenu';
 import ImportExportMenu from './Import-Export/ImportExportMenu';
 import MediumMenu, { type MediumMenuProps } from './Mediums/MediumMenu';
 import NewNodeMenu, { type NewNodeMenuProps } from './NewNodeMenu';
-import { InstructionMenu } from './Instructions';
 import { SettingsMenu, type SettingsMenuProps } from './SettingsMenu';
 import { AppContext } from '../AppContext';
 import { ResieParametersMenu, type ResieParametersMenuProps } from './ResieParameters/ResieParametersMenu';
@@ -17,7 +16,6 @@ export const MenuType = {
 	MediumMenu: 'Medium Menu',
 	ResieParameters: 'Resie Parameters',
 	ImportExportMenu: 'Import/Export',
-	Instructions: 'Instructions',
 	Settings: 'Settings',
 } as const;
 
@@ -52,8 +50,6 @@ const Sidebar = (menuProps: SidebarProps) => {
 				return <ImportExportMenu {...menuProps} />;
 			case MenuType.ResieParameters:
 				return <ResieParametersMenu {...menuProps} selectedMenu={selectedResieParamMenu} />;
-			case MenuType.Instructions:
-				return <InstructionMenu />;
 			case MenuType.Settings:
 				return <SettingsMenu {...menuProps} />;
 			default:
@@ -96,7 +92,6 @@ const Sidebar = (menuProps: SidebarProps) => {
 								resieParameterMenus={menuProps.resieParameterMenus}
 							/>
 							{MenuItem(MenuType.ImportExportMenu)}
-							{MenuItem(MenuType.Instructions)}
 							{MenuItem(MenuType.Settings)}
 						</DropdownMenu.Content>
 					</DropdownMenu.Portal>
