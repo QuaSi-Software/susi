@@ -1,7 +1,7 @@
 import type { InputMenuProps } from './AccordionInputMenu';
 import CustomInputField from './CustomInputField';
 import OptionalInputField from './OptionalInputField';
-import { InputIssueType } from './Validation/InputChecking';
+import { InputIssueType } from './InputIssues/InputChecking';
 
 export const InputMenu = ({ inputs, nodeId, onValueChange, onIncludedChange }: InputMenuProps) => {
 	if (inputs.length === 0) return <></>;
