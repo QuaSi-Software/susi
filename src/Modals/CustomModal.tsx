@@ -10,7 +10,7 @@ interface ModalProps {
 
 export const CustomModal = ({ show, closeModal, children, title }: ModalProps) => {
 	return (
-		<Modal show={show} onHide={closeModal}>
+		<Modal show={show} onHide={closeModal} className="custom-modal">
 			<Modal.Header style={{ padding: '20px 10%' }}>
 				<Modal.Title>{title}</Modal.Title>
 			</Modal.Header>

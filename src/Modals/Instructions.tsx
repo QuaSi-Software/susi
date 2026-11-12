@@ -1,14 +1,14 @@
 export const Instructions = () => {
 	return (
 		<>
-			<div className="sidebar-subheading">Getting started</div>
+			<div className="modal-subheading">Getting started</div>
 			<div>
 				In SUSI, you can create, export, and import configuration files for running energy system simulations
 				with ReSiE. To add a component, open <b>Components</b> in the sidebar and drag one onto the canvas.
 				Right-click a component to delete, duplicate, or edit it. You can also double-click it to open{' '}
 				<b>Edit Component</b>, where you can change its parameters.
 			</div>
-			<div className="sidebar-subheading">Extended Documentation </div>
+			<div className="modal-subheading">Extended Documentation </div>
 			<div>
 				You can find an extended documentation of ReSiE{' '}
 				<a href="https://quasi-software.readthedocs.io/en/latest/" target="_blank">
@@ -19,7 +19,7 @@ export const Instructions = () => {
 					this chapter.
 				</a>
 			</div>
-			<div className="sidebar-subheading">Mediums </div>
+			<div className="modal-subheading">Mediums </div>
 			<div>
 				Two components can be connected only if their media match. If one medium is undefined, SUSI sets it
 				automatically to match the other. If both are undefined, an error is shown. Set a component’s media
@@ -29,7 +29,7 @@ export const Instructions = () => {
 				component to several others using the same medium, add a Bus between them. A Bus is the only component
 				that supports multiple connections for the same medium.
 			</div>
-			<div className="sidebar-subheading">Parameters </div>
+			<div className="modal-subheading">Parameters </div>
 			<div>
 				SUSI currently cannot generate or export profile data. You can, however, enter paths to local profile
 				files, which ReSiE will read. For instructions on creating profile files, see the{' '}
@@ -40,7 +40,7 @@ export const Instructions = () => {
 					related section in the documentation.
 				</a>
 			</div>
-			<div className="sidebar-subheading">Warnings </div>
+			<div className="modal-subheading">Warnings </div>
 			<div>
 				A ⚠️ symbol beside a sidebar menu or on a component indicates invalid or missing input that must be
 				fixed before exporting a valid configuration file.
@@ -48,7 +48,7 @@ export const Instructions = () => {
 				If the export menu shows a warning but no sidebar menu does, a component has an issue. Right-click the
 				canvas and select <b>Find Issue</b> to zoom to an affected component.
 			</div>
-			<div className="sidebar-subheading">Import/Export </div>
+			<div className="modal-subheading">Import/Export </div>
 			<div>
 				To import a file, paste its contents into the text field under <b>Import/Export</b> and select{' '}
 				<b> Import.</b>

@@ -14,3 +14,11 @@
 	justify-content: flex-end;
 	padding: 0.5em;
 }
+
+.modal-subheading {
+	font-size: var(--large-font-size);
+	font-weight: 600;
+}
+.custom-modal .modal-content {
+	padding: 0em 2em;
+}

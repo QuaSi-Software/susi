@@ -95,7 +95,7 @@ export function ControleModulesMenu({
 
 				<Accordion.Content style={{ display: 'flex' }}>
 					<div className="controle-module-list">
-						<div className="modal-subheading">Modules on this Component</div>
+						<div className="control-module-modal-subheading">Modules on this Component</div>
 						{controlModules.map((controleModule, index) => (
 							<div
 								key={`controle-module-${index}`}
@@ -124,7 +124,9 @@ export function ControleModulesMenu({
 					</div>
 					{selectedModule && (
 						<div style={{ flex: '1 1 0', margin: '0.5em' }} key={`${selectedModule.key ?? 'no-key'}`}>
-							<div className="modal-subheading">{getTitleFromKey(selectedModule.title)}</div>
+							<div className="control-module-modal-subheading">
+								{getTitleFromKey(selectedModule.title)}
+							</div>
 							<InputMenu
 								title={selectedModule.title}
 								inputs={selectedModule.parameters}

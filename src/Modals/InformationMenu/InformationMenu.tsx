@@ -5,11 +5,10 @@ import sizLogo_dark from './../../assets/siz_energieplus_logo_mit_claim_nobg_dar
 export const InformationMenu = ({ theme }: { theme: 'dark' | 'light' }) => {
 	return (
 		<>
-			<h1> Project Info</h1>
 			<a href="https://siz-energieplus.de/" target="_blank">
 				<img src={theme === 'light' ? sizLogo : sizLogo_dark} style={{ width: '13em', padding: '1em 0em' }} />
 			</a>
-			<div className="sidebar-subheading">Steinbeis-Innovationszentrum energieplus</div>
+			<div className="modal-subheading">Steinbeis-Innovationszentrum energieplus</div>
 			<div>
 				<a href="https://siz-energieplus.de/" target="_blank">
 					siz energieplus
@@ -19,7 +18,7 @@ export const InformationMenu = ({ theme }: { theme: 'dark' | 'light' }) => {
 				with real-world applications, the research institute supports the effective transfer of knowledge from
 				research into practice.
 			</div>
-			<div className="sidebar-subheading">Funding Disclaimer </div>
+			<div className="modal-subheading">Funding Disclaimer </div>
 			<div>
 				SUSI is part of the{' '}
 				<a href="https://quasi-software.org/" target="_blank">
