@@ -1,14 +1,11 @@
-import { useState } from 'react';
-import { ImpressumModal } from './ImpressumModal';
 import fundingDisclaimer from './../../assets/funding_disclaimer.png';
 import sizLogo from './../../assets/siz_energieplus_logo_ohne_claim-4x-295.png';
 import sizLogo_dark from './../../assets/siz_energieplus_logo_mit_claim_nobg_dark.png';
 
 export const InformationMenu = ({ theme }: { theme: 'dark' | 'light' }) => {
-	const [showModal, setShowModal] = useState<boolean>(false);
-
 	return (
 		<>
+			<h1> Project Info</h1>
 			<a href="https://siz-energieplus.de/" target="_blank">
 				<img src={theme === 'light' ? sizLogo : sizLogo_dark} style={{ width: '13em', padding: '1em 0em' }} />
 			</a>
@@ -37,15 +34,9 @@ export const InformationMenu = ({ theme }: { theme: 'dark' | 'light' }) => {
 				on the official funding platform for more details.
 			</div>
 			<br />
-			<button type="button" className="link-button sidebar-subheading" onClick={() => setShowModal(true)}>
-				<i className="bi bi-box-arrow-up-right"></i> Impressum
-			</button>
-			<br />
 			<div>
 				<img src={fundingDisclaimer} style={{ width: '13em', padding: '1em 0em' }} />
 			</div>
-
-			<ImpressumModal setShow={setShowModal} show={showModal} />
 		</>
 	);
 };

@@ -60,6 +60,7 @@ import logo from './assets/resie.svg';
 import { useContextMenuHandlers } from './Reactflow-Components/ContextMenus/useContextMenuHandlers';
 import { useDraghandlers } from './useDraghandlers';
 import type { ControlModule } from './Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
+import { TopRightButtonsMenu } from './Reactflow-Components/TopRightButtonsMenu';
 
 const DnDFlow = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);
@@ -239,6 +240,10 @@ const DnDFlow = () => {
 						/>
 						<ClearNodesButton nodes={nodes} setNodes={setNodes} setEdges={setEdges} />
 					</div>
+					<div className="top-right-ui-container">
+						<TopRightButtonsMenu theme={theme} />
+						<ErrorMenu messages={errorMessages} setMessages={setErrorMessages} />
+					</div>
 					<a href="https://quasi-software.readthedocs.io/en/latest/" className="resie-logo" target="_blank">
 						<img src={logo} style={{ width: 'inherit' }} />
 					</a>
@@ -281,7 +286,6 @@ const DnDFlow = () => {
 					setNodes={setNodes}
 					edges={edges}
 				/>
-				<ErrorMenu messages={errorMessages} setMessages={setErrorMessages} />
 			</AppContext.Provider>
 		</div>
 	);

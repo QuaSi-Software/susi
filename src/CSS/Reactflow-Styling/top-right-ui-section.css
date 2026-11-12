@@ -1,0 +1,11 @@
+.top-right-ui-container {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	z-index: 1000;
+}
+
+.top-right-button-container {
+	display: grid;
+	align-items: end;
+}
