@@ -26,7 +26,13 @@ export function TopRightButtonsMenu({ theme }: Props) {
 			{/** Buttons */}
 			<div className="top-right-button-container">
 				<button onClick={() => setModalType(ModalType.ProjectInfo)}>
-					<i className="bi bi-info"></i>
+					<i className="bi bi-info-circle"></i>
+				</button>
+				<button onClick={() => setModalType(ModalType.Instructions)}>
+					<i className="bi bi-question-circle"></i>
+				</button>
+				<button onClick={() => setModalType(ModalType.Settings)}>
+					<i className="bi bi-gear-fill"></i>
 				</button>
 			</div>
 			{/** Modals */}
