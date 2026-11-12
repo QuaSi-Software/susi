@@ -11,7 +11,6 @@ interface ResieParameterSubMenuProps {
 }
 
 export function ResieParameterSubMenu({
-	// resieParameterMenu,
 	setResieParameterMenu,
 	setSelectedMenu,
 	resieParameterMenus,
@@ -19,38 +18,19 @@ export function ResieParameterSubMenu({
 	function noInputIssues(resieParameterMenu: ResieParameterMenuInfo) {
 		return resieParameterMenu.inputs.every((input) => input.isValid());
 	}
-	function anyMenuHasWarning() {
-		const allMenusFine = resieParameterMenus.every((menu) => noInputIssues(menu));
-		return !allMenusFine;
-	}
 	function onSelect(menu: ResieParameterMenuInfo) {
 		setSelectedMenu(MenuType.ResieParameters);
 		setResieParameterMenu(menu.title);
 	}
 
 	return (
-		<DropdownMenu.Sub>
-			<DropdownMenu.SubTrigger className="DropdownMenuSubTrigger">
-				{MenuType.ResieParameters as string}
-				{anyMenuHasWarning() && <> ⚠️</>}
-				<div className="RightSlot">
-					<i className="bi bi-chevron-compact-right"></i>
-				</div>
-			</DropdownMenu.SubTrigger>
-			<DropdownMenu.Portal>
-				<DropdownMenu.SubContent className="DropdownMenuSubContent" sideOffset={2} alignOffset={-5}>
-					{resieParameterMenus.map((menu: ResieParameterMenuInfo) => (
-						<DropdownMenu.Item
-							className="DropdownMenuItem"
-							onSelect={() => onSelect(menu)}
-							key={menu.title}
-						>
-							{menu.title}
-							{!noInputIssues(menu) && <> ⚠️</>}
-						</DropdownMenu.Item>
-					))}
-				</DropdownMenu.SubContent>
-			</DropdownMenu.Portal>
-		</DropdownMenu.Sub>
+		<>
+			{resieParameterMenus.map((menu: ResieParameterMenuInfo) => (
+				<DropdownMenu.Item className="DropdownMenuItem" onSelect={() => onSelect(menu)} key={menu.title}>
+					{menu.title}
+					{!noInputIssues(menu) && <> ⚠️</>}
+				</DropdownMenu.Item>
+			))}
+		</>
 	);
 }
