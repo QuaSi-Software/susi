@@ -135,3 +135,7 @@ The first release of SUSI with a whole number of features:
 
 - Added support for is_no_empty_string validation
 - Adjust UI to have enough room for long input names
+
+## v1.2.7
+
+- Update dependencies and remove npm vulnerabilities
