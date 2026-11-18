@@ -61,7 +61,8 @@ import { useContextMenuHandlers } from './Reactflow-Components/ContextMenus/useC
 import { useDraghandlers } from './useDraghandlers';
 import type { ControlModule } from './Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 import { TopRightButtonsMenu } from './Reactflow-Components/TopRightButtonsMenu';
-import ImportExportButtons from './Sidebar/Import-Export/ImportExportButtons';
+import ImportButton from './Sidebar/Import-Export/ImportButton';
+import ExportButton from './Sidebar/Import-Export/ExportButton';
 
 const DnDFlow = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);
@@ -191,13 +192,10 @@ const DnDFlow = () => {
 					setNodes={setNodes}
 					edges={edges}
 					setEdges={setEdges}
-					logError={logError}
 					resieParameterMenus={resieParameterMenus}
 					setResieParameterMenus={setResieParameterMenus}
 					nodeTypes={componentTypes}
 					categories={componentCategories}
-					controlParameters={controlParameters}
-					controlModules={controlModules}
 					resieVersion={resieVersion}
 				/>
 				<ReactFlow
@@ -233,7 +231,23 @@ const DnDFlow = () => {
 							setEdges={setEdges}
 						/>
 						<ClearNodesButton nodes={nodes} setNodes={setNodes} setEdges={setEdges} />
-						<ImportExportButtons />
+						<ImportButton
+							controlParameters={controlParameters}
+							controlModules={controlModules}
+							resieParameterMenus={resieParameterMenus}
+							nodeTypes={componentTypes}
+							setNodes={setNodes}
+							setEdges={setEdges}
+							logError={logError}
+							setResieParameterMenus={setResieParameterMenus}
+						/>
+						<ExportButton
+							nodes={nodes}
+							edges={edges}
+							resieParameterMenus={resieParameterMenus}
+							nodeTypes={componentTypes}
+							logError={logError}
+						/>
 					</div>
 					<div className="top-right-ui-container">
 						<TopRightButtonsMenu

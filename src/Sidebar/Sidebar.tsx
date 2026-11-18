@@ -1,25 +1,28 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, type Dispatch, type SetStateAction } from 'react';
 import { DropdownMenu } from 'radix-ui';
 import '@radix-ui/colors/indigo.css';
 
-import type { ImportExportMenuProps } from './Import-Export/ImportExportMenu';
-import ImportExportMenu from './Import-Export/ImportExportMenu';
 import MediumMenu, { type MediumMenuProps } from './Mediums/MediumMenu';
 import NewNodeMenu, { type NewNodeMenuProps } from './NewNodeMenu';
 import { AppContext } from '../AppContext';
 import { ResieParametersMenu } from './ResieParameters/ResieParametersMenu';
 import type { ResieParameterMenuInfo } from './ResieParameters/ResieParameterMenuInfo';
 import { CustomModal } from '../Modals/CustomModal';
+import type { SusiNode } from '../NodeDataStructures/Nodes/SusiNode';
 
 export const MenuType = {
 	NewNodeMenu: 'Add Components',
 	MediumMenu: 'Medium Menu',
-	ImportExportMenu: 'Import/Export',
 } as const;
 
 export type MenuType = (typeof MenuType)[keyof typeof MenuType];
 
-type SidebarProps = ImportExportMenuProps & MediumMenuProps & NewNodeMenuProps;
+type SidebarProps = MediumMenuProps &
+	NewNodeMenuProps & {
+		resieParameterMenus: ResieParameterMenuInfo[];
+		setNodes: Dispatch<SetStateAction<SusiNode[]>>;
+		setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
+	};
 
 const Sidebar = (menuProps: SidebarProps) => {
 	if (menuProps.resieParameterMenus.length === 0) return <></>;
@@ -42,8 +45,6 @@ const Sidebar = (menuProps: SidebarProps) => {
 				);
 			case MenuType.NewNodeMenu:
 				return <NewNodeMenu {...menuProps} />;
-			case MenuType.ImportExportMenu:
-				return <ImportExportMenu {...menuProps} />;
 			default:
 				return null;
 		}
@@ -77,7 +78,6 @@ const Sidebar = (menuProps: SidebarProps) => {
 						>
 							{MenuItem(MenuType.NewNodeMenu)}
 							{MenuItem(MenuType.MediumMenu, !mediums.every((m) => m.valid))}
-							{MenuItem(MenuType.ImportExportMenu)}
 							{/** Add all the Resie Parameter Menus to the dropdown options */}
 							{menuProps.resieParameterMenus.map((menu: ResieParameterMenuInfo) => (
 								<DropdownMenu.Item
