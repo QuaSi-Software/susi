@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 import { checkImportExport, dragNodeIn, importConfig } from './testingUtils';
-import * as fs from 'fs';
 
 test('has title', async ({ page }) => {
 	await page.goto('/');
