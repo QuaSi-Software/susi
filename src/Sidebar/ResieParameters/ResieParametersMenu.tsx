@@ -8,15 +8,13 @@ import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 import { checkEconomicAndEmissionsNodeValidInputs } from '../../NodeDataStructures/Nodes/ValidateSusiNode';
 
 export interface ResieParametersMenuProps {
-	selectedMenu?: string;
-	resieParameterMenus: ResieParameterMenuInfo[];
+	resieParameterMenu: ResieParameterMenuInfo;
 	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
 	setNodes: Dispatch<SetStateAction<SusiNode[]>>;
 }
 
 export function ResieParametersMenu({
-	selectedMenu,
-	resieParameterMenus,
+	resieParameterMenu,
 	setResieParameterMenus,
 	setNodes,
 }: ResieParametersMenuProps) {
@@ -40,19 +38,24 @@ export function ResieParametersMenu({
 		});
 	}
 
-	const menu = resieParameterMenus.find((e) => e.title === selectedMenu);
-	const inputs = menu!.inputs.filter((e) => e.resieName !== 'start_date_format');
+	const inputs = resieParameterMenu!.inputs.filter((e) => e.resieName !== 'start_date_format');
 	return (
-		<div key={`key-${selectedMenu}-menu`}>
-			<div className="sidebar-subheading">{menu?.title}</div>
-			<Accordion.Root className="AccordionRoot" type="multiple" defaultValue={[menu!.categories[0].heading]}>
+		<div key={`key-${resieParameterMenu.title}-menu`}>
+			<div className="sidebar-subheading">{resieParameterMenu?.title}</div>
+			<Accordion.Root
+				className="AccordionRoot"
+				type="multiple"
+				defaultValue={[resieParameterMenu!.categories[0].heading]}
+			>
 				<InputMenuWithCategories
-					title={menu!.title}
+					title={resieParameterMenu!.title}
 					inputs={inputs}
-					inputCategories={menu!.categories}
+					inputCategories={resieParameterMenu!.categories}
 					nodeId={null}
-					onValueChange={(key, value) => changeInputListElement(menu!.title, key, value, false)}
-					onIncludedChange={(key, value) => changeInputListElement(menu!.title, key, value, true)}
+					onValueChange={(key, value) => changeInputListElement(resieParameterMenu!.title, key, value, false)}
+					onIncludedChange={(key, value) =>
+						changeInputListElement(resieParameterMenu!.title, key, value, true)
+					}
 				/>
 			</Accordion.Root>
 		</div>

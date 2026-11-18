@@ -7,24 +7,26 @@ import ImportExportMenu from './Import-Export/ImportExportMenu';
 import MediumMenu, { type MediumMenuProps } from './Mediums/MediumMenu';
 import NewNodeMenu, { type NewNodeMenuProps } from './NewNodeMenu';
 import { AppContext } from '../AppContext';
-import { ResieParametersMenu, type ResieParametersMenuProps } from './ResieParameters/ResieParametersMenu';
-import { ResieParameterSubMenu } from './ResieParameters/ResieParameterSubMenu';
+import { ResieParametersMenu } from './ResieParameters/ResieParametersMenu';
+import type { ResieParameterMenuInfo } from './ResieParameters/ResieParameterMenuInfo';
+import { CustomModal } from '../Modals/CustomModal';
 
 export const MenuType = {
 	NewNodeMenu: 'Add Components',
 	MediumMenu: 'Medium Menu',
-	ResieParameters: 'Resie Parameters',
 	ImportExportMenu: 'Import/Export',
 } as const;
 
 export type MenuType = (typeof MenuType)[keyof typeof MenuType];
 
-type SidebarProps = ImportExportMenuProps & MediumMenuProps & NewNodeMenuProps & ResieParametersMenuProps;
+type SidebarProps = ImportExportMenuProps & MediumMenuProps & NewNodeMenuProps;
 
 const Sidebar = (menuProps: SidebarProps) => {
 	if (menuProps.resieParameterMenus.length === 0) return <></>;
 	const [selectedMenu, setSelectedMenu] = useState<MenuType>(MenuType.NewNodeMenu);
-	const [selectedResieParamMenu, setSelectedResieParamMenu] = useState(menuProps.resieParameterMenus[0].title);
+	const [selectedResieMenuKey, setSelectedResieMenuKey] = useState<string>();
+	const selectedResieMenu = menuProps.resieParameterMenus.find((e) => e.exportKey === selectedResieMenuKey);
+
 	const mediums = useContext(AppContext)!.mediums;
 
 	const renderMenu = () => {
@@ -42,8 +44,6 @@ const Sidebar = (menuProps: SidebarProps) => {
 				return <NewNodeMenu {...menuProps} />;
 			case MenuType.ImportExportMenu:
 				return <ImportExportMenu {...menuProps} />;
-			case MenuType.ResieParameters:
-				return <ResieParametersMenu {...menuProps} selectedMenu={selectedResieParamMenu} />;
 			default:
 				return null;
 		}
@@ -77,19 +77,38 @@ const Sidebar = (menuProps: SidebarProps) => {
 						>
 							{MenuItem(MenuType.NewNodeMenu)}
 							{MenuItem(MenuType.MediumMenu, !mediums.every((m) => m.valid))}
-							<ResieParameterSubMenu
-								resieParameterMenu={selectedResieParamMenu}
-								setResieParameterMenu={setSelectedResieParamMenu}
-								setSelectedMenu={setSelectedMenu}
-								resieParameterMenus={menuProps.resieParameterMenus}
-							/>
 							{MenuItem(MenuType.ImportExportMenu)}
+							{/** Add all the Resie Parameter Menus to the dropdown options */}
+							{menuProps.resieParameterMenus.map((menu: ResieParameterMenuInfo) => (
+								<DropdownMenu.Item
+									className="DropdownMenuItem"
+									onSelect={() => setSelectedResieMenuKey(menu.exportKey)}
+									key={menu.title}
+								>
+									{menu.title}
+									{!menu.inputs.every((input) => input.isValid()) && <> ⚠️</>}
+								</DropdownMenu.Item>
+							))}
 						</DropdownMenu.Content>
 					</DropdownMenu.Portal>
 				</DropdownMenu.Root>
 				<span className="sidebar-heading">{selectedMenu}</span>
 			</div>
 			<div className="sidebar-menu-content">{renderMenu()}</div>
+			{selectedResieMenu !== undefined && (
+				<CustomModal
+					title={selectedResieMenu?.title ?? ''}
+					show={selectedResieMenu !== undefined}
+					closeModal={() => setSelectedResieMenuKey(undefined)}
+				>
+					<></>
+					<ResieParametersMenu
+						resieParameterMenu={selectedResieMenu}
+						setResieParameterMenus={menuProps.setResieParameterMenus}
+						setNodes={menuProps.setNodes}
+					/>
+				</CustomModal>
+			)}
 		</aside>
 	);
 };
