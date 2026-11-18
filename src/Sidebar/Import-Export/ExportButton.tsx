@@ -79,6 +79,7 @@ const ExportButton = (menuProps: ImportExportMenuProps) => {
 	return (
 		<Button variant="primary" onClick={handleExport} title={warningMessage}>
 			{warningMessage !== '' && <> ⚠️ </>}
+			<i className="bi bi-upload"> </i>
 			Export
 		</Button>
 	);

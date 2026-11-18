@@ -101,6 +101,7 @@ const ImportButton = (menuProps: ImportButtonProps) => {
 	return (
 		<>
 			<Button variant="primary" onClick={handleImportClick}>
+				<i className="bi bi-download"> </i>
 				Import
 			</Button>
 			<input
