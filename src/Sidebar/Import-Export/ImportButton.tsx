@@ -24,13 +24,13 @@ export interface ImportButtonProps {
 const ImportButton = (menuProps: ImportButtonProps) => {
 	const [textContent, setTextContent] = useState('');
 	const context = useContext(AppContext);
-	if (!context || menuProps.nodeTypes === null) return <></>;
-	const setCheckState = context.setCheckState;
-	const setMediums = context.setMediums;
-	const setLoadingMessage = context.setLoadingMessage;
 	const { fitView } = useReactFlow();
-
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+	// if (!context || menuProps.nodeTypes === null) return <></>;
+	const setCheckState = context?.setCheckState;
+	const setMediums = context?.setMediums;
+	const setLoadingMessage = context?.setLoadingMessage;
 
 	// --- Import ------------------------------------------------------------
 	const handleImportClick = () => {
@@ -63,9 +63,9 @@ const ImportButton = (menuProps: ImportButtonProps) => {
 
 	const handleImport = useCallback(
 		async (stateJSON: string) => {
-			if (menuProps.controlParameters === null) return;
+			if (menuProps.controlParameters === null || !context || !menuProps.nodeTypes) return;
 			try {
-				flushSync(() => setLoadingMessage('Importing file...'));
+				flushSync(() => setLoadingMessage!('Importing file...'));
 				// Wait for the import to complete before clearing the loading message
 				await new Promise<void>((resolve, reject) => {
 					setTimeout(() => {
@@ -73,7 +73,7 @@ const ImportButton = (menuProps: ImportButtonProps) => {
 							importState({
 								...menuProps,
 								stateJSON,
-								setMediums: setMediums,
+								setMediums: setMediums!,
 								nodeTypes: menuProps.nodeTypes!,
 								controlParameters: menuProps.controlParameters!,
 							});
@@ -83,12 +83,12 @@ const ImportButton = (menuProps: ImportButtonProps) => {
 						}
 					}, 0);
 				});
-				setLoadingMessage(null);
-				setCheckState(true);
+				setLoadingMessage!(null);
+				setCheckState!(true);
 				fitView();
 				setTextContent('');
 			} catch (error) {
-				setLoadingMessage(null);
+				setLoadingMessage!(null);
 				console.error(`Import failed: ${error}`);
 				menuProps.logError(
 					`File could not be imported. Please file a bug report with the import file attached.`
