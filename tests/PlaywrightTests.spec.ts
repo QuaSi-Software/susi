@@ -64,8 +64,7 @@ test('Import Export', async ({ page }) => {
 
 test('Check delete Edges on Medium Change', async ({ page }) => {
 	await page.goto('/');
-	const configJsonString = fs.readFileSync('tests/row_of_buses.json', 'utf-8');
-	await importConfig(page, configJsonString);
+	await importConfig(page, 'tests/row_of_buses.json');
 	await expect(page.locator('.react-flow__edge-path')).toHaveCount(2);
 	// Click on the canvas to deselect the Import/Export textbox before interacting with nodes
 	await page.locator('.react-flow__pane').click();
@@ -80,8 +79,7 @@ test('Check delete Edges on Medium Change', async ({ page }) => {
 
 test('Check importing invalid Connection', async ({ page }) => {
 	await page.goto('/');
-	const configJsonString = fs.readFileSync('tests/Invalid_connection.json', 'utf-8');
-	await importConfig(page, configJsonString);
+	await importConfig(page, 'tests/Invalid_connection.json');
 });
 
 test('Import Export Control Module UAC', async ({ page }) => {

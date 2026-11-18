@@ -26,8 +26,6 @@ const ImportButton = (menuProps: ImportButtonProps) => {
 	const context = useContext(AppContext);
 	const { fitView } = useReactFlow();
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-	// if (!context || menuProps.nodeTypes === null) return <></>;
 	const setCheckState = context?.setCheckState;
 	const setMediums = context?.setMediums;
 	const setLoadingMessage = context?.setLoadingMessage;
