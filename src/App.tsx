@@ -61,6 +61,7 @@ import { useContextMenuHandlers } from './Reactflow-Components/ContextMenus/useC
 import { useDraghandlers } from './useDraghandlers';
 import type { ControlModule } from './Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 import { TopRightButtonsMenu } from './Reactflow-Components/TopRightButtonsMenu';
+import ImportExportButtons from './Sidebar/Import-Export/ImportExportButtons';
 
 const DnDFlow = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);
@@ -232,6 +233,7 @@ const DnDFlow = () => {
 							setEdges={setEdges}
 						/>
 						<ClearNodesButton nodes={nodes} setNodes={setNodes} setEdges={setEdges} />
+						<ImportExportButtons />
 					</div>
 					<div className="top-right-ui-container">
 						<TopRightButtonsMenu

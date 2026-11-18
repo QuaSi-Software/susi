@@ -101,7 +101,6 @@ const Sidebar = (menuProps: SidebarProps) => {
 					show={selectedResieMenu !== undefined}
 					closeModal={() => setSelectedResieMenuKey(undefined)}
 				>
-					<></>
 					<ResieParametersMenu
 						resieParameterMenu={selectedResieMenu}
 						setResieParameterMenus={menuProps.setResieParameterMenus}
