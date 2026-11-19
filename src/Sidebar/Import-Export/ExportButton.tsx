@@ -13,6 +13,7 @@ export interface ImportExportMenuProps {
 	edges: SusiEdge[];
 	resieParameterMenus: ResieParameterMenuInfo[];
 	nodeTypes: Record<string, ComponentType> | null;
+	exportFileName: string;
 	logError: (errorMessage: string) => void;
 }
 
@@ -49,7 +50,7 @@ const ExportButton = (menuProps: ImportExportMenuProps) => {
 	const downloadFile = (data: string) => {
 		const blob = new Blob([data], { type: 'application/json' });
 		const a = document.createElement('a');
-		a.download = 'export.json';
+		a.download = `${menuProps.exportFileName}.json`;
 		a.href = window.URL.createObjectURL(blob);
 		const clickEvt = new MouseEvent('click', {
 			view: window,

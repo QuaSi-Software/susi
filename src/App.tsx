@@ -91,12 +91,15 @@ const DnDFlow = () => {
 	const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([]);
 	const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
 	const [overlayErrorMessage, setOverlayErrorMessage] = useState<string | null>(null);
-	const [nodeNamePrefix, setNodeNamePrefix] = useState<string>('');
 	const [checkState, setCheckState] = useState<boolean>(false);
+	const [showEditNodeModal, setShowEditNodeModal] = useState(false);
+
+	/** User Settings */
+	const [nodeNamePrefix, setNodeNamePrefix] = useState<string>('');
 	const [theme, setTheme] = useState<'dark' | 'light'>('light');
 	const [locale, setLocale] = useState<Locale>(Locale.US);
 	const [edgeType, setEdgeType] = useState<EdgeType>(EdgeType.DEFAULT);
-	const [showEditNodeModal, setShowEditNodeModal] = useState(false);
+	const [exportFileName, setExportFileName] = useState<string>('export');
 
 	/** Data imported from API */
 	const [componentTypes, setComponentTypes] = useState<Record<string, ComponentType> | null>(null);
@@ -240,6 +243,7 @@ const DnDFlow = () => {
 							setEdges={setEdges}
 							logError={logError}
 							setResieParameterMenus={setResieParameterMenus}
+							setExportFileName={setExportFileName}
 						/>
 						<ExportButton
 							nodes={nodes}
@@ -247,6 +251,7 @@ const DnDFlow = () => {
 							resieParameterMenus={resieParameterMenus}
 							nodeTypes={componentTypes}
 							logError={logError}
+							exportFileName={exportFileName}
 						/>
 					</div>
 					<div className="top-right-ui-container">
@@ -259,6 +264,8 @@ const DnDFlow = () => {
 							setNodeNamePrefix={setNodeNamePrefix}
 							setTheme={setTheme}
 							theme={theme}
+							exportFileName={exportFileName}
+							setExportFileName={setExportFileName}
 						/>
 						<ErrorMenu messages={errorMessages} setMessages={setErrorMessages} />
 					</div>

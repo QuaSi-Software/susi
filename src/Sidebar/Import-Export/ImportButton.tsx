@@ -19,6 +19,7 @@ export interface ImportButtonProps {
 	setEdges: (edges: SusiEdge[]) => void;
 	logError: (errorMessage: string) => void;
 	setResieParameterMenus: Dispatch<SetStateAction<ResieParameterMenuInfo[]>>;
+	setExportFileName: Dispatch<SetStateAction<string>>;
 }
 
 const ImportButton = (menuProps: ImportButtonProps) => {
@@ -46,6 +47,7 @@ const ImportButton = (menuProps: ImportButtonProps) => {
 			try {
 				const text = String(reader.result ?? '');
 				handleImport(text);
+				menuProps.setExportFileName(file.name.split('.')[0]);
 			} catch (err) {
 				console.error('Failed to parse JSON file:', err);
 				alert('Could not parse the selected file as JSON.');
