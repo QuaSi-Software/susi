@@ -31,10 +31,12 @@ const ImportButton = (menuProps: ImportButtonProps) => {
 	const setLoadingMessage = context?.setLoadingMessage;
 
 	// --- Import ------------------------------------------------------------
+	/** In order to use a bootstrap button for consistent style, this button manually clicks an invisible input widget */
 	const handleImportClick = () => {
 		fileInputRef.current?.click();
 	};
 
+	/** Called by input widget: reads a file and if it is a valid file, sends its content to handleImport */
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
 		if (!file) return;
@@ -59,6 +61,10 @@ const ImportButton = (menuProps: ImportButtonProps) => {
 		event.target.value = '';
 	};
 
+	/**
+	 * takes the JSON to import as a string and uses the setters of the state variables in App.tsx
+	 * to create a new state for the app (nodes, edges, mediums, general parameters)
+	 */
 	const handleImport = useCallback(
 		async (stateJSON: string) => {
 			if (menuProps.controlParameters === null || !context || !menuProps.nodeTypes) return;

@@ -23,19 +23,19 @@ const ExportButton = (menuProps: ImportExportMenuProps) => {
 
 	const handleExport = () => {
 		const data = exportState({ ...menuProps, mediums: mediums });
-		// setTextContent(data);
 		downloadFile(data);
 	};
 
+	/** Checks if all general parameter menus, mediums and components are valid (have only valid inputs) */
 	const menusAndComponentsValid = (): boolean => {
 		const mediumsValid = mediums.every((m) => m.valid);
 		if (!mediumsValid) return false;
 		const nodeInputsValid = menuProps.nodes.every((n) => n.data.hasValidInputs);
 		if (!nodeInputsValid) return false;
-		const simulationParamsValid = menuProps.resieParameterMenus.every((menu) => {
+		const generalParamsValid = menuProps.resieParameterMenus.every((menu) => {
 			return menu.inputs.every((input) => input.isValid());
 		});
-		if (!simulationParamsValid) return false;
+		if (!generalParamsValid) return false;
 		const allNodeNamesUnique = menuProps.nodes.every((node, nodeIndex) => {
 			const duplicate = menuProps.nodes.find((e, i) => e.data.content === node.data.content && i !== nodeIndex);
 			return duplicate === undefined;
@@ -45,6 +45,7 @@ const ExportButton = (menuProps: ImportExportMenuProps) => {
 		return true;
 	};
 
+	/** Generates a JSON file with the content as the data string and downloads it to the user's machine */
 	const downloadFile = (data: string) => {
 		const blob = new Blob([data], { type: 'application/json' });
 		const a = document.createElement('a');
@@ -59,6 +60,7 @@ const ExportButton = (menuProps: ImportExportMenuProps) => {
 		a.remove();
 	};
 
+	/** Create a warning message for when the user hovers over the export button. */
 	function getWarningMessage(): string {
 		const exportWarning = !menusAndComponentsValid();
 		const unconnectedNodes = findUnconnectedNodes(menuProps.nodes, menuProps.edges);
