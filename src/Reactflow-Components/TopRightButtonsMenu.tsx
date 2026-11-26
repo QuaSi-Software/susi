@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CustomModal } from '../Modals/CustomModal';
 import { InformationMenu } from '../Modals/InformationMenu/InformationMenu';
-import { Impressum } from '../Modals/InformationMenu/Impressum';
+// import { Impressum } from '../Modals/InformationMenu/Impressum';
 import { Instructions } from '../Modals/Instructions';
 import { SettingsMenu, type SettingsMenuProps } from '../Modals/SettingsMenu';
 
@@ -44,7 +44,7 @@ export function TopRightButtonsMenu(props: Props) {
 			<>
 				<CustomModal show={modalType === ModalType.ProjectInfo} closeModal={closeModal} title="Project Info">
 					<InformationMenu theme={props.theme} />
-					<Impressum />
+					{/* <Impressum /> */}
 				</CustomModal>
 				<CustomModal show={modalType === ModalType.Instructions} closeModal={closeModal} title="Instructions">
 					<Instructions />
