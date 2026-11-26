@@ -94,12 +94,10 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({ nodeInput, onEdit, 
 				return (
 					<FloatingLabel controlId="floatingInput" label={displayName}>
 						<Form.Control
-							type="number"
+							type="text"
 							placeholder={displayName}
 							value={String(inputValue)}
 							onChange={(e) => onInputChanged(e.target.value)}
-							step="0.01"
-							lang={locale}
 							isInvalid={!nodeInput.isValid() && nodeInput.isIncluded && !disabledByMutex}
 							disabled={disabledByMutex}
 						/>

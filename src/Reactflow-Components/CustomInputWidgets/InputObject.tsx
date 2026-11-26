@@ -94,7 +94,12 @@ class InputObject implements InputObjectProps {
 		}
 		if (this.value === undefined) this.value = null;
 
-		if (this.value === null && this.type === InputObjectType.STRING) {
+		if (
+			this.value === null &&
+			(this.type === InputObjectType.STRING ||
+				this.type === InputObjectType.FLOAT ||
+				this.type === InputObjectType.INT)
+		) {
 			this.value = '';
 		}
 		if (this.type === InputObjectType.DATE) {
