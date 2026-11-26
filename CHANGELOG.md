@@ -130,3 +130,15 @@ The first release of SUSI with a whole number of features:
 ## v1.2.5
 
 - Fix: When a value in the sidebar Resie Parameter menus is updated, it is automatically included. That isInclude status was not persisting when the user left the menu and returned.
+
+## v1.2.6
+
+- UI Changes:
+    - General Parameters were taken out of submenu and are in the main section of the menu dropdown
+    - Settings, Instructions, and Project Info Menus are opened via UI buttons in the top right side of the Reactflow panel.
+    - General Parameters, Settings, Instructions, and Project Info open as a Modal instead of in the sidebar
+    - Import/Export Menu was taken out of the sidebar and was replaced with an Import and Export Button in the top left section of the reactflow panel. They now use local json files instead of a text area.
+- Pressing the enter key closes modals.
+- Number Inputs are now text inputs, so chrome does not use decimal commas on European computers
+- "Emissions" Menu was renamed "Emissions Settings"
+- Mediums are now always required in SUSI to avoid mismatching edge confusion
