@@ -1,6 +1,6 @@
 import { InputObjectType, type InputObject } from '../InputObject';
 import { InputIssueType, type InputIssue } from './InputChecking';
-import { ValidationTarget, type Validation } from './NumberValidation';
+import { ValidationTarget, type Validation } from './Validation';
 
 function checkAtLeastOne(validation: Validation, otherInputs: InputObject[]): InputIssue | null {
 	if (validation.target !== ValidationTarget.AT_LEAST_ONE) {
@@ -17,10 +17,8 @@ function checkAtLeastOne(validation: Validation, otherInputs: InputObject[]): In
 		`At Least One operator cannot find one of the parameters ${validation.otherParameterNames}`
 	);
 	/** atLeastOne = not every parameter is not included */
-	const allDisabled = parameters.every(
-		(input) => input!.type === InputObjectType.BOOLEAN
-				? input!.value === false
-				: !(input!.isIncluded)
+	const allDisabled = parameters.every((input) =>
+		input!.type === InputObjectType.BOOLEAN ? input!.value === false : !input!.isIncluded
 	);
 	if (!allDisabled) return null;
 	const message = `At least one of the following parameters must be included: ${JSON.stringify(parameters.map((x) => x.displayName))}`;

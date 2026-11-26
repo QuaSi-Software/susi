@@ -2,7 +2,7 @@ import { InputObjectType, type InputObject } from '../InputObject';
 import checkAtLeastOne from './AtLeastOne';
 import { checkAllConditionals } from './Conditionals';
 import { checkMutex } from './Mutex';
-import { checkNumberValidation } from './NumberValidation';
+import { checkValidation } from './Validation';
 
 const InputIssueType = {
 	None: 'NONE',
@@ -36,7 +36,7 @@ function checkForInputIssues(input: InputObject, otherInputs: InputObject[]): In
 		if (atLeastOne) return atLeastOne;
 	}
 	/** check for invalid number inputs */
-	const numberIssue = checkNumberValidation(input, otherInputs);
+	const numberIssue = checkValidation(input, otherInputs);
 	if (numberIssue) return numberIssue;
 	/** Check valid array or object string */
 	const parseIssue = checkObjectsAndArrays(input);

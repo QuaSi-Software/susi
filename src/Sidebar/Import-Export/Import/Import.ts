@@ -20,7 +20,7 @@ import {
 	setResieParametersMenusFromImport,
 } from './ImportInputs';
 import type { ControlModule } from '../../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
-import { mutexSolver } from '../../../Reactflow-Components/CustomInputWidgets/Validation/Mutex';
+import { mutexSolver } from '../../../Reactflow-Components/CustomInputWidgets/InputIssues/Mutex';
 import { checkNodeValidInputs } from '../../../NodeDataStructures/Nodes/ValidateSusiNode';
 
 interface ImportStateProps {

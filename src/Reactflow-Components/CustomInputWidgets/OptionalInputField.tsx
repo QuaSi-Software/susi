@@ -3,7 +3,7 @@ import CustomInputField from './CustomInputField';
 import { useState } from 'react';
 import React from 'react';
 import type { InputObject } from './InputObject';
-import { InputIssueType } from './Validation/InputChecking';
+import { InputIssueType } from './InputIssues/InputChecking';
 
 interface OptionalInputFieldProps {
 	nodeInput: InputObject;

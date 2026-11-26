@@ -1,8 +1,8 @@
 import { getUndefinedMedium } from '../../NodeDataStructures/Mediums/MediumUtils';
 import type { Medium } from '../../NodeDataStructures/Mediums/Medium';
-import { type Validation } from './Validation/NumberValidation';
-import { ConditionalOperator, type Conditional } from './Validation/Conditionals';
-import { checkForInputIssues, InputIssueType, type InputIssue } from './Validation/InputChecking';
+import { type Validation } from './InputIssues/Validation';
+import { ConditionalOperator, type Conditional } from './InputIssues/Conditionals';
+import { checkForInputIssues, InputIssueType, type InputIssue } from './InputIssues/InputChecking';
 import { exportDate, parseDate } from './DateParsing';
 import type { SusiNode } from '../../NodeDataStructures/Nodes/SusiNode';
 

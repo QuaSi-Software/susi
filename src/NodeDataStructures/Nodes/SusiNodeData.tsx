@@ -2,7 +2,7 @@ import BusData from '../Bus/BusData';
 import { InputObject, InputObjectType } from '../../Reactflow-Components/CustomInputWidgets/InputObject';
 import type { ComponentType } from './SusiNodeTypes';
 import type { ApiCategory } from '../../FetchingApiData/ApiData';
-import { mutexSolver } from '../../Reactflow-Components/CustomInputWidgets/Validation/Mutex';
+import { mutexSolver } from '../../Reactflow-Components/CustomInputWidgets/InputIssues/Mutex';
 import type { ControlModule } from '../../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 import type { ResieParameterMenuInfo } from '../../Sidebar/ResieParameters/ResieParameterMenuInfo';
 

@@ -17,7 +17,7 @@
 	color: var(--sidebar-text-color);
 	overflow-y: auto;
 	box-sizing: border-box;
-	min-width: 20em;
+	min-width: 450px;
 	max-width: 100%;
 	width: 20em;
 	flex: 0 0 auto;

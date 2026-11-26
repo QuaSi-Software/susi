@@ -3,6 +3,8 @@ import { useDnD } from './DnDContext';
 import { type ComponentType } from '../NodeDataStructures/Nodes/SusiNodeTypes';
 import type { ApiCategory } from '../FetchingApiData/ApiData';
 
+declare const __APP_VERSION__: string;
+
 export interface NewNodeMenuProps {
 	categories: ApiCategory[];
 	nodeTypes: Record<string, ComponentType> | null;
@@ -22,6 +24,7 @@ export default function NewNodeMenu({ categories, nodeTypes, resieVersion }: New
 	return (
 		<>
 			{resieVersion && <div className="version-text"> ReSiE Version: {resieVersion}</div>}
+			<div className="version-text"> SUSI Version: {__APP_VERSION__}</div>
 			{categories.map((category: ApiCategory) => (
 				<div key={category.heading}>
 					<div className="sidebar-subheading">{category.heading}</div>
