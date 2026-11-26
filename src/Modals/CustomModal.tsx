@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Modal } from 'react-bootstrap';
+import { useCloseModalOnEnter } from './useCloseModalOnEnter';
 
 interface ModalProps {
 	show: boolean;
@@ -9,9 +10,11 @@ interface ModalProps {
 }
 
 export const CustomModal = ({ show, closeModal, children, title }: ModalProps) => {
+	useCloseModalOnEnter(show, closeModal);
+
 	return (
 		<Modal show={show} onHide={closeModal} className="custom-modal">
-			<Modal.Header style={{ padding: '20px 10%' }}>
+			<Modal.Header style={{ padding: '20px 10%' }} closeButton>
 				<Modal.Title>{title}</Modal.Title>
 			</Modal.Header>
 
