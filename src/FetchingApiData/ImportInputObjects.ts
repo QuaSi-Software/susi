@@ -7,10 +7,15 @@ import type { ApiCategory, APIParameter } from './ApiData';
 export function getInputObjectFromAPIParameter(inputName: string, apiInput: APIParameter, mediums: Medium[]) {
 	if (Array.isArray(apiInput.default) && apiInput.default.length > 0 && apiInput.default[0] === null)
 		apiInput.default = null;
+	const isRequired =
+		apiInput.required ||
+		apiInput.widget_type === InputObjectType.BOOLEAN ||
+		apiInput.widget_type === InputObjectType.MEDIUM;
 	/** TEMPORARY CODE: Remove when SIMON is updated */
 	if (inputName.substring(inputName.length - 4) === '_uac') apiInput.widget_type = InputObjectType.COMPONENT_UAC;
 	if (inputName.substring(inputName.length - 5) === '_uacs')
 		apiInput.widget_type = InputObjectType.COMPONENT_UAC_LIST;
+	/** End TEMPORARY CODE */
 	const input = new InputObject(
 		{
 			type: apiInput.widget_type, //getNodeInputType(inputName, apiInput),
@@ -19,7 +24,7 @@ export function getInputObjectFromAPIParameter(inputName: string, apiInput: APIP
 			value: apiInput.default,
 			tooltip: apiInput.description,
 			unit: apiInput.unit,
-			isRequired: apiInput.required || apiInput.widget_type === InputObjectType.BOOLEAN,
+			isRequired: isRequired,
 			dropdownOptions: apiInput.options,
 			dropdownOptionDisplayNames: apiInput.options,
 			validations: apiInput.validations === undefined ? [] : apiInput.validations.map((x) => importValidation(x)),

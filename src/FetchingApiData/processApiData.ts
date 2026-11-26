@@ -11,6 +11,10 @@ import { getInputObjectFromAPIParameter } from './ImportInputObjects';
 import type { ControlModule } from '../Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
 import { defaultDateFormat } from '../Reactflow-Components/CustomInputWidgets/DateParsing';
 
+/**
+ * Takes as input the API return, the list of mediums and the various setters, processes the api data into
+ * a form that we can use and saves them to the state variables defined in App.tsx
+ */
 export function processApiReturn(
 	data: ApiReturn,
 	mediums: Medium[],
@@ -72,7 +76,7 @@ export function processApiReturn(
 		importResieParameterMenuInfo(
 			data.general.emissions_categories,
 			data.general.emissions,
-			'Emissions',
+			'Emissions Settings',
 			'emissions_parameters'
 		),
 	]);

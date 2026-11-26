@@ -13,6 +13,8 @@ export interface SettingsMenuProps {
 	edgeType: EdgeType;
 	setEdgeType: Dispatch<SetStateAction<EdgeType>>;
 	setEdges: Dispatch<SetStateAction<SusiEdge[]>>;
+	exportFileName: string;
+	setExportFileName: Dispatch<SetStateAction<string>>;
 }
 
 export const Locale = {
@@ -31,10 +33,20 @@ export function SettingsMenu({
 	edgeType,
 	setEdgeType,
 	setEdges,
+	exportFileName,
+	setExportFileName,
 }: SettingsMenuProps) {
 	const locale = useContext(AppContext)!.locale;
+
+	function onExportFileNameChange(fileName: string) {
+		// Strip characters that are invalid in filenames on Windows/macOS/Linux
+		const disallowedChars = /[<>.:"/\\|?*\x00-\x1F\s]/g;
+		setExportFileName(fileName.replace(disallowedChars, ''));
+	}
+
 	return (
 		<>
+			{/** UAC Prefix input widget */}
 			<FloatingLabel
 				controlId="floatingInput"
 				label={'UAC Prefix for Component Names'}
@@ -43,13 +55,24 @@ export function SettingsMenu({
 				<Form.Control
 					type="text"
 					as="textarea"
-					style={{ fontSize: '24px', height: 'min-content' }}
 					placeholder={'UAC Prefix for Component Names'}
 					value={nodeNamePrefix}
 					autoFocus
 					onChange={(e) => setNodeNamePrefix(e.target.value)}
 				/>
 			</FloatingLabel>
+			{/** Export File name input widget */}
+			<FloatingLabel controlId="floatingInput" label={'Name for export file'} className="input-menu-row">
+				<Form.Control
+					type="text"
+					as="textarea"
+					placeholder={'Name for export file'}
+					value={exportFileName}
+					autoFocus
+					onChange={(e) => onExportFileNameChange(e.target.value)}
+				/>
+			</FloatingLabel>
+			{/** Theme input widget */}
 			<div className="input-menu-row">
 				<CustomDropdown<'light' | 'dark'>
 					displayName="Theme"
@@ -59,6 +82,7 @@ export function SettingsMenu({
 					onEdit={(value) => setTheme(value)}
 				/>
 			</div>
+			{/** Edge Type Input Widget */}
 			<div className="input-menu-row">
 				<CustomDropdown<EdgeType>
 					displayName="Edge Type"
@@ -70,6 +94,7 @@ export function SettingsMenu({
 					}}
 				/>
 			</div>
+			{/** Locale für Datum und number format input widget */}
 			<div
 				className="input-menu-row"
 				data-toggle="tooltip"

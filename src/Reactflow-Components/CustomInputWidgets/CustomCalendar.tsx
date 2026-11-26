@@ -1,4 +1,4 @@
-import type { Locale } from '../../Sidebar/SettingsMenu';
+import type { Locale } from '../../Modals/SettingsMenu';
 import { exportDate } from './DateParsing';
 import { FloatLabel } from 'primereact/floatlabel';
 

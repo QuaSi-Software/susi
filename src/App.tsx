@@ -54,12 +54,15 @@ import type { ResieParameterMenuInfo } from './Sidebar/ResieParameters/ResiePara
 import Sidebar from './Sidebar/Sidebar';
 import { AppContext } from './AppContext';
 import { UndoButton } from './Reactflow-Components/UndoButton';
-import { Locale } from './Sidebar/SettingsMenu';
+import { Locale } from './Modals/SettingsMenu';
 import { ClearNodesButton } from './Reactflow-Components/ClearNodesButton';
 import logo from './assets/resie.svg';
 import { useContextMenuHandlers } from './Reactflow-Components/ContextMenus/useContextMenuHandlers';
 import { useDraghandlers } from './useDraghandlers';
 import type { ControlModule } from './Reactflow-Components/ContextMenus/ControlModules/ControlModulesMenu';
+import { TopRightButtonsMenu } from './Reactflow-Components/TopRightButtonsMenu';
+import ImportButton from './Sidebar/Import-Export/ImportButton';
+import ExportButton from './Sidebar/Import-Export/ExportButton';
 
 const DnDFlow = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState<SusiNode>([]);
@@ -88,12 +91,15 @@ const DnDFlow = () => {
 	const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([]);
 	const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
 	const [overlayErrorMessage, setOverlayErrorMessage] = useState<string | null>(null);
-	const [nodeNamePrefix, setNodeNamePrefix] = useState<string>('');
 	const [checkState, setCheckState] = useState<boolean>(false);
+	const [showEditNodeModal, setShowEditNodeModal] = useState(false);
+
+	/** User Settings */
+	const [nodeNamePrefix, setNodeNamePrefix] = useState<string>('');
 	const [theme, setTheme] = useState<'dark' | 'light'>('light');
 	const [locale, setLocale] = useState<Locale>(Locale.US);
 	const [edgeType, setEdgeType] = useState<EdgeType>(EdgeType.DEFAULT);
-	const [showEditNodeModal, setShowEditNodeModal] = useState(false);
+	const [exportFileName, setExportFileName] = useState<string>('export');
 
 	/** Data imported from API */
 	const [componentTypes, setComponentTypes] = useState<Record<string, ComponentType> | null>(null);
@@ -189,20 +195,10 @@ const DnDFlow = () => {
 					setNodes={setNodes}
 					edges={edges}
 					setEdges={setEdges}
-					logError={logError}
-					nodeNamePrefix={nodeNamePrefix}
-					setNodeNamePrefix={setNodeNamePrefix}
 					resieParameterMenus={resieParameterMenus}
 					setResieParameterMenus={setResieParameterMenus}
-					theme={theme}
-					setTheme={setTheme}
-					setLocale={setLocale}
 					nodeTypes={componentTypes}
 					categories={componentCategories}
-					edgeType={edgeType}
-					setEdgeType={setEdgeType}
-					controlParameters={controlParameters}
-					controlModules={controlModules}
 					resieVersion={resieVersion}
 				/>
 				<ReactFlow
@@ -238,6 +234,40 @@ const DnDFlow = () => {
 							setEdges={setEdges}
 						/>
 						<ClearNodesButton nodes={nodes} setNodes={setNodes} setEdges={setEdges} />
+						<ImportButton
+							controlParameters={controlParameters}
+							controlModules={controlModules}
+							resieParameterMenus={resieParameterMenus}
+							nodeTypes={componentTypes}
+							setNodes={setNodes}
+							setEdges={setEdges}
+							logError={logError}
+							setResieParameterMenus={setResieParameterMenus}
+							setExportFileName={setExportFileName}
+						/>
+						<ExportButton
+							nodes={nodes}
+							edges={edges}
+							resieParameterMenus={resieParameterMenus}
+							nodeTypes={componentTypes}
+							logError={logError}
+							exportFileName={exportFileName}
+						/>
+					</div>
+					<div className="top-right-ui-container">
+						<TopRightButtonsMenu
+							edgeType={edgeType}
+							nodeNamePrefix={nodeNamePrefix}
+							setEdges={setEdges}
+							setEdgeType={setEdgeType}
+							setLocale={setLocale}
+							setNodeNamePrefix={setNodeNamePrefix}
+							setTheme={setTheme}
+							theme={theme}
+							exportFileName={exportFileName}
+							setExportFileName={setExportFileName}
+						/>
+						<ErrorMenu messages={errorMessages} setMessages={setErrorMessages} />
 					</div>
 					<a href="https://quasi-software.readthedocs.io/en/latest/" className="resie-logo" target="_blank">
 						<img src={logo} style={{ width: 'inherit' }} />
@@ -281,7 +311,6 @@ const DnDFlow = () => {
 					setNodes={setNodes}
 					edges={edges}
 				/>
-				<ErrorMenu messages={errorMessages} setMessages={setErrorMessages} />
 			</AppContext.Provider>
 		</div>
 	);

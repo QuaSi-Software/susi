@@ -1,19 +1,8 @@
-import type { Dispatch, SetStateAction } from 'react';
-import { Modal } from 'react-bootstrap';
-
-interface ImpressumModalProps {
-	show: boolean;
-	setShow: Dispatch<SetStateAction<boolean>>;
-}
-
-export const ImpressumModal = ({ show, setShow }: ImpressumModalProps) => {
+export const Impressum = () => {
 	return (
-		<Modal show={show} onHide={() => setShow(false)}>
-			<Modal.Header style={{ padding: '20px 10%' }}>
-				<Modal.Title>Impressum</Modal.Title>
-			</Modal.Header>
-
-			<Modal.Body className="side-padded-menu">
+		<>
+			<div className="modal-menu-section">
+				<div className="modal-subheading"> Impressum</div>
 				<h3>Angaben gemäß § 5 DDG</h3>
 				Steinbeis-Innovationszentrum energieplus <br />
 				Hauptsitz Braunschweig <br />
@@ -32,7 +21,9 @@ export const ImpressumModal = ({ show, setShow }: ImpressumModalProps) => {
 				OFFICE am RINGGLEIS <br />
 				Hamburger Straße 277 <br />
 				38114 Braunschweig <br />
-				<h2>Haftungsausschluss</h2>
+			</div>
+			<div className="modal-menu-section">
+				<div className="modal-subheading">Haftungsausschluss</div>
 				<h3>Haftung für Inhalte</h3>
 				Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit
 				und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß
@@ -51,12 +42,14 @@ export const ImpressumModal = ({ show, setShow }: ImpressumModalProps) => {
 				Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche
 				Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht
 				zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.
-				<h2>Urheberrecht</h2>
+			</div>
+			<div className="modal-menu-section">
+				<div className="modal-subheading">Urheberrecht</div>
 				Wo nicht anders angegeben sind Inhalte, Werke und der Quellcode der Seiten unter der MIT Lizenz
 				veröffentlicht.{' '}
 				<a href="https://github.com/QuaSi-Software/susi/blob/main/LICENSE.md" target="_blank">
 					Der Lizenztext
-				</a>
+				</a>{' '}
 				definiert die Nutzungsbedingungen die jeglicher Nutzung unterliegen. Die darin genannten Personen sind
 				als Autor*innen im Sinne des Urheberrechts zu verstehen. Dies umfasst nicht eingebundene und verlinkte
 				externe Inhalte. Nur Inhalte, die Teil des Repository der Seiten sind, sind von der Lizenz gedeckt.
@@ -72,12 +65,12 @@ export const ImpressumModal = ({ show, setShow }: ImpressumModalProps) => {
 				<a href="https://www.impressum-generator.de" target="_blank">
 					Impressum Generator
 				</a>{' '}
-				der
+				der{' '}
 				<a href="https://www.kanzlei-hasselbach.de/rechtsgebiete/familienrecht/" target="_blank">
 					Kanzlei Hasselbach, Fachanwälte für Familienrecht
 				</a>
 				*
-			</Modal.Body>
-		</Modal>
+			</div>
+		</>
 	);
 };

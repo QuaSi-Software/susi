@@ -3,6 +3,7 @@
 		"FB_01": {
 			"type": "FuelBoiler",
 			"m_fuel_in": "UNDEFINED",
+			"m_heat_out": "m_h_w_ht1",
 			"power_th": null,
 			"control_parameters": {
 				"consider_m_el_in": true,
@@ -36,6 +37,7 @@
 		"BT_01": {
 			"type": "BufferTank",
 			"consider_losses": false,
+			"medium": "m_h_w_ht1",
 			"control_parameters": {
 				"consider_m_el_in": true,
 				"consider_m_el_out": true,

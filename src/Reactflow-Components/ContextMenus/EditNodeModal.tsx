@@ -29,6 +29,7 @@ import { getEdgesFromConditionalOff, getEdgesFromMediumVar } from '../../NodeDat
 import { WarningMessage } from '../CustomInputWidgets/WarningMessage';
 import type { ComponentType } from '../../NodeDataStructures/Nodes/SusiNodeTypes';
 import { checkNodeValidInputs } from '../../NodeDataStructures/Nodes/ValidateSusiNode';
+import { useCloseModalOnEnter } from '../../Modals/useCloseModalOnEnter';
 
 interface EditNodeModalInputs {
 	show: boolean;
@@ -137,6 +138,8 @@ const EditNodeModal = ({
 		setCheckState(true);
 		handleClose();
 	};
+
+	useCloseModalOnEnter(show, handleSaveChanges);
 
 	/** Get node type data to add to UI */
 	const componentType = componentTypes[editedNode.data.componentType];
